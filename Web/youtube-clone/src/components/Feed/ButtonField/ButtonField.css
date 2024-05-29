@@ -1,9 +1,15 @@
 .ButtonField{
     display: flex;
     flex-direction: row;
-    width: 400px;
-    height: 75px;
+    width: 300px;
+    height: 45px;
     align-items: center;
+    border-radius: 5px;
+    margin: 10px;
+}
+.ButtonField:hover{
+    background-color:  rgb(229, 226, 226);
+    cursor: pointer;
 }
 .svgContainer{
     margin: 40px;

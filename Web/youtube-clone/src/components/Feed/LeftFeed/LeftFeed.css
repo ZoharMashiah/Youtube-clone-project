@@ -4,5 +4,13 @@
 
 .Scrollable{
     height: 100%;
-    overflow-y: scroll;
+    overflow-x: scroll;
+}
+
+hr{
+    margin-left: 40px;
+    width: 180px;
+    height: 1px;
+    background-color: rgb(199, 197, 197);
+    border-width: 0px;
 }

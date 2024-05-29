@@ -13,9 +13,13 @@ export default function LeftFeed() {
       <LogoMenu />
       <div className='Scrollable'>
         <Menu />
+        <hr/>
         <YouInfo />
+        <hr/>
         <Subscribers />
+        <hr/>
         <Explore />
+        <hr/>
         <More/>
       </div>
       
