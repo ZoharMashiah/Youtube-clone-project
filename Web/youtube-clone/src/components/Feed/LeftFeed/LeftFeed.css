@@ -1,0 +1,8 @@
+.LeftFeed{
+    text-align: center;
+}
+
+.Scrollable{
+    height: 100%;
+    overflow-y: scroll;
+}

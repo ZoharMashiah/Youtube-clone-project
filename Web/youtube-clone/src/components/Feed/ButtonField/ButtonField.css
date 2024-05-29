@@ -1,0 +1,10 @@
+.ButtonField{
+    display: flex;
+    flex-direction: row;
+    width: 400px;
+    height: 75px;
+    align-items: center;
+}
+.svgContainer{
+    margin: 40px;
+}
