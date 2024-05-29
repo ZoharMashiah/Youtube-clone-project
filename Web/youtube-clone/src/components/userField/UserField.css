@@ -1,0 +1,9 @@
+.UserField{
+    display: flex;
+    align-items: center;
+    padding: 6px;
+    border-bottom: 1px solid #e1e1e1;
+    flex-direction: row;
+    width: fit-content;
+    margin: auto;
+}
