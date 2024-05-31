@@ -1,0 +1,30 @@
+.button{
+    margin: 10px;
+    background-color: white;
+    border-radius: 30px;
+    height: 40px;
+    width: 40px;
+    border-width: 0px;
+    align-items: center;
+    cursor: pointer;
+}
+
+.button:hover{
+    background-color: rgb(229, 226, 226);
+}
+
+.buttonsWrapper{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+#profileImage{
+    margin: 10px;
+    border-radius: 30px;
+    height: 40px;
+    width: 40px;
+    border-width: 0px;
+    cursor: pointer;
+}
