@@ -9,18 +9,11 @@ function App() {
 
   return (
     <BrowserRouter>
-      <Routes
-  element={
-    <div>
-      <h1>Layout</h1>
-      <Outlet />
-    </div>
-  }
->
+      <Routes>
         <Route path="/about" element={move?<Navigate to=".."/>:<div><h2>Home</h2>
           <button onClick={() => setmove(true)}>move</button>
         </div>} />
-  <Route path="/" element={<Feed/>} />
+      <Route path="/" element={<Feed/>} />
 </Routes>
     </BrowserRouter>
   );
