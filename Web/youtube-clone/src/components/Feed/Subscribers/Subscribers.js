@@ -10,7 +10,7 @@ export default function Subscribers() {
         subscribers.length == 0 ?
           <p>No subscribers yet.</p>
         :subscribers.map((subscriber) => {
-          <ButtonField text={subscriber.name} icon={subscriber.icon}/>
+          return <ButtonField text={subscriber.name} icon={subscriber.icon}/>
         })
       }
     </div>

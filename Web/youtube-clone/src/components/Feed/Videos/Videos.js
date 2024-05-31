@@ -4,17 +4,10 @@ import vid from '../../../data/videos.json'
 
 export default function Videos() {
   const [videos, setVideos] = useState(vid)
-  const [scrollPosition, setScrollPosition] = useState(0);
- 
-    const handleScroll = (e) => {
-        const { scrollTop, scrollHeight, clientHeight } = e.target;
-        const position = Math.ceil(
-            (scrollTop / (scrollHeight - clientHeight)) * 100
-        );
-        setScrollPosition(position);
-    };
+
+  
   return (
-    <div class="overflow-auto" id='container' onScroll={handleScroll}>
+    <div class="overflow-auto" id='container'>
       <div class="container" id='wrapper'>
         <div class="row">
           <div class="col">
