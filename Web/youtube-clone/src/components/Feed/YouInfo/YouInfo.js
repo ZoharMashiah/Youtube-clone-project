@@ -2,6 +2,8 @@ import React from 'react'
 
 export default function YouInfo() {
   return (
-    <div>YouInfo</div>
+    <div>
+      
+    </div>
   )
 }

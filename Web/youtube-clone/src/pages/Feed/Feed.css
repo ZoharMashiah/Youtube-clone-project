@@ -1,20 +1,21 @@
 .Feed{
     display: flex;
     flex-direction: row;
-    width: auto;
-    height: auto;
+    width: 100%;
+  height: 100vh;
+  max-height: 100vh;
 }
 
 .Right{
     position: absolute;
     right: 0;
-    width: 85%;
+    width: 80%;
     height: 100%;
 }
 
 .Left{
     position: absolute;
     left: 0;
-    width: 15%;
+    width: 20%;
     height: 100%;
 }

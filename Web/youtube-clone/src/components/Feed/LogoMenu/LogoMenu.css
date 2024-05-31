@@ -3,6 +3,8 @@
     display: flex;
     flex-direction: row;
     height: 100px;
+    margin: 20px;
+    margin-left: 40px;
 }
 
 .Image{
@@ -10,10 +12,10 @@
     cursor: pointer;
 }
 
-button{
-    margin: 30px;
+.button{
+    margin-top: 22px;
     background-color: white;
-    border-radius: 20px;
+    border-radius: 30px;
     height: 40px;
     width: 40px;
     border-width: 0px;
@@ -21,7 +23,6 @@ button{
     cursor: pointer;
 }
 
-button:hover{
+.button:hover{
     background-color: rgb(229, 226, 226);
-    
 }

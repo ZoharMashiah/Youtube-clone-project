@@ -1,7 +1,10 @@
 import React from 'react'
+import ButtonField from '../ButtonField/ButtonField'
 
 export default function More() {
   return (
-    <div>More</div>
+    <div>
+      <ButtonField text="Settings" icon="utilites/gear.svg" />
+    </div>
   )
 }

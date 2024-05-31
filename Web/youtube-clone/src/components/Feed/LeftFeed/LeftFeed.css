@@ -1,16 +1,17 @@
 .LeftFeed{
     text-align: center;
+    justify-content: center;
+    align-items: center;
 }
 
 .Scrollable{
-    height: 100%;
-    overflow-x: scroll;
+    height: fit-content;
 }
 
-hr{
+.hr{
     margin-left: 40px;
-    width: 180px;
+    width: 200px;
     height: 1px;
-    background-color: rgb(199, 197, 197);
+    background-color: rgb(134, 133, 133);
     border-width: 0px;
 }

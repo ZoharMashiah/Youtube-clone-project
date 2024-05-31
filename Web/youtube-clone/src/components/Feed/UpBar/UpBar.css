@@ -1,0 +1,16 @@
+.wrapper{
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    align-items: center;
+    width: 1200px;
+}
+
+.upperButtonsWrraper{
+    position: absolute;
+    right: 3%;
+}
+
+.searchWrraper{
+    margin-left: 150px;
+}

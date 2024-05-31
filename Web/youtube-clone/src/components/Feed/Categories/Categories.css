@@ -1,0 +1,6 @@
+#categoriesWrraper{
+    display: flex;
+    flex-direction: row;
+    overflow-y: scroll;
+    height: max-content;
+}
