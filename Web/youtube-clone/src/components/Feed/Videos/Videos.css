@@ -2,10 +2,11 @@
     scroll-behavior: smooth;
     height: max-content;
     max-height: max-content;
-    height: 300px;
-    overflow-y: scroll,
 }
 
 #container{
-    overflow: auto
+    
+  width: 110px;
+  height: 110px;
+  overflow: scroll;
 }

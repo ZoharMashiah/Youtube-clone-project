@@ -7,8 +7,8 @@ export default function Videos() {
 
   
   return (
-    <div class="overflow-auto" id='container'>
-      <div class="container" id='wrapper'>
+    <div id='container'>
+      <div id='wrapper'>
         <div class="row">
           <div class="col">
             {videos.map((video) => {

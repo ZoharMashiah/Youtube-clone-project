@@ -6,12 +6,17 @@
 
 .middle{
     position: absolute;
-    top: 9%;
-    min-height: 5%;
+    top: 8%;
+    min-height: 6%;
+    width: 98%;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
 }
 
 .bottom{
     position: absolute;
     bottom: 0;
     height: 86%;
+    overflow: scroll;
 }
