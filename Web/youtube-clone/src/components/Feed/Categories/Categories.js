@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import Category from '../Category/Category'
-import './Categories.css'
+import styles from './Categories.module.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 export default function Categories({selectedCategory, setselectedCategory}) {
@@ -11,7 +11,7 @@ export default function Categories({selectedCategory, setselectedCategory}) {
     setselectedCategory(category)
   }
   return (
-    <div id='categoriesWrraper' class="overflow-auto">
+    <div id={styles.categoriesWrraper} class="overflow-auto">
       {
         categories.map((category) => {
           if(category === selectedCategory)

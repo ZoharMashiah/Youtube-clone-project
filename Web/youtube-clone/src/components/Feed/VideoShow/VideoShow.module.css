@@ -1,5 +1,5 @@
 #videoImage{
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     border-radius: 15px;
     box-shadow: 2px 2px rgba(110, 110, 110, 0.05);
 }
@@ -11,7 +11,7 @@
     transition-timing-function: linear;
 }
 .videoCard{
-    margin: 20px;
+    margin: 3%;
 }
 
 .imageWrapper{

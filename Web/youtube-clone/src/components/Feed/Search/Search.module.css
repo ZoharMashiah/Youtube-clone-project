@@ -1,9 +1,9 @@
 
-#button-addon2:hover{
+#button_addon2:hover{
     background-color: rgba(240,240,240,255);
 }
 
-#button-addon2{
+#button_addon2{
     border-top-right-radius: 50px;
     border-bottom-right-radius: 50px;
     background-color: rgba(248,248,248,255);
@@ -15,7 +15,7 @@
     border-top-left-radius: 50px;
     border-bottom-left-radius: 50px;
     border-color: rgb(134, 133, 133);
-    width: 400px;
+    width: 350px;
     height: 40px;
     cursor:text;
 }
@@ -23,6 +23,7 @@
 #input{
     margin: 20px;
     border-radius: 50px;
+    width: 100%;
 }
 
 #icon{

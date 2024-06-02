@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import ButtonField from '../ButtonField/ButtonField'
+import styles from './Subscribers.module.css'
 
 export default function Subscribers() {
   const [subscribers, setSubscribers] = useState([])

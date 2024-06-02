@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import './RightFeed.css'
+import styles from './RightFeed.module.css'
 import UpBar from '../UpBar/UpBar'
 import Videos from '../Videos/Videos'
 import Categories from '../Categories/Categories'
@@ -38,13 +38,13 @@ export default function RightFeed() {
 
   return (
     <div>
-      <div className='upper'>
+      <div className={styles.upper}>
         <UpBar setsearchText={setsearchText} filterVideos={filterVideos} />
       </div>
-      <div className='middle'>
+      <div className={styles.middle}>
         <Categories selectedCategory={selectedCategory} setselectedCategory={setselectedCategory} />
       </div>
-      <div className='bottom'>
+      <div className={styles.bottom}>
         <Videos videos={filterdedVideos}/>
       </div>
     </div>

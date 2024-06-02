@@ -1,13 +1,14 @@
 import React, { useState } from 'react'
 import VideoShow from '../VideoShow/VideoShow'
 import vid from '../../../data/videos.json'
+import styles from './Videos.module.css'
 
 export default function Videos({videos}) {
 
   
   return (
-    <div id='container'>
-      <div id='wrapper'>
+    <div id={styles.container}>
+      <div id={styles.wrapper}>
         <div class="row">
           <div class="col">
             {videos.map((video) => {

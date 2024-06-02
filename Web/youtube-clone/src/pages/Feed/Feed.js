@@ -1,15 +1,15 @@
-import React, {useState} from 'react'
-import "./Feed.css"
+import React from 'react'
+import styles from "./Feed.module.css"
 import LeftFeed from '../../components/Feed/LeftFeed/LeftFeed'
 import RightFeed from '../../components/Feed/RightFeed/RightFeed'
 
 export default function Feed() {
   return (
-      <div className='Feed'>
-          <div className='Right'>
+      <div className={styles.Feed}>
+          <div className={styles.Right}>
             <RightFeed />
           </div>
-          <div className='Left'>
+          <div className={styles.Left}>
             <LeftFeed />  
           </div>
     </div>

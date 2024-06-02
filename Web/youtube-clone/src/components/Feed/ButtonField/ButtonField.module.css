@@ -1,7 +1,7 @@
 .ButtonField{
     display: flex;
     flex-direction: row;
-    width: 250px;
+    width: 80%;
     height: 50px;
     align-items: center;
     border-radius: 20px;
@@ -17,4 +17,7 @@
 .svgContainer{
     margin: 40px;
     margin-top: 22px;
+}
+#icon{
+    font-size: x-large;
 }

@@ -10,8 +10,8 @@
 
 .hr{
     margin-left: 40px;
-    width: 200px;
-    height: 1px;
+    width: 70%;
+    height: 2px;
     background-color: rgb(134, 133, 133);
     border-width: 0px;
 }

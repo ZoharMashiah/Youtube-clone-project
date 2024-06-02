@@ -5,8 +5,7 @@
 }
 
 #container{
-    
-  width: 110px;
-  height: 110px;
-  overflow: scroll;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
 }

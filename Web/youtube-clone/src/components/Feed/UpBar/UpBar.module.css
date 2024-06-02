@@ -1,9 +1,8 @@
 .wrapper{
     display: flex;
     flex-direction: row;
-    text-align: center;
     align-items: center;
-    width: 1200px;
+    width: 100%;
 }
 
 .upperButtonsWrraper{
@@ -12,5 +11,5 @@
 }
 
 .searchWrraper{
-    margin-left: 150px;
+    margin-left: 20%;
 }
