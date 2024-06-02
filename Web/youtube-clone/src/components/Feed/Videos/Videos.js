@@ -3,8 +3,11 @@ import VideoShow from '../VideoShow/VideoShow'
 import vid from '../../../data/videos.json'
 import styles from './Videos.module.css'
 
-export default function Videos({videos}) {
+export default function Videos({videos, setcurrentVideo}) {
 
+  const handleClick = (video) => {
+    setcurrentVideo(video)
+  }
   
   return (
     <div id={styles.container}>
@@ -13,19 +16,19 @@ export default function Videos({videos}) {
           <div class="col">
             {videos.map((video) => {
             if((video.id-1)%3 === 0)
-              return <VideoShow {...video} />
+              return <VideoShow {...video} onClick={() => handleClick(video)} />
           })}
           </div>
           <div class="col">
           {videos.map((video) => {
             if((video.id-1)%3 === 1)
-              return <VideoShow {...video} />
+              return <VideoShow {...video} onClick={() => handleClick(video)}/>
           })}
           </div>
           <div class="col">
           {videos.map((video) => {
             if((video.id-1)%3 === 2)
-              return <VideoShow {...video} />
+              return <VideoShow {...video} onClick={() => handleClick(video)}/>
           })}
           </div>
         </div>

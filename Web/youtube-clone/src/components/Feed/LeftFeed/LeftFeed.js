@@ -1,6 +1,5 @@
 import React from 'react'
 import styles from './LeftFeed.module.css'
-import LogoMenu from '../LogoMenu/LogoMenu'
 import Menu from '../Menu/Menu'
 import YouInfo from '../YouInfo/YouInfo'
 import Subscribers from '../Subscribers/Subscribers'
@@ -10,7 +9,6 @@ import More from '../More/More'
 export default function LeftFeed() {
   return (
     <div className={styles.LeftFeed}>
-      <LogoMenu />
       <div className={styles.Scrollable}>
         <Menu />
         {/* <hr className={styles.hr}/>

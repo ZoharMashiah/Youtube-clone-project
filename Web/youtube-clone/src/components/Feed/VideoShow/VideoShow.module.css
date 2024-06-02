@@ -25,6 +25,7 @@
     font-size: 15px;
     font-weight: 600;
     margin-bottom: 5px;
+    cursor: pointer;
 }
 #user{
     font-size: 13px;

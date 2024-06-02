@@ -1,13 +1,4 @@
-.upper{
-    position: absolute;
-    top: 0;
-    min-height: 8%;
-    width: 100%;
-}
-
 .middle{
-    position: absolute;
-    top: 7%;
     min-height: 5%;
     width: 100%;
     overflow: scroll;
@@ -15,7 +6,7 @@
 
 .bottom{
     position: absolute;
-    bottom: -1%;
+    bottom: 5%;
     height: 86%;
     overflow: scroll;
 }
