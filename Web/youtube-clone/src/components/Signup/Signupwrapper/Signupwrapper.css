@@ -23,7 +23,6 @@
   margin-bottom: 20px;
   text-align: center;
   color: #185da6;
-  margin-right: 40px;
 }
 
 .input-group {
@@ -33,7 +32,7 @@
   position: relative;
 }
 
-.icon {
+.input-group i {
   position: absolute;
   left: 10px;
   font-size: 1.5em;
@@ -44,7 +43,7 @@
   width: 100%;
   border: 1px solid #ccc;
   border-radius: 5px;
-  padding: 10px 10px 10px 35px;
+  padding: 10px 10px 10px 40px; /* Adjusted padding to accommodate the icon */
   outline: none;
   transition: border-color 0.3s, box-shadow 0.3s;
   font-size: 1em;
@@ -70,7 +69,7 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.register-button:hover {
+.submit-button:hover {
   background-color: #0056b3;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
@@ -96,4 +95,46 @@
   .signup-title {
     font-size: 2em;
   }
+}
+
+/* Dark mode styles */
+.dark-mode .signup-page {
+  background: linear-gradient(135deg, #2c3e50, #4ca1af);
+}
+
+.dark-mode .signup-container {
+  background: rgba(44, 62, 80, 0.9);
+}
+
+.dark-mode .signup-title {
+  color: #ecf0f1;
+}
+
+.dark-mode .input-group i {
+  color: #bdc3c7;
+}
+
+.dark-mode .input-field {
+  background-color: #34495e;
+  color: #ecf0f1;
+  border-color: #2c3e50;
+}
+
+.dark-mode .input-field:focus {
+  border-color: #1abc9c;
+  box-shadow: 0 0 8px rgba(26, 188, 156, 0.2);
+}
+
+.dark-mode .submit-button {
+  background-color: #1abc9c;
+  color: #2c3e50;
+}
+
+.dark-mode .submit-button:hover {
+  background-color: #16a085;
+  box-shadow: 0 6px 12px rgba(26, 188, 156, 0.2);
+}
+
+.dark-mode .return-login {
+  color: #1abc9c;
 }

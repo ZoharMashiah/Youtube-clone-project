@@ -1,69 +1,133 @@
 .login-page {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
-  }
-  
-  #logo {
-    width: 200px;
-  }
-  
-  
-  .login-title {
-    font-size: 3.5em;
-    color: #185da6;
-    margin-bottom: 10px;
-    font-weight: bold;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-    letter-spacing: 1px;
-    margin-right: 50px;
-  }
-  
-  
-  
-  .input-field {
-    width: 100%;
-    max-width: 300px;
-    padding: 15px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    outline: none;
-    transition: border-color 0.3s;
-    font-size: 1.2em;
-  }
-  
-  
-  .register-button {
-    background-color: #007bff;
-    color: white;
-    padding: 15px 30px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    font-size: 1.2em;
-  }
-  
-  .register-button:hover {
-    background-color: #0056b3;
-  }
-  
-  .login-footer {
-    display: flex;
-    align-items: center;
-    font-size: 1.2em;
-  }
-  
-  
-  .remember-me {
-    display: flex;
-    align-items: center;
-    font-size: 1.2em;
-  }
-  
-  .remember-me input {
-    margin-right: 10px;
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+}
+
+#logo {
+  width: 200px;
+  position: absolute;
+  top: 5px;
+}
+
+.login-title {
+  font-size: 3.5em;
+  color: #185da6;
+  margin-bottom: 10px;
+  font-weight: bold;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  letter-spacing: 1px;
+}
+
+.input-field {
+  width: 100%;
+  max-width: 300px;
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+  transition: border-color 0.3s;
+  font-size: 1.2em;
+}
+
+.register-button {
+  background-color: #007bff;
+  color: white;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: 1.2em;
+}
+
+.register-button:hover {
+  background-color: #0056b3;
+}
+
+.login-footer {
+  display: flex;
+  align-items: center;
+  font-size: 1.2em;
+}
+
+.remember-me {
+  display: flex;
+  align-items: center;
+  font-size: 1.2em;
+}
+
+.remember-me input {
+  margin-right: 10px;
+}
+
+/* Dark mode styles */
+.dark-mode {
+  background: linear-gradient(135deg, #2c3e50, #4ca1af);
+}
+
+.dark-mode .login-title {
+  color: #ecf0f1;
+}
+
+.dark-mode .input-field {
+  background-color: #34495e;
+  color: #ecf0f1;
+  border-color: #2c3e50;
+}
+
+.dark-mode .input-field:focus {
+  border-color: #1abc9c;
+  box-shadow: 0 0 8px rgba(26, 188, 156, 0.2);
+}
+
+.dark-mode .register-button {
+  background-color: #1abc9c;
+  color: #2c3e50; /* Ensure text color is visible */
+}
+
+.dark-mode .register-button:hover {
+  background-color: #16a085;
+  box-shadow: 0 6px 12px rgba(26, 188, 156, 0.2);
+}
+
+.dark-mode .login-footer {
+  color: #ecf0f1;
+}
+
+.dark-mode .remember-me label {
+  color: #ecf0f1;
+}
+
+.dark-mode .login-footer button {
+  background: none;
+  border: none;
+  color: #1abc9c; /* Ensure the text color of the button in dark mode is visible */
+  cursor: pointer;
+}
+
+.dark-mode .login-footer button:hover {
+  text-decoration: underline;
+  color: #16a085; /* Slight color change on hover for better visibility */
+}
+
+/* Dark mode toggle button styles */
+.dark-mode-toggle {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.dark-mode-toggle:hover {
+  background: #0056b3;
+}
