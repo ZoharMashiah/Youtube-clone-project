@@ -1,17 +1,21 @@
+import { BrowserRouter, Routes, Route, Outlet, useNavigate,Navigate } from "react-router-dom";
 import logo from './logo.svg';
+import Feed from "./pages/Feed/Feed";
 import './App.css';
-import React from 'react';
-import Login from './pages/Login/Login';
-import Signup from './pages/Signup/Signup';
-import './App.css';
-
+import { useState } from "react";
 
 function App() {
+  const [move, setmove] = useState(false)
+
   return (
-    <div className="App">
-        <Login/>
-        <Signup/>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/about" element={move?<Navigate to=".."/>:<div><h2>Home</h2>
+          <button onClick={() => setmove(true)}>move</button>
+        </div>} />
+      <Route path="/" element={<Feed/>} />
+</Routes>
+    </BrowserRouter>
   );
 }
 

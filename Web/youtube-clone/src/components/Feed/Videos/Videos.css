@@ -1,0 +1,11 @@
+#wrapper{
+    scroll-behavior: smooth;
+    height: max-content;
+    max-height: max-content;
+    height: 300px;
+    overflow-y: scroll,
+}
+
+#container{
+    overflow: auto
+}
