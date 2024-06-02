@@ -1,0 +1,124 @@
+.login-wrapper {
+  background: rgba(255, 255, 255, 0.9);
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  width: 80%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  gap: 5px;
+}
+
+.register-button {
+  background-color: #007bff;
+  color: white;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, box-shadow 0.3s;
+  font-size: 1.2em;
+  margin-top: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-right: 100px;
+}
+
+.login-footer {
+  margin-right: 50px;
+}
+
+.register-button {
+  margin-left: 60px;
+}
+
+.register-button:hover {
+  background-color: #0056b3;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.login-footer a:hover {
+  text-decoration: underline;
+}
+
+.remember-me {
+  display: flex;
+  align-items: center;
+  font-size: 1.2em;
+  margin-right: 50px;
+}
+
+.remember-me input {
+  margin-right: 10px;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.icon {
+  position: absolute;
+  left: 10px;
+  font-size: 1.5em;
+  color: #999;
+}
+
+.input-field {
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  font-size: 1em;
+  margin-right: 30px;
+}
+
+@media (max-width: 480px) {
+  .login-wrapper {
+    padding: 20px;
+  }
+
+  .remember-me {
+    font-size: 1em;
+  }
+}
+
+/* Dark mode styles */
+.dark-mode .login-wrapper {
+  background: rgba(44, 62, 80, 0.9);
+}
+
+.dark-mode .register-button {
+  background-color: #1abc9c;
+  color: #ecf0f1; /* Ensure text color is visible */
+}
+
+.dark-mode .register-button:hover {
+  background-color: #16a085;
+  box-shadow: 0 6px 12px rgba(26, 188, 156, 0.2);
+}
+
+.dark-mode .remember-me label {
+  color: #ecf0f1;
+}
+
+.dark-mode .input-field {
+  background-color: #34495e;
+  color: #ecf0f1;
+  border-color: #2c3e50;
+}
+
+.dark-mode .input-field:focus {
+  border-color: #1abc9c;
+  box-shadow: 0 0 8px rgba(26, 188, 156, 0.2);
+}
+
+.dark-mode .login-footer {
+  color: #ecf0f1;
+}

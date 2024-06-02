@@ -3,18 +3,20 @@ import logo from './logo.svg';
 import Feed from "./pages/Feed/Feed";
 import './App.css';
 import { useState } from "react";
+import Login from "./pages/Login/Login";
+import Signup from "./pages/Signup/Signup";
 
 function App() {
-  const [move, setmove] = useState(false)
+  const [users, setusers] = useState([])
+  const [currentUser, setcurrentUser] = useState(null)
 
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/about" element={move?<Navigate to=".."/>:<div><h2>Home</h2>
-          <button onClick={() => setmove(true)}>move</button>
-        </div>} />
-      <Route path="/" element={<Feed/>} />
-</Routes>
+        <Route path="/" element={<Login users={users} setcurrentUser = {setcurrentUser}/>} />
+        <Route path="/signup" element={<Signup users={users} setusers={setusers}/>} />
+        <Route path="/feed" element={<Feed />} />
+      </Routes>
     </BrowserRouter>
   );
 }
