@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import "./Feed.css"
 import LeftFeed from '../../components/Feed/LeftFeed/LeftFeed'
 import RightFeed from '../../components/Feed/RightFeed/RightFeed'

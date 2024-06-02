@@ -6,6 +6,9 @@
 #videoImage:hover{
     border-radius: 4px;
     cursor: pointer;
+    transition-property: border-radius;
+    transition-delay: 10ms;
+    transition-timing-function: linear;
 }
 .videoCard{
     margin: 20px;

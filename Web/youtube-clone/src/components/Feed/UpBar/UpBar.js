@@ -3,11 +3,11 @@ import Search from '../Search/Search'
 import UpperButtons from '../UpperButtons/UpperButtons'
 import './UpBar.css'
 
-export default function UpBar() {
+export default function UpBar({setsearchText, filterVideos}) {
   return (
     <div className='wrapper'>
       <div className='searchWrraper'>
-        <Search />
+        <Search setsearchText={setsearchText} filterVideos={filterVideos} />
       </div>
       
       <div className='upperButtonsWrraper'>

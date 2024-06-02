@@ -1,20 +1,51 @@
-import React from 'react'
+import React, {useState} from 'react'
 import './RightFeed.css'
 import UpBar from '../UpBar/UpBar'
 import Videos from '../Videos/Videos'
 import Categories from '../Categories/Categories'
+import vid from '../../../data/videos.json'
 
 export default function RightFeed() {
+  const [selectedCategory, setselectedCategory] = useState("All")
+  const [videos, setVideos] = useState(vid)
+  const [filterdedVideos, setfilterdedVideos] = useState(videos)
+  const [searchText, setsearchText] = useState("")
+
+  const filterVideos = () => {
+    let id = 1
+    let arr = []
+    videos.filter((video) => {
+      if (video.title.toLowerCase().includes(searchText.toLowerCase())) {
+        let changedVideo = {
+          id: id,
+          title: video.title,
+          description: video.description,
+          user: video.user,
+          user_image: video.user_image,
+          category: video.category,
+          publication_date: video.publication_date,
+          icon: video.icon,
+          video: video.video,
+          views: video.views,
+          comments: video.comments
+        }
+        arr.push(changedVideo)
+        id += 1
+      }
+    })
+    setfilterdedVideos(arr)
+  }
+
   return (
     <div>
       <div className='upper'>
-        <UpBar />
+        <UpBar setsearchText={setsearchText} filterVideos={filterVideos} />
       </div>
       <div className='middle'>
-        <Categories />
+        <Categories selectedCategory={selectedCategory} setselectedCategory={setselectedCategory} />
       </div>
       <div className='bottom'>
-        <Videos />
+        <Videos videos={filterdedVideos}/>
       </div>
     </div>
   )

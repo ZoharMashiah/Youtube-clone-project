@@ -7,11 +7,11 @@
 .middle{
     position: absolute;
     top: 8%;
-    min-height: 6%;
+    min-height: 5%;
     width: 98%;
-    overflow-x: hidden;
+    overflow: scroll;
     scroll-behavior: smooth;
-    scrollbar-width: none;
+    scrollbar-width: thin;
 }
 
 .bottom{

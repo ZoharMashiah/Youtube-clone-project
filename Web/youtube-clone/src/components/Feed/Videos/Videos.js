@@ -2,8 +2,7 @@ import React, { useState } from 'react'
 import VideoShow from '../VideoShow/VideoShow'
 import vid from '../../../data/videos.json'
 
-export default function Videos() {
-  const [videos, setVideos] = useState(vid)
+export default function Videos({videos}) {
 
   
   return (
