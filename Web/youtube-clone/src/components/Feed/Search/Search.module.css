@@ -1,14 +1,13 @@
-
-#button-addon2:hover{
-    background-color: rgba(240,240,240,255);
-}
-
-#button-addon2{
+#button_addon2{
     border-top-right-radius: 50px;
     border-bottom-right-radius: 50px;
+    height: 40px;
+    width: 40px;
     background-color: rgba(248,248,248,255);
     justify-content: center;
-    align-items: center;
+}
+#button_addon2:hover{
+    background-color: rgba(240,240,240,255);
 }
 
 #form{
@@ -27,4 +26,7 @@
 
 #icon{
     color: black;
+    font-size: large;
+    position: absolute;
+    top: 6px;
 }

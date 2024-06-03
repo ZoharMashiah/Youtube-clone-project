@@ -26,3 +26,6 @@
 .button:hover{
     background-color: rgb(229, 226, 226);
 }
+#icon{
+    font-size: x-large;
+}

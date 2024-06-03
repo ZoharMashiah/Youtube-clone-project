@@ -1,16 +1,16 @@
 import React from 'react'
-import './UpperButtons.css'
+import styles from './UpperButtons.module.css'
 
 export default function UpperButtons() {
   return (
-    <div className='buttonsWrapper'>
-      <button className='button'>
-        <img src='utilites/camera-reels.svg' />
+    <div className={styles.buttonsWrapper}>
+      <button className={styles.button}>
+        <i class='bi bi-camera-reels' id={styles.icon} />
       </button>
-      <button className='button'>
-        <img src='utilites/bell.svg' />
+      <button className={styles.button}>
+        <i class='bi bi-bell' id={styles.icon2}/>
       </button>
-      <img src='utilites/video2.png' id='profileImage'/>
+      <img src='utilites/video2.png' id={styles.profileImage} />
     </div>
   )
 }
