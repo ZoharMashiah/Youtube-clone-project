@@ -37,15 +37,6 @@ if(goFeed){
         <i className='bi bi-lock'></i>
         <Userfield label='Password' settext={setPassword} />
       </div>
-      <div className='remember-me'>
-        <input
-          type='checkbox'
-          id='rememberMe'
-          checked={rememberMe}
-          onChange={(e) => setRememberMe(e.target.checked)}
-        />
-        <label htmlFor='rememberMe'>Remember me</label>
-      </div>
       <div className='login-footer'>
         <p>Don't have an account? <button onClick={() => setMove(true)}>Register</button></p>
       </div>
