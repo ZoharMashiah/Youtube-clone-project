@@ -9,7 +9,7 @@ export default function LogoMenu({setcurrentVideo,setfilterdedVideos, videos}) {
         <i class="bi bi-list" id={styles.icon} ></i>
       </button>
       <Image src='utilites/Image.png' rounded width="100px" height="65px" className={styles.Image} onClick={() => {
-        setcurrentVideo(null)
+        setcurrentVideo(0)
         setfilterdedVideos(videos)
       }}/>
     </div>

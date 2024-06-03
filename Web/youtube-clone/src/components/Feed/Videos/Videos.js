@@ -8,28 +8,46 @@ export default function Videos({videos, setcurrentVideo}) {
   const handleClick = (video) => {
     setcurrentVideo(video)
   }
-  
+  let i = 0;
   return (
     <div id={styles.container}>
       <div id={styles.wrapper}>
         <div class="row">
           <div class="col">
             {videos.map((video) => {
-            if((video.id-1)%3 === 0)
-              return <VideoShow {...video} onClick={() => handleClick(video)} />
-          })}
+                if (i < (videos.length / 3)) {
+                  i++
+                  return <VideoShow {...video} onClick={() => handleClick(video.id)} />
+                }
+                else if (i === videos.length - 1)
+                  i = 0
+                else
+                  i++
+            })}
           </div>
           <div class="col">
-          {videos.map((video) => {
-            if((video.id-1)%3 === 1)
-              return <VideoShow {...video} onClick={() => handleClick(video)}/>
-          })}
+            {videos.map((video) => {
+                if (i >= (videos.length / 3) && i < 2*(videos.length / 3)) {
+                  i++
+                  return <VideoShow {...video} onClick={() => handleClick(video.id)} />
+                }
+                else if (i === videos.length - 1)
+                  i = 0
+                else
+                  i++
+              })}
           </div>
           <div class="col">
-          {videos.map((video) => {
-            if((video.id-1)%3 === 2)
-              return <VideoShow {...video} onClick={() => handleClick(video)}/>
-          })}
+              {videos.map((video) => {
+                if (i >= 2*(videos.length / 3) && i < 3*(videos.length / 3)) {
+                  i++
+                  return <VideoShow {...video} onClick={() => handleClick(video.id)} />
+                }
+                else if (i === videos.length - 1)
+                  i = 0
+                else
+                  i++
+              })}
           </div>
         </div>
       </div>
