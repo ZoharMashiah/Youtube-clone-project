@@ -106,13 +106,13 @@
 .dark-mode .login-footer button {
   background: none;
   border: none;
-  color: #1abc9c; /* Ensure the text color of the button in dark mode is visible */
+  color: #1abc9c; 
   cursor: pointer;
 }
 
 .dark-mode .login-footer button:hover {
   text-decoration: underline;
-  color: #16a085; /* Slight color change on hover for better visibility */
+  color: #16a085; 
 }
 
 /* Dark mode toggle button styles */
