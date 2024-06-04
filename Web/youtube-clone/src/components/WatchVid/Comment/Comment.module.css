@@ -1,0 +1,29 @@
+.profileImage{
+    margin: 10px;
+    border-radius: 30px;
+    height: 40px;
+    width: 40px;
+    border-width: 0px;
+    cursor: pointer;
+}
+
+.user{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.commentWrapper{
+    display: flex;
+    flex-direction: row;
+}
+
+.time{
+    color: gray;
+    font-size: 13px;
+    margin-top: 2px;
+}
+
+.user{
+    font-weight: bold;
+}

@@ -7,7 +7,7 @@ export default function LowerFeed({selectedCategory, setselectedCategory, filter
   return (
     <div className={styles.Feed}>
           <div className={styles.Right}>
-        <RightFeed selectedCategory={selectedCategory} setselectedCategory={setselectedCategory} filterdedVideos={filterdedVideos} setcurrentVideo={setcurrentVideo} />
+            <RightFeed selectedCategory={selectedCategory} setselectedCategory={setselectedCategory} filterdedVideos={filterdedVideos} setcurrentVideo={setcurrentVideo} />
           </div>
           <div className={styles.Left}>
             <LeftFeed />  

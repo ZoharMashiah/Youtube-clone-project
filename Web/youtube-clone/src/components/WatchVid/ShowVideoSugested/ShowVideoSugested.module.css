@@ -1,0 +1,32 @@
+.videoWrapper{
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 10px;
+}
+.videoImage{
+    width: 50%;
+    height: 20%;
+    border-radius: 5%;
+    cursor: pointer;
+}
+.title{
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.user{
+    font-size: 13px;
+    font-weight: bold;
+    color: gray;
+}
+
+.views{
+    font-size: 12px;
+    color: gray;
+}
+
+.textWrapper{
+    text-align: start;
+    margin-left: 5px;
+}

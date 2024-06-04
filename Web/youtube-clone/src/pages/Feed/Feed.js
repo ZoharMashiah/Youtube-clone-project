@@ -10,15 +10,14 @@ export default function Feed() {
   const [videos, setVideos] = useState(vid)
   const [filterdedVideos, setfilterdedVideos] = useState(videos)
   const [searchText, setsearchText] = useState("")
-  const [currentVideo, setcurrentVideo] = useState(null)
+  const [currentVideo, setcurrentVideo] = useState(0)
 
   const filterVideos = () => {
-    let id = 1
     let arr = []
     videos.filter((video) => {
       if (video.title.toLowerCase().includes(searchText.toLowerCase())) {
         let changedVideo = {
-          id: id,
+          id: video.id,
           title: video.title,
           description: video.description,
           user: video.user,
@@ -31,9 +30,24 @@ export default function Feed() {
           comments: video.comments
         }
         arr.push(changedVideo)
-        id += 1
       }
     })
+    setcurrentVideo(0)
+    setfilterdedVideos(arr)
+  }
+
+  const editVideo = (video) => {
+    let id = video.id
+    let arr = []
+    videos.map((vid) => {
+      if (vid.id === id) {
+        console.log(video)
+        arr.push(video)
+      } else {
+        arr.push(vid)
+      }
+    })
+    setVideos(arr)
     setfilterdedVideos(arr)
   }
 
@@ -43,9 +57,9 @@ export default function Feed() {
             <UpBar setsearchText={setsearchText} filterVideos={filterVideos} setcurrentVideo={setcurrentVideo} setfilterdedVideos={setfilterdedVideos} videos={videos} />
           </div>
           <div className={styles.Low}>{
-            currentVideo === null?
+            currentVideo === 0?
           <LowerFeed selectedCategory={selectedCategory} setselectedCategory={setselectedCategory} filterdedVideos={filterdedVideos} setcurrentVideo={setcurrentVideo} /> :
-          <VideoDisplay currentVideo={currentVideo} />
+          <VideoDisplay currentVideo={videos[currentVideo - 1]} editVideo={editVideo} videos={videos} setcurrentVideo={setcurrentVideo} />
             }  
           </div>
     </div>
