@@ -125,7 +125,7 @@ export default function Signupwrapper({ users, setusers }) {
           <div className='input-group'>
             <i className='bi bi-upload'></i>
             <input
-              except= '.png, .jpg, .jpeg'
+              accept= '.png, .jpg, .jpeg'
               type='file' 
               onChange={(e) => setPhoto(URL.createObjectURL(e.target.files[0]))}
               className='input-field' 
