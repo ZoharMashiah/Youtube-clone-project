@@ -4,28 +4,32 @@ import Userfield from '../Userfield/Userfield';
 import { Navigate } from "react-router-dom";
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
-export default function Loginwrapper({users,setcurrentUser}) {
+export default function Loginwrapper({ users, setcurrentUser }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [rememberMe, setRememberMe] = useState(false);
   const [move, setMove] = useState(false);
   const [goFeed, setgoFeed] = useState(false);
 
-const handleSubmit = () => {
-  for(let i=0; i<users.length; i++){
-    if(users[i].username === username && users[i].password === password){
-      setgoFeed(true);
-      setcurrentUser(users[i]);
+  const handleSubmit = () => {
+    const user = users.find(user => user.username === username);
+    if (user) {
+      if (user.password === password) {
+        setgoFeed(true);
+        setcurrentUser(user);
+      } else {
+        alert('Incorrect password.');
+      }
+    } else {
+      alert('Username does not exist.');
     }
   }
-}
 
-if(move){
-  return (<Navigate to='/signup' />);
-}
-if(goFeed){
-  return (<Navigate to='/feed' />);
-}
+  if (move) {
+    return (<Navigate to='/signup' />);
+  }
+  if (goFeed) {
+    return (<Navigate to='/feed' />);
+  }
 
   return (
     <div className='login-wrapper'>
@@ -40,7 +44,7 @@ if(goFeed){
       <div className='login-footer'>
         <p>Don't have an account? <button onClick={() => setMove(true)}>Register</button></p>
       </div>
-      <button className='register-button' onClick={() => setgoFeed(true)}>Confirm</button>
+      <button className='register-button' onClick={handleSubmit}>Confirm</button>
     </div>
   );
 }
