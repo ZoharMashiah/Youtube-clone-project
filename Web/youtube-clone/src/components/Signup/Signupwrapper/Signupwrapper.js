@@ -3,34 +3,59 @@ import './Signupwrapper.css';
 import { Navigate } from "react-router-dom";
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
-export default function Signupwrapper({ users, setusers}) {
+export default function Signupwrapper({ users, setusers }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [firstName, setFirstName] = useState('');
   const [middleName, setMiddleName] = useState('');
   const [lastName, setLastName] = useState('');
   const [birthDate, setBirthDate] = useState('');
+  const [photo, setPhoto] = useState(null);
   const [success, setSuccess] = useState(false);
+  const [moveLogin, setmoveLogin] = useState(false);
 
   const handleSubmit = () => {
-    if (username && password && firstName && lastName) {
-      const newUser = {
-        username: username,
-        password: password,
-        firstName: firstName,
-        middleName: middleName,
-        lastName: lastName,
-        birthDate: birthDate,
-      };
-      setusers([...users, newUser]);
-      setSuccess(true);
-    } else {
-      alert('Please fill in all required fields');
+    // Username validation
+    if (users.some(user => user.username === username)) {
+      alert('Username already exists.');
+      return;
     }
-  }
+
+    // Password validation
+    const letterCount = (password.match(/[a-zA-Z]/g) || []).length;
+    const digitCount = (password.match(/\d/g) || []).length;
+    
+    if (password.length < 8 || letterCount < 2 || digitCount < 2) {
+      alert('Password must contain at least 2 letters and 2 digits, and be at least 8 characters long.');
+      return;
+    }
+
+    // Birthdate validation
+    if (new Date(birthDate) > new Date()) {
+      alert('Birthdate must be in the past.');
+      return;
+    }
+
+    // If all validations pass
+    const newUser = {
+      username,
+      password,
+      firstName,
+      middleName,
+      lastName,
+      birthDate,
+      photo,
+    };
+    setusers([...users, newUser]);
+    setSuccess(true);
+  };
 
   if (success) 
     return (<Navigate to='/' />);
+
+  if (moveLogin) {
+    return (<Navigate to='/' />);
+  }
 
   return (
     <div className='signup-page'>
@@ -88,16 +113,6 @@ export default function Signupwrapper({ users, setusers}) {
             />
           </div>
           <div className='input-group'>
-            <i className='bi bi-lock'></i>
-            <input 
-              type='password' 
-              placeholder='Confirm Password *' 
-              value={password} 
-              onChange={(e) => setPassword(e.target.value)}
-              className='input-field' 
-            />
-          </div>
-          <div className='input-group'>
             <i className='bi bi-calendar'></i>
             <input 
               type='date' 
@@ -107,9 +122,18 @@ export default function Signupwrapper({ users, setusers}) {
               className='input-field' 
             />
           </div>
+          <div className='input-group'>
+            <i className='bi bi-upload'></i>
+            <input
+              except= '.png, .jpg, .jpeg'
+              type='file' 
+              onChange={(e) => setPhoto(URL.createObjectURL(e.target.files[0]))}
+              className='input-field' 
+            />
+          </div>
           <button type='button' className='submit-button' onClick={handleSubmit}>Submit</button>
         </form>
-        <a href='/login' className='return-login'>Return to login</a>
+        <a href='/' className='return-login' onClick={() => setmoveLogin(true)}>Return to login</a>
       </div>
     </div>
   );

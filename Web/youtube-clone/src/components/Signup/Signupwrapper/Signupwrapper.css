@@ -1,3 +1,4 @@
+/* Signup form styling */
 .signup-page {
   display: flex;
   justify-content: center;
@@ -99,7 +100,7 @@
 
 /* Dark mode styles */
 .dark-mode .signup-page {
-  background: linear-gradient(135deg, #2c3e50, #4ca1af);
+  background: linear-gradient(135deg, #3c5666, #558594);
 }
 
 .dark-mode .signup-container {
