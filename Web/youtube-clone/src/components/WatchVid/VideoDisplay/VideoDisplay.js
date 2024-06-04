@@ -7,7 +7,7 @@ export default function VideoDisplay({currentVideo,editVideo,videos,setcurrentVi
   return (
     <div className={styles.VideoDisplayWrapper}>
       <div className={styles.LeftVideoShowWrapper}>
-        <LeftVideoShow currentVideo={currentVideo} editVideo={editVideo} />
+        <LeftVideoShow currentVideo={currentVideo} editVideo={editVideo} videos={videos} />
       </div>
       <div className={styles.SugestedVideosWrapper}>
         <SugestedVideos videos={videos} currentVideo={currentVideo} setcurrentVideo={setcurrentVideo} />

@@ -4,6 +4,7 @@ import UpBar from '../../components/Feed/UpBar/UpBar'
 import LowerFeed from '../../components/Feed/LowerFeed/LowerFeed'
 import vid from '../../data/videos.json'
 import VideoDisplay from '../../components/WatchVid/VideoDisplay/VideoDisplay'
+import AddVideoPopup from '../../components/AddVideo/AddVideoPopup/AddVideoPopup'
 
 export default function Feed() {
   const [selectedCategory, setselectedCategory] = useState("All")
@@ -11,6 +12,7 @@ export default function Feed() {
   const [filterdedVideos, setfilterdedVideos] = useState(videos)
   const [searchText, setsearchText] = useState("")
   const [currentVideo, setcurrentVideo] = useState(0)
+  const [trigger, settrigger] = useState(false)
 
   const filterVideos = () => {
     let arr = []
@@ -54,14 +56,15 @@ export default function Feed() {
   return (
       <div className={styles.Feed}>
           <div className={styles.Up}>
-            <UpBar setsearchText={setsearchText} filterVideos={filterVideos} setcurrentVideo={setcurrentVideo} setfilterdedVideos={setfilterdedVideos} videos={videos} />
+            <UpBar setsearchText={setsearchText} filterVideos={filterVideos} setcurrentVideo={setcurrentVideo} setfilterdedVideos={setfilterdedVideos} videos={videos} settrigger={settrigger} />
           </div>
           <div className={styles.Low}>{
             currentVideo === 0?
           <LowerFeed selectedCategory={selectedCategory} setselectedCategory={setselectedCategory} filterdedVideos={filterdedVideos} setcurrentVideo={setcurrentVideo} /> :
           <VideoDisplay currentVideo={videos[currentVideo - 1]} editVideo={editVideo} videos={videos} setcurrentVideo={setcurrentVideo} />
             }  
-          </div>
+        </div>
+      <AddVideoPopup trigger={trigger} settrigger={settrigger} />
     </div>
   )
 }

@@ -2,12 +2,21 @@ import React, {useState} from 'react'
 import styles from './Comments.module.css'
 import Comment from '../Comment/Comment'
 
-export default function Comments({ currentVideo, editVideo }) {
+export default function Comments({ currentVideo, editVideo, videos }) {
   const [addComment, setAddComment] = useState("")
+
+  const getMaxId = () => {
+    let id = 0
+    videos.map((video) => {
+      if (video.id > id)
+        id = video.id
+    })
+    return id
+  }
 
   const addCommentToVideo = (comment) => {
     let addedComment = {
-      id: (currentVideo.comments.length + 1),
+      id: (getMaxId() + 1),
       title: comment,
       user: "Baz Caz",
       date: Date.now(),
