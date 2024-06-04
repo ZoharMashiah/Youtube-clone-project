@@ -5,8 +5,9 @@ import LowerFeed from '../../components/Feed/LowerFeed/LowerFeed'
 import vid from '../../data/videos.json'
 import VideoDisplay from '../../components/WatchVid/VideoDisplay/VideoDisplay'
 import AddVideoPopup from '../../components/AddVideo/AddVideoPopup/AddVideoPopup'
+import { Navigate } from 'react-router-dom'
 
-export default function Feed() {
+export default function Feed({currentUser, setcurrentUser}) {
   const [selectedCategory, setselectedCategory] = useState("All")
   const [videos, setVideos] = useState(vid)
   const [filterdedVideos, setfilterdedVideos] = useState(videos)
@@ -56,15 +57,15 @@ export default function Feed() {
   return (
       <div className={styles.Feed}>
           <div className={styles.Up}>
-            <UpBar setsearchText={setsearchText} filterVideos={filterVideos} setcurrentVideo={setcurrentVideo} setfilterdedVideos={setfilterdedVideos} videos={videos} settrigger={settrigger} />
+        <UpBar setsearchText={setsearchText} filterVideos={filterVideos} setcurrentVideo={setcurrentVideo} setfilterdedVideos={setfilterdedVideos} videos={videos} settrigger={settrigger} currentUser={currentUser} setcurrentUser={setcurrentUser} />
           </div>
           <div className={styles.Low}>{
             currentVideo === 0?
           <LowerFeed selectedCategory={selectedCategory} setselectedCategory={setselectedCategory} filterdedVideos={filterdedVideos} setcurrentVideo={setcurrentVideo} /> :
-          <VideoDisplay currentVideo={videos[currentVideo - 1]} editVideo={editVideo} videos={videos} setcurrentVideo={setcurrentVideo} />
+          <VideoDisplay currentVideo={videos[currentVideo - 1]} editVideo={editVideo} videos={videos} setcurrentVideo={setcurrentVideo} currentUser={currentUser} />
             }  
         </div>
-      <AddVideoPopup trigger={trigger} settrigger={settrigger} />
+      <AddVideoPopup trigger={trigger} settrigger={settrigger} setvideos={setVideos} videos={videos} currenUser={currentUser} setfilterdVideos={setfilterdedVideos} filterdedVideos={filterdedVideos} />
     </div>
   )
 }

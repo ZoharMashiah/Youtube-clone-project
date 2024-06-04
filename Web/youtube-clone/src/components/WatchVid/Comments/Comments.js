@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import styles from './Comments.module.css'
 import Comment from '../Comment/Comment'
 
-export default function Comments({ currentVideo, editVideo, videos }) {
+export default function Comments({ currentVideo, editVideo, videos, currentUser }) {
   const [addComment, setAddComment] = useState("")
 
   const getMaxId = () => {
@@ -13,14 +13,14 @@ export default function Comments({ currentVideo, editVideo, videos }) {
     })
     return id
   }
-
+  console.log(currentUser)
   const addCommentToVideo = (comment) => {
     let addedComment = {
       id: (getMaxId() + 1),
       title: comment,
-      user: "Baz Caz",
+      user: currentUser.username,
       date: Date.now(),
-      icon: "utilites/video1.png"
+      icon: currentUser.photo == null? "utilites/png-transparent-user-profile-2018-in-sight-user-conference-expo-business-default-business-angle-service-people-thumbnail.png":currentUser.photo
     }
     let changedVideo = {
       id: currentVideo.id,
@@ -45,7 +45,7 @@ export default function Comments({ currentVideo, editVideo, videos }) {
       <div className={styles.addCommentWrapper}>
         <button className={addComment.length===0? styles.buttonDisabled : styles.button} disabled={addComment.length===0} onClick={()=>addCommentToVideo(addComment)}>Post</button>
         <input placeholder='Add Comment' value={addComment} onChange={e => setAddComment(e.target.value)} />
-        <img src='utilites/video2.png' className={styles.profileImage} />
+        <img src={currentUser.photo == null? "utilites/png-transparent-user-profile-2018-in-sight-user-conference-expo-business-default-business-angle-service-people-thumbnail.png":currentUser.photo} className={styles.profileImage} />
       </div>
       {
         currentVideo.comments.map((comment) => {

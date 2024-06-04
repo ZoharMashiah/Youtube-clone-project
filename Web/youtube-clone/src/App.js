@@ -15,7 +15,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Login users={users} setcurrentUser = {setcurrentUser}/>} />
         <Route path="/signup" element={<Signup users={users} setusers={setusers}/>} />
-        <Route path="/feed" element={<Feed />} />
+        <Route path="/feed" element={currentUser == null ?<Navigate to='/' replace={true}/>:<Feed currentUser={currentUser} setcurrentUser={setcurrentUser} />} />
       </Routes>
     </BrowserRouter>
   );

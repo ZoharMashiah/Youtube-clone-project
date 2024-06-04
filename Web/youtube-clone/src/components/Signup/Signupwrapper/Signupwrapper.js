@@ -37,14 +37,14 @@ export default function Signupwrapper({ users, setusers }) {
     }
 
     // If all validations pass
-    const newUser = {
-      username,
-      password,
-      firstName,
-      middleName,
-      lastName,
-      birthDate,
-      photo,
+    let newUser = {
+      username: username,
+      password: password,
+      firstName: firstName,
+      middleName: middleName,
+      lastName: lastName,
+      birthDate: birthDate,
+      photo: photo,
     };
     setusers([...users, newUser]);
     setSuccess(true);
