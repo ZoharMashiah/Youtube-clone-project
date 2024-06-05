@@ -60,11 +60,11 @@ export default function AddVideoPopup({ trigger, currenUser, settrigger, setvide
   return (trigger?(
     <div className={styles.AddVideoWrapper}>
       <div class="card" className={styles.AddVideoCard}>
-        <h2>Add New Video</h2>
-        <div>
-          <input placeholder='Title' value={title} onChange={e => {settitle(e.target.value)}} />
+        <h2 className={styles.h2}>Add New Video</h2>
+        <div className={styles.cardWrapper}>
+          <input placeholder='Title' className={styles.title} value={title} onChange={e => {settitle(e.target.value)}} />
           <input placeholder='Description' value={description} onChange={e => setdescription(e.target.value)} />
-          <Dropdown>
+          <Dropdown className={styles.dropdown}>
             <Dropdown.Toggle variant="primary" id="dropdown-basic">
               {category === ""? "Category" : category}
             </Dropdown.Toggle>
@@ -76,11 +76,11 @@ export default function AddVideoPopup({ trigger, currenUser, settrigger, setvide
               <Dropdown.Item onClick={() => setcategory("Other")}>Other</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
-          <input type='file' placeholder='Upload Video' accept=".mp4" onChange={e => {
+          <input className={styles.videoUpload} type='file' placeholder='Upload Video' accept=".mp4" onChange={e => {
             let file = e.target.files[0]
             setvideo(URL.createObjectURL(file))
           }} />
-          <input type='file' placeholder='Upload Photo' accept=".png, .jpeg, .jpg" onChange={e => {
+          <input className={styles.photoUpload} type='file' placeholder='Upload Photo' accept=".png, .jpeg, .jpg" onChange={e => {
             let file = e.target.files[0]
             setimage(URL.createObjectURL(file))
           }} />

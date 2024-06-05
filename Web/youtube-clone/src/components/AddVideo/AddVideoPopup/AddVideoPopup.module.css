@@ -43,8 +43,24 @@
     margin: 1vw;
 }
 
-h2{
+.h2{
     font-weight: bold;
     text-decoration: underline;
     letter-spacing: 0.5vw;
+}
+
+.cardWrapper{
+    margin: 2vw;
+}
+
+.dropdown{
+    margin: 1vw;
+}
+
+.title{
+    margin-bottom: 1vw;
+}
+
+.videoUpload{
+    margin-bottom: 1vw;
 }
