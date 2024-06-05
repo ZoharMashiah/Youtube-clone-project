@@ -8,6 +8,7 @@ export default function AddVideoPopup({ trigger, currenUser, settrigger, setvide
   const [image, setimage] = useState(null)
   const [video, setvideo] = useState(null)
   const [category, setcategory] = useState("")
+  const [categories, setCategories] = useState(["Music", "Mixes", "JavaScript", "Gaming", "Bouldering", "Display devices", "AI", "Computer Hardware", "Table News", "Inventions", "News", "Comedy clubs", "Skills", "3D printing"])
 
   const handleCancle = () => {
     settitle("")
@@ -40,6 +41,8 @@ export default function AddVideoPopup({ trigger, currenUser, settrigger, setvide
       icon: image,
       video: video,
       views: 0,
+      like: 0,
+      dislike: 0,
       comments: []
     }
       setvideos([...videos, newVideo])
@@ -68,19 +71,17 @@ export default function AddVideoPopup({ trigger, currenUser, settrigger, setvide
             <Dropdown.Toggle variant="primary" id="dropdown-basic">
               {category === ""? "Category" : category}
             </Dropdown.Toggle>
-            <Dropdown.Menu>
-              <Dropdown.Item onClick={() => setcategory("Music")}>Music</Dropdown.Item>
-              <Dropdown.Item onClick={() => setcategory("News")}>News</Dropdown.Item>
-              <Dropdown.Item onClick={() => setcategory("Gaming")}>Gaming</Dropdown.Item>
-              <Dropdown.Item onClick={() => setcategory("Sports")}>Sports</Dropdown.Item>
-              <Dropdown.Item onClick={() => setcategory("Other")}>Other</Dropdown.Item>
+            <Dropdown.Menu className={styles.selectCategory}>
+              {categories.map((categ) => {
+                return <Dropdown.Item onClick={() => setcategory(categ)}>{categ}</Dropdown.Item>
+              })}
             </Dropdown.Menu>
           </Dropdown>
-          <input className={styles.videoUpload} type='file' placeholder='Upload Video' accept=".mp4" onChange={e => {
+          <input className={styles.videoUpload} type='file' alt='Upload Video' accept=".mp4" onChange={e => {
             let file = e.target.files[0]
             setvideo(URL.createObjectURL(file))
           }} />
-          <input className={styles.photoUpload} type='file' placeholder='Upload Photo' accept=".png, .jpeg, .jpg" onChange={e => {
+          <input className={styles.photoUpload} type='file'  alt='Upload Photo' accept=".png, .jpeg, .jpg" onChange={e => {
             let file = e.target.files[0]
             setimage(URL.createObjectURL(file))
           }} />

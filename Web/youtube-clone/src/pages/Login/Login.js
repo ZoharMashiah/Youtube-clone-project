@@ -3,8 +3,7 @@ import './Login.css';
 import Loginwrapper from '../../components/Login/Loginwrapper/Loginwrapper';
 import icon from '../../components/Login/LoginImages/1716994828673_imgbg.net.png';
 
-export default function Login({ users, setcurrentUser }) {
-  const [darkMode, setDarkMode] = useState(false);
+export default function Login({ users, setcurrentUser, darkMode, setDarkMode }) {
 
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);

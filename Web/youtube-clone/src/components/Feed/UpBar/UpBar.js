@@ -4,7 +4,7 @@ import UpperButtons from '../UpperButtons/UpperButtons'
 import LogoMenu from '../LogoMenu/LogoMenu'
 import styles from './UpBar.module.css'
 
-export default function UpBar({setsearchText, filterVideos,setcurrentVideo,setfilterdedVideos, videos,settrigger,currentUser, setcurrentUser}) {
+export default function UpBar({setsearchText, filterVideos,setcurrentVideo,setfilterdedVideos, videos,settrigger,currentUser, setcurrentUser,setgotologin}) {
   return (
     <div className={styles.wrapper}>
       <LogoMenu setcurrentVideo={setcurrentVideo} setfilterdedVideos={setfilterdedVideos} videos={videos}/>
@@ -13,7 +13,7 @@ export default function UpBar({setsearchText, filterVideos,setcurrentVideo,setfi
       </div>
       
       <div className={styles.upperButtonsWrraper}>
-        <UpperButtons settrigger={settrigger} currentUser={currentUser} setcurrentUser={setcurrentUser}/>
+        <UpperButtons settrigger={settrigger} currentUser={currentUser} setcurrentUser={setcurrentUser} setgotologin={setgotologin} />
       </div>
     </div>
   )

@@ -9,8 +9,8 @@
 .profileImage{
     margin: 10px;
     border-radius: 30px;
-    height: 50px;
-    width: 50px;
+    height: 6vh;
+    width: 6vh;
     border-width: 0px;
     cursor: pointer;
 }
@@ -28,22 +28,28 @@
 .likedBtn{
     border-top-left-radius: 20px;
     border-bottom-left-radius: 20px;
-    height: 32px;
-    width: 40px;
+    height: 4vh;
+    width: 4vw;
     border: solid;
     border-width: 0px;
     border-right-width: 0.5px;
     border-right-color: gray;
     background-color: rgb(225, 225, 225);
+    justify-content: center;
+    display: flex;
+    flex-direction: row;
 }
 
 .dislikedBtn{
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
-    height: 32px;
-    width: 40px;
+    height: 4vh;
+    width: 4vw;
     border-width: 0px;
     background-color: rgb(225, 225, 225);
+    justify-content: left;
+    display: flex;
+    flex-direction: row;
 }
 
 .userName{
@@ -60,4 +66,14 @@
     border-width: 0px;
     background-color: rgb(225, 225, 225);
     box-shadow: 1px 1px rgba(50, 50, 50, 0.802);
+}
+
+.trashIcon{
+    color: rgb(255, 255, 255);
+    font-size: large;
+    font-weight: bold;
+}
+
+.num{
+    font-size: 14px;
 }

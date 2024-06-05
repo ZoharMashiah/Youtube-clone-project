@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import styles from './Comments.module.css'
 import Comment from '../Comment/Comment'
 
-export default function Comments({ currentVideo, editVideo, videos, currentUser }) {
+export default function Comments({ currentVideo, editVideo, videos, currentUser, editCurrent,editComment, deleteComment }) {
   const [addComment, setAddComment] = useState("")
 
   const getMaxId = () => {
@@ -13,7 +13,6 @@ export default function Comments({ currentVideo, editVideo, videos, currentUser 
     })
     return id
   }
-  console.log(currentUser)
   const addCommentToVideo = (comment) => {
     let addedComment = {
       id: (getMaxId() + 1),
@@ -44,12 +43,17 @@ export default function Comments({ currentVideo, editVideo, videos, currentUser 
       <h4>{currentVideo.comments.length}  Comments</h4>
       <div className={styles.addCommentWrapper}>
         <button className={addComment.length===0? styles.buttonDisabled : styles.button} disabled={addComment.length===0} onClick={()=>addCommentToVideo(addComment)}>Post</button>
-        <input placeholder='Add Comment' value={addComment} onChange={e => setAddComment(e.target.value)} />
-        <img src={currentUser.photo == null? "utilites/png-transparent-user-profile-2018-in-sight-user-conference-expo-business-default-business-angle-service-people-thumbnail.png":currentUser.photo} className={styles.profileImage} />
+        <input placeholder='Add Comment' value={addComment} onChange={e => {
+          if (currentUser != null)
+            setAddComment(e.target.value)
+          else
+            alert('You need to login to write a comment')
+        }} />
+        <img src={currentUser?.photo == null? "utilites/png-transparent-user-profile-2018-in-sight-user-conference-expo-business-default-business-angle-service-people-thumbnail.png":currentUser.photo} className={styles.profileImage} />
       </div>
       {
         currentVideo.comments.map((comment) => {
-          return <Comment {...comment} />
+          return <Comment {...comment} currentUser={currentUser} editComment={editComment} deleteComment={deleteComment} />
         })
       }
     </div>

@@ -50,12 +50,8 @@ export default function Signupwrapper({ users, setusers }) {
     setSuccess(true);
   };
 
-  if (success) 
-    return (<Navigate to='/' />);
-
-  if (moveLogin) {
-    return (<Navigate to='/' />);
-  }
+  if (success || moveLogin) 
+    return (<Navigate to='/login' />);
 
   return (
     <div className='signup-page'>
@@ -133,7 +129,7 @@ export default function Signupwrapper({ users, setusers }) {
           </div>
           <button type='button' className='submit-button' onClick={handleSubmit}>Submit</button>
         </form>
-        <a href='/' className='return-login' onClick={() => setmoveLogin(true)}>Return to login</a>
+        <a  className='return-login' onClick={() => setmoveLogin(true)}>Return to login</a>
       </div>
     </div>
   );

@@ -3,8 +3,7 @@ import './Signup.css';
 import icon from '../../components/Login/LoginImages/1716994828673_imgbg.net.png';
 import Signupwrapper from '../../components/Signup/Signupwrapper/Signupwrapper';
 
-export default function Signup({ users, setusers }) {
-  const [darkMode, setDarkMode] = useState(false);
+export default function Signup({ users, setusers, darkMode, setDarkMode }) {
 
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);

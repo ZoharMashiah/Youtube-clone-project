@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import styles from './UpperButtons.module.css'
 import AddVideoPopup from '../../AddVideo/AddVideoPopup/AddVideoPopup'
 
-export default function UpperButtons({settrigger,currentUser, setcurrentUser}) {
+export default function UpperButtons({settrigger,currentUser, setcurrentUser,setgotologin}) {
   return (
     <div className={styles.buttonsWrapper}>
       <button className={styles.button}>
@@ -11,7 +11,25 @@ export default function UpperButtons({settrigger,currentUser, setcurrentUser}) {
       <button className={styles.button}>
         <i class='bi bi-bell' id={styles.icon2}/>
       </button>
-      <img onClick={()=>setcurrentUser(null)} src={currentUser.photo == null? "utilites/png-transparent-user-profile-2018-in-sight-user-conference-expo-business-default-business-angle-service-people-thumbnail.png":currentUser.photo} id={styles.profileImage} />
+      {currentUser == null ?
+        <button onClick={() => setgotologin(true)} className={styles.loginBtn}>
+          <div className={styles.insideBtn}>
+            <i class="bi bi-person"></i>
+            <p>Login</p>
+          </div>
+        </button>
+        :
+        <div className={styles.signoutWrapper}>
+          <div>
+            <button onClick={() => setcurrentUser(null)} className={styles.loginBtn}>
+            <div className={styles.insideBtn}>
+              <i class="bi bi-person"></i>
+              <p>Signout</p>
+            </div>
+          </button>
+          </div>
+          <img src={currentUser.photo == null ? "utilites/png-transparent-user-profile-2018-in-sight-user-conference-expo-business-default-business-angle-service-people-thumbnail.png" : currentUser.photo} id={styles.profileImage} />
+        </div>}
     </div>
   )
 }

@@ -64,3 +64,8 @@
 .videoUpload{
     margin-bottom: 1vw;
 }
+
+.selectCategory{
+    max-height: 20vh;
+    overflow-y: scroll;
+}
