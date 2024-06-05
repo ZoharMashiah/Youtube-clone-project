@@ -7,9 +7,9 @@ export default function Comments({ currentVideo, editVideo, videos, currentUser,
 
   const getMaxId = () => {
     let id = 0
-    videos.map((video) => {
-      if (video.id > id)
-        id = video.id
+    currentVideo.comments.map((com) => {
+      if (com.id > id)
+        id = com.id
     })
     return id
   }

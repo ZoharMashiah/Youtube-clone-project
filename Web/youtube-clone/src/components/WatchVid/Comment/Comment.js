@@ -17,21 +17,21 @@ export default function Comment({ id, title, user, date, icon, currentUser,editC
         </div>
         {currentUser?.username === user ? 
           !edit ? 
-            <div>
+            <div className={styles.titleWrapper}>
               <p>{title}</p>
-              <button onClick={() => setedit(true)}>
-                <i class="bi bi-pencil"></i>
+              <button onClick={() => setedit(true)} className={styles.edit}>
+                <i class="bi bi-pencil" className={styles.editIcon}></i>
               </button>
-              <button onClick={() => deleteComment(id)}>
-                <i class="bi bi-trash"></i>
+              <button onClick={() => deleteComment(id)} className={styles.remove} >
+                <i class="bi bi-trash" className={styles.editIcon}></i>
               </button>
             </div>
-            : <div>
-              <input value={editedTitle} onChange={e=>seteditedTitle(e.target.value)}/>
+            : <div className={styles.titleWrapper}>
+              <input value={editedTitle} onChange={e => seteditedTitle(e.target.value)} className={styles.editText} />
               <button onClick={() => {
                 seteditedTitle(title)
                 setedit(false)
-              }}>
+              }} className={styles.cancle}>
                 Cancle
               </button>
               <button onClick={() => {
@@ -44,7 +44,7 @@ export default function Comment({ id, title, user, date, icon, currentUser,editC
                 }
                 editComment(com)
                 setedit(false)
-              }}>
+              }} className={styles.save}>
                 save
               </button>
             </div>

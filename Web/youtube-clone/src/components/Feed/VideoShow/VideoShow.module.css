@@ -1,6 +1,6 @@
 #videoImage{
-    margin-bottom: 15px;
-    border-radius: 15px;
+    margin-bottom: 0.992vw;
+    border-radius: 2vw;
     box-shadow: 2px 2px rgba(110, 110, 110, 0.05);
 }
 #videoImage:hover{
