@@ -5,12 +5,12 @@ import Videos from '../Videos/Videos'
 import Categories from '../Categories/Categories'
 
 
-export default function RightFeed({selectedCategory, setselectedCategory, filterdedVideos,setcurrentVideo}) {
+export default function RightFeed({selectedCategory, setselectedCategory, filterdedVideos,setcurrentVideo,filterVideosCategory}) {
 
   return (
     <div>
       <div className={styles.middle}>
-        <Categories selectedCategory={selectedCategory} setselectedCategory={setselectedCategory} />
+        <Categories selectedCategory={selectedCategory} setselectedCategory={setselectedCategory} filterVideosCategory={filterVideosCategory} />
       </div>
       <div className={styles.bottom}>
         <Videos videos={filterdedVideos} setcurrentVideo={setcurrentVideo} />

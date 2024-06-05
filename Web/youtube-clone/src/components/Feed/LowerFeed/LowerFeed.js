@@ -3,11 +3,11 @@ import styles from './LowerFeed.module.css'
 import RightFeed from '../RightFeed/RightFeed'
 import LeftFeed from '../LeftFeed/LeftFeed'
 
-export default function LowerFeed({selectedCategory, setselectedCategory, filterdedVideos, setcurrentVideo}) {
+export default function LowerFeed({selectedCategory, setselectedCategory, filterdedVideos, setcurrentVideo, filterVideosCategory}) {
   return (
     <div className={styles.Feed}>
           <div className={styles.Right}>
-            <RightFeed selectedCategory={selectedCategory} setselectedCategory={setselectedCategory} filterdedVideos={filterdedVideos} setcurrentVideo={setcurrentVideo} />
+            <RightFeed selectedCategory={selectedCategory} setselectedCategory={setselectedCategory} filterdedVideos={filterdedVideos} setcurrentVideo={setcurrentVideo} filterVideosCategory={filterVideosCategory} />
           </div>
           <div className={styles.Left}>
             <LeftFeed />  

@@ -37,25 +37,21 @@ export default function Signupwrapper({ users, setusers }) {
     }
 
     // If all validations pass
-    const newUser = {
-      username,
-      password,
-      firstName,
-      middleName,
-      lastName,
-      birthDate,
-      photo,
+    let newUser = {
+      username: username,
+      password: password,
+      firstName: firstName,
+      middleName: middleName,
+      lastName: lastName,
+      birthDate: birthDate,
+      photo: photo,
     };
     setusers([...users, newUser]);
     setSuccess(true);
   };
 
-  if (success) 
-    return (<Navigate to='/' />);
-
-  if (moveLogin) {
-    return (<Navigate to='/' />);
-  }
+  if (success || moveLogin) 
+    return (<Navigate to='/login' />);
 
   return (
     <div className='signup-page'>
@@ -125,7 +121,7 @@ export default function Signupwrapper({ users, setusers }) {
           <div className='input-group'>
             <i className='bi bi-upload'></i>
             <input
-              except= '.png, .jpg, .jpeg'
+              accept= '.png, .jpg, .jpeg'
               type='file' 
               onChange={(e) => setPhoto(URL.createObjectURL(e.target.files[0]))}
               className='input-field' 
@@ -133,7 +129,7 @@ export default function Signupwrapper({ users, setusers }) {
           </div>
           <button type='button' className='submit-button' onClick={handleSubmit}>Submit</button>
         </form>
-        <a href='/' className='return-login' onClick={() => setmoveLogin(true)}>Return to login</a>
+        <a  className='return-login' onClick={() => setmoveLogin(true)}>Return to login</a>
       </div>
     </div>
   );

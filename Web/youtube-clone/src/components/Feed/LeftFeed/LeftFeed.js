@@ -15,8 +15,8 @@ export default function LeftFeed() {
         <YouInfo /> */}
         <hr className={styles.hr} />
         <Subscribers />
-        <hr className={styles.hr}/>
-        <Explore />
+        {/* <hr className={styles.hr}/>
+        <Explore /> */}
         <hr className={styles.hr}/>
         <More/>
       </div>

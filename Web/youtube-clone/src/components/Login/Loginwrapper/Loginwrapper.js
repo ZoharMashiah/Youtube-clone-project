@@ -28,7 +28,7 @@ export default function Loginwrapper({ users, setcurrentUser }) {
     return (<Navigate to='/signup' />);
   }
   if (goFeed) {
-    return (<Navigate to='/feed' />);
+    return (<Navigate to='/' />);
   }
 
   return (

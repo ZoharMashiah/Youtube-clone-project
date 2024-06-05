@@ -2,16 +2,24 @@ import React, {useState} from 'react'
 import styles from './Comments.module.css'
 import Comment from '../Comment/Comment'
 
-export default function Comments({ currentVideo, editVideo }) {
+export default function Comments({ currentVideo, editVideo, videos, currentUser, editCurrent,editComment, deleteComment }) {
   const [addComment, setAddComment] = useState("")
 
+  const getMaxId = () => {
+    let id = 0
+    videos.map((video) => {
+      if (video.id > id)
+        id = video.id
+    })
+    return id
+  }
   const addCommentToVideo = (comment) => {
     let addedComment = {
-      id: (currentVideo.comments.length + 1),
+      id: (getMaxId() + 1),
       title: comment,
-      user: "Baz Caz",
+      user: currentUser.username,
       date: Date.now(),
-      icon: "utilites/video1.png"
+      icon: currentUser.photo == null? "utilites/png-transparent-user-profile-2018-in-sight-user-conference-expo-business-default-business-angle-service-people-thumbnail.png":currentUser.photo
     }
     let changedVideo = {
       id: currentVideo.id,
@@ -35,12 +43,17 @@ export default function Comments({ currentVideo, editVideo }) {
       <h4>{currentVideo.comments.length}  Comments</h4>
       <div className={styles.addCommentWrapper}>
         <button className={addComment.length===0? styles.buttonDisabled : styles.button} disabled={addComment.length===0} onClick={()=>addCommentToVideo(addComment)}>Post</button>
-        <input placeholder='Add Comment' value={addComment} onChange={e => setAddComment(e.target.value)} />
-        <img src='utilites/video2.png' className={styles.profileImage} />
+        <input placeholder='Add Comment' value={addComment} onChange={e => {
+          if (currentUser != null)
+            setAddComment(e.target.value)
+          else
+            alert('You need to login to write a comment')
+        }} />
+        <img src={currentUser?.photo == null? "utilites/png-transparent-user-profile-2018-in-sight-user-conference-expo-business-default-business-angle-service-people-thumbnail.png":currentUser.photo} className={styles.profileImage} />
       </div>
       {
         currentVideo.comments.map((comment) => {
-          return <Comment {...comment} />
+          return <Comment {...comment} currentUser={currentUser} editComment={editComment} deleteComment={deleteComment} />
         })
       }
     </div>
