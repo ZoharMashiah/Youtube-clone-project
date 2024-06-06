@@ -10,21 +10,25 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.youtube_clone.databinding.ActivityLoginBinding;
-import com.example.youtube_clone.databinding.ActivityMainBinding;
 
-public class MainActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
-    private ActivityMainBinding binding;
+    private ActivityLoginBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        binding.button.setOnClickListener(v -> {
-            Intent intent = new Intent(this, LoginActivity.class);
+        binding.submitBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+        });
+
+        binding.textMoveToSignup.setOnClickListener(v -> {
+            Intent intent = new Intent(this, SignupActivity.class);
             startActivity(intent);
         });
     }
