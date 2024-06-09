@@ -1,0 +1,11 @@
+#wrapper{
+    scroll-behavior: smooth;
+    height: max-content;
+    max-height: max-content;
+}
+
+#container{
+  width: 80vw;
+  height: 100vh;
+  overflow-x: hidden;
+}

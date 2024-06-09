@@ -1,0 +1,90 @@
+.profileImage{
+    margin: 1vw;
+    border-radius: 30px;
+    height: 40px;
+    width: 40px;
+    border-width: 0px;
+    cursor: pointer;
+}
+
+.user{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.commentWrapper{
+    display: flex;
+    flex-direction: row;
+}
+
+.time{
+    color: gray;
+    font-size: 13px;
+    margin-top: 2px;
+}
+
+.user{
+    font-weight: bold;
+}
+
+.titleWrapper{
+    display: flex;
+    flex-direction: row;
+}
+
+
+.edit{
+    position: absolute;
+    left: 60vw;
+    background-color: rgba(221, 221, 221, 0.851);
+    width: 3vw;
+    height: 3vw;
+    border: solid;
+    border-radius: 2vw;
+    border-width: 0px;
+    box-shadow: 1px 1px black;
+}
+
+.remove{
+    position: absolute;
+    left: 64vw;
+    background-color: rgba(221, 221, 221, 0.851);
+    width: 3vw;
+    height: 3vw;
+    border: solid;
+    border-radius: 2vw;
+    border-width: 0px;
+    box-shadow: 1px 1px black;
+}
+
+.cancle{
+    margin: 2vw;
+    margin-left: 24vw;
+    font-weight: bold;
+    background-color: rgba(221, 221, 221, 0.851);
+    width: 5vw;
+    height: 4vh;
+    border: solid;
+    border-radius: 2vw;
+    border-width: 0px;
+    box-shadow: 1px 1px black;
+}
+
+.save{
+    margin: 2vw;
+    margin-left: 1vw;
+    background-color: rgba(221, 221, 221, 0.851);
+    font-weight: bold;
+    width: 5vw;
+    height: 4vh;
+    border: solid;
+    border-radius: 2vw;
+    border-width: 0px;
+    box-shadow: 1px 1px black;
+}
+
+.editText{
+    width: 20vw;
+    height: 4vh;
+}

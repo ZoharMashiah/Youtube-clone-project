@@ -1,0 +1,30 @@
+#category{
+    margin: 5px;
+    width: max-content;
+    height: 40px;
+    text-align: center;
+    background-color: rgba(242,242,242,255);
+    border-color: rgba(242,242,242,255);
+    border-radius: 7px;
+    color: black;
+    font-weight: bold;
+    text-shadow: 0.3px 0.3px #747474;
+    box-shadow: 0.08px 0.08px #b0b0b0;
+}
+#category:hover{
+    background-color: rgba(229,229,229,255);
+    border-color: rgba(229,229,229,255);
+}
+#selected{
+    margin: 5px;
+    width: max-content;
+    height: 40px;
+    text-align: center;
+    background-color: black;
+    border-color: black;
+    border-radius: 7px;
+    color: white;
+    font-weight: bold;
+    text-shadow: 0.3px 0.3px #747474;
+    box-shadow: 0.08px 0.08px #b0b0b0;
+}

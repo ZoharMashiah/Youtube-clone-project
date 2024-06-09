@@ -1,0 +1,23 @@
+.Feed{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+    max-height: 100%;
+}
+
+.Right{
+    position: absolute;
+    right: 0;
+    width: 80%;
+    height: 100%;
+    max-width: 80%;
+    overflow: hidden;
+}
+
+.Left{
+    position: absolute;
+    left: 0;
+    width: 20%;
+    height: 100%;
+}

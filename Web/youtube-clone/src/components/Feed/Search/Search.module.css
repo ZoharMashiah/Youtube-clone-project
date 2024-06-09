@@ -1,0 +1,33 @@
+#button_addon2{
+    border-top-right-radius: 50px;
+    border-bottom-right-radius: 50px;
+    height: 40px;
+    width: 40px;
+    background-color: rgba(248,248,248,255);
+    justify-content: center;
+    z-index: 0;
+}
+#button_addon2:hover{
+    background-color: rgba(240,240,240,255);
+}
+
+#form{
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;
+    border-color: rgb(134, 133, 133);
+    width: 400px;
+    height: 40px;
+    cursor:text;
+}
+
+#input{
+    margin: 20px;
+    border-radius: 50px;
+}
+
+#icon{
+    color: black;
+    font-size: large;
+    position: absolute;
+    top: 6px;
+}
