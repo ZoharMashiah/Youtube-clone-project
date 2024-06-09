@@ -1,13 +1,13 @@
 import React from 'react';
-import Login from './pages/Login/Login';
 import './App.css';
+import Login from './pages/Login/Login';
+import LoginRegister from './components/Login/LoginRegister';
 
 function App() {
-    return (
-        <div className="App">
-            <Login />
-        </div>
-    );
+  return (
+    <div>
+    </div>
+  );
 }
 
 export default App;

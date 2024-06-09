@@ -1,7 +1,52 @@
-.Login{
-    margin:0;
-    font-family: 'Poppins',sans-serif;
-    -webkit-font-feature-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    
-}
+/* src/pages/Login/Login.css */
+.login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f9f9f9;
+  }
+  
+  h1 {
+    margin-bottom: 20px;
+    font-size: 2.5rem;
+    color: blue;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+  }
+  
+  .input-group {
+    margin-bottom: 15px;
+    display:-space-between;
+  }
+  
+  label {
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  input {
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+  }
+  
+  button {
+    padding: 10px;
+    font-size: 1rem;
+    color: white;
+    background-color: blue;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: blue;
+  }
