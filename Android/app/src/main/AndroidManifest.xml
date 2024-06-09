@@ -33,9 +33,6 @@
             android:name=".Video"
             android:exported="false" />
         <activity
-            android:name=".YouPage"
-            android:exported="false" />
-        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

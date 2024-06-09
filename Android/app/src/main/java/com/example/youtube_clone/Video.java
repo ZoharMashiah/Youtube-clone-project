@@ -1,5 +1,7 @@
 package com.example.youtube_clone;
 
+import android.net.Uri;
+
 import java.util.Date;
 import java.util.List;
 
@@ -14,17 +16,17 @@ public class Video {
 
     private String category;
     private Date publication_date;
-    private String icon;
+    private Uri icon;
     private int views;
     private int like;
 
     private int dislike;
     private List<Comment> comments;
 
-    private String video;
+    private Uri video;
 
     public Video(int id, String title, String description, String user, String user_image, String category, Date publication_date,
-                  String icon, int views, int like, int dislike, List<Comment> comments, String video) {
+                  Uri icon, int views, int like, int dislike, List<Comment> comments, Uri video) {
         this.id = id;
         this.title = title;
         this.description = description;
