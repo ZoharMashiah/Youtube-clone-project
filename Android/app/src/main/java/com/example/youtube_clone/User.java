@@ -2,19 +2,20 @@ package com.example.youtube_clone;
 
 import android.net.Uri;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class User {
+public class User implements Serializable {
     private String username;
     private String firstName;
     private String middleName;
     private String lastName;
     private String password;
-    private Date birthDate;
+    private String birthDate;
     private Uri profileImage;
 
     public User(String username, String firstName, String middleName, String lastName,
-                String password, Date birthDate, Uri profileImage) {
+                String password, String birthDate, Uri profileImage) {
         this.username = username;
         this.firstName = firstName;
         this.middleName = middleName;
@@ -44,7 +45,7 @@ public class User {
         return password;
     }
 
-    public Date getBirthDate() {
+    public String getBirthDate() {
         return birthDate;
     }
 
