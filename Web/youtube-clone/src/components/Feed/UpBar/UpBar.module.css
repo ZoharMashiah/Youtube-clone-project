@@ -1,0 +1,17 @@
+.wrapper{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    position: absolute;
+    top: -40px;
+    width: 100%;
+}
+
+.upperButtonsWrraper{
+    position: absolute;
+    right: 3%;
+}
+
+.searchWrraper{
+    margin-left: 20%;
+}

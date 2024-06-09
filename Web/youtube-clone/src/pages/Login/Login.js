@@ -1,23 +1,23 @@
-import React from 'react';
-import './Login.css';
 
-const Login = () => {
+import React, { useState } from 'react';
+import './Login.css';
+import Loginwrapper from '../../components/Login/Loginwrapper/Loginwrapper';
+import icon from '../../components/Login/LoginImages/1716994828673_imgbg.net.png';
+
+export default function Login({ users, setcurrentUser, darkMode, setDarkMode }) {
+
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+  };
+
   return (
-    <div className="login-container">
-      <h1>StreamBox</h1>
-      <form>
-        <div className="input-group">
-          <label htmlFor="Username">Username</label>
-          <input type="Username" id="Username" placeholder="Enter your Username" />
-        </div>
-        <div className="input-group">
-          <label htmlFor="password">Password</label>
-          <input type="password" id="password" placeholder="Enter your password" />
-        </div>
-        <button type="Confirm">Login</button>
-      </form>
+    <div className={`login-page ${darkMode ? 'dark-mode' : ''}`}>
+      <button className='dark-mode-toggle' onClick={toggleDarkMode}>
+        {darkMode ? 'Light Mode' : 'Dark Mode'}
+      </button>
+      <img src={icon} id='logo' alt='Logo' />
+      <p className='login-title'>Login</p>
+      <Loginwrapper users={users} setcurrentUser={setcurrentUser} />
     </div>
   );
-};
-
-export default Login;
+}

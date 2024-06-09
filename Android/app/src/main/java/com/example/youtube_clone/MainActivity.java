@@ -16,6 +16,9 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.List;
 
+import com.example.youtube_clone.databinding.ActivityLoginBinding;
+import com.example.youtube_clone.databinding.ActivityMainBinding;
+
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;

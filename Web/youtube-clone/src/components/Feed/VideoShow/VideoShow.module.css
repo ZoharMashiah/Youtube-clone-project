@@ -1,0 +1,40 @@
+#videoImage{
+    margin-bottom: 0.992vw;
+    border-radius: 2vw;
+    box-shadow: 2px 2px rgba(110, 110, 110, 0.05);
+}
+#videoImage:hover{
+    border-radius: 4px;
+    cursor: pointer;
+    transition-property: border-radius;
+    transition-delay: 10ms;
+    transition-timing-function: linear;
+}
+.videoCard{
+    margin: 3%;
+}
+
+.imageWrapper{
+    display: flex;
+    flex-direction: row;
+}
+.titleWrapper{
+    margin-left: 20px;
+}
+#title{
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+#user{
+    font-size: 13px;
+    font-weight: 500;
+    color: rgb(110, 110, 110);
+    margin-bottom: 5px;
+}
+#views{
+    font-size: 12px;
+    font-weight: 500;
+    color: rgb(110, 110, 110);
+}
