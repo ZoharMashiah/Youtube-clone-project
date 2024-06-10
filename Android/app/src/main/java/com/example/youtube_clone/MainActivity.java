@@ -107,7 +107,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
                     getResesource(lv.getUser_image()), lv.getCategory(), lv.getPublication_date(),
                     getResesource(lv.getIcon()),lv.getViews(),lv.getLike(),lv.getDislike(),lv.getComments(),
                     getResesource(lv.getVideo()));
-            Log.e("Main",video.getIcon().toString());
             Videos.add(video);
         }
         return Videos;

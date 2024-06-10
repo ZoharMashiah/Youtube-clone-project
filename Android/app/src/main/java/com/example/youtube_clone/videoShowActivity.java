@@ -3,6 +3,7 @@ package com.example.youtube_clone;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.MediaController;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,6 +33,10 @@ public class videoShowActivity extends AppCompatActivity {
         binding.counterLike.setText(Integer.toString(Videos.getInstance().currentVideo.getLike()));
         binding.counterDislike.setText(Integer.toString(Videos.getInstance().currentVideo.getDislike()));
         binding.video.setVideoURI(Videos.getInstance().currentVideo.getVideo());
+        MediaController mediaController = new MediaController(this);
+        binding.video.setMediaController(mediaController);
+        mediaController.setAnchorView(binding.video);
+        binding.video.start();
 
         binding.imageButtonAdd.setOnClickListener(v -> {
             Intent intent = new Intent(this, addVideoActivity.class);
