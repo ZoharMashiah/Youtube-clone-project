@@ -2,6 +2,7 @@ package com.example.youtube_clone;
 
 import static com.example.youtube_clone.ResourceUtil.getResourceUri;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -44,16 +46,53 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        String jsonString = loadJSONFromAsset();
+        if(Videos.getInstance().videos.isEmpty()) {
+            String jsonString = loadJSONFromAsset();
 
-        videos = loadVideosFromJson(JsonParser.parseVideosJson(jsonString));
+            videos = loadVideosFromJson(JsonParser.parseVideosJson(jsonString));
 
-        Videos.getInstance().videos = videos;
+            Videos.getInstance().videos = videos;
+        } else {
+            videos = Videos.getInstance().videos;
+        }
 
         binding.imageButtonAddVid.setOnClickListener(v -> {
-            Intent intent = new Intent(this, addVideoActivity.class);
-            startActivity(intent);
+            if(Users.getInstance().currentUser != null) {
+                Intent intent = new Intent(this, addVideoActivity.class);
+                startActivity(intent);
+            }else {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+                // Set the message show for the Alert time
+                builder.setMessage("You need to have a user to add a video!");
+
+                // Set Alert Title
+                builder.setTitle("Alert !");
+
+                // Set Cancelable false for when the user clicks on the outside the Dialog Box then it will remain show
+                builder.setCancelable(false);
+
+                // Set the positive button with yes name Lambda OnClickListener method is use of DialogInterface interface.
+                builder.setPositiveButton("Cancle", (DialogInterface.OnClickListener) (dialog, which) -> {
+                    // When the user click yes button then app will close
+                    dialog.cancel();
+                });
+
+                // Create the Alert dialog
+                AlertDialog alertDialog = builder.create();
+                // Show the Alert Dialog box
+                alertDialog.show();
+            }
         });
+
+        if(Users.getInstance().currentUser != null) {
+            binding.imageButton14.setImageURI(Users.getInstance().currentUser.getProfileImage());
+        } else {
+            binding.imageButton14.setOnClickListener(v -> {
+                Intent intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
+            });
+        }
 
         VideosAdapter adapter = new VideosAdapter(this, videos,this);
         binding.mRecyclerView.setAdapter(adapter);

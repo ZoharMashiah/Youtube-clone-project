@@ -86,8 +86,8 @@
 
         <ImageButton
             android:id="@+id/imageButton14"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="90dp"
+            android:layout_height="60dp"
             android:layout_weight="1"
             android:backgroundTint="@color/blueNavy"
             app:srcCompat="@drawable/baseline_person_24" />

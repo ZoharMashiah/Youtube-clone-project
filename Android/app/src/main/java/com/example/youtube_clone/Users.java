@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Users {
     private static Users single_instance = null;
-    public List<User> users;
+    public ArrayList<User> users;
     public User currentUser;
 
     private Users() {
