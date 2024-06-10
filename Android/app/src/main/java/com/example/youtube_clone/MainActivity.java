@@ -183,7 +183,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
     public void onItemClick(Video video) {
         Videos.getInstance().currentVideo = video;
         Intent intent = new Intent(this, videoShowActivity.class);
-        intent.putExtra("video", video);
         startActivity(intent);
     }
 }
