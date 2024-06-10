@@ -34,17 +34,14 @@ public class videoShowActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_video_show);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-        void setContent(){
-            binding.
-            Videos.getInstance().currentVideo(binding.title)
+    }
 
-        }
+    private void setContent(){
+        binding.title.setText(Videos.getInstance().currentVideo.getTitle());
+        binding.views.setText(Videos.getInstance().currentVideo.getViews());
+        binding.description.setText(Videos.getInstance().currentVideo.getDescription());
+        binding.counterLike.setText(Videos.getInstance().currentVideo.getLike());
+        binding.counterDislike.setText(Videos.getInstance().currentVideo.getDislike());
+        binding.video.setVideoURI(Videos.getInstance().currentVideo.getVideo());
     }
 }
