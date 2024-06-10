@@ -16,6 +16,8 @@ public class videoShowActivity extends AppCompatActivity {
 
     private ActivityVideoShowBinding binding;
 
+    Video currentVideo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,16 +36,18 @@ public class videoShowActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        currentVideo = (Video) getIntent().getSerializableExtra("video");
+
         setContent();
 
     }
 
     private void setContent(){
-        binding.title.setText(Videos.getInstance().currentVideo.getTitle());
-        binding.views.setText(Videos.getInstance().currentVideo.getViews());
-        binding.description.setText(Videos.getInstance().currentVideo.getDescription());
-        binding.counterLike.setText(Videos.getInstance().currentVideo.getLike());
-        binding.counterDislike.setText(Videos.getInstance().currentVideo.getDislike());
-        binding.video.setVideoURI(Videos.getInstance().currentVideo.getVideo());
+        binding.title.setText(currentVideo.getTitle());
+        binding.views.setText(currentVideo.getViews());
+        binding.description.setText(currentVideo.getDescription());
+        binding.counterLike.setText(currentVideo.getLike());
+        binding.counterDislike.setText(currentVideo.getDislike());
+        binding.video.setVideoURI(currentVideo.getVideo());
     }
 }

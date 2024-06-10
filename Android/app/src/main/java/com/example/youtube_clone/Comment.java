@@ -1,8 +1,9 @@
 package com.example.youtube_clone;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Comment{
+public class Comment implements Serializable {
     private int id;
     private String title;
     private String user;
