@@ -24,6 +24,13 @@ public class videoShowActivity extends AppCompatActivity {
 
         setContentView(binding.getRoot());
 
+        binding.title.setText(Videos.getInstance().currentVideo.getTitle());
+        binding.views.setText(Videos.getInstance().currentVideo.getViews());
+        binding.description.setText(Videos.getInstance().currentVideo.getDescription());
+        binding.counterLike.setText(Videos.getInstance().currentVideo.getLike());
+        binding.counterDislike.setText(Videos.getInstance().currentVideo.getDislike());
+        //binding.video.setVideoURI(currentVideo.getVideo());
+
         binding.imageButtonAdd.setOnClickListener(v -> {
             Intent intent = new Intent(this, addVideoActivity.class);
             startActivity(intent);
@@ -33,5 +40,6 @@ public class videoShowActivity extends AppCompatActivity {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         });
+
     }
 }
