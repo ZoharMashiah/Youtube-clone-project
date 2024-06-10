@@ -89,8 +89,8 @@ public class SignupActivity extends AppCompatActivity {
             String password = binding.editTextPassword.getText().toString();
             String birthDate = dateStr[0];
 
-            if(username.length() > 0 && Users.getInstance().getUser(username) == null && checkVallid(password)&&
-            firstName.length()>0 && lastName.length()>0) {
+            if(!username.isEmpty() && Users.getInstance().getUser(username) == null && checkVallid(password)&&
+                    !firstName.isEmpty() && !lastName.isEmpty()) {
                 Intent intent = new Intent(this, LoginActivity.class);
                 Users users = Users.getInstance();
                 User newUser = new User(username, firstName, middleName, lastName, password, birthDate, selectedImageUri);
@@ -109,7 +109,7 @@ public class SignupActivity extends AppCompatActivity {
                 builder.setCancelable(false);
 
                 // Set the positive button with yes name Lambda OnClickListener method is use of DialogInterface interface.
-                builder.setPositiveButton("Cancle", (DialogInterface.OnClickListener) (dialog, which) -> {
+                builder.setPositiveButton("Cancel", (DialogInterface.OnClickListener) (dialog, which) -> {
                     // When the user click yes button then app will close
                     dialog.cancel();
                 });
