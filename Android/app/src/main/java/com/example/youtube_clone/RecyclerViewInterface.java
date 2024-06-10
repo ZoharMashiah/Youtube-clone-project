@@ -1,5 +1,5 @@
 package com.example.youtube_clone;
 
 public interface RecyclerViewInterface {
-    void onItemClick(int position);
+    void onItemClick(Video video);
 }
