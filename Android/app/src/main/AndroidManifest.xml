@@ -22,8 +22,6 @@
             android:name=".Video"
             android:exported="false" />
         <activity
-            android:name=".YouPage"
-            android:exported="false" />
             android:name=".FeedActivity"
             android:exported="false" />
         <activity

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -29,7 +30,7 @@ import com.example.youtube_clone.databinding.ActivityMainBinding;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity implements RecyclerViewInterface{
 
     private ActivityMainBinding binding;
 
@@ -54,7 +55,7 @@ public class MainActivity extends AppCompatActivity{
             startActivity(intent);
         });
 
-        VideosAdapter adapter = new VideosAdapter(this, videos);
+        VideosAdapter adapter = new VideosAdapter(this, videos,this);
         binding.mRecyclerView.setAdapter(adapter);
         binding.mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
@@ -137,5 +138,12 @@ public class MainActivity extends AppCompatActivity{
             default:
                 return Uri.parse("android.resource://"+getPackageName()+"/"+R.raw.video_image1);
         }
+    }
+
+    @Override
+    public void onItemClick(Video video) {
+        Videos.getInstance().currentVideo = video;
+        Intent intent = new Intent(this, videoShowActivity.class);
+        startActivity(intent);
     }
 }
