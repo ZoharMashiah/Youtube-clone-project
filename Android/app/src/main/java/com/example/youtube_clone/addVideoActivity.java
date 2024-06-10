@@ -91,7 +91,7 @@ public class addVideoActivity extends AppCompatActivity {
                 builder.setCancelable(false);
 
                 // Set the positive button with yes name Lambda OnClickListener method is use of DialogInterface interface.
-                builder.setPositiveButton("Cancle", (DialogInterface.OnClickListener) (dialog, which) -> {
+                builder.setPositiveButton("Cancel", (DialogInterface.OnClickListener) (dialog, which) -> {
                     // When the user click yes button then app will close
                     dialog.cancel();
                 });

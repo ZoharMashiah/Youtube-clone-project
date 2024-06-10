@@ -2,10 +2,11 @@ package com.example.youtube_clone;
 
 import android.net.Uri;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class Video {
+public class Video implements Serializable {
     private int id;
     private String title;
     private String description;
