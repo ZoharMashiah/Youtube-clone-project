@@ -16,7 +16,7 @@ public class videoShowActivity extends AppCompatActivity {
 
     private ActivityVideoShowBinding binding;
 
-    int y;
+    int x;
 
     Video currentVideo;
 
