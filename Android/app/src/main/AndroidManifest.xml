@@ -13,15 +13,6 @@
         android:theme="@style/Theme.YoutubeClone"
         tools:targetApi="31">
         <activity
-            android:name=".addVideoActivity"
-            android:exported="false" />
-        <activity
-            android:name=".videoShowActivity"
-            android:exported="false" />
-        <activity
-            android:name=".Video"
-            android:exported="false" />
-        <activity
             android:name=".FeedActivity"
             android:exported="false" />
         <activity
@@ -32,6 +23,15 @@
             android:exported="false"
             android:label="@string/title_activity_login"
             android:theme="@style/Theme.YoutubeClone" />
+        <activity
+            android:name=".addVideoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".videoShowActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Video"
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true">

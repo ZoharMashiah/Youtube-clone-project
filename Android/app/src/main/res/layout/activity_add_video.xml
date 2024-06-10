@@ -38,7 +38,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="Welcome, to add-video page!"
+                android:text="Welcome, to Add-Video page!"
                 android:textSize="25dp"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -55,7 +55,7 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:gravity="center"
-                android:hint="Title:"
+                android:hint="Title"
                 android:inputType="text" />
         </LinearLayout>
 
@@ -71,7 +71,7 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:gravity="center"
-                android:hint="Descriotion:"
+                android:hint="Description"
                 android:inputType="text" />
         </LinearLayout>
 
@@ -87,69 +87,52 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:gravity="center"
-                android:hint="Category:"
+                android:hint="Category"
                 android:inputType="text" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:orientation="horizontal">
-
-            <EditText
-                android:id="@+id/editTextText4"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:ems="10"
-                android:gravity="center"
-                android:hint="Icon:"
-                android:inputType="text" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:orientation="horizontal">
-
-            <EditText
-                android:id="@+id/editTextText5"
-                android:layout_width="wrap_content"
-                android:layout_height="80dp"
-                android:layout_weight="1"
-                android:ems="10"
-                android:gravity="center"
-                android:hint="Video:"
-                android:inputType="text" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="409dp"
-            android:layout_height="35dp"
+            android:layout_height="60dp"
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/uploadBtn"
+                android:id="@+id/imageUploadImage"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:layout_weight="1"
                 android:backgroundTint="@color/blueNavy"
-                android:text="Upload" />
+                android:text="Add photo display" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="86dp"
+            android:layout_height="60dp"
             android:orientation="horizontal">
 
-            <ImageButton
-                android:id="@+id/imageButtonBack"
-                android:layout_width="wrap_content"
+            <Button
+                android:id="@+id/imageUploadVideo"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:backgroundTint="@color/blueNavy"
-                app:srcCompat="@drawable/baseline_arrow_back_24" />
+                android:text="Add video"
+                android:backgroundTint="@color/blueNavy"/>
         </LinearLayout>
+
+        <Button
+            android:id="@+id/button6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Upload"
+            android:backgroundTint="@color/blueNavy"/>
+
+        <ImageButton
+            android:id="@+id/imageButtonBack"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/baseline_arrow_back_24"
+            android:backgroundTint="@color/blueNavy"/>
+
     </LinearLayout>
 
 
