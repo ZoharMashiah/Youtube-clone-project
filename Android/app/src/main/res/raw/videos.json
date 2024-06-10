@@ -4,11 +4,11 @@
     "title": "World Largest Foo Created in Foobar Event",
     "description": "des",
     "user": "Baz Caz",
-    "user_image": "utilites/video1.png",
+    "user_image": "res/raw/video_image1.png",
     "category": "Gaming",
     "publication_date": 1717082000419,
-    "icon": "utilites/video1.png",
-    "video": "utilites/video1.mp4",
+    "icon": "video_image1.png",
+    "video": "video1",
     "views": 200000000,
     "like": 200,
     "dislike": 1,
@@ -18,7 +18,7 @@
         "title": "World Largest Foo Created in Foobar Event",
         "user": "Baz Caz",
         "date": 1717082000419,
-        "icon": "utilites/video1.png"
+        "icon": "video_image1.png"
       }
     ]
   },
@@ -27,11 +27,11 @@
     "title": "World Largest Foo Created in Foobar Event, prize given",
     "description": "des",
     "user": "Baz Caz",
-    "user_image": "utilites/video1.png",
+    "user_image": "video_image1.png",
     "category": "Gaming",
     "publication_date": 1717082000419,
-    "icon": "utilites/video2.png",
-    "video": "utilites/video2.mp4",
+    "icon": "video_image2.png",
+    "video": "video2.mp4",
     "views": 200000,
     "like": 200,
     "dislike": 1,
@@ -40,8 +40,8 @@
         "id": 1,
         "title": "World Largest Foo Created in Foobar Event",
         "user": "Baz Caz",
-        "date": "2024-1-6",
-        "icon": "utilites/video1.png"
+        "date": 1717082000419,
+        "icon": "video_image1.png"
       }
     ]
   },
@@ -50,11 +50,11 @@
     "title": "World Largest Foo Created in Foobar Event",
     "description": "des",
     "user": "Baz Caz",
-    "user_image": "utilites/video1.png",
+    "user_image": "video_image1.png",
     "category": "Gaming",
     "publication_date": 1717082000419,
-    "icon": "utilites/video3.png",
-    "video": "utilites/video3.mp4",
+    "icon": "video_image3.png",
+    "video": "video3.mp4",
     "views": 200000,
     "like": 200,
     "dislike": 1,
@@ -63,8 +63,8 @@
         "id": 1,
         "title": "World Largest Foo Created in Foobar Event",
         "user": "Baz Caz",
-        "date": "2024-1-6",
-        "icon": "utilites/video1.png"
+        "date": 1717082000419,
+        "icon": "video_image1.png"
       }
     ]
   },
@@ -73,11 +73,11 @@
     "title": "World Largest Foo Created in Foobar Event",
     "description": "des",
     "user": "Baz Caz",
-    "user_image": "utilites/video1.png",
+    "user_image": "video_image1.png",
     "category": "Mixes",
     "publication_date": 1717082000419,
-    "icon": "utilites/video4.png",
-    "video": "utilites/video4.mp4",
+    "icon": "video_image4.png",
+    "video": "video4.mp4",
     "views": 200000,
     "like": 200,
     "dislike": 1,
@@ -86,8 +86,8 @@
         "id": 1,
         "title": "World Largest Foo Created in Foobar Event",
         "user": "Baz Caz",
-        "date": "2024-1-6",
-        "icon": "utilites/video1.png"
+        "date": 1717082000419,
+        "icon": "video_image1.png"
       }
     ]
   },
@@ -96,11 +96,11 @@
     "title": "World Largest Foo Created in Foobar Event",
     "description": "des",
     "user": "Baz Caz",
-    "user_image": "utilites/video1.png",
+    "user_image": "video_image1.png",
     "category": "Inventions",
     "publication_date": 1717082000419,
-    "icon": "utilites/video5.png",
-    "video": "utilites/video5.mp4",
+    "icon": "video_image5.png",
+    "video": "video5.mp4",
     "views": 200000,
     "like": 200,
     "dislike": 1,
@@ -109,8 +109,8 @@
         "id": 1,
         "title": "World Largest Foo Created in Foobar Event",
         "user": "Baz Caz",
-        "date": "2024-1-6",
-        "icon": "utilites/video1.png"
+        "date": 1717082000419,
+        "icon": "video_image1.png"
       }
     ]
   },
@@ -119,11 +119,11 @@
     "title": "World Largest Foo Created in Foobar Event",
     "description": "des",
     "user": "Baz Caz",
-    "user_image": "utilites/video1.png",
+    "user_image": "video_image1.png",
     "category": "Gaming",
     "publication_date": 1717082000419,
-    "icon": "utilites/video6.png",
-    "video": "utilites/video6.mp4",
+    "icon": "video_image6.png",
+    "video": "video6.mp4",
     "views": 200000,
     "like": 200,
     "dislike": 1,
@@ -132,8 +132,8 @@
         "id": 1,
         "title": "World Largest Foo Created in Foobar Event",
         "user": "Baz Caz",
-        "date": "2024-1-6",
-        "icon": "utilites/video1.png"
+        "date": 1717082000419,
+        "icon": "video_image1.png"
       }
     ]
   },
@@ -142,11 +142,11 @@
     "title": "World Largest Foo Created in Foobar Event",
     "description": "des",
     "user": "Baz Caz",
-    "user_image": "utilites/video1.png",
+    "user_image": "res/raw/video_image1.png",
     "category": "Music",
     "publication_date": 1717082000419,
-    "icon": "utilites/video7.png",
-    "video": "utilites/video7.mp4",
+    "icon": "video_image7.png",
+    "video": "res/raw/video7.mp4",
     "views": 200000,
     "like": 200,
     "dislike": 1,
@@ -155,8 +155,8 @@
         "id": 1,
         "title": "World Largest Foo Created in Foobar Event",
         "user": "Baz Caz",
-        "date": "2024-1-6",
-        "icon": "utilites/video1.png"
+        "date": 1717082000419,
+        "icon": "video_image1.png"
       }
     ]
   },
@@ -165,11 +165,11 @@
     "title": "World Largest Foo Created in Foobar Event",
     "description": "des",
     "user": "Baz Caz",
-    "user_image": "utilites/video1.png",
+    "user_image": "res/raw/video_image1.png",
     "category": "Gaming",
     "publication_date": 1717082000419,
-    "icon": "utilites/video8.png",
-    "video": "utilites/video8.mp4",
+    "icon": "video_image8.png",
+    "video": "video8.mp4",
     "views": 200000,
     "like": 200,
     "dislike": 1,
@@ -178,8 +178,8 @@
         "id": 1,
         "title": "World Largest Foo Created in Foobar Event",
         "user": "Baz Caz",
-        "date": "2024-1-6",
-        "icon": "utilites/video1.png"
+        "date": 1717082000419,
+        "icon": "video_image1.png"
       }
     ]
   },
@@ -188,11 +188,11 @@
     "title": "World Largest Foo Created in Foobar Event",
     "description": "des",
     "user": "Baz Caz",
-    "user_image": "utilites/video1.png",
+    "user_image": "video_image1.png",
     "category": "News",
     "publication_date": 1717082000419,
-    "icon": "utilites/video9.png",
-    "video": "utilites/video9.mp4",
+    "icon": "video_image9.png",
+    "video": "video9.mp4",
     "views": 200000,
     "like": 200,
     "dislike": 1,
@@ -201,8 +201,8 @@
         "id": 1,
         "title": "World Largest Foo Created in Foobar Event",
         "user": "Baz Caz",
-        "date": "2024-1-6",
-        "icon": "utilites/video1.png"
+        "date": 1717082000419,
+        "icon": "video_image1.png"
       }
     ]
   },
@@ -211,11 +211,11 @@
     "title": "World Largest Foo Created in Foobar Event",
     "description": "des",
     "user": "Baz Caz",
-    "user_image": "utilites/video1.png",
+    "user_image": "res/raw/video_image1.png",
     "category": "News",
     "publication_date": 1717082000419,
-    "icon": "utilites/video10.png",
-    "video": "utilites/video10.mp4",
+    "icon": "video_image10.png",
+    "video": "video10.mp4",
     "views": 200000,
     "like": 200,
     "dislike": 1,
@@ -224,8 +224,8 @@
         "id": 1,
         "title": "World Largest Foo Created in Foobar Event",
         "user": "Baz Caz",
-        "date": "2024-1-6",
-        "icon": "utilites/video1.png"
+        "date": 1717082000419,
+        "icon": "video_image1.png"
       }
     ]
   },
@@ -234,11 +234,11 @@
     "title": "World Largest Foo Created in Foobar Event",
     "description": "des",
     "user": "Baz Caz",
-    "user_image": "utilites/video1.png",
+    "user_image": "video_image1.png",
     "category": "Mixes",
     "publication_date": 1717082000419,
-    "icon": "utilites/video11.png",
-    "video": "utilites/video11.mp4",
+    "icon": "video_image11.png",
+    "video": "video11.mp4",
     "views": 200000,
     "like": 200,
     "dislike": 1,
@@ -247,8 +247,8 @@
         "id": 1,
         "title": "World Largest Foo Created in Foobar Event",
         "user": "Baz Caz",
-        "date": "2024-1-6",
-        "icon": "utilites/video1.png"
+        "date": 1717082000419,
+        "icon": "video_image1.png"
       }
     ]
   }

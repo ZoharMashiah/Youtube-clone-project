@@ -12,10 +12,10 @@ public class Video {
 
     private String user;
 
-    private String user_image;
+    private Uri user_image;
 
     private String category;
-    private Date publication_date;
+    private long publication_date;
     private Uri icon;
     private int views;
     private int like;
@@ -24,9 +24,8 @@ public class Video {
     private List<Comment> comments;
 
     private Uri video;
-
-    public Video(int id, String title, String description, String user, String user_image, String category, Date publication_date,
-                  Uri icon, int views, int like, int dislike, List<Comment> comments, Uri video) {
+    public Video(int id, String title, String description, String user, Uri user_image, String category, long publication_date,
+                 Uri icon, int views, int like, int dislike, List<Comment> comments, Uri video) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -42,6 +41,47 @@ public class Video {
         this.video = video;
 
     }
+    public String getUser() {
+        return user;
+    }
+
+    public Uri getUser_image() {
+        return user_image;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public long getPublication_date() {
+        return publication_date;
+    }
+
+    public Uri getIcon() {
+        return icon;
+    }
+
+    public int getViews() {
+        return views;
+    }
+
+    public int getLike() {
+        return like;
+    }
+
+    public int getDislike() {
+        return dislike;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public Uri getVideo() {
+        return video;
+    }
+
+
 
     public int getId() {
         return id;
