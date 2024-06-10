@@ -41,6 +41,7 @@ public class Video {
         this.video = video;
 
     }
+
     public String getUser() {
         return user;
     }
@@ -95,4 +96,55 @@ public class Video {
         return description;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    public void setUser_image(Uri user_image) {
+        this.user_image = user_image;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public void setPublication_date(long publication_date) {
+        this.publication_date = publication_date;
+    }
+
+    public void setIcon(Uri icon) {
+        this.icon = icon;
+    }
+
+    public void setViews(int views) {
+        this.views = views;
+    }
+
+    public void setLike(int like) {
+        this.like = like;
+    }
+
+    public void setDislike(int dislike) {
+        this.dislike = dislike;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public void setVideo(Uri video) {
+        this.video = video;
+    }
 }
