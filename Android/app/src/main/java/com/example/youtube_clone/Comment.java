@@ -6,10 +6,19 @@ public class Comment{
     private int id;
     private String title;
     private String user;
-    private Date date;
+    private long date;
     private String icon;
 
-    public Date getDate() {
+    public Comment(int id, String title, String user, long date, String icon) {
+        this.id = id;
+        this.title = title;
+        this.user = user;
+        this.date = date;
+        this.icon = icon;
+    }
+
+
+    public long getDate() {
         return date;
     }
 
@@ -27,5 +36,25 @@ public class Comment{
 
     public String getUser() {
         return user;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    public void setDate(long date) {
+        this.date = date;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 }
