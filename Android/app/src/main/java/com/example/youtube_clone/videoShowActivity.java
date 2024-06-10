@@ -1,5 +1,6 @@
 package com.example.youtube_clone;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -16,6 +17,7 @@ public class videoShowActivity extends AppCompatActivity {
 
     private ActivityVideoShowBinding binding;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,11 +27,11 @@ public class videoShowActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         binding.title.setText(Videos.getInstance().currentVideo.getTitle());
-        binding.views.setText(Videos.getInstance().currentVideo.getViews());
+        binding.views.setText(Integer.toString(Videos.getInstance().currentVideo.getViews()));
         binding.description.setText(Videos.getInstance().currentVideo.getDescription());
-        binding.counterLike.setText(Videos.getInstance().currentVideo.getLike());
-        binding.counterDislike.setText(Videos.getInstance().currentVideo.getDislike());
-        //binding.video.setVideoURI(currentVideo.getVideo());
+        binding.counterLike.setText(Integer.toString(Videos.getInstance().currentVideo.getLike()));
+        binding.counterDislike.setText(Integer.toString(Videos.getInstance().currentVideo.getDislike()));
+        binding.video.setVideoURI(Videos.getInstance().currentVideo.getVideo());
 
         binding.imageButtonAdd.setOnClickListener(v -> {
             Intent intent = new Intent(this, addVideoActivity.class);
