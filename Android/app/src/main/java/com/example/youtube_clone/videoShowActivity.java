@@ -34,6 +34,8 @@ public class videoShowActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        setContent();
+
     }
 
     private void setContent(){
