@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,9 +24,11 @@ import java.util.Date;
 public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.MyViewHolder>{
     Context context;
     ArrayList<Video> videos;
-    public VideosAdapter(Context context, ArrayList<Video> videos){
+    RecyclerViewInterface recyclerViewInterface;
+    public VideosAdapter(Context context, ArrayList<Video> videos, RecyclerViewInterface recyclerViewInterface){
         this.context = context;
         this.videos = videos;
+        this.recyclerViewInterface = recyclerViewInterface;
     }
 
     @NonNull
@@ -49,7 +52,9 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.MyViewHold
         holder.userImage.setImageURI(videos.get(position).getUser_image());
         holder.title.setText(videos.get(position).getTitle());
         holder.videoInfo.setText(info);
-        holder.itemView.setTag(position);
+        holder.parent.setOnClickListener(v -> {
+           recyclerViewInterface.onItemClick(videos.get(position));
+        });
     }
 
     @Override

@@ -45,7 +45,7 @@ public class LoginActivity extends AppCompatActivity {
 
             if(current != null && current.getPassword().equals(password)) {
                 Users.getInstance().currentUser = current;
-                Intent intent = new Intent(this, FeedActivity.class);
+                Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
             } else {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);

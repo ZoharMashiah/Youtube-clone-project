@@ -1,5 +1,6 @@
 package com.example.youtube_clone;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -8,13 +9,13 @@ import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.youtube_clone.databinding.ActivityAddVideoBinding;
-import com.example.youtube_clone.databinding.ActivityMainBinding;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -54,7 +55,7 @@ public class addVideoActivity extends AppCompatActivity {
                 new ActivityResultCallback<Uri>() {
                     @Override
                     public void onActivityResult(Uri o) {
-                        selectedImageUri = o;
+                        selectedVideoUri = o;
                     }
                 }
         );
@@ -68,9 +69,38 @@ public class addVideoActivity extends AppCompatActivity {
 
         binding.imageUploadVideo.setOnClickListener(v -> mTakeVideo.launch("video/*"));
 
-        Video newVideo = new Video( 12, binding.editTextText.getText().toString(), binding.editTextText2.getText().toString(),
-                "ccbcncc", "zohar",
-                binding.editTextText3.getText().toString(), Calendar.getInstance().getTime(), this.selectedImageUri,
-        0, 0, 0, new ArrayList<>(), this.selectedVideoUri);
+        binding.button6.setOnClickListener(v -> {
+            if (!binding.editTextText.getText().toString().isEmpty() && !binding.editTextText2.getText().toString().isEmpty() && !binding.editTextText3.getText().toString().isEmpty() && this.selectedImageUri!=null&& this.selectedVideoUri!=null) {
+                Video newVideo = new Video(Videos.getInstance().getNextId(), binding.editTextText.getText().toString(), binding.editTextText2.getText().toString(),
+                        Users.getInstance().currentUser.getUsername(), Users.getInstance().currentUser.getProfileImage(),
+                        binding.editTextText3.getText().toString(), Calendar.getInstance().getTime().getTime(), this.selectedImageUri,
+                        0, 0, 0, new ArrayList<>(), this.selectedVideoUri);
+                Videos.getInstance().videos.add(newVideo);
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+            } else {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+                // Set the message show for the Alert time
+                builder.setMessage("You need to fill all the fields!");
+
+                // Set Alert Title
+                builder.setTitle("Alert !");
+
+                // Set Cancelable false for when the user clicks on the outside the Dialog Box then it will remain show
+                builder.setCancelable(false);
+
+                // Set the positive button with yes name Lambda OnClickListener method is use of DialogInterface interface.
+                builder.setPositiveButton("Cancle", (DialogInterface.OnClickListener) (dialog, which) -> {
+                    // When the user click yes button then app will close
+                    dialog.cancel();
+                });
+
+                // Create the Alert dialog
+                AlertDialog alertDialog = builder.create();
+                // Show the Alert Dialog box
+                alertDialog.show();
+            }
+        });
     }
 }

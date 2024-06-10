@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Videos {
     private static Videos single_instance = null;
-    public List<Video> videos;
+    public ArrayList<Video> videos;
     public Video currentVideo;
 
     private Videos() {
@@ -29,5 +29,15 @@ public class Videos {
             }
         }
         return video;
+    }
+
+    public int getNextId() {
+        int id = 0;
+        for (Video v: this.videos) {
+            if (id < v.getId()){
+                id = v.getId();
+            }
+        }
+        return id + 1;
     }
 }
