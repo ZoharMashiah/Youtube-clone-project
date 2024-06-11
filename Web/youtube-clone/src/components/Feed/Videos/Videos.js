@@ -12,43 +12,12 @@ export default function Videos({videos, setcurrentVideo}) {
   return (
     <div id={styles.container}>
       <div id={styles.wrapper}>
-        <div class="row">
-          <div class="col">
+        <div className={styles.grid}>
             {videos.map((video) => {
-                if (i < (videos.length / 3)) {
-                  i++
-                  return <VideoShow {...video} onClick={() => handleClick(video.id)} />
-                }
-                else if (i === videos.length - 1)
-                  i = 0
-                else
-                  i++
-            })}
-          </div>
-          <div class="col">
-            {videos.map((video) => {
-                if (i >= (videos.length / 3) && i < 2*(videos.length / 3)) {
-                  i++
-                  return <VideoShow {...video} onClick={() => handleClick(video.id)} />
-                }
-                else if (i === videos.length - 1)
-                  i = 0
-                else
-                  i++
-              })}
-          </div>
-          <div class="col">
-              {videos.map((video) => {
-                if (i >= 2*(videos.length / 3) && i < 3*(videos.length / 3)) {
-                  i++
-                  return <VideoShow {...video} onClick={() => handleClick(video.id)} />
-                }
-                else if (i === videos.length - 1)
-                  i = 0
-                else
-                  i++
-              })}
-          </div>
+                
+                  return <div><VideoShow {...video} onClick={() => handleClick(video.id)} /></div>
+            })
+            }
         </div>
       </div>
     </div>
