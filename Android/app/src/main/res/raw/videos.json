@@ -10,8 +10,8 @@
     "icon": "video_image1.png",
     "video": "video1.mp4",
     "views": 200000000,
-    "like": 200,
-    "dislike": 1,
+    "like": [],
+    "dislike": [],
     "comments": [
       {
         "id": 1,
@@ -33,8 +33,8 @@
     "icon": "video_image2.png",
     "video": "video2.mp4",
     "views": 200000,
-    "like": 200,
-    "dislike": 1,
+    "like": [],
+    "dislike": [],
     "comments": [
       {
         "id": 1,
@@ -56,8 +56,8 @@
     "icon": "video_image3.png",
     "video": "video3.mp4",
     "views": 200000,
-    "like": 200,
-    "dislike": 1,
+    "like": [],
+    "dislike": [],
     "comments": [
       {
         "id": 1,
@@ -79,8 +79,8 @@
     "icon": "video_image4.png",
     "video": "video4.mp4",
     "views": 200000,
-    "like": 200,
-    "dislike": 1,
+    "like": [],
+    "dislike": [],
     "comments": [
       {
         "id": 1,
@@ -102,8 +102,8 @@
     "icon": "video_image5.png",
     "video": "video5.mp4",
     "views": 200000,
-    "like": 200,
-    "dislike": 1,
+    "like": [],
+    "dislike": [],
     "comments": [
       {
         "id": 1,
@@ -125,8 +125,8 @@
     "icon": "video_image6.png",
     "video": "video6.mp4",
     "views": 200000,
-    "like": 200,
-    "dislike": 1,
+    "like": [],
+    "dislike": [],
     "comments": [
       {
         "id": 1,
@@ -148,8 +148,8 @@
     "icon": "video_image7.png",
     "video": "video7.mp4",
     "views": 200000,
-    "like": 200,
-    "dislike": 1,
+    "like": [],
+    "dislike": [],
     "comments": [
       {
         "id": 1,
@@ -171,8 +171,8 @@
     "icon": "video_image8.png",
     "video": "video8.mp4",
     "views": 200000,
-    "like": 200,
-    "dislike": 1,
+    "like": [],
+    "dislike": [],
     "comments": [
       {
         "id": 1,
@@ -194,8 +194,8 @@
     "icon": "video_image9.png",
     "video": "video9.mp4",
     "views": 200000,
-    "like": 200,
-    "dislike": 1,
+    "like": [],
+    "dislike": [],
     "comments": [
       {
         "id": 1,
@@ -217,8 +217,8 @@
     "icon": "video_image10.png",
     "video": "video10.mp4",
     "views": 200000,
-    "like": 200,
-    "dislike": 1,
+    "like": [],
+    "dislike": [],
     "comments": [
       {
         "id": 1,
@@ -240,8 +240,8 @@
     "icon": "video_image11.png",
     "video": "video11.mp4",
     "views": 200000,
-    "like": 200,
-    "dislike": 1,
+    "like": [],
+    "dislike": [],
     "comments": [
       {
         "id": 1,

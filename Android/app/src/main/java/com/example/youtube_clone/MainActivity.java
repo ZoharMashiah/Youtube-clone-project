@@ -98,8 +98,15 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
 
         if(Users.getInstance().currentUser != null) {
             binding.imageButton14.setImageURI(Users.getInstance().currentUser.getProfileImage());
+            binding.loginOrLogout.setText("Logout");
+            binding.loginOrLogout.setOnClickListener(v -> {
+                Users.getInstance().currentUser = null;
+                Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                startActivity(intent);
+            });
         } else {
-            binding.imageButton14.setOnClickListener(v -> {
+            binding.loginOrLogout.setText("Login");
+            binding.loginOrLogout.setOnClickListener(v -> {
                 Intent intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);
             });
