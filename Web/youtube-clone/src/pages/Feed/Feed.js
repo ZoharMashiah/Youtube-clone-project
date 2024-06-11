@@ -142,8 +142,11 @@ export default function Feed({currentUser, setcurrentUser, videos, setVideos}) {
         <UpBar setsearchText={setsearchText} filterVideos={filterVideos} setcurrentVideo={setcurrentVideo} setfilterdedVideos={setfilterdedVideos} videos={videos} settrigger={settrigger} currentUser={currentUser} setcurrentUser={setcurrentUser} setgotologin={setgotologin} />
           </div>
           <div className={styles.Low}>{
-            currentVideo === 0?
-          <LowerFeed selectedCategory={selectedCategory} setselectedCategory={setselectedCategory} filterdedVideos={filterdedVideos} setcurrentVideo={setcurrentVideo} filterVideosCategory={filterVideosCategory} /> :
+        currentVideo === 0 ?
+          <div className={styles.displayVideoLowerFeed}>
+            <LowerFeed selectedCategory={selectedCategory} setselectedCategory={setselectedCategory} filterdedVideos={filterdedVideos} setcurrentVideo={setcurrentVideo} filterVideosCategory={filterVideosCategory} />
+          </div>
+           :
           <VideoDisplay currentVideo={videos[currentVideo - 1]} editVideo={editVideo} videos={videos} setcurrentVideo={setcurrentVideo} currentUser={currentUser} likedPush={likedPush} editComment={editComment} deleteComment={deleteComment} deleteVideo={deleteVideo} />
             }  
       </div>{trigger && currentUser != null ?
