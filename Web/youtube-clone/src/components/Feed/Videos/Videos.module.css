@@ -1,7 +1,6 @@
 #wrapper{
-    scroll-behavior: smooth;
-    height: max-content;
-    max-height: max-content;
+    height: 100vh;
+    max-height: 100vh;
 }
 
 #container{
