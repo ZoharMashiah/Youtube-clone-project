@@ -1,11 +1,11 @@
 .middle{
     min-height: 5%;
     width: 100%;
+    overflow-y: scroll;
 }
 
 .bottom{
     position: absolute;
     bottom: 5%;
     height: 86%;
-    overflow: scroll;
 }
