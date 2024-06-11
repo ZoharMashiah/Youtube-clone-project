@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.widget.MediaController;
 import android.net.Uri;
 import android.os.Bundle;
+import android.widget.MediaController;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -53,6 +54,10 @@ public class videoShowActivity extends AppCompatActivity {
         binding.counterLike.setText(Integer.toString(Videos.getInstance().currentVideo.getLike()));
         binding.counterDislike.setText(Integer.toString(Videos.getInstance().currentVideo.getDislike()));
         binding.video.setVideoURI(Videos.getInstance().currentVideo.getVideo());
+        MediaController mediaController = new MediaController(this);
+        binding.video.setMediaController(mediaController);
+        mediaController.setAnchorView(binding.video);
+        binding.video.start();
         binding.date.setText(timeStr);
 
         Uri videoUri = Videos.getInstance().currentVideo.getVideo();

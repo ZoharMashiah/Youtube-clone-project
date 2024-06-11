@@ -6,6 +6,7 @@ import java.util.List;
 public class Videos {
     private static Videos single_instance = null;
     public ArrayList<Video> videos;
+    public ArrayList<Video> filterdVideos;
     public Video currentVideo;
 
     private Videos() {
@@ -39,5 +40,25 @@ public class Videos {
             }
         }
         return id + 1;
+    }
+
+    public void filterByCategory(String category){
+        filterdVideos = new ArrayList<>();
+
+        for (Video video: videos) {
+            if(video.getCategory().equals(category)){
+                filterdVideos.add(video);
+            }
+        }
+    }
+
+    public void filterByTitle(String title){
+        filterdVideos = new ArrayList<>();
+
+        for (Video video: videos) {
+            if(video.getTitle().contains(title)){
+                filterdVideos.add(video);
+            }
+        }
     }
 }
