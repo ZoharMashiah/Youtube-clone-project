@@ -1,5 +1,7 @@
 package com.example.youtube_clone;
 
+import android.net.Uri;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -8,9 +10,9 @@ public class Comment implements Serializable {
     private String title;
     private String user;
     private long date;
-    private String icon;
+    private Uri icon;
 
-    public Comment(int id, String title, String user, long date, String icon) {
+    public Comment(int id, String title, String user, long date, Uri icon) {
         this.id = id;
         this.title = title;
         this.user = user;
@@ -23,7 +25,7 @@ public class Comment implements Serializable {
         return date;
     }
 
-    public String getIcon() {
+    public Uri getIcon() {
         return icon;
     }
 
@@ -55,7 +57,7 @@ public class Comment implements Serializable {
         this.date = date;
     }
 
-    public void setIcon(String icon) {
+    public void setIcon(Uri icon) {
         this.icon = icon;
     }
 }
