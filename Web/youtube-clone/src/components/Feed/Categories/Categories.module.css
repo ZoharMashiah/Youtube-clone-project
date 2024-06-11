@@ -1,7 +1,5 @@
 #categoriesWrraper{
     display: flex;
     flex-direction: row;
-    overflow-y: scroll;
     height: max-content;
-    overflow-x: hidden;
 }

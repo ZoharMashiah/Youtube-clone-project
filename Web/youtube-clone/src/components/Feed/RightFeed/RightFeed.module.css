@@ -1,7 +1,7 @@
 .middle{
     min-height: 5%;
     width: 100%;
-    overflow-y: scroll;
+    overflow-x: scroll;
 }
 
 .bottom{
