@@ -18,11 +18,11 @@ public class LocalVideo {
     private String icon;
     private String video;
     private int views;
-    private int like;
-    private int dislike;
+    private ArrayList<String> like;
+    private ArrayList<String> dislike;
     private ArrayList<LocalComment> comments;
     public LocalVideo(int id, String title, String description, String user, String user_image, String category, long publication_date,
-                 String icon, int views, int like, int dislike, ArrayList<LocalComment> comments, String video) {
+                 String icon, int views, ArrayList<String> like, ArrayList<String> dislike, ArrayList<LocalComment> comments, String video) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -62,11 +62,11 @@ public class LocalVideo {
         return views;
     }
 
-    public int getLike() {
+    public ArrayList<String> getLike() {
         return like;
     }
 
-    public int getDislike() {
+    public ArrayList<String> getDislike() {
         return dislike;
     }
 
@@ -132,11 +132,11 @@ public class LocalVideo {
         this.views = views;
     }
 
-    public void setLike(int like) {
+    public void setLike(ArrayList<String> like) {
         this.like = like;
     }
 
-    public void setDislike(int dislike) {
+    public void setDislike(ArrayList<String> dislike) {
         this.dislike = dislike;
     }
 

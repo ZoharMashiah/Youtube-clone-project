@@ -93,7 +93,7 @@ public class addVideoActivity extends AppCompatActivity implements
                 Video newVideo = new Video(Videos.getInstance().getNextId(), binding.editTextText.getText().toString(), binding.editTextText2.getText().toString(),
                         Users.getInstance().currentUser.getUsername(), Users.getInstance().currentUser.getProfileImage(),
                         binding.category.getSelectedItem().toString(), Calendar.getInstance().getTime().getTime(), this.selectedImageUri,
-                        0, 0, 0, new ArrayList<>(), this.selectedVideoUri);
+                        0, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), this.selectedVideoUri);
                 Videos.getInstance().videos.add(newVideo);
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
