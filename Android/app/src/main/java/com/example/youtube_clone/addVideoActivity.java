@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultCallback;
@@ -25,7 +27,8 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
-public class addVideoActivity extends AppCompatActivity{
+public class addVideoActivity extends AppCompatActivity implements
+        AdapterView.OnItemSelectedListener{
 
     private ActivityAddVideoBinding binding;
 
@@ -76,6 +79,15 @@ public class addVideoActivity extends AppCompatActivity{
 
         binding.imageUploadVideo.setOnClickListener(v -> mTakeVideo.launch("video/*"));
 
+        Spinner spin = (Spinner) findViewById(R.id.category);
+        spin.setOnItemSelectedListener(this);
+
+        //Creating the ArrayAdapter instance having the country list
+        ArrayAdapter aa = new ArrayAdapter(this,android.R.layout.simple_spinner_item,categories);
+        aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //Setting the ArrayAdapter data on the Spinner
+        spin.setAdapter(aa);
+
         binding.button6.setOnClickListener(v -> {
             if (!binding.editTextText.getText().toString().isEmpty() && !binding.editTextText2.getText().toString().isEmpty() && this.selectedImageUri!=null&& this.selectedVideoUri!=null) {
                 Video newVideo = new Video(Videos.getInstance().getNextId(), binding.editTextText.getText().toString(), binding.editTextText2.getText().toString(),
@@ -109,5 +121,15 @@ public class addVideoActivity extends AppCompatActivity{
                 alertDialog.show();
             }
         });
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 }
