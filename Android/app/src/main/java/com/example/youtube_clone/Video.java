@@ -56,7 +56,7 @@ public class Video implements Serializable {
         return category;
     }
 
-    public long getPublication_date() {
+    public long     getPublication_date() {
         return publication_date;
     }
 
@@ -149,4 +149,19 @@ public class Video implements Serializable {
     public void setVideo(Uri video) {
         this.video = video;
     }
+
+    public int getNextId() {
+        int id = 0;
+        for (Comment c: this.comments) {
+            if (id < c.getId()){
+                id = c.getId();
+            }
+        }
+        return id + 1;
+    }
+
+    public void addComment(Comment comment){
+        this.comments.add(comment);
+    }
+
 }
