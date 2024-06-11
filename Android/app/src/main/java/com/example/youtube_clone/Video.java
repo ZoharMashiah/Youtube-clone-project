@@ -20,14 +20,14 @@ public class Video implements Serializable {
     private long publication_date;
     private Uri icon;
     private int views;
-    private int like;
+    private ArrayList<String> like;
 
-    private int dislike;
+    private ArrayList<String> dislike;
     private ArrayList<Comment> comments;
 
     private Uri video;
     public Video(int id, String title, String description, String user, Uri user_image, String category, long publication_date,
-                 Uri icon, int views, int like, int dislike, ArrayList<Comment> comments, Uri video) {
+                 Uri icon, int views, ArrayList<String> like, ArrayList<String> dislike, ArrayList<Comment> comments, Uri video) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -68,11 +68,11 @@ public class Video implements Serializable {
         return views;
     }
 
-    public int getLike() {
+    public ArrayList<String> getLike() {
         return like;
     }
 
-    public int getDislike() {
+    public ArrayList<String> getDislike() {
         return dislike;
     }
 
@@ -134,11 +134,11 @@ public class Video implements Serializable {
         this.views = views;
     }
 
-    public void setLike(int like) {
+    public void setLike(ArrayList<String> like) {
         this.like = like;
     }
 
-    public void setDislike(int dislike) {
+    public void setDislike(ArrayList<String> dislike) {
         this.dislike = dislike;
     }
 
@@ -162,6 +162,28 @@ public class Video implements Serializable {
 
     public void addComment(Comment comment){
         this.comments.add(comment);
+    }
+
+    public void addLike (String username){
+        if(!like.contains(username)){
+            if(!dislike.contains(username)){
+                like.add(username);
+            } else {
+                dislike.remove(username);
+                like.add(username);
+            }
+        }
+    }
+
+    public void addDislike (String username){
+        if(!dislike.contains(username)){
+            if(!like.contains(username)){
+                dislike.add(username);
+            } else {
+                like.remove(username);
+                dislike.add(username);
+            }
+        }
     }
 
 }

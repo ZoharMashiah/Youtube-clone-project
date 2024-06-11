@@ -53,8 +53,8 @@ public class videoShowActivity extends AppCompatActivity {
         binding.title.setText(Videos.getInstance().currentVideo.getTitle());
         binding.views.setText(viewers);
         binding.description.setText(Videos.getInstance().currentVideo.getDescription());
-        binding.counterLike.setText(Integer.toString(Videos.getInstance().currentVideo.getLike()));
-        binding.counterDislike.setText(Integer.toString(Videos.getInstance().currentVideo.getDislike()));
+        binding.counterLike.setText(Integer.toString(Videos.getInstance().currentVideo.getLike().size()));
+        binding.counterDislike.setText(Integer.toString(Videos.getInstance().currentVideo.getDislike().size()));
         binding.video.setVideoURI(Videos.getInstance().currentVideo.getVideo());
 //        MediaController mediaController = new MediaController(this);
 //        binding.video.setMediaController(mediaController);
@@ -78,6 +78,66 @@ public class videoShowActivity extends AppCompatActivity {
         binding.imageButtonHomeOriginal.setOnClickListener(v -> {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
+        });
+
+        binding.like.setOnClickListener(v -> {
+            if(Users.getInstance().currentUser != null) {
+                Videos.getInstance().currentVideo.addLike(Users.getInstance().currentUser.getUsername());
+                binding.counterLike.setText(Integer.toString(Videos.getInstance().currentVideo.getLike().size()));
+                binding.counterDislike.setText(Integer.toString(Videos.getInstance().currentVideo.getDislike().size()));
+            } else {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+                // Set the message show for the Alert time
+                builder.setMessage("You need to have a user to add a like!");
+
+                // Set Alert Title
+                builder.setTitle("Alert !");
+
+                // Set Cancelable false for when the user clicks on the outside the Dialog Box then it will remain show
+                builder.setCancelable(false);
+
+                // Set the positive button with yes name Lambda OnClickListener method is use of DialogInterface interface.
+                builder.setPositiveButton("Cancel", (DialogInterface.OnClickListener) (dialog, which) -> {
+                    // When the user click yes button then app will close
+                    dialog.cancel();
+                });
+
+                // Create the Alert dialog
+                AlertDialog alertDialog = builder.create();
+                // Show the Alert Dialog box
+                alertDialog.show();
+            }
+        });
+
+        binding.dislike.setOnClickListener(v -> {
+            if(Users.getInstance().currentUser != null) {
+                Videos.getInstance().currentVideo.addDislike(Users.getInstance().currentUser.getUsername());
+                binding.counterLike.setText(Integer.toString(Videos.getInstance().currentVideo.getLike().size()));
+                binding.counterDislike.setText(Integer.toString(Videos.getInstance().currentVideo.getDislike().size()));
+            } else {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+                // Set the message show for the Alert time
+                builder.setMessage("You need to have a user to add a dislike!");
+
+                // Set Alert Title
+                builder.setTitle("Alert !");
+
+                // Set Cancelable false for when the user clicks on the outside the Dialog Box then it will remain show
+                builder.setCancelable(false);
+
+                // Set the positive button with yes name Lambda OnClickListener method is use of DialogInterface interface.
+                builder.setPositiveButton("Cancel", (DialogInterface.OnClickListener) (dialog, which) -> {
+                    // When the user click yes button then app will close
+                    dialog.cancel();
+                });
+
+                // Create the Alert dialog
+                AlertDialog alertDialog = builder.create();
+                // Show the Alert Dialog box
+                alertDialog.show();
+            }
         });
 
         binding.submitComment.setOnClickListener(v -> {
