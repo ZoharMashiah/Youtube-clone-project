@@ -3,6 +3,7 @@ package com.example.youtube_clone;
 import android.net.Uri;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -22,11 +23,11 @@ public class Video implements Serializable {
     private int like;
 
     private int dislike;
-    private List<Comment> comments;
+    private ArrayList<Comment> comments;
 
     private Uri video;
     public Video(int id, String title, String description, String user, Uri user_image, String category, long publication_date,
-                 Uri icon, int views, int like, int dislike, List<Comment> comments, Uri video) {
+                 Uri icon, int views, int like, int dislike, ArrayList<Comment> comments, Uri video) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -75,7 +76,7 @@ public class Video implements Serializable {
         return dislike;
     }
 
-    public List<Comment> getComments() {
+    public ArrayList<Comment> getComments() {
         return comments;
     }
 
@@ -141,7 +142,7 @@ public class Video implements Serializable {
         this.dislike = dislike;
     }
 
-    public void setComments(List<Comment> comments) {
+    public void setComments(ArrayList<Comment> comments) {
         this.comments = comments;
     }
 

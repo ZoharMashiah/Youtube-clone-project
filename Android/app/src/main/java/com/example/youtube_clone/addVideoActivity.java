@@ -4,6 +4,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultCallback;
@@ -18,10 +21,11 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.youtube_clone.databinding.ActivityAddVideoBinding;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
-public class addVideoActivity extends AppCompatActivity {
+public class addVideoActivity extends AppCompatActivity{
 
     private ActivityAddVideoBinding binding;
 
@@ -32,6 +36,9 @@ public class addVideoActivity extends AppCompatActivity {
     Uri selectedImageUri = null;
 
     Uri selectedVideoUri = null;
+
+    private final String[] categories = {"Music", "Mixes", "JavaScript", "Gaming", "Bouldering",
+            "Display devices", "AI", "Computer Hardware", "Table News", "Inventions", "News", "Comedy clubs", "Skills", "3D printing"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,10 +77,10 @@ public class addVideoActivity extends AppCompatActivity {
         binding.imageUploadVideo.setOnClickListener(v -> mTakeVideo.launch("video/*"));
 
         binding.button6.setOnClickListener(v -> {
-            if (!binding.editTextText.getText().toString().isEmpty() && !binding.editTextText2.getText().toString().isEmpty() && !binding.editTextText3.getText().toString().isEmpty() && this.selectedImageUri!=null&& this.selectedVideoUri!=null) {
+            if (!binding.editTextText.getText().toString().isEmpty() && !binding.editTextText2.getText().toString().isEmpty() && this.selectedImageUri!=null&& this.selectedVideoUri!=null) {
                 Video newVideo = new Video(Videos.getInstance().getNextId(), binding.editTextText.getText().toString(), binding.editTextText2.getText().toString(),
                         Users.getInstance().currentUser.getUsername(), Users.getInstance().currentUser.getProfileImage(),
-                        binding.editTextText3.getText().toString(), Calendar.getInstance().getTime().getTime(), this.selectedImageUri,
+                        binding.category.getSelectedItem().toString(), Calendar.getInstance().getTime().getTime(), this.selectedImageUri,
                         0, 0, 0, new ArrayList<>(), this.selectedVideoUri);
                 Videos.getInstance().videos.add(newVideo);
                 Intent intent = new Intent(this, MainActivity.class);
