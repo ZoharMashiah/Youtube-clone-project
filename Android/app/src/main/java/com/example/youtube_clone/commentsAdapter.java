@@ -22,9 +22,11 @@ public class commentsAdapter extends RecyclerView.Adapter<commentsAdapter.MyView
 
     Context context;
     ArrayList<Comment> commentsArray;
-    public commentsAdapter(Context context,  ArrayList<Comment> commentsArray){
+    commentRecycler commentRecycler;
+    public commentsAdapter(Context context,  ArrayList<Comment> commentsArray, commentRecycler commentRecycler){
         this.context = context;
         this.commentsArray = commentsArray;
+        this.commentRecycler = commentRecycler;
     }
 
     @NonNull
@@ -33,7 +35,7 @@ public class commentsAdapter extends RecyclerView.Adapter<commentsAdapter.MyView
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.recycler_view_comments, parent,false);
 
-        return new commentsAdapter.MyViewHolder(view);
+        return new commentsAdapter.MyViewHolder(view, commentRecycler);
     }
 
     @Override
@@ -47,7 +49,7 @@ public class commentsAdapter extends RecyclerView.Adapter<commentsAdapter.MyView
             holder.deleteButton.setVisibility(View.VISIBLE);
 
             holder.editButton.setOnClickListener(v -> showEditCommentDialog(comment, position));
-            holder.deleteButton.setOnClickListener(v -> showDeleteCommentDialog(comment, position));
+            //holder.deleteButton.setOnClickListener(v -> showDeleteCommentDialog(comment, position));
         } else {
             holder.editButton.setVisibility(View.GONE);
             holder.deleteButton.setVisibility(View.GONE);
@@ -83,24 +85,24 @@ public class commentsAdapter extends RecyclerView.Adapter<commentsAdapter.MyView
         builder.show();
     }
 
-    private void showDeleteCommentDialog(Comment comment, int position) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("Delete Comment");
-        builder.setMessage("Are you sure you want to delete this comment?");
-
-        builder.setPositiveButton("Delete", (dialog, which) -> {
-            // Remove the comment from the data source
-            new Handler(Looper.getMainLooper()).post(() -> {
-                Videos.getInstance().deleteComment(comment.getId());
-                commentsArray.remove(position);
-                notifyItemRemoved(position);
-                notifyItemRangeChanged(position, commentsArray.size());
-            });
-        });
-        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
-
-        builder.show();
-    }
+//    private void showDeleteCommentDialog(Comment comment, int position) {
+//        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+//        builder.setTitle("Delete Comment");
+//        builder.setMessage("Are you sure you want to delete this comment?");
+//
+//        builder.setPositiveButton("Delete", (dialog, which) -> {
+//            // Remove the comment from the data source
+//            new Handler(Looper.getMainLooper()).post(() -> {
+//                Videos.getInstance().deleteComment(comment.getId());
+//                commentsArray.remove(position);
+//                notifyItemRemoved(position);
+//                notifyItemRangeChanged(position, commentsArray.size());
+//            });
+//        });
+//        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+//
+//        builder.show();
+//    }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
 
@@ -110,7 +112,7 @@ public class commentsAdapter extends RecyclerView.Adapter<commentsAdapter.MyView
         Button deleteButton;
 
 
-        public MyViewHolder(@NonNull View itemView) {
+        public MyViewHolder(@NonNull View itemView, commentRecycler commentRecycler) {
             super(itemView);
 
             tvAuthor = itemView.findViewById(R.id.author);
@@ -118,6 +120,15 @@ public class commentsAdapter extends RecyclerView.Adapter<commentsAdapter.MyView
             editButton = itemView.findViewById(R.id.editButton);
             deleteButton = itemView.findViewById(R.id.deleteButton);
 
+            deleteButton.setOnClickListener(v -> {
+                if (commentRecycler != null) {
+                    int pos = getAdapterPosition();
+
+                    if(pos != RecyclerView.NO_POSITION){
+                        commentRecycler.deleteElement(pos);
+                    }
+                }
+            });
         }
     }
 }

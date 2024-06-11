@@ -23,9 +23,10 @@ import com.example.youtube_clone.databinding.ActivityVideoShowBinding;
 
 import java.util.Calendar;
 
-public class videoShowActivity extends AppCompatActivity {
+public class videoShowActivity extends AppCompatActivity implements commentRecycler{
 
     private ActivityVideoShowBinding binding;
+    private commentsAdapter[] adapter;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -38,7 +39,7 @@ public class videoShowActivity extends AppCompatActivity {
 
         RecyclerView recyclerView = findViewById(R.id.commentsRecyclerView);
 
-        final commentsAdapter[] adapter = {new commentsAdapter(this,Videos.getInstance().currentVideo.getComments())};
+        adapter = new commentsAdapter[]{new commentsAdapter(this, Videos.getInstance().currentVideo.getComments(),this)};
 
         recyclerView.setAdapter(adapter[0]);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -149,7 +150,7 @@ public class videoShowActivity extends AppCompatActivity {
 
                 Videos.getInstance().currentVideo.addComment(newComment);
 
-                adapter[0] = new commentsAdapter(this, Videos.getInstance().currentVideo.getComments());
+                adapter[0] = new commentsAdapter(this, Videos.getInstance().currentVideo.getComments(), this);
                 recyclerView.setAdapter(adapter[0]);
                 recyclerView.setLayoutManager(new LinearLayoutManager(this));
             }else{
@@ -176,5 +177,11 @@ public class videoShowActivity extends AppCompatActivity {
                 alertDialog.show();
             }
         });
+    }
+
+    @Override
+    public void deleteElement(int position) {
+        Videos.getInstance().deleteComment(Videos.getInstance().currentVideo.getComments().get(position).getId());
+        adapter[0].notifyItemRemoved(position);
     }
 }
