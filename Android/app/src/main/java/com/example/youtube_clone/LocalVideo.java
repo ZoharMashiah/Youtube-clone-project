@@ -2,6 +2,7 @@ package com.example.youtube_clone;
 
 import android.net.Uri;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -19,9 +20,9 @@ public class LocalVideo {
     private int views;
     private int like;
     private int dislike;
-    private List<Comment> comments;
+    private ArrayList<LocalComment> comments;
     public LocalVideo(int id, String title, String description, String user, String user_image, String category, long publication_date,
-                 String icon, int views, int like, int dislike, List<Comment> comments, String video) {
+                 String icon, int views, int like, int dislike, ArrayList<LocalComment> comments, String video) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -69,7 +70,7 @@ public class LocalVideo {
         return dislike;
     }
 
-    public List<Comment> getComments() {
+    public ArrayList<LocalComment> getComments() {
         return comments;
     }
 
@@ -139,7 +140,7 @@ public class LocalVideo {
         this.dislike = dislike;
     }
 
-    public void setComments(List<Comment> comments) {
+    public void setComments(ArrayList<LocalComment> comments) {
         this.comments = comments;
     }
 }

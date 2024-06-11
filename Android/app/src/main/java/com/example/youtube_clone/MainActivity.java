@@ -2,17 +2,22 @@ package com.example.youtube_clone;
 
 import static com.example.youtube_clone.ResourceUtil.getResourceUri;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.youtube_clone.databinding.ActivityMainBinding;
@@ -39,6 +44,11 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
 
     private ArrayList<Video> videos;
     private static final String TAG = "MainActivity";
+
+    private final String[] categories = {"All", "Music", "Mixes", "JavaScript", "Gaming", "Bouldering",
+            "Display devices", "AI", "Computer Hardware", "Table News", "Inventions", "News", "Comedy clubs", "Skills", "3D printing"};
+
+    private final Button[] myButton = new Button[15];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,17 +105,87 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
             });
         }
 
-        VideosAdapter adapter = new VideosAdapter(this, videos,this);
-        binding.mRecyclerView.setAdapter(adapter);
+        final VideosAdapter[] adapter = {new VideosAdapter(this, videos, this)};
+        binding.mRecyclerView.setAdapter(adapter[0]);
         binding.mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        for(int index = 0; index < categories.length; index++) {
+            myButton[index] = new Button(this); //initialize the button here
+            myButton[index].setText(categories[index]);
+            myButton[index].setBackgroundColor(ContextCompat.getColor(this, R.color.login_blue));
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+            );
+            params.setMargins(10, 10, 10, 10);
+            myButton[index].setLayoutParams(params);
+            myButton[index].setTextColor(ContextCompat.getColor(this, R.color.white));
+
+            int finalIndex = index;
+            myButton[index].setOnClickListener(v -> {
+                if (finalIndex != 0) {
+                    Videos.getInstance().filterByCategory(categories[finalIndex]);
+                } else {
+                    Videos.getInstance().filterdVideos = videos;
+                }
+                adapter[0] = new VideosAdapter(this, Videos.getInstance().filterdVideos, this);
+                binding.mRecyclerView.setAdapter(adapter[0]);
+                binding.mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+            });
+            binding.categories.addView(myButton[index]);
+
+            Context context = this;
+
+            binding.search.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    binding.search.setIconified(false);
+                }
+            });
+            binding.search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                // Override onQueryTextSubmit method which is call when submit query is searched
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    // If the list contains the search query than filter the adapter
+                    // using the filter method with the query as its argument
+                    Videos.getInstance().filterByTitle(query);
+                    adapter[0] = new VideosAdapter(context, Videos.getInstance().filterdVideos, (RecyclerViewInterface) context);
+                    binding.mRecyclerView.setAdapter(adapter[0]);
+                    binding.mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    return false;
+                }
+
+            });
+
+            binding.search.setOnCloseListener(new SearchView.OnCloseListener() {
+                @Override
+                public boolean onClose() {
+                    Videos.getInstance().filterdVideos = videos;
+                    adapter[0] = new VideosAdapter(context, Videos.getInstance().filterdVideos, (RecyclerViewInterface) context);
+                    binding.mRecyclerView.setAdapter(adapter[0]);
+                    binding.mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+                    return false;
+                }
+            });
+        }
+
     }
 
     private ArrayList<Video> loadVideosFromJson(ArrayList<LocalVideo> vids) {
         ArrayList<Video> Videos = new ArrayList<>();
         for (LocalVideo lv: vids) {
+            ArrayList<Comment> comments = new ArrayList<>();
+            for (LocalComment lc:  lv.getComments()){
+                comments.add(new Comment(lc.getId(), lc.getTitle(),lc.getUser(), lc.getDate(), getResesource(lc.getIcon())));
+            }
             Video video = new Video(lv.getId(), lv.getTitle(), lv.getDescription(), lv.getUser(),
                     getResesource(lv.getUser_image()), lv.getCategory(), lv.getPublication_date(),
-                    getResesource(lv.getIcon()),lv.getViews(),lv.getLike(),lv.getDislike(),lv.getComments(),
+                    getResesource(lv.getIcon()),lv.getViews(),lv.getLike(),lv.getDislike(),comments,
                     getResesource(lv.getVideo()));
             Videos.add(video);
         }
