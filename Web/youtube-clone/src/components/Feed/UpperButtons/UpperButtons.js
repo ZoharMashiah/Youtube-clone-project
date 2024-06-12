@@ -3,8 +3,18 @@ import styles from './UpperButtons.module.css'
 import AddVideoPopup from '../../AddVideo/AddVideoPopup/AddVideoPopup'
 
 export default function UpperButtons({settrigger,currentUser, setcurrentUser,setgotologin}) {
+
+  const [darkMode, setDarkMode] = useState(false);
+
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+    document.body.classList.toggle('dark-mode', !darkMode);
+  };
   return (
     <div className={styles.buttonsWrapper}>
+      <button className={styles.darkModeButton} onClick={toggleDarkMode}>
+          {darkMode ? 'Light Mode' : 'Dark Mode'}
+        </button>
       <button className={styles.button}>
         <i class='bi bi-camera-reels' id={styles.icon} onClick={() => settrigger(true)}/>
       </button>
