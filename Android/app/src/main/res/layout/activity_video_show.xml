@@ -34,6 +34,18 @@
                 android:layout_weight="1"
                 android:backgroundTint="@color/blueNavy"
                 app:srcCompat="@drawable/baseline_home_24" />
+
+            <Button
+                android:id="@+id/themeToggleButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Dark mode"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:backgroundTint="@color/white"
+                android:textColor="@color/blueNavy"
+                android:layout_gravity="center"/>
+
         </LinearLayout>
 
         <ScrollView

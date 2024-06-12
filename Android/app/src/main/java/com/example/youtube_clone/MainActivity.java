@@ -5,6 +5,7 @@ import static com.example.youtube_clone.ResourceUtil.getResourceUri;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -50,12 +52,39 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
 
     private final Button[] myButton = new Button[15];
 
+    private static final String PREFS_NAME = "prefs";
+    private static final String PREF_DARK_MODE = "dark_mode";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        // Load the saved theme preference
+        SharedPreferences preferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        boolean isDarkMode = preferences.getBoolean(PREF_DARK_MODE, false);
+        if (isDarkMode) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+
+        binding.themeToggleButton.setOnClickListener(v -> {
+            // Toggle dark mode
+            boolean isDarkMode1 = (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES);
+            if (isDarkMode1) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            }
+
+            // Save the theme preference
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean(PREF_DARK_MODE, !isDarkMode1);
+            editor.apply();
+        });
+
 
         if(Videos.getInstance().videos.isEmpty()) {
             String jsonString = loadJSONFromAsset();
