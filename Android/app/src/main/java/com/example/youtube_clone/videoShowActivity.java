@@ -23,9 +23,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.youtube_clone.databinding.ActivityAddVideoBinding;
 import com.example.youtube_clone.databinding.ActivityVideoShowBinding;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
-public class videoShowActivity extends AppCompatActivity implements commentRecycler{
+public class videoShowActivity extends AppCompatActivity implements commentRecycler, RecyclerViewInterface{
 
     private ActivityVideoShowBinding binding;
     private commentsAdapter[] adapter;
@@ -34,6 +35,7 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
 
     private static final String PREFS_NAME = "prefs";
     private static final String PREF_DARK_MODE = "dark_mode";
+    private final ArrayList<Video> videos = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -206,11 +208,27 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
                 alertDialog.show();
             }
         });
+
+        for(Video vid :Videos.getInstance().videos){
+            if(vid.getId() != Videos.getInstance().currentVideo.getId()){
+                videos.add(vid);
+            }
+        }
+        final VideosAdapter[] adapterVid = {new VideosAdapter(this, videos, this)};
+        binding.videos.setAdapter(adapterVid[0]);
+        binding.videos.setLayoutManager(new LinearLayoutManager(this));
     }
 
     @Override
     public void deleteElement(int position) {
         Videos.getInstance().deleteComment(Videos.getInstance().currentVideo.getComments().get(position).getId());
         adapter[0].notifyItemRemoved(position);
+    }
+
+    @Override
+    public void onItemClick(Video video) {
+        Videos.getInstance().currentVideo = video;
+        Intent intent = new Intent(this, videoShowActivity.class);
+        startActivity(intent);
     }
 }
