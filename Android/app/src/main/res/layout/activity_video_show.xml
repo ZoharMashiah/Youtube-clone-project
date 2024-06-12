@@ -130,9 +130,10 @@
                             android:id="@+id/like"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
                             android:layout_weight="1"
-                            android:text="Like"
-                            android:backgroundTint="@color/blueNavy" />
+                            android:backgroundTint="@color/blueNavy"
+                            android:text="Like" />
 
                         <TextView
                             android:id="@+id/counterLike"
@@ -147,9 +148,10 @@
                             android:id="@+id/dislike"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
                             android:layout_weight="1"
-                            android:text="Dislike"
-                            android:backgroundTint="@color/blueNavy" />
+                            android:backgroundTint="@color/blueNavy"
+                            android:text="Dislike" />
 
                         <TextView
                             android:id="@+id/counterDislike"
@@ -166,12 +168,6 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-                        <TextView
-                            android:id="@+id/commentTitle"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="Username"/>
-
                         <EditText
                             android:id="@+id/addComment"
                             android:layout_width="match_parent"
@@ -181,18 +177,30 @@
                         <Button
                             android:id="@+id/submitComment"
                             android:layout_width="match_parent"
-                            android:layout_height="30dp"
+                            android:layout_height="40dp"
+                            android:layout_margin="5dp"
+                            android:backgroundTint="@color/blueNavy"
                             android:text="Submit"
-                            android:textSize="10dp"
-                            android:backgroundTint="@color/blueNavy"/>
+                            android:textSize="10dp" />
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/commentsRecyclerView"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="30dp"/>
-                    </LinearLayout>
 
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/videos"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+                    </LinearLayout>
                 </LinearLayout>
 
             </LinearLayout>
