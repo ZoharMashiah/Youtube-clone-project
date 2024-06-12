@@ -7,6 +7,16 @@
     android:layout_height="match_parent"
     tools:context=".LoginActivity">
 
+    <Button
+        android:id="@+id/themeToggleButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Dark Mode"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:backgroundTint="@color/blueNavy"
+        android:textColor="@color/white"/>
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

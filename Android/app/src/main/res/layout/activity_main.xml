@@ -14,6 +14,17 @@
         android:background="@color/blueNavy"
         android:orientation="horizontal">
 
+        <Button
+            android:id="@+id/themeToggleButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dark mode"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:backgroundTint="@color/white"
+            android:textColor="@color/blueNavy"
+            android:layout_gravity="center"/>
+
         <SearchView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
