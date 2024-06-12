@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
             videos = Videos.getInstance().videos;
         }
 
-        binding.imageButtonAddVid.setOnClickListener(v -> {
+        binding.buttonAddVid.setOnClickListener(v -> {
             if(Users.getInstance().currentUser != null) {
                 Intent intent = new Intent(this, addVideoActivity.class);
                 startActivity(intent);

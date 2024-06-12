@@ -72,13 +72,15 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <ImageButton
-            android:id="@+id/imageButtonAddVid"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+        <Button
+            android:id="@+id/buttonAddVid"
+            android:layout_width="20dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:backgroundTint="@color/blueNavy"
-            app:srcCompat="@drawable/baseline_add_circle_24" />
+            android:drawableLeft="@drawable/baseline_add_circle_24"
+            android:text="Add Video"
+             />
 
         <Button
             android:id="@+id/loginOrLogout"
@@ -87,8 +89,9 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
             android:backgroundTint="@color/login_blue"/>
-        <ImageButton
+        <ImageView
             android:id="@+id/imageButton14"
             android:layout_width="60dp"
             android:layout_height="60dp"
