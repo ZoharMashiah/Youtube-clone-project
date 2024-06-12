@@ -1,4 +1,8 @@
 # Youtube-clone-project
+StreamBox by Yuval Fadlon and Zohar Mashiah
+-------------------------------------------
+![WhatsApp Image 2024-05-29 at 18 01 24](https://github.com/ZoharMashiah/Youtube-clone-project/assets/103347396/9416f52b-d946-4d82-8c0d-af0c2ee122ac)
+
 Hi,
 This is the first part of the project. We designed to replicate the core functionalities of YouTube. It allows users to upload, view, and interact with video content. The platform includes features such as user authentication, video streaming, commenting, liking, and subscribing to channels.
 
