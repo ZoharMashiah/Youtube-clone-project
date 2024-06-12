@@ -12,32 +12,22 @@ export default function Buttons({currentVideo,likedPush, deleteVideo, currentUse
       <p className={styles.userName}>{currentVideo.user}</p>
       <div className={styles.likedDislikedWrapper}>
         <button className={styles.likedBtn} onClick={() => {
-          if (liked){
-            setlikeNumber(likeNumber - 1)}
-          else if (!liked && disliked) {
-            setlikeNumber(likeNumber + 1)
-            setdislikeNumber(dislikeNumber - 1)
-          } else{
-            setlikeNumber(likeNumber + 1)}
-          setliked(!liked)
-          setdisliked(false)
+          if(currentUser != null)
+            likedPush(currentUser.username, true)
+          else
+            alert("You need to have a user to do like or dislike")
         }}>
-          <p className={styles.num}>{likeNumber}</p>
-          <i class={liked ? "bi bi-hand-thumbs-up-fill" : "bi bi-hand-thumbs-up"} className={styles.liked}></i>
+          <p className={styles.num}>{currentVideo.like.length}</p>
+          <i class={currentVideo.like.includes(currentUser?.username) ? "bi bi-hand-thumbs-up-fill" : "bi bi-hand-thumbs-up"} className={styles.liked}></i>
         </button>
         <button className={styles.dislikedBtn} onClick={() => {
-          if (disliked){
-            setdislikeNumber(dislikeNumber - 1)}
-          else if (!disliked && liked) {
-            setlikeNumber(likeNumber - 1)
-            setdislikeNumber(dislikeNumber + 1)
-          } else{
-          setdislikeNumber(dislikeNumber + 1)}
-          setliked(false)
-          setdisliked(!disliked)
+          if(currentUser != null)
+            likedPush(currentUser.username, false)
+          else
+            alert("You need to have a user to do like or dislike")
         }}>
-          <i class={disliked ? "bi bi-hand-thumbs-down-fill" : "bi bi-hand-thumbs-down"} className={styles.liked}></i>
-          <p className={styles.num}>{dislikeNumber}</p>
+          <i class={currentVideo.dislike.includes(currentUser?.username) ? "bi bi-hand-thumbs-down-fill" : "bi bi-hand-thumbs-down"} className={styles.liked}></i>
+          <p className={styles.num}>{currentVideo.dislike.length}</p>
           </button>
       </div>
       {/* <button className={styles.shareButton}>

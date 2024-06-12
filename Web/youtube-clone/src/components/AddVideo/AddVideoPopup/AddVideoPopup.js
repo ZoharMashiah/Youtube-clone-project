@@ -41,8 +41,8 @@ export default function AddVideoPopup({ trigger, currenUser, settrigger, setvide
       icon: image,
       video: video,
       views: 0,
-      like: 0,
-      dislike: 0,
+      like: [],
+      dislike: [],
       comments: []
     }
       setvideos([...videos, newVideo])

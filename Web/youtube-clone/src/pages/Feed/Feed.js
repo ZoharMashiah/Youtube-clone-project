@@ -57,7 +57,7 @@ export default function Feed({currentUser, setcurrentUser, videos, setVideos}) {
     setcurrentVideo(video.id)
   }
 
-  const likedPush = (addLiked, addDisliked) => {
+  const likedPush = (username, like) => {
     let changedVideo = {
       id: videos[currentVideo-1].id,
       title: videos[currentVideo-1].title,
@@ -69,9 +69,29 @@ export default function Feed({currentUser, setcurrentUser, videos, setVideos}) {
       icon: videos[currentVideo-1].icon,
       video: videos[currentVideo-1].video,
       views: videos[currentVideo-1].view,
-      like: videos[currentVideo-1].like + addLiked,
-      dislike: videos[currentVideo-1].dislike + addDisliked,
+      like: videos[currentVideo-1].like,
+      dislike: videos[currentVideo-1].dislike,
       comments: videos[currentVideo-1].comments
+    }
+
+    if (like == true) {
+      if (changedVideo.dislike.includes(username)){
+        changedVideo.dislike = changedVideo.dislike.filter((user) => user != username)
+        changedVideo.like.push(username)
+      }
+      else if (!changedVideo.like.includes(username))
+        changedVideo.like.push(username)
+      else
+        changedVideo.like = changedVideo.like.filter((user) => user != username)
+    } else {
+      if (changedVideo.like.includes(username)){
+        changedVideo.like = changedVideo.like.filter((user) => user != username)
+        changedVideo.dislike.push(username)
+      }
+      else if (!changedVideo.dislike.includes(username))
+        changedVideo.dislike.push(username)
+      else
+        changedVideo.dislike = changedVideo.dislike.filter((user) => user != username)
     }
     editCurrent(changedVideo)
   }
@@ -85,7 +105,6 @@ export default function Feed({currentUser, setcurrentUser, videos, setVideos}) {
           comments.push(com)
         }
       })
-
     let changedVideo = {
       id: videos[currentVideo-1].id,
       title: videos[currentVideo-1].title,
