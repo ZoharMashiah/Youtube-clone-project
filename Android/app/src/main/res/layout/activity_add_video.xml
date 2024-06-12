@@ -18,6 +18,16 @@
             android:background="@color/blueNavy"
             android:orientation="horizontal">
 
+            <Button
+                android:id="@+id/themeToggleButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Dark Mode"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:backgroundTint="@color/white"
+                android:textColor="@color/blueNavy"/>
+
             <ImageView
                 android:id="@+id/imageView3"
                 android:layout_width="wrap_content"
