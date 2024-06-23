@@ -36,7 +36,7 @@ export default function AddVideoPopup({ currenUser, setvideos, videos, setfilter
     }
 
     const newVideo = createNewVideo();
-    updateState(newVideo);
+    updateState(newVideo); // data
     resetForm();
 
     try {
@@ -44,6 +44,7 @@ export default function AddVideoPopup({ currenUser, setvideos, videos, setfilter
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          // add here jwt authentication
         },
         body: JSON.stringify(newVideo),
       });
@@ -52,7 +53,9 @@ export default function AddVideoPopup({ currenUser, setvideos, videos, setfilter
         throw new Error(`HTTP error! status: ${res.status}`);
       }
 
-      const data = await res.json();
+      const data = await res.json(); // fetch the video back
+      console.log("Success:", data);
+      resetForm();
     } catch (error) {
       console.error("Error adding video:", error);
       alert("Failed to add video. Please try again.");
@@ -111,12 +114,18 @@ export default function AddVideoPopup({ currenUser, setvideos, videos, setfilter
           <input
             placeholder="Title"
             className={styles.title}
+            name="title"
             value={title}
             onChange={(e) => {
               settitle(e.target.value);
             }}
           />
-          <input placeholder="Description" value={description} onChange={(e) => setdescription(e.target.value)} />
+          <input
+            placeholder="Description"
+            value={description}
+            onChange={(e) => setdescription(e.target.value)}
+            name="description"
+          />
           <Dropdown className={styles.dropdown}>
             <Dropdown.Toggle variant="primary" id="dropdown-basic">
               {category === "" ? "Category" : category}
@@ -133,6 +142,7 @@ export default function AddVideoPopup({ currenUser, setvideos, videos, setfilter
             className={styles.videoUpload}
             type="file"
             alt="Upload Video"
+            name="video"
             accept=".mp4"
             onChange={(e) => {
               let file = e.target.files[0];
@@ -144,6 +154,7 @@ export default function AddVideoPopup({ currenUser, setvideos, videos, setfilter
             type="file"
             alt="Upload Photo"
             accept=".png, .jpeg, .jpg"
+            name="thumbnail"
             onChange={(e) => {
               let file = e.target.files[0];
               setimage(URL.createObjectURL(file));
