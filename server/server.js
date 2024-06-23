@@ -13,7 +13,27 @@ app.use(express.static(path.join(__dirname, "../Web/youtube-clone/public"))); //
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.post("/api/users/:userId/video", (req, res) => {
+app.use((req, res, next) => {
+  console.log("Received request:", req.method, req.url);
+  next();
+});
+
+// app.post("/api/users/:userId/video", (req, res) => {
+app.post("/api/users/89/video", (req, res) => {
+  console.log(req.params.userId);
+  try {
+    res.status(201).json({
+      ok: true,
+      message: "Video uploaded successfully",
+    });
+  } catch (error) {
+    console.error("Error uploading video:", error);
+    res.status(500).json({
+      ok: false,
+      message: "Failed to upload video",
+      error: error.message,
+    });
+  }
   console.log(req.body);
 });
 

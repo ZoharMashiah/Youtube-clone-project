@@ -26,36 +26,45 @@ export default function AddVideoPopup({ currenUser, setvideos, videos, setfilter
     "3D printing",
   ]);
 
-  const currUser = TEMP[0];
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!isFormValid) {
+    if (!isFormValid()) {
       alert("Fill all the fields!");
       return;
     }
 
-    const newVideo = createNewVideo();
-    updateState(newVideo); // data
-    resetForm();
+    const formData = new FormData();
+    formData.append("title", "test");
+    formData.append("id", "test");
+    formData.append("description", "test");
+    formData.append("category", "test");
+    formData.append("video", "test");
+    formData.append("thumbnail", "test");
+    formData.append("user", "test");
+    formData.append("user_image", "test");
+    formData.append("publication_date", "test");
+    formData.append("views", "test");
+    formData.append("like", "test");
+    formData.append("dislike", "test");
+    formData.append("comments", "test");
 
     try {
-      const res = await fetch(`api/users/${currUser.id}/videos`, {
+      console.log(currenUser.id);
+      const res = await fetch(`/api/users/89/video`, {
+        // const res = await fetch(`/api/users/${currenUser.id}/video`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          // add here jwt authentication
-        },
-        body: JSON.stringify(newVideo),
+        body: formData,
       });
-
+      console.log("test4");
       if (!res.ok) {
+        console.log("Full response:", res);
+        console.log("Sending request to:", `/api/users/${currenUser.id}/video`);
         throw new Error(`HTTP error! status: ${res.status}`);
       }
-
-      const data = await res.json(); // fetch the video back
-      console.log("Success:", data);
+      const data = await res.json(); // get video data back from the server
+      // const newVideo = createNewVideo(data);
       resetForm();
+      console.log("Success:", data);
     } catch (error) {
       console.error("Error adding video:", error);
       alert("Failed to add video. Please try again.");
@@ -76,21 +85,21 @@ export default function AddVideoPopup({ currenUser, setvideos, videos, setfilter
     return title.length > 0 && description.length > 0 && image != null && video != null && category.length > 0;
   };
 
-  const createNewVideo = () => ({
-    id: getMaxId() + 1,
-    title,
-    description,
-    user: currenUser.username,
-    user_image: currenUser.photo,
-    category,
-    publication_date: Date.now(),
-    icon: image,
-    video,
-    views: 0,
-    like: [],
-    dislike: [],
-    comments: [],
-  });
+  // const createNewVideo = () => ({
+  //   id: getMaxId() + 1,
+  //   title,
+  //   description,
+  //   user: currenUser.username,
+  //   user_image: currenUser.photo,
+  //   category,
+  //   publication_date: Date.now(),
+  //   icon: image,
+  //   video,
+  //   views: 0,
+  //   like: [],
+  //   dislike: [],
+  //   comments: [],
+  // });
 
   const updateState = (newVideo) => {
     setvideos((prevVideos) => [...prevVideos, newVideo]);
@@ -146,7 +155,7 @@ export default function AddVideoPopup({ currenUser, setvideos, videos, setfilter
             accept=".mp4"
             onChange={(e) => {
               let file = e.target.files[0];
-              setvideo(URL.createObjectURL(file));
+              setvideo(file);
             }}
           />
           <input
