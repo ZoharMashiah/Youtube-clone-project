@@ -13,13 +13,7 @@ app.use(express.static(path.join(__dirname, "../Web/youtube-clone/public"))); //
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use((req, res, next) => {
-  console.log("Received request:", req.method, req.url);
-  next();
-});
-
-// app.post("/api/users/:userId/video", (req, res) => {
-app.post("/api/users/89/video", (req, res) => {
+app.post("/api/users/:userId/video", (req, res) => {
   console.log(req.params.userId);
   try {
     res.status(201).json({

@@ -49,9 +49,7 @@ export default function AddVideoPopup({ currenUser, setvideos, videos, setfilter
     formData.append("comments", "test");
 
     try {
-      console.log(currenUser.id);
-      const res = await fetch(`/api/users/89/video`, {
-        // const res = await fetch(`/api/users/${currenUser.id}/video`, {
+      const res = await fetch(`/api/users/${currenUser.id}/video`, {
         method: "POST",
         body: formData,
       });
@@ -64,7 +62,7 @@ export default function AddVideoPopup({ currenUser, setvideos, videos, setfilter
       const data = await res.json(); // get video data back from the server
       // const newVideo = createNewVideo(data);
       resetForm();
-      console.log("Success:", data);
+      console.log(data);
     } catch (error) {
       console.error("Error adding video:", error);
       alert("Failed to add video. Please try again.");
