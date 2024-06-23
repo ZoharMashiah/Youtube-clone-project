@@ -1,0 +1,41 @@
+[
+  {
+    "id": 1,
+    "username": "admin",
+    "password": "admin",
+    "firstName": "admin",
+    "middleName": "admin",
+    "lastName": "admin",
+    "birthDate": "admin",
+    "userImage": "utilites/video1.png",
+    "settings": [
+      {
+        "darkmode": 0
+      }
+    ],
+    "videos": [
+      {
+        "id": 1,
+        "title": "World Largest Foo Created in Foobar Event",
+        "description": "des",
+        "category": "Gaming",
+        "icon": "utilites/video1.png",
+        "video": "utilites/video1.mp4",
+        "publicationDate": 1717082000419,
+        "views": 200000000,
+        "like": [],
+        "dislike": [],
+        "comments": [
+          {
+            "id": 1,
+            "userId": "Baz Caz",
+            "parentId": 1,
+            "childId": 1,
+            "body": "World Largest Foo Created in Foobar Event",
+            "publicationDate": 1717082000419
+          }
+        ]
+      }
+    ]
+  }
+]
