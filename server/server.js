@@ -17,9 +17,4 @@ app.post("/api/users/:userId/video", (req, res) => {
   console.log(req.body);
 });
 
-app.get("/api/test", (req, res) => {
-  console.log("Connected to the react app");
-  res.json({ message: "Connection successful!" });
-});
-
 app.listen(5000, () => console.log("Server running on port 5000"));
