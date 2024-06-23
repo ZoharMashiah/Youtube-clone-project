@@ -3,7 +3,7 @@ import styles from "./AddVideoPopup.module.css";
 import Dropdown from "react-bootstrap/Dropdown";
 import TEMP from "../../data/temp.json";
 
-export default function AddVideoPopup({ currenUser, setvideos, videos, setfilterdVideos, filterdedVideos, onClose }) {
+export default function AddVideoPopup({ currenUser, setvideos, videos, setfilterdVideos, onClose }) {
   const [title, settitle] = useState("");
   const [description, setdescription] = useState("");
   const [image, setimage] = useState(null);
@@ -28,7 +28,8 @@ export default function AddVideoPopup({ currenUser, setvideos, videos, setfilter
 
   const currUser = TEMP[0];
 
-  const handleAdd = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     if (!isFormValid) {
       alert("Fill all the fields!");
       return;
@@ -104,9 +105,9 @@ export default function AddVideoPopup({ currenUser, setvideos, videos, setfilter
 
   return (
     <div className={styles.AddVideoWrapper}>
-      <div class="card" className={styles.AddVideoCard}>
+      <div className={`card ${styles.AddVideoCard}`}>
         <h2 className={styles.h2}>Add New Video</h2>
-        <div className={styles.cardWrapper}>
+        <form onSubmit={handleSubmit} className={styles.cardWrapper}>
           <input
             placeholder="Title"
             className={styles.title}
@@ -121,9 +122,11 @@ export default function AddVideoPopup({ currenUser, setvideos, videos, setfilter
               {category === "" ? "Category" : category}
             </Dropdown.Toggle>
             <Dropdown.Menu className={styles.selectCategory}>
-              {categories.map((categ) => {
-                return <Dropdown.Item onClick={() => setcategory(categ)}>{categ}</Dropdown.Item>;
-              })}
+              {categories.map((categ) => (
+                <Dropdown.Item key={categ} onClick={() => setcategory(categ)}>
+                  {categ}
+                </Dropdown.Item>
+              ))}
             </Dropdown.Menu>
           </Dropdown>
           <input
@@ -146,15 +149,15 @@ export default function AddVideoPopup({ currenUser, setvideos, videos, setfilter
               setimage(URL.createObjectURL(file));
             }}
           />
-          <div class="btn-group">
+          <div className="btn-group">
             <button class="btn btn-primary" className={styles.cancelBtn} onClick={resetForm}>
               Cancel
             </button>
-            <button class="btn btn-primary" className={styles.addBtn} onClick={handleAdd}>
+            <button type="submit" class="btn btn-primary" className={styles.addBtn}>
               Add
             </button>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   );

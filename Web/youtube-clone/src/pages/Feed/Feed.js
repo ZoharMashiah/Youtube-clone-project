@@ -195,7 +195,6 @@ export default function Feed({ currentUser, setcurrentUser, videos, setVideos })
           videos={videos}
           currenUser={currentUser}
           setfilterdVideos={setfilterdedVideos}
-          filterdedVideos={filterdedVideos}
           onClose={() => settrigger(false)}
         />
       ) : (
