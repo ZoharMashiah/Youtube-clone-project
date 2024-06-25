@@ -42,6 +42,8 @@ export default function Comments({
       icon: currentVideo.icon,
       video: currentVideo.video,
       views: currentVideo.views,
+      like: currentVideo.like,
+      dislike: currentVideo.dislike,
       comments: [...currentVideo.comments, addedComment],
     };
     setAddComment("");
