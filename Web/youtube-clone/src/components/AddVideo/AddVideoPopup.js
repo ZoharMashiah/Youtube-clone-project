@@ -108,7 +108,6 @@ export default function AddVideoPopup({ currenUser, setvideos, videos, setfilter
     // const videoBase64 = await fileToBase64(video);
 
     return {
-      id: getMaxId() + 1,
       title: title,
       description: description,
       user: currenUser.username,
@@ -135,16 +134,6 @@ export default function AddVideoPopup({ currenUser, setvideos, videos, setfilter
     setvideo(null);
     setcategory("");
     onClose();
-  };
-
-  const getMaxId = () => {
-    let id = 0;
-    videos.map((video) => {
-      if (video.id > id) {
-        id = video.id;
-      }
-    });
-    return id;
   };
 
   const readFileAsDataURL = (file) => {
