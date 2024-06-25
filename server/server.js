@@ -5,6 +5,10 @@ const path = require("path");
 const fileUpload = require("express-fileupload");
 const jwt = require("jsonwebtoken");
 const session = require("express-session");
+const mongoose = require("mongoose");
+
+// here the uri to the mongoose, its gonna throw and print an error but wont stop the server
+const mongoURI = "mongodb+srv://blah blah uri here";
 
 const videoRoutes = require("./routes/videoRoutes");
 
@@ -12,10 +16,21 @@ const app = express();
 
 app.use(cors());
 app.use(express.static(path.join(__dirname, "../Web/youtube-clone/build")));
-app.use(express.static(path.join(__dirname, "../Web/youtube-clone/public")));
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 app.use(fileUpload());
 app.use(videoRoutes);
 
-app.listen(5000, () => console.log("Server running on port 5000"));
+mongoose
+  .connect(mongoURI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {
+    console.log("Connected to mongoose");
+  })
+  .catch((error) => {
+    console.log("Error connecting to mongoose: ", error);
+  });
+
+app.listen(3000, () => console.log("Server running on port 3000"));

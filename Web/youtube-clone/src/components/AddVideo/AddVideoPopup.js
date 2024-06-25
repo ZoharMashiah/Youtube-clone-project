@@ -45,8 +45,8 @@ export default function AddVideoPopup({ currenUser, setvideos, videos, setfilter
         body: JSON.stringify(newVideo),
       });
 
-      console.log("Response status:", res.status);
-      console.log("Response ok:", res.ok);
+      const data = await res.json();
+      console.log(data);
 
       if (!res.ok) {
         console.log("Full response:", res);
@@ -54,17 +54,13 @@ export default function AddVideoPopup({ currenUser, setvideos, videos, setfilter
         throw new Error(`HTTP error. status: ${res.status}`);
       }
 
-      const videoData = await res.json();
-      console.log(videoData);
-      const videoFromServer = videoData.videoData;
-      console.log(videoFromServer);
-
-      resetForm();
-      alert("Uploaded is successful.");
+      alert("Upload is successful!");
     } catch (error) {
       console.error("Error adding video:", error);
       alert("Failed to add video. Please try again.");
     }
+
+    resetForm();
   };
 
   const isFormValid = () => {
@@ -73,40 +69,15 @@ export default function AddVideoPopup({ currenUser, setvideos, videos, setfilter
     );
   };
 
-  // const parseVideoData = () => ({});
-
   useEffect(() => {
     if (currenUser.username === "admin" && currenUser.password === "admin") {
       settitle("Admin Default Title");
       setdescription("Admin Default Description");
       setcategory("Admin Default Category");
-      setimage("utilites/video1.png");
-      setvideo("utilites/video1.mp4");
     }
   }, [currenUser]);
 
-  // const createNewVideo = () => {
-  //   const formData = new FormData();
-  //   formData.append("id", getMaxId() + 1);
-  //   formData.append("title", title);
-  //   formData.append("description", description);
-  //   formData.append("user", currenUser.username);
-  //   formData.append("category", category);
-  //   formData.append("publication_date", Date.now());
-  //   formData.append("views", "0");
-  //   formData.append("like", JSON.stringify([]));
-  //   formData.append("dislike", JSON.stringify([]));
-  //   formData.append("comments", JSON.stringify([]));
-  //   // need to be files
-  //   formData.append("icon", image);
-  //   formData.append("video", video);
-  //   return formData;
-  // };
-
   const createNewVideo = async () => {
-    // const imageBase64 = await fileToBase64(image);
-    // const videoBase64 = await fileToBase64(video);
-
     return {
       title: title,
       description: description,
@@ -120,11 +91,6 @@ export default function AddVideoPopup({ currenUser, setvideos, videos, setfilter
       dislike: [],
       comments: [],
     };
-  };
-
-  const updateState = (newVideo) => {
-    setvideos((prevVideos) => [...prevVideos, newVideo]);
-    setfilterdVideos((prevFilteredVideos) => [...prevFilteredVideos, newVideo]);
   };
 
   const resetForm = () => {
