@@ -62,6 +62,5 @@ const create = async (videoData) => {
 };
 
 module.exports = {
-  validateBase64,
   create,
 };
