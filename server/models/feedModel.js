@@ -7,15 +7,6 @@ async function getTopVideos(numberOfVideos) {
   }
 }
 
-async function getUserVideos(userId) {
-  try {
-    return await user.findById(userId, "videos").sort({ title: 1 });
-  } catch (error) {
-    console.log("Error fetching videos");
-    throw error;
-  }
-}
-
 async function getRandomVideos(numberOfVideos, notIn) {
   try {
     const randomVideos = await video.aggregate([{ $match: { $nin: notIn } }, { $sample: { size: numberOfVideos } }]);
@@ -27,4 +18,4 @@ async function getRandomVideos(numberOfVideos, notIn) {
   }
 }
 
-export { getTopVideos, getRandomVideos, getUserVideos };
+export { getTopVideos, getRandomVideos };

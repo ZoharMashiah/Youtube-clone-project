@@ -1,4 +1,4 @@
-const feed = require("../models/videoListModel");
+const feed = require("../models/feedModel");
 
 async function getRecommendedList(req, res) {
   try {
@@ -13,7 +13,6 @@ async function getRecommendedList(req, res) {
   } catch (error) {
     console.error("Error fetching video list: ", error);
     res.status(500).json({
-      message: "Failed to fetch video list",
       error: error.message,
     });
   }

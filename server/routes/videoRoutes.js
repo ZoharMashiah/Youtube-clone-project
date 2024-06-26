@@ -1,6 +1,10 @@
 const express = require("express");
-const feedController = require("../controllers/videoController");
+const videoController = require("../controllers/videoController");
+const router = express.Router();
 
-const router = express.Router;
+router.get("/api/users/:userId/videos/:pid", videoController.getVideo);
+router.patch("/api/users/:userId/videos/:pid", videoController.editVideo);
+router.patch("/api/users/:userId/videos/:pid", videoController.updateVideo);
+router.delete("/api/users/:userId/videos/:pid", videoController.deleteVideo);
 
-router.get("/", feedController.getRecommendedList());
+module.exports = router;

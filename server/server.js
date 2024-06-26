@@ -9,8 +9,9 @@ const mongoose = require("mongoose");
 
 const mongoURI = "mongodb+srv://zoharmashiah:V5BU8uOWvDTWTPr6@zohar.lnkxns4.mongodb.net/api";
 
-const videoRoutes = require("./routes/videoRoutes");
+const feedRoutes = require("./routes/feedRoutes");
 const userVideoRoutes = require("./routes/userVideoRoutes");
+const videoRoutes = require("./routes/videoRoutes");
 
 const app = express();
 
@@ -20,8 +21,9 @@ app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 app.use(fileUpload());
 
-app.use("/api/videos", videoRoutes);
+app.use("/api/videos", feedRoutes);
 app.use("/api/users/:userId/video", userVideoRoutes);
+app.use("/api/users/:userId/videos/:pid", videoRoutes);
 
 mongoose
   .connect(mongoURI, {

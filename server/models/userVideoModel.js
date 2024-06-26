@@ -7,11 +7,26 @@ const videoSchema = new mongoose.Schema({
   category: String,
   publication_date: Date,
   views: Number,
-  like: [mongoose.Schema.Types.ObjectId],
-  dislike: [mongoose.Schema.Types.ObjectId],
-  comments: [mongoose.Schema.Types.ObjectId],
+  like: [{ type: mongoose.Schema.Types.ObjectId, ref: "user" }],
+  dislike: [{ type: mongoose.Schema.Types.ObjectId, ref: "user" }],
+  comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "comment" }],
   icon: String,
   video: String,
+});
+
+videoSchema.pre("deleteOne", { document: true, query: false }, async function () {
+  const user = findById(this.user_id);
+  await user.updateMany(
+    {
+      $or: [{ likes: this._id }, { dislikes: this._id }],
+    },
+    {
+      $pull: {
+        likes: this._id,
+        dislikes: this._id,
+      },
+    }
+  );
 });
 
 const VideoModel = mongoose.model("Video", videoSchema);
@@ -55,11 +70,20 @@ const create = async (videoData) => {
 
   return {
     success: true,
-    message: "Video uploaded successfully",
     videoId: newVideo._id,
   };
 };
 
+async function getUserVideos(userId) {
+  try {
+    return await user.findById(userId, "videos").sort({ title: 1 });
+  } catch (error) {
+    throw error;
+  }
+}
+
 module.exports = {
   create,
+  getUserVideos,
+  VideoModel,
 };

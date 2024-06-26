@@ -36,7 +36,7 @@ export default function AddVideoPopup({ currenUser, onClose }) {
 
     try {
       const newVideo = await createNewVideo();
-      const address = `/api/users/${currenUser.id}/video`;
+      const address = `/api/users/${currenUser.id}/videos`;
       console.log("Sending request to:", address);
       const res = await fetch(address, {
         method: "POST",
