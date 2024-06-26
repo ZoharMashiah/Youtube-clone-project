@@ -5,12 +5,11 @@ const path = require("path");
 const jwt = require("jsonwebtoken");
 const session = require("express-session");
 const mongoose = require('mongoose');
-const { error } = require("console");
+// const { error } = require("console");
 const commentRouter = require("./routes/comments")
 require('dotenv').config({path:`./config/.env.local`});
 
 const app = express();
-console.log(process.env.PORT)
 mongoose.connect(process.env.MONGO_LINK)
   .then(() => {
     app.use(cors());
@@ -18,6 +17,7 @@ mongoose.connect(process.env.MONGO_LINK)
     app.use(express.static(path.join(__dirname, "../Web/youtube-clone/public"))); // server recognizes public
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: true }));
+
     app.use("/", commentRouter);
 
     app.post("/api/users/:userId/video", (req, res) => {
