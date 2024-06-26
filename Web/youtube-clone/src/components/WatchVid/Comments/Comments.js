@@ -42,11 +42,13 @@ export default function Comments({
       icon: currentVideo.icon,
       video: currentVideo.video,
       views: currentVideo.views,
-      comments: [...currentVideo.comments, addedComment],
-    };
-    setAddComment("");
-    editVideo(changedVideo);
-  };
+      like: currentVideo.like,
+      dislike: currentVideo.dislike,
+      comments: [...currentVideo.comments,addedComment]
+    }
+    setAddComment("")
+    editVideo(changedVideo)
+  }
 
   return (
     <div className={styles.commentsWrapper}>
