@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import styles from "./UpperButtons.module.css";
-import AddVideoPopup from "../../AddVideo/AddVideoPopup";
 
 export default function UpperButtons({ settrigger, currentUser, setcurrentUser, setgotologin }) {
   const [darkMode, setDarkMode] = useState(false);

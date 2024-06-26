@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./AddVideoPopup.module.css";
 import Dropdown from "react-bootstrap/Dropdown";
-import TEMP from "../../data/temp.json";
 
 export default function AddVideoPopup({ currenUser, setvideos, videos, setfilterdVideos, onClose }) {
   const [title, settitle] = useState("");
@@ -28,80 +27,70 @@ export default function AddVideoPopup({ currenUser, setvideos, videos, setfilter
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!isFormValid()) {
+    const isAdmin = currenUser.username === "admin" && currenUser.password === "admin";
+
+    if (!isAdmin && !isFormValid()) {
       alert("Fill all the fields!");
       return;
     }
 
-    const formData = new FormData();
-    formData.append("title", "test");
-    formData.append("id", "test");
-    formData.append("description", "test");
-    formData.append("category", "test");
-    formData.append("video", "test");
-    formData.append("thumbnail", "test");
-    formData.append("user", "test");
-    formData.append("user_image", "test");
-    formData.append("publication_date", "test");
-    formData.append("views", "test");
-    formData.append("like", "test");
-    formData.append("dislike", "test");
-    formData.append("comments", "test");
-
     try {
-      const res = await fetch(`/api/users/${currenUser.id}/video`, {
+      const newVideo = await createNewVideo();
+      const address = `/api/users/${currenUser.id}/video`;
+      const res = await fetch(address, {
         method: "POST",
-        body: formData,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newVideo),
       });
-      console.log("test4");
+
+      const data = await res.json();
+      console.log(data);
+
       if (!res.ok) {
         console.log("Full response:", res);
-        console.log("Sending request to:", `/api/users/${currenUser.id}/video`);
-        throw new Error(`HTTP error! status: ${res.status}`);
+        console.log("Sending request to:", address);
+        throw new Error(`HTTP error. status: ${res.status}`);
       }
-      const data = await res.json(); // get video data back from the server
-      // const newVideo = createNewVideo(data);
-      resetForm();
-      console.log(data);
+
+      alert("Upload is successful!");
     } catch (error) {
       console.error("Error adding video:", error);
       alert("Failed to add video. Please try again.");
     }
-  };
 
-  const getMaxId = () => {
-    let id = 0;
-    videos.map((video) => {
-      if (video.id > id) {
-        id = video.id;
-      }
-    });
-    return id;
+    resetForm();
   };
 
   const isFormValid = () => {
-    return title.length > 0 && description.length > 0 && image != null && video != null && category.length > 0;
+    return (
+      title.trim() !== "" && description.trim() !== "" && category.trim() !== "" && image !== null && video !== null
+    );
   };
 
-  // const createNewVideo = () => ({
-  //   id: getMaxId() + 1,
-  //   title,
-  //   description,
-  //   user: currenUser.username,
-  //   user_image: currenUser.photo,
-  //   category,
-  //   publication_date: Date.now(),
-  //   icon: image,
-  //   video,
-  //   views: 0,
-  //   like: [],
-  //   dislike: [],
-  //   comments: [],
-  // });
+  useEffect(() => {
+    if (currenUser.username === "admin" && currenUser.password === "admin") {
+      settitle("Admin Default Title");
+      setdescription("Admin Default Description");
+      setcategory("Admin Default Category");
+    }
+  }, [currenUser]);
 
-  const updateState = (newVideo) => {
-    setvideos((prevVideos) => [...prevVideos, newVideo]);
-    setfilterdVideos((prevFilteredVideos) => [...prevFilteredVideos, newVideo]);
+  const createNewVideo = async () => {
+    return {
+      title: title,
+      description: description,
+      user: currenUser.username,
+      category: category,
+      publication_date: Date.now(),
+      icon: image,
+      video: video,
+      views: 0,
+      like: [],
+      dislike: [],
+      comments: [],
+    };
   };
 
   const resetForm = () => {
@@ -111,6 +100,15 @@ export default function AddVideoPopup({ currenUser, setvideos, videos, setfilter
     setvideo(null);
     setcategory("");
     onClose();
+  };
+
+  const readFileAsDataURL = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (event) => resolve(event.target.result);
+      reader.onerror = (error) => reject(error);
+      reader.readAsDataURL(file);
+    });
   };
 
   return (
@@ -151,9 +149,16 @@ export default function AddVideoPopup({ currenUser, setvideos, videos, setfilter
             alt="Upload Video"
             name="video"
             accept=".mp4"
-            onChange={(e) => {
-              let file = e.target.files[0];
-              setvideo(file);
+            onChange={async (e) => {
+              const file = e.target.files[0];
+              if (file) {
+                try {
+                  const dataUrl = await readFileAsDataURL(file);
+                  setvideo(dataUrl);
+                } catch (error) {
+                  console.error("Error reading file:", error);
+                }
+              }
             }}
           />
           <input
@@ -162,9 +167,16 @@ export default function AddVideoPopup({ currenUser, setvideos, videos, setfilter
             alt="Upload Photo"
             accept=".png, .jpeg, .jpg"
             name="thumbnail"
-            onChange={(e) => {
-              let file = e.target.files[0];
-              setimage(URL.createObjectURL(file));
+            onChange={async (e) => {
+              const file = e.target.files[0];
+              if (file) {
+                try {
+                  const dataUrl = await readFileAsDataURL(file);
+                  setimage(dataUrl);
+                } catch (error) {
+                  console.error("Error reading file:", error);
+                }
+              }
             }}
           />
           <div className="btn-group">

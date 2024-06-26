@@ -17,7 +17,7 @@ function App() {
   }, []);
   const createFakeUser = () => {
     const fakeUser = {
-      id: "89",
+      id: 89,
       username: "admin",
       password: "admin",
       firstName: "Test",
