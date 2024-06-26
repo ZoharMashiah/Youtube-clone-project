@@ -191,10 +191,7 @@ export default function Feed({ currentUser, setcurrentUser, videos, setVideos })
       </div>
       {trigger && currentUser != null ? (
         <AddVideoPopup
-          setvideos={setVideos}
-          videos={videos}
-          currenUser={currentUser}
-          setfilterdVideos={setfilterdedVideos}
+          currenUser={currentUser} // eventually gets user id
           onClose={() => settrigger(false)}
         />
       ) : (

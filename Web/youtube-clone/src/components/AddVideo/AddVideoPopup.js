@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styles from "./AddVideoPopup.module.css";
 import Dropdown from "react-bootstrap/Dropdown";
 
-export default function AddVideoPopup({ currenUser, setvideos, videos, setfilterdVideos, onClose }) {
+export default function AddVideoPopup({ currenUser, onClose }) {
   const [title, settitle] = useState("");
   const [description, setdescription] = useState("");
   const [image, setimage] = useState(null);
