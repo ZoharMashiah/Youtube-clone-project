@@ -19,9 +19,9 @@ mongoose.connect(process.env.MONGO_LINK, {
     app.use(cors());
     app.use(express.static(path.join(__dirname, "../Web/youtube-clone/build"))); // server recognizes the build
     app.use(bodyParser.json({ limit: "50mb" }));
-app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
-app.use(fileUpload());
-app.use(videoRoutes); // server recognizes public
+    app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
+    app.use(fileUpload());
+    app.use(videoRoutes); // server recognizes public
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: true }));
 
