@@ -21,8 +21,7 @@ mongoose.connect(process.env.MONGO_LINK, {
     app.use(bodyParser.json({ limit: "50mb" }));
     app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
     app.use(fileUpload());
-    app.use(videoRoutes); // server recognizes public
-
+    //app.use(videoRoutes); // server recognizes public
     app.use("/", commentRouter);
 
     app.listen(process.env.PORT, () => console.log("Server running on port " + process.env.PORT));
