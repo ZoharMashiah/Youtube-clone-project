@@ -8,7 +8,7 @@ export default function AddVideoPopup({ currenUser, setvideos, videos, setfilter
   const [image, setimage] = useState(null);
   const [video, setvideo] = useState(null);
   const [category, setcategory] = useState("");
-  const [categories, setCategories] = useState([
+  const categories = [
     "Music",
     "Mixes",
     "JavaScript",
@@ -23,7 +23,7 @@ export default function AddVideoPopup({ currenUser, setvideos, videos, setfilter
     "Comedy clubs",
     "Skills",
     "3D printing",
-  ]);
+  ];
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -79,17 +79,12 @@ export default function AddVideoPopup({ currenUser, setvideos, videos, setfilter
 
   const createNewVideo = async () => {
     return {
+      user_id: currenUser.id,
       title: title,
       description: description,
-      user: currenUser.username,
       category: category,
-      publication_date: Date.now(),
-      icon: image,
       video: video,
-      views: 0,
-      like: [],
-      dislike: [],
-      comments: [],
+      icon: image,
     };
   };
 

@@ -8,7 +8,7 @@ const session = require("express-session");
 const mongoose = require("mongoose");
 
 // here the uri to the mongoose, its gonna throw and print an error but wont stop the server
-const mongoURI = "mongodb+srv://blah blah uri here";
+const mongoURI = "mongodb+srv://zoharmashiah:V5BU8uOWvDTWTPr6@zohar.lnkxns4.mongodb.net/api";
 
 const videoRoutes = require("./routes/videoRoutes");
 

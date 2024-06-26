@@ -1,15 +1,15 @@
 const mongoose = require("mongoose");
 
 const videoSchema = new mongoose.Schema({
+  user_id: Number,
   title: String,
   description: String,
-  user_id: Number,
   category: String,
   publication_date: Date,
   views: Number,
-  like: [String],
-  dislike: [String],
-  comments: [{ user_id: Number, text: String, date: Date }],
+  like: [mongoose.Schema.Types.ObjectId],
+  dislike: [mongoose.Schema.Types.ObjectId],
+  comments: [mongoose.Schema.Types.ObjectId],
   icon: String,
   video: String,
 });
@@ -25,8 +25,7 @@ const validateBase64 = (base64Data, expectedType) => {
 };
 
 const create = async (videoData) => {
-  const { title, description, user, category, publication_date, views, icon, video, like, dislike, comments } =
-    videoData;
+  const { user_id, title, description, category, video, icon } = videoData;
 
   let processedIcon = "";
   if (icon) {
@@ -39,15 +38,15 @@ const create = async (videoData) => {
   }
 
   const newVideo = new VideoModel({
+    user_id,
     title,
     description,
-    user,
     category,
-    publication_date,
-    views,
-    like: Array.isArray(like) ? like : [],
-    dislike: Array.isArray(dislike) ? dislike : [],
-    comments: Array.isArray(comments) ? comments : [],
+    publication_date: Date.now(),
+    views: 0,
+    like: [],
+    dislike: [],
+    comments: [],
     icon: processedIcon,
     video: processedVideo,
   });
