@@ -7,11 +7,10 @@ const jwt = require("jsonwebtoken");
 const session = require("express-session");
 const mongoose = require("mongoose");
 
-// here the uri to the mongoose, its gonna throw and print an error but wont stop the server
 const mongoURI = "mongodb+srv://zoharmashiah:V5BU8uOWvDTWTPr6@zohar.lnkxns4.mongodb.net/api";
 
-const user_videoRoutes = require("./routes/user-videoRoutes");
 const videoRoutes = require("./routes/videoRoutes");
+const userVideoRoutes = require("./routes/userVideoRoutes");
 
 const app = express();
 
@@ -21,8 +20,8 @@ app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 app.use(fileUpload());
 
-app.use("/api/users/:userId/video", user_videoRoutes);
 app.use("/api/videos", videoRoutes);
+app.use("/api/users/:userId/video", userVideoRoutes);
 
 mongoose
   .connect(mongoURI, {

@@ -3,4 +3,4 @@ const feedController = require("../controllers/videoController");
 
 const router = express.Router;
 
-router.get("/", feedController.getVideoList());
+router.get("/", feedController.getRecommendedList());

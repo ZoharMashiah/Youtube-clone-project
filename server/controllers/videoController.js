@@ -1,6 +1,6 @@
 const feed = require("../models/videoModel");
 
-exports.getVideoList = async (req, res) => {
+exports.getRecommendedList = async (req, res) => {
   try {
     const mostViewed = await feed.getTopVideos(10);
     const randomVideos = await feed.getRandomVideos(10, mostViewed);
