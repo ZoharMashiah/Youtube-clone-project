@@ -37,6 +37,7 @@ export default function AddVideoPopup({ currenUser, onClose }) {
     try {
       const newVideo = await createNewVideo();
       const address = `/api/users/${currenUser.id}/video`;
+      console.log("Sending request to:", address);
       const res = await fetch(address, {
         method: "POST",
         headers: {
@@ -50,7 +51,6 @@ export default function AddVideoPopup({ currenUser, onClose }) {
 
       if (!res.ok) {
         console.log("Full response:", res);
-        console.log("Sending request to:", address);
         throw new Error(`HTTP error. status: ${res.status}`);
       }
 
@@ -102,7 +102,7 @@ export default function AddVideoPopup({ currenUser, onClose }) {
       const reader = new FileReader();
       reader.onload = (event) => resolve(event.target.result);
       reader.onerror = (error) => reject(error);
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(file); // read data as url is old, swap with URL.createObjectURL(file)
     });
   };
 

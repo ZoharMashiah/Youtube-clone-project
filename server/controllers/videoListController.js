@@ -1,21 +1,23 @@
-const feed = require("../models/videoModel");
+const feed = require("../models/videoListModel");
 
-exports.getRecommendedList = async (req, res) => {
+async function getRecommendedList(req, res) {
   try {
-    const mostViewed = await feed.getTopVideos(10);
-    const randomVideos = await feed.getRandomVideos(10, mostViewed);
+    const numberOfVideos = 10;
+
+    const mostViewed = await feed.getTopVideos(numberOfVideos);
+    const randomVideos = await feed.getRandomVideos(numberOfVideos, mostViewed);
     const combinedArray = randomizeArray([...mostViewed, ...randomVideos]);
+
     console.log("Fetching list ended successfully");
     res.status(200).json(combinedArray);
   } catch (error) {
     console.error("Error fetching video list: ", error);
     res.status(500).json({
-      success: false,
       message: "Failed to fetch video list",
       error: error.message,
     });
   }
-};
+}
 
 function randomizeArray(arr) {
   len = arr.length;
@@ -27,3 +29,5 @@ function randomizeArray(arr) {
   }
   return arr;
 }
+
+export { getRecommendedList };
