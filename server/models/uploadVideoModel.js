@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const videoSchema = new mongoose.Schema({
-  user_id: Number,
+  user_id: mongoose.Schema.Types.ObjectId,
   title: String,
   description: String,
   category: String,
