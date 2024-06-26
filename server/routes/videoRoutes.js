@@ -1,7 +1,6 @@
 const express = require("express");
-const videoController = require("../controllers/videoController");
-const router = express.Router();
+const feedController = require("../controllers/videoController");
 
-router.post("/api/users/:userId/video", videoController.uploadVideo);
+const router = express.Router;
 
-module.exports = router;
+router.get("/", feedController.getVideoList());

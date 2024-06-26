@@ -10,6 +10,7 @@ const mongoose = require("mongoose");
 // here the uri to the mongoose, its gonna throw and print an error but wont stop the server
 const mongoURI = "mongodb+srv://zoharmashiah:V5BU8uOWvDTWTPr6@zohar.lnkxns4.mongodb.net/api";
 
+const user_videoRoutes = require("./routes/user-videoRoutes");
 const videoRoutes = require("./routes/videoRoutes");
 
 const app = express();
@@ -19,7 +20,9 @@ app.use(express.static(path.join(__dirname, "../Web/youtube-clone/build")));
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 app.use(fileUpload());
-app.use(videoRoutes);
+
+app.use("/api/users/:userId/video", user_videoRoutes);
+app.use("/api/videos", videoRoutes);
 
 mongoose
   .connect(mongoURI, {
