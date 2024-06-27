@@ -116,6 +116,18 @@ export default function Comments({
   //   }
   // };
 
+  const orgenizeComments = (id) => {
+    let orgenizeCommen = comments.map((comment) => {
+      if (comment.parentId === id) {
+        return <div style={{position:"relative",left:"3vw"}}>
+          <Comment {...comment} currentUser={currentUser} editComment={editComment} deleteComment={deleteComment} triger={triger} setTriger={setTriger} />
+          {orgenizeComments(comment._id)}
+        </div>
+      }
+    })
+    return orgenizeCommen
+  }
+
   useEffect(() => {
     const fetchComments = async () => {
       // temp
@@ -164,10 +176,14 @@ export default function Comments({
           className={styles.profileImage}
         />
       </form>
-      {comments&&comments.map((comment) => {
-        return (
-          <Comment {...comment} currentUser={currentUser} editComment={editComment} deleteComment={deleteComment} triger={triger} setTriger={setTriger} />
-        );
+      {comments && comments.map((comment) => {
+        if(comment.parentId == undefined){
+          return (
+            <div>
+              <Comment {...comment} currentUser={currentUser} editComment={editComment} deleteComment={deleteComment} triger={triger} setTriger={setTriger} />
+              {orgenizeComments(comment._id)}
+            </div>
+        );}
       })}
     </div>
   );

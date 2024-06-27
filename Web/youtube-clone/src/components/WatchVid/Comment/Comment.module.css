@@ -60,7 +60,7 @@
 
 .cancle{
     margin: 2vw;
-    margin-left: 24vw;
+    margin-left: 10vw;
     font-weight: bold;
     background-color: rgba(221, 221, 221, 0.851);
     width: 5vw;
@@ -87,4 +87,9 @@
 .editText{
     width: 20vw;
     height: 4vh;
+}
+
+.change{
+    position:absolute;
+    right: 90vw;
 }

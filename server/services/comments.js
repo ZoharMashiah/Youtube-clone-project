@@ -42,9 +42,12 @@ const deleteComment = async (commentId) => {
             await deleteComment(id)
         });
     }
-    if (comment.parentId != null|undefined) {
-        const parentList = (await Comment.findById(comment.parentId)).childernId.filter((id) => id != commentId)
-        await Comment.findByIdAndUpdate({ _id: comment.parentId }, {childernId: parentList})
+    if (comment.parentId != null | undefined) {
+        const parent = await Comment.findById(comment.parentId)
+        if (parent != null) {
+            const parentList = await parent.childernId.filter((id) => id != commentId)
+            await Comment.findByIdAndUpdate({ _id: comment.parentId }, {childernId: parentList})
+        }
     }
     return await Comment.findByIdAndDelete({ _id: commentId })
 }
