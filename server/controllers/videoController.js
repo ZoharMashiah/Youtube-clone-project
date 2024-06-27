@@ -1,9 +1,45 @@
-const videoModel = require("../models/videoModel");
+const Video = require("../models/Video");
+const VideoService = require("../services/VideoService.js");
+
+async function getFeed(req, res) {
+  try {
+    const numberOfVideos = 10;
+    const mostViewed = await VideoService.getTopVideos(numberOfVideos);
+    const randomVideos = await VideoService.getRandomVideos(numberOfVideos, mostViewed);
+    const videoList = util.randomizeArray([...mostViewed, ...randomVideos]);
+
+    console.log("Fetching list ended successfully");
+    res.status(200).json(videoList);
+  } catch (error) {
+    console.error("Error fetching video list: ", error);
+    res.status(500).json({
+      error: error.message,
+    });
+  }
+}
+
+async function getUserVideoList(req, res) {
+  const userId = req.params.id;
+  try {
+    const userVideoList = await VideoService.getUserVideoList(userId);
+    console.log("Fetched user video list successfully");
+    res.status(200).json(userVideoList);
+  } catch (error) {
+    console.error("Error fetching user video list:", userId, error);
+    res.status(500).json({
+      error: error.message,
+    });
+  }
+}
 
 async function getVideo(req, res) {
   const videoId = req.params.pid;
   try {
-    const video = await videoModel.getVideo(videoId);
+    const video = await Video.findById(videoId);
+
+    if (video == null) {
+      throw error;
+    }
 
     console.log("Fetched video successfully");
     res.status(200).json(video);
@@ -15,16 +51,17 @@ async function getVideo(req, res) {
   }
 }
 
-// views, likes, dislikes
 async function updateVideo(req, res) {
   const videoId = req.params.pid;
   const newData = req.body;
 
   try {
-    const updatedVideo = await videoModel.updateVideo(videoId, newData);
-
+    const result = await Video.findByIdAndUpdate(videoId, { $set: newData }, { new: true });
+    if (result == null) {
+      throw error;
+    }
     console.log("Updated video successfully");
-    res.status(200).json(updatedVideo);
+    res.status(200);
   } catch (error) {
     console.error("Error updating video:", videoId, error);
     res.status(500).json({
@@ -33,18 +70,14 @@ async function updateVideo(req, res) {
   }
 }
 
-// detail editing by the owner, such as title, description, category or thumbnail. requires authemtication.
-async function editVideo(req, res) {
-  const videoId = req.params.pid;
-  const newData = req.body;
-
+async function createVideo(req, res) {
+  const userId = req.params.id;
   try {
-    const editedVideo = await videoModel.editVideo(videoId, newData);
-
-    console.log("Edited video successfully");
-    res.status(200).json(editedVideo);
+    const videoData = await Video.createVideo(userId);
+    console.log("Video upload processed successfully");
+    res.status(201).json(videoData);
   } catch (error) {
-    console.error("Error editing video:", videoId, error);
+    console.error("Error uploading video:", error);
     res.status(500).json({
       error: error.message,
     });
@@ -54,9 +87,21 @@ async function editVideo(req, res) {
 async function deleteVideo(req, res) {
   const videoId = req.params.pid;
   const userId = req.params.userId;
+  const session = await mongoose.startSession();
+  session.startTransaction();
 
   try {
-    await videoModel.deleteVideo(videoId, userId);
+    await Video.deleteVideo(videoId, userId);
+    const user = await user.findById(userId);
+    const video = await video.findById(videoId);
+
+    const result = await video.deleteOne({ _id: videoId, user_id: userId }).session(session);
+    if (result.deletedCount === 0) {
+      throw new Error("Video not found");
+    }
+
+    await user.updateOne({ _id: userId }, { $pull: { videos: videoId } }).session(session);
+    await session.commitTransaction();
 
     console.log("Deleted video successfully");
     res.status(200);
@@ -68,4 +113,4 @@ async function deleteVideo(req, res) {
   }
 }
 
-export { getVideo, updateVideo, editVideo, deleteVideo };
+export { getFeed as getFeed, getUserVideoList, getVideo, updateVideo, createVideo, deleteVideo };

@@ -14,12 +14,14 @@ export default function Feed({ currentUser, setcurrentUser, videos, setVideos })
   const [trigger, settrigger] = useState(false);
   const [gotologin, setgotologin] = useState(false);
 
+  // fetch a list of videos by id
   const filterVideos = () => {
     let arr = videos.filter((video) => video.title.toLowerCase().includes(searchText.toLowerCase()));
     setcurrentVideo(0);
     setfilterdedVideos(arr);
   };
 
+  // fetch a list of videos by category
   const filterVideosCategory = (category) => {
     if (category === "All") setfilterdedVideos(videos);
     else {
@@ -28,6 +30,7 @@ export default function Feed({ currentUser, setcurrentUser, videos, setVideos })
     }
   };
 
+  // delete
   const editVideo = (video) => {
     let id = video.id;
     let arr = [];
@@ -42,7 +45,15 @@ export default function Feed({ currentUser, setcurrentUser, videos, setVideos })
     setVideos(arr);
     setfilterdedVideos(arr);
   };
+  // delete
+  const deleteVideo = (id) => {
+    let arr = videos.filter((vid) => vid.id != id);
+    setVideos(arr);
+    setfilterdedVideos(arr);
+    setcurrentVideo(0);
+  };
 
+  // delete
   const editCurrent = (video) => {
     let arr = [];
     videos.map((vid) => {
@@ -57,6 +68,7 @@ export default function Feed({ currentUser, setcurrentUser, videos, setVideos })
     setcurrentVideo(video.id);
   };
 
+  // delete
   const likedPush = (username, like) => {
     let changedVideo = {
       id: videos[currentVideo - 1].id,
@@ -74,6 +86,7 @@ export default function Feed({ currentUser, setcurrentUser, videos, setVideos })
       comments: videos[currentVideo - 1].comments,
     };
 
+    // delete
     if (like == true) {
       if (changedVideo.dislike.includes(username)) {
         changedVideo.dislike = changedVideo.dislike.filter((user) => user != username);
@@ -90,6 +103,7 @@ export default function Feed({ currentUser, setcurrentUser, videos, setVideos })
     editCurrent(changedVideo);
   };
 
+  // not mine
   const editComment = (comment) => {
     let comments = [];
     videos[currentVideo - 1].comments.map((com) => {
@@ -99,6 +113,8 @@ export default function Feed({ currentUser, setcurrentUser, videos, setVideos })
         comments.push(com);
       }
     });
+
+    // delete
     let changedVideo = {
       id: videos[currentVideo - 1].id,
       title: videos[currentVideo - 1].title,
@@ -117,6 +133,7 @@ export default function Feed({ currentUser, setcurrentUser, videos, setVideos })
     editCurrent(changedVideo);
   };
 
+  // not mine
   const deleteComment = (id) => {
     let comments = videos[currentVideo - 1].comments.filter((com) => com.id != id);
 
@@ -138,13 +155,7 @@ export default function Feed({ currentUser, setcurrentUser, videos, setVideos })
     editCurrent(changedVideo);
   };
 
-  const deleteVideo = (id) => {
-    let arr = videos.filter((vid) => vid.id != id);
-    setVideos(arr);
-    setfilterdedVideos(arr);
-    setcurrentVideo(0);
-  };
-
+  // not mine
   if (gotologin) {
     return <Navigate to="/login" replace={true} />;
   }
