@@ -4,8 +4,10 @@ const cors = require("cors");
 const path = require("path");
 const fileUpload = require("express-fileupload");
 const jwt = require("jsonwebtoken");
+const userRouter = require("./routes/Users");
 const session = require("express-session");
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
+
 const videoRoutes = require("./routes/videoRoutes");
 const commentRouter = require("./routes/comments")
 require('dotenv').config({path:`./config/.env.local`});
@@ -23,8 +25,11 @@ mongoose.connect(process.env.MONGO_LINK, {
     app.use(fileUpload());
     //app.use(videoRoutes); // server recognizes public
     app.use("/", commentRouter);
+    app.use("/api/users", userRouter);
 
     app.listen(process.env.PORT, () => console.log("Server running on port " + process.env.PORT));
+    console.log("Connected to mongoose");
+    
   })
   .catch((error) => {
     console.log("Error connecting to mongoose: ", error);
