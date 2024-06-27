@@ -10,36 +10,9 @@ const videoSchema = new mongoose.Schema({
   views: Number,
   like: Number,
   dislike: Number,
-  comments: { type: mongoose.Schema.Types.ObjectId, ref: "comment" },
+  comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "comment" }],
   icon: String,
   video: String,
-});
-
-// delete video from liked, disliked, history lists
-videoSchema.pre("deleteOne", { document: true, query: false }, async function (next) {
-  const session = this.$session();
-  try {
-    // remove video from user's videos array
-    await User.updateOne({ _id: this.user_id }, { $pull: { videos: this._id } }).session(session);
-
-    // remove video from liked, disliked, history lists
-    await User.updateMany(
-      {
-        $or: [{ likes: this._id }, { dislikes: this._id }, { history: this._id }],
-      },
-      {
-        $pull: {
-          likes: this._id,
-          dislikes: this._id,
-          history: this._id,
-        },
-      }
-    ).session(session);
-
-    next();
-  } catch (error) {
-    next(error);
-  }
 });
 
 videoSchema.statics.deleteVideo = async function (videoId, userId) {
@@ -52,9 +25,27 @@ videoSchema.statics.deleteVideo = async function (videoId, userId) {
       throw new Error("Video not found");
     }
 
-    await video.deleteOne({ session });
-    await session.commitTransaction();
+    // delete all comments
+    await Comment.deleteMany({ video_id: video._id }).session(session);
 
+    // remove video from liked, disliked, history lists
+    await User.updateMany(
+      {
+        $or: [{ likes: video._id }, { dislikes: video._id }, { history: video._id }],
+      },
+      {
+        $pull: {
+          likes: video._id,
+          dislikes: video._id,
+          history: video._id,
+        },
+      }
+    ).session(session);
+
+    // delete the video
+    await video.deleteOne({ session });
+
+    await session.commitTransaction();
     return true;
   } catch (error) {
     await session.abortTransaction();
