@@ -1,14 +1,15 @@
 const express = require("express");
 const videoController = require("../controllers/videoController");
-const router = express.Router();
+const commentRouter = require("./commentRoutes");
 
-router.get("/", videoController.getFeed);
+const videoRouter = express.Router({ mergeParams: true });
 
-router.get("/api/users/:userId/videos", videoController.getUserVideoList);
-router.post("/api/users/:userId/videos", videoController.createVideo);
+videoRouter.get("/", videoController.getUserVideoList);
+videoRouter.post("/", videoController.createVideo);
+videoRouter.get("/:videoId", videoController.getVideo);
+videoRouter.patch("/:videoId", videoController.updateVideo);
+videoRouter.delete("/:videoId", videoController.deleteVideo);
 
-router.get("/api/users/:userId/videos/:pid", videoController.getVideo);
-router.patch("/api/users/:userId/videos/:pid", videoController.updateVideo);
-router.delete("/api/users/:userId/videos/:pid", videoController.deleteVideo);
+videoRouter.use("/:videoId/comments", commentRouter);
 
-module.exports = router;
+module.exports = videoRouter;

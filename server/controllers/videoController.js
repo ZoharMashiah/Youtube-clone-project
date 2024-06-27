@@ -113,4 +113,4 @@ async function deleteVideo(req, res) {
   }
 }
 
-export { getFeed as getFeed, getUserVideoList, getVideo, updateVideo, createVideo, deleteVideo };
+export { getFeed as getFeed, getUserVideoList as getVideos, getVideo, updateVideo, createVideo, deleteVideo };

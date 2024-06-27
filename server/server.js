@@ -7,9 +7,8 @@ const jwt = require("jsonwebtoken");
 const session = require("express-session");
 const mongoose = require("mongoose");
 
-const userRouter = require("./routes/users");
-const videoRoutes = require("./routes/videoRoutes");
-const commentRouter = require("./routes/comments");
+const feedRouter = require("./routes/feedRoutes");
+const userRouter = require("./routes/userRoutes");
 require("dotenv").config({ path: `./config/.env.local` });
 
 const app = express();
@@ -24,8 +23,7 @@ mongoose
     app.use(bodyParser.json({ limit: "50mb" }));
     app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
     app.use(fileUpload());
-    //app.use(videoRoutes); // server recognizes public
-    app.use("/", commentRouter);
+    app.use("/", feedRouter);
     app.use("/api/users", userRouter);
 
     app.listen(process.env.PORT, () => console.log("Server running on port " + process.env.PORT));
