@@ -1,4 +1,4 @@
-const { createComment, createCommentInsideComment, getComments, getComment, deleteComment, updateComment } = require("../services/comments")
+const { createComment, createCommentInsideComment, getComments, getComment, deleteComment, updateComment, deleteAllComment } = require("../services/comments")
 
 const postComment = async(req,res) => {
     const { videoId } = req.params
@@ -45,6 +45,15 @@ const deleteOneComment = async (req, res) => {
     }
 }
 
+const deleteComments = async (req, res) => {
+    const { videoId } = req.params
+    try {
+        res.status(200).json(await deleteAllComment(videoId))
+    } catch (error) {
+        res.status(400).json({error: error.message})
+    }
+}
+
 const updateOneComment = async (req, res) => {
     const { commentId } = req.params
     try {
@@ -61,5 +70,6 @@ module.exports = {
     getAllComments,
     getOneComment,
     deleteOneComment,
-    updateOneComment
+    updateOneComment,
+    deleteComments
 }

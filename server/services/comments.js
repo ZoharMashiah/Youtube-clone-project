@@ -52,10 +52,14 @@ const deleteComment = async (commentId) => {
     return await Comment.findByIdAndDelete({ _id: commentId })
 }
 
+const deleteAllComment = async (videoId) => {
+    return await Comment.deleteMany({ videoId: videoId })
+}
+
 const updateComment = async (commentId, title) => {
     return await Comment.findByIdAndUpdate({ _id: commentId }, {title: title})
 }
 
 module.exports = {
-    createComment, createCommentInsideComment, getComments, getComment, deleteComment, updateComment
+    createComment, createCommentInsideComment, getComments, getComment, deleteComment, updateComment, deleteAllComment
 }

@@ -1,5 +1,5 @@
 const express = require("express")
-const {postComment, postCommentInsideComment, getAllComments, getOneComment, deleteOneComment, updateOneComment} = require("../controllers/comments")
+const {postComment, postCommentInsideComment, getAllComments, getOneComment, deleteOneComment, updateOneComment, deleteComments} = require("../controllers/comments")
 const router = express.Router()
 
 router.post("/api/users/:userId/video/:videoId/comment", postComment)
@@ -8,5 +8,6 @@ router.post("/api/users/:userId/video/:videoId/comment/:commentId", postCommentI
 router.get("/api/users/:userId/video/:videoId/comment/:commentId", getOneComment)
 router.delete("/api/users/:userId/video/:videoId/comment/:commentId", deleteOneComment)
 router.patch("/api/users/:userId/video/:videoId/comment/:commentId", updateOneComment)
+router.delete("/api/users/:userId/video/:videoId/comment", deleteComments)
 
 module.exports = router
