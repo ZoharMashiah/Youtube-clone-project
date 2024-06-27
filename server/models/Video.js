@@ -26,7 +26,9 @@ videoSchema.statics.deleteVideo = async function (videoId, userId) {
     }
 
     // delete all comments
-    await Comment.deleteMany({ video_id: video._id }).session(session);
+    for (const commentId of video.comments) {
+      await deleteComment(commentId);
+    }
 
     // remove video from liked, disliked, history lists
     await User.updateMany(
@@ -41,6 +43,9 @@ videoSchema.statics.deleteVideo = async function (videoId, userId) {
         },
       }
     ).session(session);
+
+    // remove video from owner's videos array
+    await User.updateOne({ _id: userId }, { $pull: { videos: video._id } }).session(session);
 
     // delete the video
     await video.deleteOne({ session });
