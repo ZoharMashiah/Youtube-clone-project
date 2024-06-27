@@ -14,12 +14,11 @@ require("dotenv").config({ path: `./config/.env.local` });
 const app = express();
 mongoose
   .connect(process.env.MONGO_LINK, {
-    useNewUrlParser: true,
     useUnifiedTopology: true,
   })
   .then(() => {
     app.use(cors());
-    app.use(express.static(path.join(__dirname, "../Web/youtube-clone/build"))); // server recognizes the build
+    app.use(express.static(path.join(__dirname, "../Web/youtube-clone/build")));
     app.use(bodyParser.json({ limit: "50mb" }));
     app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
     app.use(fileUpload());
