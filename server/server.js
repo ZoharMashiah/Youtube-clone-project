@@ -13,9 +13,7 @@ require("dotenv").config({ path: `./config/.env.local` });
 
 const app = express();
 mongoose
-  .connect(process.env.MONGO_LINK, {
-    useUnifiedTopology: true,
-  })
+  .connect(process.env.MONGO_LINK)
   .then(() => {
     app.use(cors());
     app.use(express.static(path.join(__dirname, "../Web/youtube-clone/build")));

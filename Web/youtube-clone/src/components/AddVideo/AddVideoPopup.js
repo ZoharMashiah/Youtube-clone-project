@@ -102,7 +102,7 @@ export default function AddVideoPopup({ currenUser, onClose }) {
       const reader = new FileReader();
       reader.onload = (event) => resolve(event.target.result);
       reader.onerror = (error) => reject(error);
-      reader.readAsDataURL(file); // read data as url is old, swap with URL.createObjectURL(file)
+      reader.readAsDataURL(file);
     });
   };
 
