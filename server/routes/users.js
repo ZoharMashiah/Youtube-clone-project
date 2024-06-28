@@ -5,8 +5,15 @@ const {
      getAllUsers,
      getUser,
      deleteUser,
-     updateUser
+     updateUser,
+     createUserForLogin
      } = require("../controllers/Users")
+
+//Create a new User
+router.post("/signup", createUser);
+
+//Login to a User with another path to avoid confusion
+router.post("/login", createUserForLogin);
 
 //Create a new User
 router.post("/", createUser)

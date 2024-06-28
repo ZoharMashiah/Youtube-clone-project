@@ -15,6 +15,7 @@ export default function Signupwrapper({ users, setusers }) {
   const [moveLogin, setmoveLogin] = useState(false);
 
   const handleSubmit = () => {
+    
     // Username validation
     if (users.some(user => user.username === username)) {
       alert('Username already exists.');
@@ -46,7 +47,7 @@ export default function Signupwrapper({ users, setusers }) {
       birthDate: birthDate,
       photo: photo,
     };
-    setusers([...users, newUser]);
+    handleSignup(newUser);  // Call handleSignup from props
     setSuccess(true);
   };
 

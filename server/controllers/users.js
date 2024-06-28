@@ -3,7 +3,6 @@ const mongoose = require("mongoose");
 
 
 //get all users
-
 const getAllUsers = async (req, res) => {
     const users = await User.find({})
     res.status(200).json(users)
@@ -25,11 +24,10 @@ const getUser = async (req, res) => {
 
 //create a user
 const createUser = async (req, res) => {
-
     //add doc to db
     try{
-        const { username, firstName, middleName, lastName, birthdate, photo, videos, settings } = req.body
-        const user = await User.create({ username, firstName, middleName, lastName, birthdate, photo, videos, settings })
+        const { username, password, firstName, middleName, lastName, birthdate, photo, videos, settings } = req.body
+        const user = await User.create({ username, password, firstName, middleName, lastName, birthdate, photo, videos, settings })
         res.status(200).json(user)
     }catch(error){
     res.status(400).json({error: error.message})
@@ -64,10 +62,28 @@ const deleteUser = async (req, res) => {
     res.status(200).json(user)
 }
 
+const createUserForLogin = async (req, res) => {
+    const { username, password } = req.body;
+    try {
+        const user = await User.findOne({ username });
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        if (password !== user.password) {  // Compare plain text passwords
+            return res.status(401).json({ message: 'Invalid password' });
+        }
+        const token = jwt.sign({ userId: user._id }, 'secret_key', { expiresIn: '5h' });
+        res.status(200).json({ token });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
 module.exports = { 
     createUser,
     getAllUsers,
     getUser,
     deleteUser,
-    updateUser
+    updateUser,
+    createUserForLogin
  }

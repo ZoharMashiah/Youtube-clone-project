@@ -4,24 +4,13 @@ import Userfield from "../Userfield/Userfield";
 import { Navigate } from "react-router-dom";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
-export default function Loginwrapper({ users, setcurrentUser }) {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+export default function Loginwrapper({ handleLogin, setUsername, setPassword }) {
   const [move, setMove] = useState(false);
   const [goFeed, setgoFeed] = useState(false);
 
   const handleSubmit = () => {
-    const user = users.find((user) => user.username === username);
-    if (user) {
-      if (user.password === password) {
-        setgoFeed(true);
-        setcurrentUser(user);
-      } else {
-        alert("Incorrect password.");
-      }
-    } else {
-      alert("Username does not exist.");
-    }
+    handleLogin();  // Call handleLogin from props
+    setgoFeed(true);
   };
 
   if (move) {
