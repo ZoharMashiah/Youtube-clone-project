@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./Login.css";
 import Loginwrapper from "../../components/Login/Loginwrapper/Loginwrapper";
 import icon from "../../components/Login/LoginImages/1716994828673_imgbg.net.png";
-import LogoMenu from "../../components/Feed/LogoMenu/LogoMenu";
+import Logo from "../../components/Feed/Logo/Logo";
 
 export default function Login({ users, setContext, darkMode, setDarkMode }) {
   const toggleDarkMode = () => {
@@ -16,7 +16,7 @@ export default function Login({ users, setContext, darkMode, setDarkMode }) {
       </button>
       {/* <img src={icon} id="logo" alt="Logo" /> */}
 
-      <LogoMenu />
+      <Logo />
       <p className="login-title">Login</p>
       <Loginwrapper users={users} setcurrentUser={setContext} />
     </div>

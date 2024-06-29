@@ -1,37 +1,21 @@
 .wrapper {
   display: flex;
   flex-direction: row;
-  margin-top: 10px;
   align-items: center;
   position: absolute;
-  top: -4vh;
   width: 100vw;
 }
 
-.upperButtonsWrraper {
-  position: absolute;
-  right: 3vw;
-}
-
-.searchWrraper {
-  margin-left: 20vw;
-}
-
-.wrapper {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  position: absolute;
-  top: -40px;
-  width: 100%;
-}
-
-.upperButtonsWrraper {
+.upperButtonsWrapper {
   position: absolute;
   right: 3%;
 }
 
-.searchWrraper {
+.logo {
+  margin-left: 25px;
+}
+
+.searchWrapper {
   margin-left: 20%;
 }
 

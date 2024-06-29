@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import ShowVideoSuggested from "../ShowVideoSuggested/ShowVideoSuggested";
 import axios from "axios";
 
-export default function SuggestedVideos() {
+export default function SuggestedVideos(currentVideo, setCurrentVideo) {
   const [videoList, setVideoList] = useState([]);
   const navigate = useNavigate();
 
@@ -13,7 +13,6 @@ export default function SuggestedVideos() {
   }, []);
 
   const handleClick = (video) => {
-    setCurrentVideo(video);
     navigate(`/users/${video.userId}/videos/${video._id}`);
   };
 

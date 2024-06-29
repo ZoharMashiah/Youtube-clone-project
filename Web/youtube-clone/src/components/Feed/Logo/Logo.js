@@ -1,9 +1,9 @@
 import React from "react";
-import styles from "./LogoMenu.module.css";
+import styles from "./Logo.module.css";
 import Image from "react-bootstrap/Image";
 import { useNavigate, useLocation } from "react-router-dom";
 
-export default function LogoMenu() {
+export default function Logo() {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -12,7 +12,7 @@ export default function LogoMenu() {
       window.location.reload();
     } else {
       navigate("/", { replace: true });
-      setTimeout(() => window.location.reload(), 10);
+      setTimeout(() => window.location.reload(), 50);
     }
   };
 
