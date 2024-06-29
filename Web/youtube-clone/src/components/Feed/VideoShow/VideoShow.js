@@ -22,7 +22,7 @@ export default function VideoShow({
         ? time > 43200
           ? time > 525600
             ? (time / 525600).toFixed(0) + " years ago"
-            : (time / 43200).toFixed(0) + " monthes ago"
+            : (time / 43200).toFixed(0) + " months ago"
           : (time / 1140).toFixed(0) + " days ago"
         : (time / 60).toFixed(0) + " hours ago"
       : time + " minutes ago";
