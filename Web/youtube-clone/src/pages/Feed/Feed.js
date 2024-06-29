@@ -12,6 +12,7 @@ export default function Feed({ currentUser, setcurrentUser, videos, setVideos })
   const [currentVideo, setcurrentVideo] = useState(0);
   const [trigger, settrigger] = useState(false);
   const [gotologin, setgotologin] = useState(false);
+  const [context, setContext] = useState(null);
 
   // // delete
   // const editVideo = (video) => {
@@ -147,17 +148,7 @@ export default function Feed({ currentUser, setcurrentUser, videos, setVideos })
   return (
     <div className={styles.Feed}>
       <div className={styles.Up}>
-        <UpBar
-          setsearchText={setsearchText}
-          filterVideos={filterVideos}
-          setcurrentVideo={setcurrentVideo}
-          setfilterdedVideos={setfilterdedVideos}
-          videos={videos}
-          settrigger={settrigger}
-          currentUser={currentUser}
-          setcurrentUser={setcurrentUser}
-          setgotologin={setgotologin}
-        />
+        <UpBar context={context} setSearchText={setsearchText} setTrigger={settrigger} />
       </div>
       <div className={styles.Low}>
         {currentVideo === 0 ? (

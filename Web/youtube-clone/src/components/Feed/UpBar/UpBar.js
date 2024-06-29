@@ -4,31 +4,15 @@ import UpperButtons from "../UpperButtons/UpperButtons";
 import LogoMenu from "../LogoMenu/LogoMenu";
 import styles from "./UpBar.module.css";
 
-export default function UpBar({
-  setsearchText,
-  filterVideos,
-  setcurrentVideo,
-  setfilterdedVideos,
-  videos,
-  settrigger,
-  currentUser,
-  setcurrentUser,
-  setgotologin,
-}) {
+export default function UpBar({ context, setSearchText, setTrigger }) {
   return (
     <div className={styles.wrapper}>
-      <LogoMenu setcurrentVideo={setcurrentVideo} setfilterdedVideos={setfilterdedVideos} videos={videos} />
+      <LogoMenu />
       <div className={styles.searchWrraper}>
-        <Search setsearchText={setsearchText} filterVideos={filterVideos} />
+        <Search setSearchText={setSearchText} />
       </div>
-
       <div className={styles.upperButtonsWrraper}>
-        <UpperButtons
-          settrigger={settrigger}
-          currentUser={currentUser}
-          setcurrentUser={setcurrentUser}
-          setgotologin={setgotologin}
-        />
+        <UpperButtons context={context} setTrigger={setTrigger} />
       </div>
     </div>
   );
