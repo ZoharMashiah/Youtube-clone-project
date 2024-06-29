@@ -8,28 +8,10 @@ import { Navigate } from "react-router-dom";
 import axios from "axios";
 
 export default function Feed({ currentUser, setcurrentUser, videos, setVideos }) {
-  const [selectedCategory, setselectedCategory] = useState("All");
-  const [filterdedVideos, setfilterdedVideos] = useState(videos);
   const [searchText, setsearchText] = useState("");
   const [currentVideo, setcurrentVideo] = useState(0);
   const [trigger, settrigger] = useState(false);
   const [gotologin, setgotologin] = useState(false);
-
-  // fetch a list of videos by id
-  const filterVideos = () => {
-    let arr = videos.filter((video) => video.title.toLowerCase().includes(searchText.toLowerCase()));
-    setcurrentVideo(0);
-    setfilterdedVideos(arr);
-  };
-
-  // fetch a list of videos by category
-  const filterVideosCategory = (category) => {
-    if (category === "All") setfilterdedVideos(videos);
-    else {
-      let arr = videos.filter((video) => video.category === category);
-      setfilterdedVideos(arr);
-    }
-  };
 
   // // delete
   // const editVideo = (video) => {
@@ -180,13 +162,7 @@ export default function Feed({ currentUser, setcurrentUser, videos, setVideos })
       <div className={styles.Low}>
         {currentVideo === 0 ? (
           <div className={styles.displayVideoLowerFeed}>
-            <LowerFeed
-              selectedCategory={selectedCategory}
-              setselectedCategory={setselectedCategory}
-              filterdedVideos={filterdedVideos}
-              setcurrentVideo={setcurrentVideo}
-              filterVideosCategory={filterVideosCategory}
-            />
+            <LowerFeed setcurrentVideo={setcurrentVideo} />
           </div>
         ) : (
           <VideoDisplay
