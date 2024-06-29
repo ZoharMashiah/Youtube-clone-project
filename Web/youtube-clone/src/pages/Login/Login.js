@@ -1,22 +1,23 @@
-
-import React, { useState } from 'react';
-import './Login.css';
-import Loginwrapper from '../../components/Login/Loginwrapper/Loginwrapper';
-import icon from '../../components/Login/LoginImages/1716994828673_imgbg.net.png';
+import React, { useState } from "react";
+import "./Login.css";
+import Loginwrapper from "../../components/Login/Loginwrapper/Loginwrapper";
+import icon from "../../components/Login/LoginImages/1716994828673_imgbg.net.png";
+import LogoMenu from "../../components/Feed/LogoMenu/LogoMenu";
 
 export default function Login({ users, setcurrentUser, darkMode, setDarkMode }) {
-
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
   };
 
   return (
-    <div className={`login-page ${darkMode ? 'dark-mode' : ''}`}>
-      <button className='dark-mode-toggle' onClick={toggleDarkMode}>
-        {darkMode ? 'Light Mode' : 'Dark Mode'}
+    <div className={`login-page ${darkMode ? "dark-mode" : ""}`}>
+      <button className="dark-mode-toggle" onClick={toggleDarkMode}>
+        {darkMode ? "Light Mode" : "Dark Mode"}
       </button>
-      <img src={icon} id='logo' alt='Logo' />
-      <p className='login-title'>Login</p>
+      {/* <img src={icon} id="logo" alt="Logo" /> */}
+
+      <LogoMenu />
+      <p className="login-title">Login</p>
       <Loginwrapper users={users} setcurrentUser={setcurrentUser} />
     </div>
   );
