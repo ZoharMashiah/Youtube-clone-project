@@ -7,7 +7,7 @@ export default function UpperButtons({ context, setTrigger }) {
   const navigate = useNavigate();
 
   const signOut = () => {
-    console.log("need to sign out");
+    console.log("NEED TO SIGN OUT WITH CONTEXT");
   };
 
   const toggleDarkMode = () => {
