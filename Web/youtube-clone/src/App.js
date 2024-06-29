@@ -8,7 +8,7 @@ import vid from "./data/videos.json";
 
 function App() {
   const [users, setusers] = useState([]);
-  const [currentUser, setcurrentUser] = useState(null);
+  const [context, setContext] = useState(null);
   const [darkMode, setDarkMode] = useState(false);
   const [videos, setVideos] = useState(vid);
 
@@ -38,27 +38,16 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route
+          path="/"
+          element={<Feed context={context} setContext={setContext} darkMode={darkMode} setDarkMode={setDarkMode} />}
+        />
+        <Route
           path="/login"
-          element={
-            <Login users={users} setcurrentUser={setcurrentUser} darkMode={darkMode} setDarkMode={setDarkMode} />
-          }
+          element={<Login users={users} setContext={setContext} darkMode={darkMode} setDarkMode={setDarkMode} />}
         />
         <Route
           path="/signup"
           element={<Signup users={users} setusers={setusers} darkMode={darkMode} setDarkMode={setDarkMode} />}
-        />
-        <Route
-          path="/"
-          element={
-            <Feed
-              currentUser={currentUser}
-              setcurrentUser={setcurrentUser}
-              darkMode={darkMode}
-              setDarkMode={setDarkMode}
-              videos={videos}
-              setVideos={setVideos}
-            />
-          }
         />
       </Routes>
     </BrowserRouter>

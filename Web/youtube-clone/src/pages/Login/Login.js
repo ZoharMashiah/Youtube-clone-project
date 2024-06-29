@@ -4,7 +4,7 @@ import Loginwrapper from "../../components/Login/Loginwrapper/Loginwrapper";
 import icon from "../../components/Login/LoginImages/1716994828673_imgbg.net.png";
 import LogoMenu from "../../components/Feed/LogoMenu/LogoMenu";
 
-export default function Login({ users, setcurrentUser, darkMode, setDarkMode }) {
+export default function Login({ users, setContext, darkMode, setDarkMode }) {
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
   };
@@ -18,7 +18,7 @@ export default function Login({ users, setcurrentUser, darkMode, setDarkMode }) 
 
       <LogoMenu />
       <p className="login-title">Login</p>
-      <Loginwrapper users={users} setcurrentUser={setcurrentUser} />
+      <Loginwrapper users={users} setcurrentUser={setContext} />
     </div>
   );
 }
