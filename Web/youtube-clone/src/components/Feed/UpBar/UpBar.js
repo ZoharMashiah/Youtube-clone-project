@@ -5,6 +5,9 @@ import LogoMenu from "../LogoMenu/LogoMenu";
 import styles from "./UpBar.module.css";
 
 export default function UpBar({ context, setSearchText, setTrigger }) {
+  // const [searchText, setsearchText] = useState("");
+  // const [trigger, settrigger] = useState(false);
+
   return (
     <div className={styles.wrapper}>
       <LogoMenu />

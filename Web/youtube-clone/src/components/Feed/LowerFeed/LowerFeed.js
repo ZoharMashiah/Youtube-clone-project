@@ -12,6 +12,9 @@ export default function LowerFeed({
 }) {
   return (
     <div className={styles.Feed}>
+      <div className={styles.Left}>
+        <LeftMenu />
+      </div>
       <div className={styles.Right}>
         <RightFeed
           selectedCategory={selectedCategory}
@@ -20,9 +23,6 @@ export default function LowerFeed({
           setcurrentVideo={setcurrentVideo}
           filterVideosCategory={filterVideosCategory}
         />
-      </div>
-      <div className={styles.Left}>
-        <LeftMenu />
       </div>
     </div>
   );

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styles from "./RightFeed.module.css";
 import Categories from "../Categories/Categories";
 import VideoShow from "../VideoShow/VideoShow";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 export default function RightFeed({
@@ -12,28 +13,35 @@ export default function RightFeed({
   filterVideosCategory,
 }) {
   const [videoList, setVideoList] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchFeed();
   }, []);
+
   const handleClick = (video) => {
     setcurrentVideo(video);
+    navigate(`/users/${video.userId}/videos/${video._id}`);
   };
 
   const fetchFeed = async () => {
-    const res = await axios.get("/api/videos");
-    const videoList = res.data;
-    setVideoList(videoList);
+    try {
+      const res = await axios.get("/api/videos");
+      const videoList = res.data;
+      setVideoList(videoList);
+    } catch (error) {
+      console.error("Error fetching videos:", error);
+    }
   };
 
-  // // fetch a list of videos by id
+  // // filter a list of videos by id
   // const filterVideos = () => {
   //   let arr = videos.filter((video) => video.title.toLowerCase().includes(searchText.toLowerCase()));
   //   setcurrentVideo(0);
   //   setfilterdedVideos(arr);
   // };
 
-  // // fetch a list of videos by category
+  // // filter a list of videos by category
   // const filterVideosCategory = (category) => {
   //   if (category === "All") setfilterdedVideos(videos);
   //   else {
