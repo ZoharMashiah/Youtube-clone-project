@@ -17,4 +17,4 @@ const validateBase64 = (base64Data, expectedType) => {
   return base64Data.slice(prefix.length);
 };
 
-export { randomizeArray, validateBase64 };
+module.exports = { randomizeArray, validateBase64 };
