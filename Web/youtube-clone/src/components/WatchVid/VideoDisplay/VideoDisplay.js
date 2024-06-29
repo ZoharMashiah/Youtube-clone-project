@@ -14,6 +14,9 @@ export default function VideoDisplay({
 }) {
   return (
     <div className={styles.VideoDisplayWrapper}>
+      <div className={styles.SugestedVideosWrapper}>
+        <SuggestedVideos videos={videos} currentVideo={currentVideo} setcurrentVideo={setCurrentVideo} />
+      </div>
       <div className={styles.LeftVideoShowWrapper}>
         <LeftVideoShow
           currentVideo={currentVideo}
@@ -22,9 +25,6 @@ export default function VideoDisplay({
           editComment={editComment}
           deleteComment={deleteComment}
         />
-      </div>
-      <div className={styles.SugestedVideosWrapper}>
-        <SuggestedVideos videos={videos} currentVideo={currentVideo} setcurrentVideo={setCurrentVideo} />
       </div>
     </div>
   );

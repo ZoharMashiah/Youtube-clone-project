@@ -3,9 +3,21 @@ import styles from "./LeftVideoShow.module.css";
 import UpperVideo from "../UpperVideo/UpperVideo";
 import Comments from "../Comments/Comments";
 
-export default function LeftVideoShow({ currentVideo, videos, currentUser, editComment, deleteComment }) {
+export default function LeftVideoShow({ currentVideo: fe, videos, currentUser, editComment, deleteComment }) {
+  const [currentVideo, setCurrentVideo] = useState(null);
+
   const editVideo = () => {
     console.log("NOT WORKING");
+  };
+
+  useEffect(() => {
+    fetchVideo();
+  }, []);
+
+  const fetchVideo = async () => {
+    const response = await axios.get(`/api/users/${userId}/videos/${videoId}`);
+
+    setCurrentVideo(response.body);
   };
 
   return (

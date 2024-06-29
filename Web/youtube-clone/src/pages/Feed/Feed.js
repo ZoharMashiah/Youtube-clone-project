@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styles from "./Feed.module.css";
 import UpBar from "../../components/Feed/UpBar/UpBar";
 import LowerFeed from "../../components/Feed/LowerFeed/LowerFeed";
