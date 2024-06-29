@@ -1,13 +1,13 @@
 import React from "react";
 import styles from "./VideoDisplay.module.css";
-import SugestedVideos from "../SugestedVideos/SugestedVideos";
+import SuggestedVideos from "../SuggestedVideos/SuggestedVideos";
 import LeftVideoShow from "../LeftVideoShow/LeftVideoShow";
 
 export default function VideoDisplay({
   currentVideo,
   editVideo,
   videos,
-  setcurrentVideo,
+  setCurrentVideo,
   currentUser,
   editComment,
   deleteComment,
@@ -24,7 +24,7 @@ export default function VideoDisplay({
         />
       </div>
       <div className={styles.SugestedVideosWrapper}>
-        <SugestedVideos videos={videos} currentVideo={currentVideo} setcurrentVideo={setcurrentVideo} />
+        <SuggestedVideos videos={videos} currentVideo={currentVideo} setcurrentVideo={setCurrentVideo} />
       </div>
     </div>
   );

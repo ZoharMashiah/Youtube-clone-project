@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styles from "./AddVideoPopup.module.css";
 import Dropdown from "react-bootstrap/Dropdown";
 
-export default function AddVideoPopup({ currenUser, onClose }) {
+export default function AddVideoPopup({ context, onClose }) {
   const [title, settitle] = useState("");
   const [description, setdescription] = useState("");
   const [image, setimage] = useState(null);
@@ -27,7 +27,7 @@ export default function AddVideoPopup({ currenUser, onClose }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const isAdmin = currenUser.username === "admin" && currenUser.password === "admin";
+    const isAdmin = context.username === "admin" && context.password === "admin";
 
     if (!isAdmin && !isFormValid()) {
       alert("Fill all the fields!");
@@ -36,7 +36,7 @@ export default function AddVideoPopup({ currenUser, onClose }) {
 
     try {
       const newVideo = await createNewVideo();
-      const address = `/api/users/${currenUser.id}/videos`;
+      const address = `/api/users/${context.id}/videos`;
       console.log("Sending request to:", address);
       const res = await fetch(address, {
         method: "POST",
@@ -70,16 +70,16 @@ export default function AddVideoPopup({ currenUser, onClose }) {
   };
 
   useEffect(() => {
-    if (currenUser.username === "admin" && currenUser.password === "admin") {
+    if (context.username === "admin" && context.password === "admin") {
       settitle("Admin Default Title");
       setdescription("Admin Default Description");
       setcategory("Admin Default Category");
     }
-  }, [currenUser]);
+  }, [context]);
 
   const createNewVideo = async () => {
     return {
-      user_id: currenUser.id,
+      user_id: context.id,
       title: title,
       description: description,
       category: category,

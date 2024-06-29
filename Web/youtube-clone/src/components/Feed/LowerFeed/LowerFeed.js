@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./LowerFeed.module.css";
 import RightFeed from "../RightFeed/RightFeed";
-import LeftFeed from "../LeftFeed/LeftFeed";
+import LeftMenu from "../LeftMenu/LeftMenu";
 
 export default function LowerFeed({
   selectedCategory,
@@ -22,7 +22,7 @@ export default function LowerFeed({
         />
       </div>
       <div className={styles.Left}>
-        <LeftFeed />
+        <LeftMenu />
       </div>
     </div>
   );

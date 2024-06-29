@@ -11,35 +11,7 @@ export default function RightFeed({
   setcurrentVideo,
   filterVideosCategory,
 }) {
-  const videoData = {
-    _id: "667ec5f3c7afe6630839a008",
-    user_id: "60d5ecb54b24d1a810c4ca1c",
-    title: "ExampleTitle",
-    description: "This is a description of the video.",
-    category: "category",
-    publication_date: "2024-06-28T14:17:23.203Z",
-    views: 0,
-    like: 0,
-    dislike: 0,
-    comments: [],
-    icon: "https://example.com/path/to/thumbnail.jpg",
-    video: "https://example.com/path/to/video.mp4",
-  };
-  const videoData2 = {
-    _id: "667ec5f3c7afe6630839a009",
-    user_id: "60d5ecb54b24d1a810c4ca1c",
-    title: "video2",
-    description: "This is a description of the video.",
-    category: "category",
-    publication_date: "2024-06-28T14:17:23.203Z",
-    views: 0,
-    like: 0,
-    dislike: 0,
-    comments: [],
-    icon: "https://example.com/path/to/thumbnail.jpg",
-    video: "https://example.com/path/to/video.mp4",
-  };
-  const [videoList, setVideoList] = useState([videoData, videoData2]);
+  const [videoList, setVideoList] = useState([]);
 
   useEffect(() => {
     fetchFeed();
@@ -49,12 +21,26 @@ export default function RightFeed({
   };
 
   const fetchFeed = async () => {
-    console.log("hi");
     const res = await axios.get("/api/videos");
     const videoList = res.data;
     setVideoList(videoList);
-    console.log(videoList);
   };
+
+  // // fetch a list of videos by id
+  // const filterVideos = () => {
+  //   let arr = videos.filter((video) => video.title.toLowerCase().includes(searchText.toLowerCase()));
+  //   setcurrentVideo(0);
+  //   setfilterdedVideos(arr);
+  // };
+
+  // // fetch a list of videos by category
+  // const filterVideosCategory = (category) => {
+  //   if (category === "All") setfilterdedVideos(videos);
+  //   else {
+  //     let arr = videos.filter((video) => video.category === category);
+  //     setfilterdedVideos(arr);
+  //   }
+  // };
 
   return (
     <div className={styles.container}>
