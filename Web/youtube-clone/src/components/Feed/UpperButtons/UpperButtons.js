@@ -1,48 +1,56 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "./UpperButtons.module.css";
 
-export default function UpperButtons({ settrigger, currentUser, setcurrentUser, setgotologin }) {
+export default function UpperButtons({ context, setTrigger }) {
   const [darkMode, setDarkMode] = useState(false);
+  const navigate = useNavigate();
+
+  const signOut = () => {
+    console.log("need to sign out");
+  };
 
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
     document.body.classList.toggle("dark-mode", !darkMode);
   };
+
   return (
     <div className={styles.buttonsWrapper}>
       <button className={styles.darkModeButton} onClick={toggleDarkMode}>
         {darkMode ? "Light Mode" : "Dark Mode"}
       </button>
-      <button className={styles.button}>
-        <i class="bi bi-camera-reels" id={styles.icon} onClick={() => settrigger(true)} />
+      <button className={styles.button} onClick={() => setTrigger(true)}>
+        <i className="bi bi-camera-reels" id={styles.icon} />
       </button>
       <button className={styles.button}>
-        <i class="bi bi-bell" id={styles.icon2} />
+        <i className="bi bi-bell" id={styles.icon2} />
       </button>
-      {currentUser == null ? (
-        <button onClick={() => setgotologin(true)} className={styles.loginBtn}>
+      {context == null ? (
+        <button onClick={() => navigate("/login")} className={styles.loginBtn}>
           <div className={styles.insideBtn}>
-            <i class="bi bi-person"></i>
+            <i className="bi bi-person"></i>
             <p>Login</p>
           </div>
         </button>
       ) : (
         <div className={styles.signoutWrapper}>
           <div>
-            <button onClick={() => setcurrentUser(null)} className={styles.loginBtn}>
+            <button onClick={() => signOut()} className={styles.loginBtn}>
               <div className={styles.insideBtn}>
-                <i class="bi bi-person"></i>
+                <i className="bi bi-person"></i>
                 <p>Signout</p>
               </div>
             </button>
           </div>
           <img
             src={
-              currentUser.photo == null
+              context.photo == null
                 ? "utilites/png-transparent-user-profile-2018-in-sight-user-conference-expo-business-default-business-angle-service-people-thumbnail.png"
-                : currentUser.photo
+                : context.photo
             }
             id={styles.profileImage}
+            alt="User profile"
           />
         </div>
       )}
