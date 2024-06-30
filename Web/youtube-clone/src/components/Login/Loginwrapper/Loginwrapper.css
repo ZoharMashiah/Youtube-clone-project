@@ -13,29 +13,34 @@
   gap: 5px;
 }
 
-.register-button {
+#register-button {
+  background-color: transparent;
+  border: none;
+}
+
+#register-button:hover {
+  text-decoration: underline;
+}
+
+.confirm-button {
   background-color: #007bff;
   color: white;
-  padding: 15px 30px;
+  padding: 8px 30px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s, box-shadow 0.3s;
   font-size: 1.2em;
-  margin-top: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin-right: 100px;
 }
 
 .login-footer {
-  margin-right: 50px;
+  display: flex;
+  flex-direction: column;
+  background-color: transparent;
 }
 
-.register-button {
-  margin-left: 60px;
-}
-
-.register-button:hover {
+.confirm-button:hover {
   background-color: #0056b3;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
@@ -47,7 +52,6 @@
 .input-group {
   display: flex;
   align-items: center;
-  margin-bottom: 20px;
   position: relative;
 }
 
@@ -65,12 +69,13 @@
   outline: none;
   transition: border-color 0.3s, box-shadow 0.3s;
   font-size: 1em;
-  margin-right: 30px;
 }
 
 @media (max-width: 480px) {
   .login-wrapper {
     padding: 20px;
+    display: flex;
+    justify-content: center;
   }
 }
 
@@ -79,12 +84,12 @@
   background: rgba(44, 62, 80, 0.9);
 }
 
-.dark-mode .register-button {
+.dark-mode .confirm-button {
   background-color: #1abc9c;
   color: #ecf0f1;
 }
 
-.dark-mode .register-button:hover {
+.dark-mode .confirm-button:hover {
   background-color: #16a085;
   box-shadow: 0 6px 12px rgba(26, 188, 156, 0.2);
 }
