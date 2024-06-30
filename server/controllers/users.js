@@ -1,26 +1,25 @@
-const User = require("../models/users");
+const User = require("../models/User");
 const mongoose = require("mongoose");
-
 
 //get all users
 const getAllUsers = async (req, res) => {
-    const users = await User.find({})
-    res.status(200).json(users)
-}
+  const users = await User.find({});
+  res.status(200).json(users);
+};
 
 //get a single user
 const getUser = async (req, res) => {
-    const { id } = req.params
+  const { userId } = req.params;
 
-    if(!mongoose.Types.ObjectId.isValid(id)){
-        return res.status(404).json({message: `User with id ${id} not valid`})
-    }
-    const user = await User.findById(id)
-    if(!user){
-        return res.status(400).json({message: `User with id ${id} not found`})
-    }
-    res.status(200).json(user)
-}
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    return res.status(404).json({ message: `User with id ${userId} not valid` });
+  }
+  const user = await User.findById(userId);
+  if (!user) {
+    return res.status(400).json({ message: `User with id ${userId} not found` });
+  }
+  res.status(200).json(user);
+};
 
 //create a user
 const createUser = async (req, res) => {
@@ -36,31 +35,30 @@ const createUser = async (req, res) => {
 
 //update a user
 const updateUser = async (req, res) => {
-    const { id } = req.params
-    if(!mongoose.Types.ObjectId.isValid(id)){
-        return res.status(404).json({message: `User with id ${id} not valid`})
-    }
-    const user = await User.findByIdAndUpdate({ _id: id}, { ...req.body}, { new: true})
-    if(!user){
-        return res.status(400).json({message: `User with id ${id} not found`})
-    }
-    res.status(200).json(user)
-
-}
+  const { userId } = req.params;
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    return res.status(404).json({ message: `User with id ${userId} not valid` });
+  }
+  const user = await User.findByIdAndUpdate({ _id: userId }, { ...req.body }, { new: true });
+  if (!user) {
+    return res.status(400).json({ message: `User with id ${userId} not found` });
+  }
+  res.status(200).json(user);
+};
 
 //delete a user
 const deleteUser = async (req, res) => {
-    const { id } = req.params
+  const { userId } = req.params;
 
-    if(!mongoose.Types.ObjectId.isValid(id)){
-        return res.status(404).json({message: `User with id ${id} not valid`})
-    }
-    const user = await User.findByIdAndDelete({ _id: id})
-    if(!user){
-        return res.status(400).json({message: `User with id ${id} not found`})
-    }
-    res.status(200).json(user)
-}
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    return res.status(404).json({ message: `User with id ${userId} not valid` });
+  }
+  const user = await User.findByIdAndDelete({ _id: userId });
+  if (!user) {
+    return res.status(400).json({ message: `User with id ${userId} not found` });
+  }
+  res.status(200).json(user);
+};
 
 const createUserForLogin = async (req, res) => {
     const { username, password } = req.body;

@@ -2,13 +2,13 @@ import React, { useState, useEffect } from "react";
 import styles from "./AddVideoPopup.module.css";
 import Dropdown from "react-bootstrap/Dropdown";
 
-export default function AddVideoPopup({ currenUser, setvideos, videos, setfilterdVideos, onClose }) {
+export default function AddVideoPopup({ currenUser, onClose }) {
   const [title, settitle] = useState("");
   const [description, setdescription] = useState("");
   const [image, setimage] = useState(null);
   const [video, setvideo] = useState(null);
   const [category, setcategory] = useState("");
-  const [categories, setCategories] = useState([
+  const categories = [
     "Music",
     "Mixes",
     "JavaScript",
@@ -23,7 +23,7 @@ export default function AddVideoPopup({ currenUser, setvideos, videos, setfilter
     "Comedy clubs",
     "Skills",
     "3D printing",
-  ]);
+  ];
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -36,7 +36,8 @@ export default function AddVideoPopup({ currenUser, setvideos, videos, setfilter
 
     try {
       const newVideo = await createNewVideo();
-      const address = `/api/users/${currenUser.id}/video`;
+      const address = `/api/users/${currenUser.id}/videos`;
+      console.log("Sending request to:", address);
       const res = await fetch(address, {
         method: "POST",
         headers: {
@@ -50,7 +51,6 @@ export default function AddVideoPopup({ currenUser, setvideos, videos, setfilter
 
       if (!res.ok) {
         console.log("Full response:", res);
-        console.log("Sending request to:", address);
         throw new Error(`HTTP error. status: ${res.status}`);
       }
 
@@ -79,17 +79,12 @@ export default function AddVideoPopup({ currenUser, setvideos, videos, setfilter
 
   const createNewVideo = async () => {
     return {
+      user_id: currenUser.id,
       title: title,
       description: description,
-      user: currenUser.username,
       category: category,
-      publication_date: Date.now(),
-      icon: image,
       video: video,
-      views: 0,
-      like: [],
-      dislike: [],
-      comments: [],
+      icon: image,
     };
   };
 
