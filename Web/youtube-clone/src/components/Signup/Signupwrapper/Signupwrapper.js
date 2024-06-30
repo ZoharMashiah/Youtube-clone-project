@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import './Signupwrapper.css';
 import { Navigate } from "react-router-dom";
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import UserField from '../../userField/UserField';
 
-export default function Signupwrapper({ users, setusers }) {
+export default function Signupwrapper({ users, handleSignup }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [firstName, setFirstName] = useState('');
@@ -12,15 +13,15 @@ export default function Signupwrapper({ users, setusers }) {
   const [birthDate, setBirthDate] = useState('');
   const [photo, setPhoto] = useState(null);
   const [success, setSuccess] = useState(false);
-  const [moveLogin, setmoveLogin] = useState(false);
+  const [moveLogin, setMoveLogin] = useState(false);
 
   const handleSubmit = () => {
     
-    // Username validation
-    if (users.some(user => user.username === username)) {
-      alert('Username already exists.');
-      return;
-    }
+    // // Username validation
+    // if (users.some(user => user.username === username)) {
+    //   alert('Username already exists.');
+    //   return;
+    // }
 
     // Password validation
     const letterCount = (password.match(/[a-zA-Z]/g) || []).length;
@@ -39,16 +40,22 @@ export default function Signupwrapper({ users, setusers }) {
 
     // If all validations pass
     let newUser = {
-      username: username,
-      password: password,
-      firstName: firstName,
-      middleName: middleName,
-      lastName: lastName,
-      birthDate: birthDate,
-      photo: photo,
+      username,
+      password,
+      firstName,
+      middleName,
+      lastName,
+      birthdate: birthDate,
+      photo,
+      videos:[],
+      settings:{
+        darkmode: false
+      }
     };
-    handleSignup(newUser);  // Call handleSignup from props
-    setSuccess(true);
+    let ret = handleSignup(newUser);  // Call handleSignup
+    if (ret === true){
+      setSuccess(true);
+    }
   };
 
   if (success || moveLogin) 
@@ -61,53 +68,23 @@ export default function Signupwrapper({ users, setusers }) {
         <form>
           <div className='input-group'>
             <i className='bi bi-person-circle'></i>
-            <input 
-              type='text' 
-              placeholder='Username *' 
-              value={username} 
-              onChange={(e) => setUsername(e.target.value)}
-              className='input-field' 
-            />
+            <UserField label="Username" setText={setUsername} />
           </div>
           <div className='input-group'>
             <i className='bi bi-person'></i>
-            <input 
-              type='text' 
-              placeholder='First name *' 
-              value={firstName} 
-              onChange={(e) => setFirstName(e.target.value)}
-              className='input-field' 
-            />
+            <UserField label="First name" setText={setFirstName} />
           </div>
           <div className='input-group'>
             <i className='bi bi-person'></i>
-            <input 
-              type='text' 
-              placeholder='Middle name' 
-              value={middleName} 
-              onChange={(e) => setMiddleName(e.target.value)}
-              className='input-field' 
-            />
+            <UserField label="Middle name" setText={setMiddleName} />
           </div>
           <div className='input-group'>
             <i className='bi bi-person'></i>
-            <input 
-              type='text' 
-              placeholder='Last name *' 
-              value={lastName} 
-              onChange={(e) => setLastName(e.target.value)}
-              className='input-field' 
-            />
+            <UserField label="Last name" setText={setLastName} />
           </div>
           <div className='input-group'>
             <i className='bi bi-lock'></i>
-            <input 
-              type='password' 
-              placeholder='Password *' 
-              value={password} 
-              onChange={(e) => setPassword(e.target.value)}
-              className='input-field' 
-            />
+            <UserField label="Password" setText={setPassword} />
           </div>
           <div className='input-group'>
             <i className='bi bi-calendar'></i>
@@ -130,7 +107,7 @@ export default function Signupwrapper({ users, setusers }) {
           </div>
           <button type='button' className='submit-button' onClick={handleSubmit}>Submit</button>
         </form>
-        <a  className='return-login' onClick={() => setmoveLogin(true)}>Return to login</a>
+        <a className='return-login' onClick={() => setMoveLogin(true)}>Return to login</a>
       </div>
     </div>
   );

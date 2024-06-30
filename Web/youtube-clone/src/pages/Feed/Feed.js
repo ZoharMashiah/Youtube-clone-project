@@ -14,9 +14,9 @@ export default function Feed({ currentUser, setcurrentUser, videos, setVideos })
   const [trigger, settrigger] = useState(false);
   const [gotologin, setgotologin] = useState(false);
 
-  const fetchFeed = async () => {
-    const res = await get("/");
-  };
+  // const fetchFeed = async () => {
+  //   const res = await get("/");
+  // };
 
   // fetch a list of videos by id
   const filterVideos = () => {

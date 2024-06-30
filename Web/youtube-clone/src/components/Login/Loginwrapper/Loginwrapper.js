@@ -8,9 +8,11 @@ export default function Loginwrapper({ handleLogin, setUsername, setPassword }) 
   const [move, setMove] = useState(false);
   const [goFeed, setgoFeed] = useState(false);
 
-  const handleSubmit = () => {
-    handleLogin();  // Call handleLogin from props
-    setgoFeed(true);
+  const handleSubmit = async () => {
+    let ret = await handleLogin();  // Call handleLogin from props
+    if (ret == true){
+      setgoFeed(true);
+    }
   };
 
   if (move) {

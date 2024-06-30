@@ -1,10 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import './Signup.css';
 import axios from 'axios';
 import icon from '../../components/Login/LoginImages/1716994828673_imgbg.net.png';
 import Signupwrapper from '../../components/Signup/Signupwrapper/Signupwrapper';
 
-export default function Signup({ users, setusers, darkMode, setDarkMode }) {
+export default function Signup({ darkMode, setDarkMode }) {
+  const [users, setUsers] = useState([]);
+  
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await axios.get('http://localhost:3000/api/users');
+        setUsers(response.data);
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      }
+    };
+    fetchUsers();
+  }, []);
 
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
@@ -12,11 +25,23 @@ export default function Signup({ users, setusers, darkMode, setDarkMode }) {
 
   const handleSignup = async (newUser) => {
     try {
-      await axios.post('http://localhost:3000/api/users/signup', newUser);
-      // Update state or redirect to login page
+      let res = await fetch('http://localhost:3000/api/users/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newUser),
+    });
+    if (res.ok) {
+      return true
+      // Update state to login page
+    } else {
+      return false
+    }
+      // Update state to login page
     } catch (error) {
       console.error('Signup error:', error);
-      alert('Signup failed');
+      alert('Signup failed', error);
     }
   };
 
@@ -25,7 +50,7 @@ export default function Signup({ users, setusers, darkMode, setDarkMode }) {
       <button className='dark-mode-toggle' onClick={toggleDarkMode}>
         {darkMode ? 'Light Mode' : 'Dark Mode'}
       </button>
-      <Signupwrapper handleSignup={handleSignup}  />
+      <Signupwrapper handleSignup={handleSignup} users = {users} />
     </div>
   );
 }
