@@ -60,7 +60,7 @@ export default function RightFeed({
         />
       </div>
       <div>
-        {/* maybe delete video container and wrapper because video show has those*/}
+        {/* maybe delete video container and wrapper because video show has those and they dont seem to do anything*/}
         <div id={styles.videoContainer}>
           <div id={styles.wrapper}>
             <div className={styles.grid}>

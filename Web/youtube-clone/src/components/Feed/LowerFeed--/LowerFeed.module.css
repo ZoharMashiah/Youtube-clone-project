@@ -1,11 +1,11 @@
-.Feed {
+/* .Feed2 {
   display: flex;
   flex-direction: row;
   width: 99vw;
   overflow: hidden;
 }
 
-.Right {
+.Right2 {
   position: absolute;
   right: 0vw;
   width: 80vw;
@@ -13,10 +13,10 @@
   max-width: 80vw;
 }
 
-.Left {
+.Left2 {
   position: absolute;
   left: 0vw;
   width: 20vw;
   height: 94vh;
   overflow: hidden;
-}
+} */

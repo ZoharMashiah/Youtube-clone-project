@@ -3,18 +3,44 @@ import styles from "./Feed.module.css";
 import LowerFeed from "../../components/Feed/LowerFeed/LowerFeed";
 import VideoDisplay from "../../components/WatchVid/VideoDisplay/VideoDisplay";
 import AddVideoPopup from "../../components/AddVideo/AddVideoPopup";
+import RightFeed from "../../components/Feed/RightFeed/RightFeed";
+import LeftMenu from "../../components/Feed/LeftMenu/LeftMenu";
 import { useOutletContext } from "react-router-dom";
 
 export default function Feed() {
   const [currentVideo, setCurrentVideo] = useState(0);
   const { trigger, setTrigger } = useOutletContext();
 
+  // not gonna stay here ofc
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [filteredVideos, setFilteredVideos] = useState([]);
+  const [filterVideosCategory, setfilterVideosCategory] = useState([]);
+
+  // const filterVideosByCategory = (category) => {
+  //   const filtered = allVideos.filter((video) => video.category === category);
+  //   setFilteredVideos(filtered);
+  //   setSelectedCategory(category);
+  // };
+
   return (
     <div className={styles.Feed}>
       <div className={styles.Low}>
         {currentVideo === 0 ? (
           <div className={styles.displayVideoLowerFeed}>
-            <LowerFeed setCurrentVideo={setCurrentVideo} />
+            <div className={styles.Feed2}>
+              <div className={styles.Left2}>
+                <LeftMenu />
+              </div>
+              <div className={styles.Right2}>
+                <RightFeed
+                  selectedCategory={selectedCategory}
+                  setselectedCategory={setSelectedCategory}
+                  filterdedVideos={filteredVideos}
+                  setcurrentVideo={0}
+                  filterVideosCategory={filterVideosCategory}
+                />
+              </div>
+            </div>
           </div>
         ) : (
           <VideoDisplay />
