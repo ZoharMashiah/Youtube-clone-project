@@ -1,51 +1,74 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "./UpperButtons.module.css";
+import AppContext from "../../../AppContext";
 
-export default function UpperButtons({ settrigger, currentUser, setcurrentUser, setgotologin }) {
-  const [darkMode, setDarkMode] = useState(false);
+const DarkModeButton = ({ darkMode, toggleDarkMode }) => (
+  <button className={styles.darkModeButton} onClick={toggleDarkMode}>
+    {darkMode ? "Light Mode" : "Dark Mode"}
+  </button>
+);
 
-  const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
-    document.body.classList.toggle("dark-mode", !darkMode);
-  };
+const UploadVideo = ({ setTrigger }) => (
+  <>
+    <button className={styles.button} onClick={() => setTrigger(true)}>
+      <i className="bi bi-camera-reels" id={styles.icon} />
+    </button>
+    <button className={styles.button}>
+      <i className="bi bi-bell" id={styles.icon} />
+    </button>
+  </>
+);
+
+const UserButtons = ({ currentUser, setCurrentUser }) => {
+  const navigate = useNavigate();
+
   return (
-    <div className={styles.buttonsWrapper}>
-      <button className={styles.darkModeButton} onClick={toggleDarkMode}>
-        {darkMode ? "Light Mode" : "Dark Mode"}
-      </button>
-      <button className={styles.button}>
-        <i class="bi bi-camera-reels" id={styles.icon} onClick={() => settrigger(true)} />
-      </button>
-      <button className={styles.button}>
-        <i class="bi bi-bell" id={styles.icon2} />
-      </button>
-      {currentUser == null ? (
-        <button onClick={() => setgotologin(true)} className={styles.loginBtn}>
-          <div className={styles.insideBtn}>
-            <i class="bi bi-person"></i>
-            <p>Login</p>
-          </div>
+    <div className={styles.userWrapper}>
+      <img
+        src={
+          currentUser?.photo ||
+          "utilites/png-transparent-user-profile-2018-in-sight-user-conference-expo-business-default-business-angle-service-people-thumbnail.png"
+        }
+        id={styles.profileImage}
+        alt="User profile"
+      />
+      {currentUser === null ? (
+        <button onClick={() => navigate("/login")} className={styles.signBtn}>
+          <i className="bi bi-person"></i>
+          <span>Sign in</span>
         </button>
       ) : (
-        <div className={styles.signoutWrapper}>
-          <div>
-            <button onClick={() => setcurrentUser(null)} className={styles.loginBtn}>
-              <div className={styles.insideBtn}>
-                <i class="bi bi-person"></i>
-                <p>Signout</p>
-              </div>
-            </button>
-          </div>
-          <img
-            src={
-              currentUser.photo == null
-                ? "utilites/png-transparent-user-profile-2018-in-sight-user-conference-expo-business-default-business-angle-service-people-thumbnail.png"
-                : currentUser.photo
-            }
-            id={styles.profileImage}
-          />
-        </div>
+        <button
+          onClick={() => {
+            navigate("/");
+            setCurrentUser(null);
+          }}
+          className={styles.signBtn}
+        >
+          <i className="bi bi-person"></i>
+          <span>Sign out</span>
+        </button>
       )}
     </div>
   );
-}
+};
+
+const ButtonsWrapper = ({ setTrigger }) => {
+  const { currentUser, setCurrentUser, darkMode, toggleDarkMode } = useContext(AppContext);
+
+  return (
+    <div className={styles.buttonsWrapper}>
+      <DarkModeButton darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
+      {currentUser === null ? (
+        ""
+      ) : (
+        <div>
+          <UploadVideo setTrigger={setTrigger} />
+        </div>
+      )}
+      <UserButtons currentUser={currentUser} setCurrentUser={setCurrentUser} />
+    </div>
+  );
+};
+export default ButtonsWrapper;

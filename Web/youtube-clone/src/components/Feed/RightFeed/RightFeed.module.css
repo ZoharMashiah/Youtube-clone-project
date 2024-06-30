@@ -1,14 +1,16 @@
-.middle{
-    position: absolute;
-    top: -1vh;
-    min-height: 5%;
-    width: 100%;
-    overflow-x: scroll;
+.container {
+  display: flex;
+  flex-direction: column;
 }
 
-.bottom{
-    position: absolute;
-    bottom: 0vh;
-    height: 83vh;
+.categories {
+  min-height: 5%;
+  width: 100%;
+  overflow-x: scroll;
+}
 
+.grid {
+  display: grid;
+  gap: 1px;
+  grid-template-columns: repeat(3, 1fr);
 }

@@ -1,9 +1,11 @@
 
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import './Login.css';
 import Loginwrapper from '../../components/Login/Loginwrapper/Loginwrapper';
 import icon from '../../components/Login/LoginImages/1716994828673_imgbg.net.png';
+import Logo from "../../components/Feed/Logo/Logo";
+import AppContext from "../../AppContext";
 
 export default function Login({setcurrentUser, darkMode, setDarkMode }) {
   const [username, setUsername] = useState('');
@@ -27,17 +29,17 @@ export default function Login({setcurrentUser, darkMode, setDarkMode }) {
     }
   };
 
-  const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
-  };
+  const { darkMode, toggleDarkMode } = useContext(AppContext);
 
   return (
-    <div className={`login-page ${darkMode ? 'dark-mode' : ''}`}>
-      <button className='dark-mode-toggle' onClick={toggleDarkMode}>
-        {darkMode ? 'Light Mode' : 'Dark Mode'}
+    <div className={`login-page ${darkMode ? "dark-mode" : ""}`}>
+      <button className="dark-mode-toggle" onClick={toggleDarkMode}>
+        {darkMode ? "Light Mode" : "Dark Mode"}
       </button>
-      <img src={icon} id='logo' alt='Logo' />
-      <p className='login-title'>Login</p>
+      {/* <img src={icon} id="logo" alt="Logo" /> */}
+
+      <Logo />
+      <p className="login-title">Login</p>
       <Loginwrapper handleLogin={handleLogin} setUsername={setUsername} setPassword={setPassword} />
     </div>
   );

@@ -1,8 +1,9 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState,useEffect, useContext } from 'react';
 import './Signup.css';
 import axios from 'axios';
 import icon from '../../components/Login/LoginImages/1716994828673_imgbg.net.png';
 import Signupwrapper from '../../components/Signup/Signupwrapper/Signupwrapper';
+mport AppContext from "../../AppContext";
 
 export default function Signup({ darkMode, setDarkMode }) {
   const [users, setUsers] = useState([]);
@@ -19,9 +20,7 @@ export default function Signup({ darkMode, setDarkMode }) {
     fetchUsers();
   }, []);
 
-  const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
-  };
+  const { darkMode, toggleDarkMode } = useContext(AppContext);
 
   const handleSignup = async (newUser) => {
     try {
@@ -46,9 +45,9 @@ export default function Signup({ darkMode, setDarkMode }) {
   };
 
   return (
-    <div className={`Signup-page ${darkMode ? 'dark-mode' : ''}`}>
-      <button className='dark-mode-toggle' onClick={toggleDarkMode}>
-        {darkMode ? 'Light Mode' : 'Dark Mode'}
+    <div className={`Signup-page ${darkMode ? "dark-mode" : ""}`}>
+      <button className="dark-mode-toggle" onClick={toggleDarkMode}>
+        {darkMode ? "Light Mode" : "Dark Mode"}
       </button>
       <Signupwrapper handleSignup={handleSignup} users = {users} />
     </div>

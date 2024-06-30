@@ -1,12 +1,13 @@
 const Video = require("../models/Video");
 const VideoService = require("../services/VideoService.js");
+const Util = require("../util/util.js");
 
 async function getFeed(req, res) {
   try {
     const numberOfVideos = 10;
     const mostViewed = await VideoService.getTopVideos(numberOfVideos);
     const randomVideos = await VideoService.getRandomVideos(numberOfVideos, mostViewed);
-    const videoList = util.randomizeArray([...mostViewed, ...randomVideos]);
+    const videoList = Util.randomizeArray([...mostViewed, ...randomVideos]);
 
     console.log("Fetching list ended successfully");
     res.status(200).json(videoList);
