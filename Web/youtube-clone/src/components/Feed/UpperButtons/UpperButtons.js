@@ -34,11 +34,9 @@ const UserButtons = ({ currentUser, setCurrentUser }) => {
         alt="User profile"
       />
       {currentUser === null ? (
-        <button onClick={() => navigate("/login")} className={styles.loginBtn}>
-          <div className={styles.insideBtn}>
-            <i className="bi bi-person"></i>
-            <p>Login</p>
-          </div>
+        <button onClick={() => navigate("/login")} className={styles.signBtn}>
+          <i className="bi bi-person"></i>
+          <span>Sign in</span>
         </button>
       ) : (
         <button
@@ -46,12 +44,10 @@ const UserButtons = ({ currentUser, setCurrentUser }) => {
             navigate("/");
             setCurrentUser(null);
           }}
-          className={styles.loginBtn}
+          className={styles.signBtn}
         >
-          <div className={styles.insideBtn}>
-            <i className="bi bi-person"></i>
-            <p>Signout</p>
-          </div>
+          <i className="bi bi-person"></i>
+          <span>Sign out</span>
         </button>
       )}
     </div>

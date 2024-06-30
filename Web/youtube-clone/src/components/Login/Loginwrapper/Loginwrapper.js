@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Loginwrapper.css";
 import Userfield from "../Userfield/Userfield";
 import { Navigate } from "react-router-dom";
@@ -8,16 +9,14 @@ import AppContext from "../../../AppContext";
 export default function Loginwrapper() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [register, setRegister] = useState(false);
-  const [loggedIn, setLoggedIn] = useState(false);
   const [userList, setUserList] = useState([]);
   const { currentUser, setCurrentUser } = useContext(AppContext);
+  const navigate = useNavigate();
 
   const handleSubmit = () => {
     const user = userList.find((user) => user.username === username);
     if (user) {
       if (user.password === password) {
-        setLoggedIn(true);
         setCurrentUser(user);
       } else {
         alert("Incorrect password.");
@@ -25,6 +24,8 @@ export default function Loginwrapper() {
     } else {
       alert("Username does not exist.");
     }
+
+    return <Navigate to="/" />;
   };
 
   useEffect(() => {
@@ -50,14 +51,6 @@ export default function Loginwrapper() {
     });
   };
 
-  if (register) {
-    return <Navigate to="/signup" />;
-  }
-
-  if (loggedIn) {
-    return <Navigate to="/" />;
-  }
-
   return (
     <div className="login-wrapper">
       <div className="input-group">
@@ -69,12 +62,10 @@ export default function Loginwrapper() {
         <Userfield label="Password" settext={setPassword} />
       </div>
       <div className="login-footer">
-        <p>
-          Don't have an account?{" "}
-          <button id="register-button" onClick={() => setRegister(true)}>
-            Register
-          </button>
-        </p>
+        <p>Don't have an account?</p>
+        <button id="register-button" onClick={() => navigate("/signup")}>
+          <p>Register</p>
+        </button>
       </div>
       <button className="confirm-button" onClick={handleSubmit}>
         Confirm

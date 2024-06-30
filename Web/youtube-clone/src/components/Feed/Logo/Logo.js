@@ -1,6 +1,5 @@
 import React from "react";
 import styles from "./Logo.module.css";
-import Image from "react-bootstrap/Image";
 import { useNavigate, useLocation } from "react-router-dom";
 
 export default function Logo() {
@@ -19,7 +18,11 @@ export default function Logo() {
   return (
     <div className={styles.imgContainer}>
       <button onClick={handleClick} className={styles.imageButton}>
-        <Image src="utilites/Image.png" rounded width="100px" height="65px" className={styles.Image} />
+        <img
+          src="/utilites/Image.png"
+          alt="Logo"
+          style={{ width: "120px", objectFit: "contain", borderRadius: "4px" }}
+        />
       </button>
     </div>
   );

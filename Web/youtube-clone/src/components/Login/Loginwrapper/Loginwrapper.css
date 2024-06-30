@@ -31,18 +31,13 @@
   cursor: pointer;
   transition: background-color 0.3s, box-shadow 0.3s;
   font-size: 1.2em;
-  margin-top: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin-right: 100px;
 }
 
 .login-footer {
-  margin-right: 50px;
+  display: flex;
+  flex-direction: column;
   background-color: transparent;
-}
-
-.confirm-button {
-  margin-left: 60px;
 }
 
 .confirm-button:hover {
@@ -57,7 +52,6 @@
 .input-group {
   display: flex;
   align-items: center;
-  margin-bottom: 20px;
   position: relative;
 }
 
@@ -75,12 +69,13 @@
   outline: none;
   transition: border-color 0.3s, box-shadow 0.3s;
   font-size: 1em;
-  margin-right: 30px;
 }
 
 @media (max-width: 480px) {
   .login-wrapper {
     padding: 20px;
+    display: flex;
+    justify-content: center;
   }
 }
 

@@ -1,25 +1,8 @@
 .imageButton {
-  margin: 20px;
   background: none;
   border: none;
+  object-fit: contain;
+  height: auto;
+  margin: 0px 30px;
   padding: 0;
-}
-
-.button {
-  margin-top: 22px;
-  background-color: white;
-  border-radius: 30px;
-  height: 40px;
-  width: 40px;
-  border-width: 0px;
-  align-items: center;
-  cursor: pointer;
-}
-
-.button:hover {
-  background-color: rgb(229, 226, 226);
-}
-
-#icon {
-  font-size: x-large;
 }

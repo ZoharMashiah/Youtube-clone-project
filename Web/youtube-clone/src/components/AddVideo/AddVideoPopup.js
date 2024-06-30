@@ -141,42 +141,50 @@ export default function AddVideoPopup({ onClose }) {
               ))}
             </Dropdown.Menu>
           </Dropdown>
-          <input
-            className={styles.videoUpload}
-            type="file"
-            alt="Upload Video"
-            name="video"
-            accept=".mp4"
-            onChange={async (e) => {
-              const file = e.target.files[0];
-              if (file) {
-                try {
-                  const dataUrl = await readFileAsDataURL(file);
-                  setvideo(dataUrl);
-                } catch (error) {
-                  console.error("Error reading file:", error);
+          <div className="mb-3">
+            <label>Upload Video</label>
+            <input
+              className={styles.videoUpload}
+              type="file"
+              alt="Upload Video"
+              name="video"
+              accept=".mp4"
+              onChange={async (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                  try {
+                    const dataUrl = await readFileAsDataURL(file);
+                    setvideo(dataUrl);
+                  } catch (error) {
+                    console.error("Error reading file:", error);
+                  }
                 }
-              }
-            }}
-          />
-          <input
-            className={styles.photoUpload}
-            type="file"
-            alt="Upload Photo"
-            accept=".png, .jpeg, .jpg"
-            name="thumbnail"
-            onChange={async (e) => {
-              const file = e.target.files[0];
-              if (file) {
-                try {
-                  const dataUrl = await readFileAsDataURL(file);
-                  setimage(dataUrl);
-                } catch (error) {
-                  console.error("Error reading file:", error);
+              }}
+            />
+          </div>
+
+          <div className="mb-3">
+            <label>Upload Thumbnail</label>
+            <input
+              className={styles.photoUpload}
+              type="file"
+              alt="Upload Photo"
+              accept=".png, .jpeg, .jpg"
+              name="thumbnail"
+              onChange={async (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                  try {
+                    const dataUrl = await readFileAsDataURL(file);
+                    setimage(dataUrl);
+                  } catch (error) {
+                    console.error("Error reading file:", error);
+                  }
                 }
-              }
-            }}
-          />
+              }}
+            />
+          </div>
+
           <div className="btn-group">
             <button class="btn btn-primary" className={styles.cancelBtn} onClick={onClose}>
               Cancel

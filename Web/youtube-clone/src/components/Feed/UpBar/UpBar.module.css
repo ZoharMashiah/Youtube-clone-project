@@ -1,22 +1,10 @@
 .wrapper {
+  position: relative;
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   align-items: center;
-  position: absolute;
-  width: 100vw;
-}
-
-.upperButtonsWrapper {
-  position: absolute;
-  right: 3%;
-}
-
-.logo {
-  margin-left: 25px;
-}
-
-.searchWrapper {
-  margin-left: 20%;
+  margin: 2vh;
 }
 
 .darkModeButton {

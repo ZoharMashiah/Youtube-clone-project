@@ -15,20 +15,18 @@ export default function Search({ filterVideos, setSearchText }) {
   };
 
   return (
-    <div id={styles.wrapper} className="input-group mb-3">
-      <InputGroup className="mb-3" id={styles.input}>
-        <Form.Control
-          placeholder="Search"
-          aria-label="Search"
-          aria-describedby="basic-addon2"
-          id={styles.form}
-          value={text}
-          onChange={handleInputChange}
-        />
-        <Button variant="outline-secondary" id={styles.button_addon2} onClick={handleButtonClick}>
-          <i className="bi bi-search" id={styles.icon} />
-        </Button>
-      </InputGroup>
-    </div>
+    <InputGroup className="mb-3" id={styles.input}>
+      <Form.Control
+        placeholder="Search"
+        aria-label="Search"
+        aria-describedby="basic-addon2"
+        id={styles.form}
+        value={text}
+        onChange={handleInputChange}
+      />
+      <Button variant="outline-secondary" id={styles.button_addon2} onClick={handleButtonClick}>
+        <i className="bi bi-search" id={styles.icon} />
+      </Button>
+    </InputGroup>
   );
 }

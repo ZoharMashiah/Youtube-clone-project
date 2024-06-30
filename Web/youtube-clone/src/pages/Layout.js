@@ -8,7 +8,9 @@ export default function Layout() {
 
   return (
     <div>
-      <UpBar setSearchText={setSearchText} setTrigger={setTrigger} />
+      <div>
+        <UpBar setSearchText={setSearchText} setTrigger={setTrigger} />
+      </div>
       <main>
         <Outlet context={{ trigger, setTrigger, searchText, setSearchText }} />
       </main>

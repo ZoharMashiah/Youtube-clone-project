@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styles from "./Feed.module.css";
-import LowerFeed from "../../components/Feed/LowerFeed/LowerFeed";
+import LowerFeed from "../../components/Feed/LowerFeed--/LowerFeed";
 import VideoDisplay from "../../components/WatchVid/VideoDisplay/VideoDisplay";
 import AddVideoPopup from "../../components/AddVideo/AddVideoPopup";
 import RightFeed from "../../components/Feed/RightFeed/RightFeed";
@@ -23,15 +23,15 @@ export default function Feed() {
   // };
 
   return (
-    <div className={styles.Feed}>
+    <div className={styles.Home}>
       <div className={styles.Low}>
         {currentVideo === 0 ? (
           <div className={styles.displayVideoLowerFeed}>
-            <div className={styles.Feed2}>
-              <div className={styles.Left2}>
+            <div className={styles.Feed}>
+              <div className={styles.LeftMenu}>
                 <LeftMenu />
               </div>
-              <div className={styles.Right2}>
+              <div className={styles.Right}>
                 <RightFeed
                   selectedCategory={selectedCategory}
                   setselectedCategory={setSelectedCategory}
