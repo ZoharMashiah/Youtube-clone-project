@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Loginwrapper.css";
 import Userfield from "../Userfield/Userfield";
-import { Navigate } from "react-router-dom";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import AppContext from "../../../AppContext";
 
@@ -14,20 +13,29 @@ export default function Loginwrapper() {
   const navigate = useNavigate();
 
   const handleSubmit = () => {
+    console.log("handling submit..");
+    console.log("userlist: ", userList);
     const user = userList.find((user) => user.username === username);
     if (user) {
       if (user.password === password) {
         setCurrentUser(user);
+        console.log("setcurr user: ", user);
       } else {
         alert("Incorrect password.");
       }
     } else {
       alert("Username does not exist.");
     }
-
-    return <Navigate to="/" />;
   };
 
+  // since state updates are brtched, navigate only after the current user is set
+  useEffect(() => {
+    if (currentUser) {
+      navigate("/");
+    }
+  }, [currentUser, navigate]);
+
+  // just creating the admin here until the db is up and running
   useEffect(() => {
     createFakeUser();
   }, []);
@@ -49,7 +57,7 @@ export default function Loginwrapper() {
       }
       return prevUsers;
     });
-  };
+  }; // end creation here
 
   return (
     <div className="login-wrapper">
