@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import styles from "./Comment.module.css";
+import { useParams } from "react-router-dom";
+import AppContext from "../../../AppContext";
 
-export default function Comment({ _id, id, title, user, date, icon, currentUser, triger, setTriger }) {
+export default function Comment({ _id,userId, title, user, date, icon, triger, setTriger }) {
+  const { currentUser, setCurrentUser } = useContext(AppContext);
+  const { creatorId, videoId } = useParams();
   const [edit, setedit] = useState(false);
   const [editedTitle, seteditedTitle] = useState(title);
   const [reply, setreply] = useState(false)
@@ -19,10 +23,8 @@ export default function Comment({ _id, id, title, user, date, icon, currentUser,
       : time + " minuets ago";
 
   const deleteComment = async () => {
-    const userId = "667aeb3eaf98ca2e75104d0b";
-    const videoId = "667aeb3eaf98ca2e75104d0b";
 
-    const response = await fetch(`http://localhost:3000/api/users/${userId}/video/${videoId}/comment/${_id}`, {
+    const response = await fetch(`http://localhost:3000/api/users/${creatorId}/video/${videoId}/comment/${_id}`, {
       method: "DELETE",
     });
     const json = await response.json();
@@ -35,14 +37,10 @@ export default function Comment({ _id, id, title, user, date, icon, currentUser,
   const handleReply = async () => {
     const comment = {
       title: replyText,
-      userId: "667aeb3eaf98ca2e75104d0b"
+      userId: currentUser._id
     }
-
-    // temp
-    const userId = "667aeb3eaf98ca2e75104d0b"
-    const videoId = "667aeb3eaf98ca2e75104d0b"
     
-    const response = await fetch(`http://localhost:3000/api/users/${userId}/video/${videoId}/comment/${_id}`, {
+    const response = await fetch(`http://localhost:3000/api/users/${creatorId}/video/${videoId}/comment/${_id}`, {
       method: "POST",
       body: JSON.stringify(comment),
       headers: {
@@ -63,12 +61,10 @@ export default function Comment({ _id, id, title, user, date, icon, currentUser,
   }
 
   const editComment = async () => {
-    const userId = "667aeb3eaf98ca2e75104d0b";
-    const videoId = "667aeb3eaf98ca2e75104d0b";
 
     const comment = { title: editedTitle };
 
-    const response = await fetch(`http://localhost:3000/api/users/${userId}/video/${videoId}/comment/${_id}`, {
+    const response = await fetch(`http://localhost:3000/api/users/${creatorId}/video/${videoId}/comment/${_id}`, {
       method: "PATCH",
       body: JSON.stringify(comment),
       headers: {
@@ -90,7 +86,7 @@ export default function Comment({ _id, id, title, user, date, icon, currentUser,
         <div className={styles.user}>
           <h6 className={styles.user}>{user}</h6>
         </div>
-        {currentUser && currentUser.username === "admin" ? (
+        {currentUser && currentUser._id === userId ? (
           !edit ? (
             <div className={styles.titleWrapper}>
               <p>{title}</p>

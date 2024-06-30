@@ -1,5 +1,6 @@
 const Comment = require("../models/Comment");
 const mongoose = require("mongoose");
+const Video = require("../models/Video")
 
 const createComment = async (userId, title, videoId) => {
   const comment = new Comment({
@@ -38,8 +39,12 @@ const getComment = async (commentId) => {
 };
 
 const deleteComment = async (commentId) => {
-    // add recursivly and remove from list
-    const comment = await Comment.findById({ _id: commentId })
+  // remove the comment from the video
+  const comment = await Comment.findById({ _id: commentId })
+  const video = await Video.findById({ _id: comment.videoId })
+  const videoList = await video.comments.filter((comment) => comment._id != commentId)
+  // add recursivly and remove from list
+  await Video.findByIdAndUpdate({ _id: video._id }, { comments: videoList });
     if(comment.childernId != null|undefined){
         comment.childernId.forEach(async(id) => {
             await deleteComment(id)
@@ -56,6 +61,10 @@ const deleteComment = async (commentId) => {
 }
 
 const deleteAllComment = async (videoId) => {
+  // remove the comments from the video
+    await Video.findByIdAndUpdate({ _id: videoId }, {
+    comments: []
+    })
     return await Comment.deleteMany({ videoId: videoId })
 }
 //  // add recursivly and remove from list

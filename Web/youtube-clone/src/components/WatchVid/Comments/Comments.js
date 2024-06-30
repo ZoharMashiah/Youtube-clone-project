@@ -1,40 +1,36 @@
 import React, { useEffect, useState } from "react";
 import styles from "./Comments.module.css";
 import Comment from "../Comment/Comment";
+import { useParams } from "react-router-dom";
+import AppContext from "../../../AppContext";
 
 export default function Comments({
   currentVideo,
-  editVideo,
-  videos,
   currentUser,
-  editCurrent,
   editComment,
   deleteComment,
 }) {
+  const { currentUser, setCurrentUser } = useContext(AppContext);
+  const { creatorId, videoId } = useParams();
   const [title, setTitle] = useState("");
   const [comments, setComments] = useState([]);
   const [triger, setTriger] = useState(false);
 
-  const getMaxId = () => {
-    let id = 0;
-    currentVideo.comments.map((com) => {
-      if (com.id > id) id = com.id;
-    });
-    return id;
-  };
+  // const getMaxId = () => {
+  //   let id = 0;
+  //   currentVideo.comments.map((com) => {
+  //     if (com.id > id) id = com.id;
+  //   });
+  //   return id;
+  // };
   const addCommentToVideo = async (e) => {
     e.preventDefault();
-    console.log("fsfs");
     const comment = {
       title: title,
-      userId: "667aeb3eaf98ca2e75104d0b",
+      userId: currentUser._id,
     };
 
-    // temp
-    const userId = "667aeb3eaf98ca2e75104d0b";
-    const videoId = "667aeb3eaf98ca2e75104d0b";
-
-    const response = await fetch(`http://localhost:3000/api/users/${userId}/video/${videoId}/comment/`, {
+    const response = await fetch(`http://localhost:3000/api/users/${creatorId}/video/${videoId}/comment/`, {
       method: "POST",
       body: JSON.stringify(comment),
       headers: {
