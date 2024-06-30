@@ -20,6 +20,7 @@ export default function RightFeed({
   }, []);
 
   const handleClick = (video) => {
+    console.log("clicked a video");
     setcurrentVideo(video);
     navigate(`/users/${video.userId}/videos/${video._id}`);
   };
@@ -40,7 +41,6 @@ export default function RightFeed({
   //   setcurrentVideo(0);
   //   setfilterdedVideos(arr);
   // };
-
   // // filter a list of videos by category
   // const filterVideosCategory = (category) => {
   //   if (category === "All") setfilterdedVideos(videos);

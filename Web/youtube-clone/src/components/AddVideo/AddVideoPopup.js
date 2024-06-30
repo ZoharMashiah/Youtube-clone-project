@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import styles from "./AddVideoPopup.module.css";
 import Dropdown from "react-bootstrap/Dropdown";
 import AppContext from "../../AppContext";
+import axios from "axios";
 
 export default function AddVideoPopup({ onClose }) {
   const [title, settitle] = useState("");
@@ -41,29 +42,26 @@ export default function AddVideoPopup({ onClose }) {
       const newVideo = await createNewVideo();
       const address = `/api/users/${currentUser.id}/videos`;
       console.log("Sending request to:", address);
-      const res = await fetch(address, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newVideo),
-      });
 
-      const data = await res.json();
-      console.log(data);
+      const res = await axios.post(address, newVideo);
 
-      if (!res.ok) {
-        console.log("Full response:", res);
-        throw new Error(`HTTP error. status: ${res.status}`);
-      }
-
+      console.log(res.data);
       alert("Upload is successful!");
     } catch (error) {
       console.error("Error adding video:", error);
+      if (error.response) {
+        console.log("Full response:", error.response);
+        console.log("Error data:", error.response.data);
+        console.log("Error status:", error.response.status);
+      } else if (error.request) {
+        console.log("No response received:", error.request);
+      } else {
+        console.log("Error message:", error.message);
+      }
       alert("Failed to add video. Please try again.");
+    } finally {
+      resetForm();
     }
-
-    resetForm();
   };
 
   const isFormValid = () => {

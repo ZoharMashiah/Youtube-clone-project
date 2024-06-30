@@ -22,6 +22,7 @@ export default function Feed() {
   //   setSelectedCategory(category);
   // };
 
+  // !!!after uploading a video, need to refresh the rightfeed!!!!
   return (
     <div className={styles.Home}>
       <div className={styles.Low}>
