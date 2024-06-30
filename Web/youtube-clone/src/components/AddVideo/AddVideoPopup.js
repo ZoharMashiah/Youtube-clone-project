@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import styles from "./AddVideoPopup.module.css";
 import Dropdown from "react-bootstrap/Dropdown";
+import AppContext from "../../AppContext";
 
-export default function AddVideoPopup({ context, onClose }) {
+export default function AddVideoPopup({ onClose }) {
   const [title, settitle] = useState("");
   const [description, setdescription] = useState("");
   const [image, setimage] = useState(null);
@@ -25,9 +26,11 @@ export default function AddVideoPopup({ context, onClose }) {
     "3D printing",
   ];
 
+  const currentUser = useContext(AppContext);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const isAdmin = context.username === "admin" && context.password === "admin";
+    const isAdmin = currentUser.username === "admin" && currentUser.password === "admin";
 
     if (!isAdmin && !isFormValid()) {
       alert("Fill all the fields!");
@@ -36,7 +39,7 @@ export default function AddVideoPopup({ context, onClose }) {
 
     try {
       const newVideo = await createNewVideo();
-      const address = `/api/users/${context.id}/videos`;
+      const address = `/api/users/${currentUser.id}/videos`;
       console.log("Sending request to:", address);
       const res = await fetch(address, {
         method: "POST",
@@ -70,16 +73,16 @@ export default function AddVideoPopup({ context, onClose }) {
   };
 
   useEffect(() => {
-    if (context.username === "admin" && context.password === "admin") {
+    if (currentUser.username === "admin" && currentUser.password === "admin") {
       settitle("Admin Default Title");
       setdescription("Admin Default Description");
       setcategory("Admin Default Category");
     }
-  }, [context]);
+  }, [currentUser]);
 
   const createNewVideo = async () => {
     return {
-      user_id: context.id,
+      user_id: currentUser.id,
       title: title,
       description: description,
       category: category,
@@ -175,7 +178,7 @@ export default function AddVideoPopup({ context, onClose }) {
             }}
           />
           <div className="btn-group">
-            <button class="btn btn-primary" className={styles.cancelBtn} onClick={resetForm}>
+            <button class="btn btn-primary" className={styles.cancelBtn} onClick={onClose}>
               Cancel
             </button>
             <button type="submit" class="btn btn-primary" className={styles.addBtn}>

@@ -2,18 +2,17 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import styles from "./VideoDisplay.module.css";
 import SuggestedVideos from "../SuggestedVideos/SuggestedVideos";
-import UpperVideo from "../UpperVideo--/UpperVideo";
 import axios from "axios";
 import Buttons from "../Buttons/Buttons";
 import Description from "../Description/Description";
 
-export default function VideoDisplay({ context }) {
+export default function VideoDisplay() {
   const { creatorId, videoId } = useParams();
   const [currentVideo, setCurrentVideo] = useState(null);
 
   useEffect(() => {
     fetchVideo();
-  }, [creatorId, videoId]);
+  }, [videoId, creatorId]);
 
   const fetchVideo = async (creatorId, videoId) => {
     try {
@@ -38,7 +37,7 @@ export default function VideoDisplay({ context }) {
           </div>
           <div className={styles.textWrapper}>
             <h2>{currentVideo.title}</h2>
-            <Buttons currentVideo={currentVideo} deleteVideo={videoId} context={context} />
+            <Buttons currentVideo={currentVideo} deleteVideo={videoId} />
             <Description currentVideo={currentVideo} />
           </div>
         </div>
@@ -54,7 +53,7 @@ export default function VideoDisplay({ context }) {
         </div>
       </div>
       <div className={styles.SugestedVideosWrapper}>
-        <SuggestedVideos context={context} currentVideo={currentVideo} setCurrentVideo={setCurrentVideo} />
+        <SuggestedVideos currentVideo={currentVideo} />
       </div>
     </div>
   );

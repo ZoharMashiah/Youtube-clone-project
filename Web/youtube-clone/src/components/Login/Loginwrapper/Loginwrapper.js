@@ -1,21 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "./Loginwrapper.css";
 import Userfield from "../Userfield/Userfield";
 import { Navigate } from "react-router-dom";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import AppContext from "../../../AppContext";
 
-export default function Loginwrapper({ users, setContext }) {
+export default function Loginwrapper() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [move, setMove] = useState(false);
-  const [goFeed, setgoFeed] = useState(false);
+  const [register, setRegister] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [userList, setUserList] = useState([]);
+  const { currentUser, setCurrentUser } = useContext(AppContext);
 
   const handleSubmit = () => {
-    const user = users.find((user) => user.username === username);
+    const user = userList.find((user) => user.username === username);
     if (user) {
       if (user.password === password) {
-        setgoFeed(true);
-        setContext(user);
+        setLoggedIn(true);
+        setCurrentUser(user);
       } else {
         alert("Incorrect password.");
       }
@@ -24,10 +27,34 @@ export default function Loginwrapper({ users, setContext }) {
     }
   };
 
-  if (move) {
+  useEffect(() => {
+    createFakeUser();
+  }, []);
+  const createFakeUser = () => {
+    const fakeUser = {
+      id: 89,
+      username: "admin",
+      password: "admin",
+      firstName: "Test",
+      middleName: "",
+      lastName: "User",
+      birthDate: "1990-01-01",
+      photo: "",
+    };
+
+    setUserList((prevUsers) => {
+      if (!prevUsers.some((user) => user.username === fakeUser.username)) {
+        return [...prevUsers, fakeUser];
+      }
+      return prevUsers;
+    });
+  };
+
+  if (register) {
     return <Navigate to="/signup" />;
   }
-  if (goFeed) {
+
+  if (loggedIn) {
     return <Navigate to="/" />;
   }
 
@@ -43,10 +70,13 @@ export default function Loginwrapper({ users, setContext }) {
       </div>
       <div className="login-footer">
         <p>
-          Don't have an account? <button onClick={() => setMove(true)}>Register</button>
+          Don't have an account?{" "}
+          <button id="register-button" onClick={() => setRegister(true)}>
+            Register
+          </button>
         </p>
       </div>
-      <button className="register-button" onClick={handleSubmit}>
+      <button className="confirm-button" onClick={handleSubmit}>
         Confirm
       </button>
     </div>

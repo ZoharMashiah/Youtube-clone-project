@@ -4,10 +4,7 @@ import UpperButtons from "../UpperButtons/UpperButtons";
 import Logo from "../Logo/Logo";
 import styles from "./UpBar.module.css";
 
-export default function UpBar({ context, setSearchText, setTrigger }) {
-  // const [searchText, setsearchText] = useState("");
-  // const [trigger, settrigger] = useState(false);
-
+export default function UpBar({ setSearchText, setTrigger }) {
   return (
     <div className={styles.wrapper}>
       <div className={styles.logo}>
@@ -17,7 +14,7 @@ export default function UpBar({ context, setSearchText, setTrigger }) {
         <Search setSearchText={setSearchText} />
       </div>
       <div className={styles.upperButtonsWrapper}>
-        <UpperButtons context={context} setTrigger={setTrigger} />
+        <UpperButtons setTrigger={setTrigger} />
       </div>
     </div>
   );
