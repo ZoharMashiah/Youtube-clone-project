@@ -12,10 +12,11 @@ export default function Login({  }) {
   const [password, setPassword] = useState('');
   const { darkMode, toggleDarkMode, currentUser} = useContext(AppContext);
 
+  
   const handleLogin = async (setCurrentUser) => {
     try {
       //change the localhost3000 to api.
-      const response = await axios.post('http://localhost:3000/api/users/login', { username, password });
+      const response = await axios.post('http://localhost:3000/api/tokens', { username, password });
       if(response.status == 200){
         localStorage.setItem('token', response.data.token);
         setCurrentUser(response.data.user); // Set the current user

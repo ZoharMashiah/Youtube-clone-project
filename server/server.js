@@ -9,6 +9,7 @@ const mongoose = require("mongoose");
 
 const feedRouter = require("./routes/feedRoutes");
 const userRouter = require("./routes/userRoutes");
+const tokenRouter = require("./routes/tokenRoutes");
 require("dotenv").config({ path: `./config/.env.local` });
 
 const app = express();
@@ -22,7 +23,7 @@ mongoose
     app.use(fileUpload());
     // app.use("/", feedRouter);
     app.use("/api/users", userRouter);
-    
+    app.use("/api/tokens",tokenRouter);
 
     app.listen(process.env.PORT, () => console.log("Server running on port " + process.env.PORT));
     console.log("Connected to mongoose");
