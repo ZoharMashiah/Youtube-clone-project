@@ -21,14 +21,16 @@ export default function Feed({ context, setContext }) {
             <LowerFeed setCurrentVideo={setCurrentVideo} />
           </div>
         ) : (
-          <VideoDisplay currentUser={context} />
+          <VideoDisplay context={context} />
         )}
       </div>
-      {trigger && context != null ? (
+      {/* {trigger ? (
         <AddVideoPopup context={context} onClose={() => settrigger(false)} />
       ) : (
-        trigger && context == null && <Navigate to="/login" />
-      )}
+        // trigger && context == null && <Navigate to="/login" />
+        // <Navigate to="/login" />
+        ""
+      )} */}
     </div>
   );
 }

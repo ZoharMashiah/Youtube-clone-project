@@ -4,7 +4,7 @@ import Userfield from "../Userfield/Userfield";
 import { Navigate } from "react-router-dom";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
-export default function Loginwrapper({ users, setcurrentUser }) {
+export default function Loginwrapper({ users, setContext }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [move, setMove] = useState(false);
@@ -15,7 +15,7 @@ export default function Loginwrapper({ users, setcurrentUser }) {
     if (user) {
       if (user.password === password) {
         setgoFeed(true);
-        setcurrentUser(user);
+        setContext(user);
       } else {
         alert("Incorrect password.");
       }

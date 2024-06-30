@@ -18,7 +18,7 @@ export default function Login({ users, setContext, darkMode, setDarkMode }) {
 
       <Logo />
       <p className="login-title">Login</p>
-      <Loginwrapper users={users} setcurrentUser={setContext} />
+      <Loginwrapper users={users} setContext={setContext} />
     </div>
   );
 }

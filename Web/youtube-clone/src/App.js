@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./pages/Layout";
 import Feed from "./pages/Feed/Feed";
@@ -11,28 +11,28 @@ export default function App() {
   const [context, setContext] = useState(/* initial context */);
   const [users, setUsers] = useState(/* initial users */);
 
-  useEffect(() => {
-    createFakeUser();
-  }, []);
-  const createFakeUser = () => {
-    const fakeUser = {
-      id: 89,
-      username: "admin",
-      password: "admin",
-      firstName: "Test",
-      middleName: "",
-      lastName: "User",
-      birthDate: "1990-01-01",
-      photo: "",
-    };
+  // useEffect(() => {
+  //   createFakeUser();
+  // }, []);
+  // const createFakeUser = () => {
+  //   const fakeUser = {
+  //     id: 89,
+  //     username: "admin",
+  //     password: "admin",
+  //     firstName: "Test",
+  //     middleName: "",
+  //     lastName: "User",
+  //     birthDate: "1990-01-01",
+  //     photo: "",
+  //   };
 
-    setUsers((prevUsers) => {
-      if (!prevUsers.some((user) => user.username === fakeUser.username)) {
-        return [...prevUsers, fakeUser];
-      }
-      return prevUsers;
-    });
-  };
+  //   setUsers((prevUsers) => {
+  //     if (!prevUsers.some((user) => user.username === fakeUser.username)) {
+  //       return [...prevUsers, fakeUser];
+  //     }
+  //     return prevUsers;
+  //   });
+  // };
 
   return (
     <BrowserRouter>
