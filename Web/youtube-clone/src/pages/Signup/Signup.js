@@ -3,9 +3,9 @@ import './Signup.css';
 import axios from 'axios';
 import icon from '../../components/Login/LoginImages/1716994828673_imgbg.net.png';
 import Signupwrapper from '../../components/Signup/Signupwrapper/Signupwrapper';
-mport AppContext from "../../AppContext";
+import AppContext from "../../AppContext";
 
-export default function Signup({ darkMode, setDarkMode }) {
+export default function Signup({ }) {
   const [users, setUsers] = useState([]);
   
   useEffect(() => {

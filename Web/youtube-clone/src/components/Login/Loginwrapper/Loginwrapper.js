@@ -12,8 +12,8 @@ export default function Loginwrapper({ handleLogin, setUsername, setPassword }) 
   const { currentUser, setCurrentUser } = useContext(AppContext);
   const navigate = useNavigate();
 
-  const handleSubmit = async () => {
-    let ret = await handleLogin();  // Call handleLogin from props
+  const handleSubmit = async (setCurrentUser) => {
+    let ret = await handleLogin(setCurrentUser);  // Call handleLogin from props
     if (ret == true){
       setgoFeed(true);
     }
@@ -21,34 +21,10 @@ export default function Loginwrapper({ handleLogin, setUsername, setPassword }) 
 
   // since state updates are brtched, navigate only after the current user is set
   useEffect(() => {
-    if (currentUser) {
+    if (goFeed) {
       navigate("/");
     }
-  }, [currentUser, navigate]);
-
-  // just creating the admin here until the db is up and running
-  useEffect(() => {
-    createFakeUser();
-  }, []);
-  const createFakeUser = () => {
-    const fakeUser = {
-      id: 89,
-      username: "admin",
-      password: "admin",
-      firstName: "Test",
-      middleName: "",
-      lastName: "User",
-      birthDate: "1990-01-01",
-      photo: "",
-    };
-
-    setUserList((prevUsers) => {
-      if (!prevUsers.some((user) => user.username === fakeUser.username)) {
-        return [...prevUsers, fakeUser];
-      }
-      return prevUsers;
-    });
-  }; // end creation here
+  }, [goFeed , navigate]);
 
   return (
     <div className="login-wrapper">
@@ -66,7 +42,7 @@ export default function Loginwrapper({ handleLogin, setUsername, setPassword }) 
           <p>Register</p>
         </button>
       </div>
-      <button className="confirm-button" onClick={handleSubmit}>
+      <button className="confirm-button" onClick={async ()=> await handleSubmit(setCurrentUser)}>
         Confirm
       </button>
     </div>

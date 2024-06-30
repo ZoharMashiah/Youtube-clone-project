@@ -28,7 +28,7 @@ const createUser = async (req, res) => {
     try{
         const { username, password, firstName, middleName, lastName, birthdate, photo, videos, settings } = req.body
         const user = await User.create({ username, password, firstName, middleName, lastName, birthdate, photo, videos, settings })
-        const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY, { expiresIn: '5h' });
+        const token = jwt.sign({ userId: user._id }, 'SECRET_KEY' , { expiresIn: '5h'});
     res.status(200).json({ user, token }); // Changed response to include token
     }catch(error){
     res.status(400).json({error: error.message})

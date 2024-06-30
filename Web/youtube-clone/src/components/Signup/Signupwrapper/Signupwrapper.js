@@ -16,12 +16,13 @@ export default function Signupwrapper({ users, handleSignup }) {
   const [success, setSuccess] = useState(false);
   const [moveLogin, setMoveLogin] = useState(false);
 
-  const handleSubmit = () => {
-    // Username validation
-    if (users.some(user => user.username === username)) {
-      alert('Username already exists.');
-      return;
-    }
+  const handleSubmit = async () => {
+
+    // // Username validation
+    // if (users.some(user => user.username === username)) {
+    //   alert('Username already exists.');
+    //   return;
+    // }
 
     // Password validation
     const letterCount = (password.match(/[a-zA-Z]/g) || []).length;
@@ -52,7 +53,7 @@ export default function Signupwrapper({ users, handleSignup }) {
         darkmode: false
       }
     };
-    let ret = handleSignup(newUser);  // Call handleSignup
+    let ret = await handleSignup(newUser);  // Call handleSignup
     if (ret === true){
       setSuccess(true);
     }
