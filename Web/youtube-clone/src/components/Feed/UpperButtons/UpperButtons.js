@@ -11,13 +11,7 @@ const DarkModeButton = ({ darkMode, toggleDarkMode }) => (
 
 const UploadVideo = ({ setTrigger }) => (
   <>
-    <button
-      className={styles.button}
-      onClick={() => {
-        setTrigger(true);
-        console.log(" set trigger");
-      }}
-    >
+    <button className={styles.button} onClick={() => setTrigger(true)}>
       <i className="bi bi-camera-reels" id={styles.icon} />
     </button>
     <button className={styles.button}>

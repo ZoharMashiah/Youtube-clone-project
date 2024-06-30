@@ -3,11 +3,13 @@ import styles from "./Feed.module.css";
 import LowerFeed from "../../components/Feed/LowerFeed/LowerFeed";
 import VideoDisplay from "../../components/WatchVid/VideoDisplay/VideoDisplay";
 import AddVideoPopup from "../../components/AddVideo/AddVideoPopup";
-import { useOutletContext } from "react-router-dom";
 
 export default function Feed() {
   const [currentVideo, setCurrentVideo] = useState(0);
-  const { trigger, setTrigger, searchText, setsearchText } = useOutletContext();
+  const [searchText, setsearchText] = useState("");
+  const [trigger, setTrigger] = useState(false);
+
+  console.log("hi");
 
   return (
     <div className={styles.Feed}>
@@ -20,16 +22,7 @@ export default function Feed() {
           <VideoDisplay />
         )}
       </div>
-      {trigger ? (
-        <AddVideoPopup
-          onClose={() => {
-            setTrigger(false);
-            console.log("feed set trigger");
-          }}
-        />
-      ) : (
-        ""
-      )}
+      {trigger ? <AddVideoPopup onClose={() => setTrigger(false)} /> : ""}
     </div>
   );
 }
