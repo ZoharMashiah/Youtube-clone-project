@@ -1,31 +1,45 @@
-.Feed{
-    display: flex;
-    flex-direction: row;
-    width: 100vw;
-    height: 100vh;
-    max-height: 100vh;
+.Home {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100vh;
+  max-height: 100vh;
 }
 
-.Up{
-    position: absolute;
-    top: 1vh;
-    width: 100vw;
-    height: 10vh;
+.Low {
+  /* position: absolute; */
+  bottom: 0vh;
+  height: 92vh;
+  overflow-x: hidden;
 }
 
-.Low{
-    position: absolute;
-    bottom: 0vh;
-    width: 100vw;
-    height: 92vh;
-    overflow-x: hidden;
+.displayVideoLowerFeed {
+  /* position: absolute; */
+  bottom: 0vh;
+  height: 90vh;
+  overflow: hidden;
 }
 
-.displayVideoLowerFeed{
-        position: absolute;
-        bottom: 0vh;
-        width: 100vw;
-        height: 90vh;
-        overflow: hidden;
+.Feed {
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
 }
 
+.Right {
+  /* position: absolute; */
+  right: 0vw;
+  height: 80vh;
+  max-width: 80vw;
+}
+
+.LeftMenu {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-items: center;
+  align-items: center;
+  height: fit-content;
+  width: fit-content;
+  overflow: hidden;
+}

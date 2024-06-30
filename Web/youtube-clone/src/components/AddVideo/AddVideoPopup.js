@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import styles from "./AddVideoPopup.module.css";
 import Dropdown from "react-bootstrap/Dropdown";
+import AppContext from "../../AppContext";
 
-export default function AddVideoPopup({ currenUser, setvideos, videos, setfilterdVideos, onClose }) {
+export default function AddVideoPopup({ onClose }) {
   const [title, settitle] = useState("");
   const [description, setdescription] = useState("");
   const [image, setimage] = useState(null);
   const [video, setvideo] = useState(null);
   const [category, setcategory] = useState("");
-  const [categories, setCategories] = useState([
+  const categories = [
     "Music",
     "Mixes",
     "JavaScript",
@@ -23,11 +24,13 @@ export default function AddVideoPopup({ currenUser, setvideos, videos, setfilter
     "Comedy clubs",
     "Skills",
     "3D printing",
-  ]);
+  ];
+
+  const currentUser = useContext(AppContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const isAdmin = currenUser.username === "admin" && currenUser.password === "admin";
+    const isAdmin = currentUser.username === "admin" && currentUser.password === "admin";
 
     if (!isAdmin && !isFormValid()) {
       alert("Fill all the fields!");
@@ -36,7 +39,8 @@ export default function AddVideoPopup({ currenUser, setvideos, videos, setfilter
 
     try {
       const newVideo = await createNewVideo();
-      const address = `/api/users/${currenUser.id}/video`;
+      const address = `/api/users/${currentUser.id}/videos`;
+      console.log("Sending request to:", address);
       const res = await fetch(address, {
         method: "POST",
         headers: {
@@ -50,7 +54,6 @@ export default function AddVideoPopup({ currenUser, setvideos, videos, setfilter
 
       if (!res.ok) {
         console.log("Full response:", res);
-        console.log("Sending request to:", address);
         throw new Error(`HTTP error. status: ${res.status}`);
       }
 
@@ -70,26 +73,21 @@ export default function AddVideoPopup({ currenUser, setvideos, videos, setfilter
   };
 
   useEffect(() => {
-    if (currenUser.username === "admin" && currenUser.password === "admin") {
+    if (currentUser.username === "admin" && currentUser.password === "admin") {
       settitle("Admin Default Title");
       setdescription("Admin Default Description");
       setcategory("Admin Default Category");
     }
-  }, [currenUser]);
+  }, [currentUser]);
 
   const createNewVideo = async () => {
     return {
+      user_id: currentUser.id,
       title: title,
       description: description,
-      user: currenUser.username,
       category: category,
-      publication_date: Date.now(),
-      icon: image,
       video: video,
-      views: 0,
-      like: [],
-      dislike: [],
-      comments: [],
+      icon: image,
     };
   };
 
@@ -143,44 +141,52 @@ export default function AddVideoPopup({ currenUser, setvideos, videos, setfilter
               ))}
             </Dropdown.Menu>
           </Dropdown>
-          <input
-            className={styles.videoUpload}
-            type="file"
-            alt="Upload Video"
-            name="video"
-            accept=".mp4"
-            onChange={async (e) => {
-              const file = e.target.files[0];
-              if (file) {
-                try {
-                  const dataUrl = await readFileAsDataURL(file);
-                  setvideo(dataUrl);
-                } catch (error) {
-                  console.error("Error reading file:", error);
+          <div className="mb-3">
+            <label>Upload Video</label>
+            <input
+              className={styles.videoUpload}
+              type="file"
+              alt="Upload Video"
+              name="video"
+              accept=".mp4"
+              onChange={async (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                  try {
+                    const dataUrl = await readFileAsDataURL(file);
+                    setvideo(dataUrl);
+                  } catch (error) {
+                    console.error("Error reading file:", error);
+                  }
                 }
-              }
-            }}
-          />
-          <input
-            className={styles.photoUpload}
-            type="file"
-            alt="Upload Photo"
-            accept=".png, .jpeg, .jpg"
-            name="thumbnail"
-            onChange={async (e) => {
-              const file = e.target.files[0];
-              if (file) {
-                try {
-                  const dataUrl = await readFileAsDataURL(file);
-                  setimage(dataUrl);
-                } catch (error) {
-                  console.error("Error reading file:", error);
+              }}
+            />
+          </div>
+
+          <div className="mb-3">
+            <label>Upload Thumbnail</label>
+            <input
+              className={styles.photoUpload}
+              type="file"
+              alt="Upload Photo"
+              accept=".png, .jpeg, .jpg"
+              name="thumbnail"
+              onChange={async (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                  try {
+                    const dataUrl = await readFileAsDataURL(file);
+                    setimage(dataUrl);
+                  } catch (error) {
+                    console.error("Error reading file:", error);
+                  }
                 }
-              }
-            }}
-          />
+              }}
+            />
+          </div>
+
           <div className="btn-group">
-            <button class="btn btn-primary" className={styles.cancelBtn} onClick={resetForm}>
+            <button class="btn btn-primary" className={styles.cancelBtn} onClick={onClose}>
               Cancel
             </button>
             <button type="submit" class="btn btn-primary" className={styles.addBtn}>

@@ -12,8 +12,8 @@ export default function Comments({
   deleteComment,
 }) {
   const [title, setTitle] = useState("");
-  const [comments, setComments] = useState([])
-  const [triger, setTriger] = useState(false)
+  const [comments, setComments] = useState([]);
+  const [triger, setTriger] = useState(false);
 
   const getMaxId = () => {
     let id = 0;
@@ -23,33 +23,33 @@ export default function Comments({
     return id;
   };
   const addCommentToVideo = async (e) => {
-    e.preventDefault()
-    console.log("fsfs")
+    e.preventDefault();
+    console.log("fsfs");
     const comment = {
       title: title,
-      userId: "667aeb3eaf98ca2e75104d0b"
-    }
+      userId: "667aeb3eaf98ca2e75104d0b",
+    };
 
     // temp
-    const userId = "667aeb3eaf98ca2e75104d0b"
-    const videoId = "667aeb3eaf98ca2e75104d0b"
-    
+    const userId = "667aeb3eaf98ca2e75104d0b";
+    const videoId = "667aeb3eaf98ca2e75104d0b";
+
     const response = await fetch(`http://localhost:3000/api/users/${userId}/video/${videoId}/comment/`, {
       method: "POST",
       body: JSON.stringify(comment),
       headers: {
-        'Content-Type': 'application/json'
-      }
-    })
+        "Content-Type": "application/json",
+      },
+    });
 
-    const json = await response.json()
+    const json = await response.json();
 
     if (response.ok) {
-      setTitle("")
-      setTriger(true)
-      console.log('new comment added', json)
+      setTitle("");
+      setTriger(true);
+      console.log("new comment added", json);
     } else {
-      console.log(response.error)
+      console.log(response.error);
     }
     // let addedComment = {
     //   id: getMaxId() + 1,
@@ -77,20 +77,19 @@ export default function Comments({
     //   comments: [...currentVideo.comments,addedComment]
     // }
     // editVideo(changedVideo)
-  }
+  };
 
   // const handleSubmit = async (e) => {
   //   e.preventDefault();
 
   //   try {
-      
+
   //     const comment = { title: title }
-      
 
   //   // temp
   //     const userId = "667aeb3eaf98ca2e75104d0b"
   //     const videoId = "667aeb3eaf98ca2e75104d0b"
-      
+
   //     const address = `http://localhost:3000/api/users/${userId}/video/${videoId}/comment/`;
   //     const res = await fetch(address, {
   //       method: "POST",
@@ -131,20 +130,20 @@ export default function Comments({
   useEffect(() => {
     const fetchComments = async () => {
       // temp
-      const userId = "667aeb3eaf98ca2e75104d0b"
-      const videoId = "667aeb3eaf98ca2e75104d0b"
+      const userId = "667aeb3eaf98ca2e75104d0b";
+      const videoId = "667aeb3eaf98ca2e75104d0b";
 
-      const response = await fetch(`http://localhost:3000/api/users/${userId}/video/${videoId}/comment/`)
-      const json = await response.json()
+      const response = await fetch(`http://localhost:3000/api/users/${userId}/video/${videoId}/comment/`);
+      const json = await response.json();
 
       if (response.ok) {
-        setComments(json)
-        setTriger(false)
+        setComments(json);
+        setTriger(false);
       }
-    }
+    };
 
-    fetchComments()
-  },[triger])
+    fetchComments();
+  }, [triger]);
 
   return (
     <div className={styles.commentsWrapper}>
@@ -180,7 +179,14 @@ export default function Comments({
         if(comment.parentId == undefined){
           return (
             <div>
-              <Comment {...comment} currentUser={currentUser} editComment={editComment} deleteComment={deleteComment} triger={triger} setTriger={setTriger} />
+              <Comment
+                {...comment}
+                currentUser={currentUser}
+                editComment={editComment}
+                deleteComment={deleteComment}
+                triger={triger}
+                setTriger={setTriger}
+              />
               {orgenizeComments(comment._id)}
             </div>
         );}

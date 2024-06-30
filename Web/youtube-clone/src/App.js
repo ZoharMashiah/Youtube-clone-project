@@ -1,68 +1,34 @@
+import React, { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Layout from "./pages/Layout";
 import Feed from "./pages/Feed/Feed";
-import "./App.css";
-import React, { useState, useEffect } from "react";
 import Login from "./pages/Login/Login";
 import Signup from "./pages/Signup/Signup";
-import vid from "./data/videos.json";
+import VideoDisplay from "./components/WatchVid/VideoDisplay/VideoDisplay";
+import AppContext from "./AppContext";
 
-function App() {
-  const [users, setusers] = useState([]);
-  const [currentUser, setcurrentUser] = useState(null);
+export default function App() {
+  const [currentUser, setCurrentUser] = useState(null);
   const [darkMode, setDarkMode] = useState(false);
-  const [videos, setVideos] = useState(vid);
 
-  useEffect(() => {
-    createFakeUser();
-  }, []);
-  const createFakeUser = () => {
-    const fakeUser = {
-      id: 89,
-      username: "admin",
-      password: "admin",
-      firstName: "Test",
-      middleName: "",
-      lastName: "User",
-      birthDate: "1990-01-01",
-      photo: "",
-    };
-    setusers((prevUsers) => {
-      if (!prevUsers.some((user) => user.username === fakeUser.username)) {
-        return [...prevUsers, fakeUser];
-      }
-      return prevUsers;
-    });
+  const toggleDarkMode = () => {
+    setDarkMode((prev) => !prev);
   };
 
+  const contextValue = { currentUser, setCurrentUser, darkMode, toggleDarkMode };
+
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route
-          path="/login"
-          element={
-            <Login users={users} setcurrentUser={setcurrentUser} darkMode={darkMode} setDarkMode={setDarkMode} />
-          }
-        />
-        <Route
-          path="/signup"
-          element={<Signup users={users} setusers={setusers} darkMode={darkMode} setDarkMode={setDarkMode} />}
-        />
-        <Route
-          path="/"
-          element={
-            <Feed
-              currentUser={currentUser}
-              setcurrentUser={setcurrentUser}
-              darkMode={darkMode}
-              setDarkMode={setDarkMode}
-              videos={videos}
-              setVideos={setVideos}
-            />
-          }
-        />
-      </Routes>
-    </BrowserRouter>
+    <AppContext.Provider value={contextValue}>
+      <BrowserRouter>
+        <Routes>
+          <Route element={<Layout />}>
+            <Route path="/" element={<Feed />} />
+            <Route path="/users/:userId/videos/:videoId" element={<VideoDisplay />} />
+          </Route>
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+        </Routes>
+      </BrowserRouter>
+    </AppContext.Provider>
   );
 }
-
-export default App;

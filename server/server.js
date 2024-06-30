@@ -4,33 +4,28 @@ const cors = require("cors");
 const path = require("path");
 const fileUpload = require("express-fileupload");
 const jwt = require("jsonwebtoken");
-const userRouter = require("./routes/Users");
 const session = require("express-session");
 const mongoose = require("mongoose");
 
-const videoRoutes = require("./routes/videoRoutes");
-const commentRouter = require("./routes/comments")
-require('dotenv').config({path:`./config/.env.local`});
+const feedRouter = require("./routes/feedRoutes");
+const userRouter = require("./routes/userRoutes");
+require("dotenv").config({ path: `./config/.env.local` });
 
 const app = express();
-mongoose.connect(process.env.MONGO_LINK, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
+mongoose
+  .connect(process.env.MONGO_LINK)
   .then(() => {
     app.use(cors());
-    app.use(express.static(path.join(__dirname, "../Web/youtube-clone/build"))); // server recognizes the build
+    app.use(express.static(path.join(__dirname, "../Web/youtube-clone/build")));
     app.use(bodyParser.json({ limit: "50mb" }));
     app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
     app.use(fileUpload());
-    //app.use(videoRoutes); // server recognizes public
-    app.use("/", commentRouter);
+    app.use("/", feedRouter);
     app.use("/api/users", userRouter);
 
     app.listen(process.env.PORT, () => console.log("Server running on port " + process.env.PORT));
     console.log("Connected to mongoose");
-    
   })
   .catch((error) => {
     console.log("Error connecting to mongoose: ", error);
-})
+  });
