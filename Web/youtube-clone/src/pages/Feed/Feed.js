@@ -13,23 +13,20 @@ import { useOutletContext } from "react-router-dom";
 export default function Feed() {
   const { trigger, setTrigger } = useOutletContext();
   const { currentUser } = useContext(AppContext);
-  console.log("current user: ", currentUser);
 
   // not gonna stay here ofc
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [filterVideosCategory, setfilterVideosCategory] = useState([]);
 
-  //here
-
   const [videoList, setVideoList] = useState([]);
   const navigate = useNavigate();
 
-  // !!!after uploading a video, force a fetch!!!!
-
   useEffect(() => {
     console.log("current user: ", currentUser);
-    fetchFeed();
-  }, []);
+    if (trigger === false) {
+      fetchFeed();
+    }
+  }, [trigger]);
 
   const fetchFeed = async () => {
     try {
