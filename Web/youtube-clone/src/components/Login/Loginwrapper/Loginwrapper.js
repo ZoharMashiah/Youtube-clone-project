@@ -5,59 +5,26 @@ import Userfield from "../Userfield/Userfield";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import AppContext from "../../../AppContext";
 
-export default function Loginwrapper() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+export default function Loginwrapper({ handleLogin, setUsername, setPassword }) {
+  const [move, setMove] = useState(false);
+  const [goFeed, setgoFeed] = useState(false);
   const [userList, setUserList] = useState([]);
   const { currentUser, setCurrentUser } = useContext(AppContext);
   const navigate = useNavigate();
 
-  const handleSubmit = () => {
-    console.log("handling submit..");
-    console.log("userlist: ", userList);
-    const user = userList.find((user) => user.username === username);
-    if (user) {
-      if (user.password === password) {
-        setCurrentUser(user);
-        console.log("setcurr user: ", user);
-      } else {
-        alert("Incorrect password.");
-      }
-    } else {
-      alert("Username does not exist.");
+  const handleSubmit = async (setCurrentUser) => {
+    let ret = await handleLogin(setCurrentUser);  // Call handleLogin from props
+    if (ret == true){
+      setgoFeed(true);
     }
   };
 
   // since state updates are brtched, navigate only after the current user is set
   useEffect(() => {
-    if (currentUser) {
+    if (goFeed) {
       navigate("/");
     }
-  }, [currentUser, navigate]);
-
-  // just creating the admin here until the db is up and running
-  useEffect(() => {
-    createFakeUser();
-  }, []);
-  const createFakeUser = () => {
-    const fakeUser = {
-      id: 89,
-      username: "admin",
-      password: "admin",
-      firstName: "Test",
-      middleName: "",
-      lastName: "User",
-      birthDate: "1990-01-01",
-      photo: "",
-    };
-
-    setUserList((prevUsers) => {
-      if (!prevUsers.some((user) => user.username === fakeUser.username)) {
-        return [...prevUsers, fakeUser];
-      }
-      return prevUsers;
-    });
-  }; // end creation here
+  }, [goFeed , navigate]);
 
   return (
     <div className="login-wrapper">
@@ -75,7 +42,7 @@ export default function Loginwrapper() {
           <p>Register</p>
         </button>
       </div>
-      <button className="confirm-button" onClick={handleSubmit}>
+      <button className="confirm-button" onClick={async ()=> await handleSubmit(setCurrentUser)}>
         Confirm
       </button>
     </div>
