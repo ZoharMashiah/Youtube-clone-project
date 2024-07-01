@@ -57,9 +57,7 @@ export default function RightFeed({ selectedCategory, setselectedCategory, filte
       <div>
         <div className={styles.grid}>
           {videoList.map((video) => (
-            <div key={video._id} onClick={() => handleClick(video)}>
-              <VideoShow {...video} />
-            </div>
+            <VideoShow key={video._id} {...video} onClick={() => handleClick(video)} />
           ))}
         </div>
       </div>

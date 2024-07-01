@@ -28,8 +28,6 @@ export default function AddVideoPopup({ onClose }) {
     "3D printing",
   ];
 
-  console.log(currentUser);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     const isAdmin = currentUser.username === "admin" && currentUser.password === "admin";

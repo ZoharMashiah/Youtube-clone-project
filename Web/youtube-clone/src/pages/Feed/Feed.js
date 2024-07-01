@@ -19,36 +19,21 @@ export default function Feed() {
   const [filteredVideos, setFilteredVideos] = useState([]);
   const [filterVideosCategory, setfilterVideosCategory] = useState([]);
 
-  // const filterVideosByCategory = (category) => {
-  //   const filtered = allVideos.filter((video) => video.category === category);
-  //   setFilteredVideos(filtered);
-  //   setSelectedCategory(category);
-  // };
-
   // !!!after uploading a video, need to refresh the rightfeed!!!!
   return (
     <div className={styles.Home}>
-      <div className={styles.Low}>
-        {currentVideo === 0 ? (
-          <div className={styles.displayVideoLowerFeed}>
-            <div className={styles.Feed}>
-              <div className={styles.LeftMenu}>
-                <LeftMenu />
-              </div>
-              <div className={styles.Right}>
-                <RightFeed
-                  selectedCategory={selectedCategory}
-                  setselectedCategory={setSelectedCategory}
-                  filterdedVideos={filteredVideos}
-                  filterVideosCategory={filterVideosCategory}
-                />
-              </div>
-            </div>
-          </div>
-        ) : (
-          <VideoDisplay />
-        )}
+      <div className={styles.LeftMenu}>
+        <LeftMenu />
       </div>
+      <div className={styles.Right}>
+        <RightFeed
+          selectedCategory={selectedCategory}
+          setselectedCategory={setSelectedCategory}
+          filterdedVideos={filteredVideos}
+          filterVideosCategory={filterVideosCategory}
+        />
+      </div>
+
       {trigger ? <AddVideoPopup onClose={() => setTrigger(false)} /> : ""}
     </div>
   );
