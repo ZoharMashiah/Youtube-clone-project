@@ -43,6 +43,7 @@ const UserButtons = ({ currentUser, setCurrentUser }) => {
           onClick={() => {
             navigate("/");
             setCurrentUser(null);
+            localStorage.removeItem("token");
           }}
           className={styles.signBtn}
         >

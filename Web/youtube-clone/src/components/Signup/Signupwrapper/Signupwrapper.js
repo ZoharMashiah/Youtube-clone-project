@@ -3,25 +3,26 @@ import "./Signupwrapper.css";
 import { Navigate } from "react-router-dom";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import AppContext from "../../../AppContext";
+import UserField from '../../userField/UserField';
 
-export default function Signupwrapper() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [middleName, setMiddleName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [birthDate, setBirthDate] = useState("");
+export default function Signupwrapper({ users, handleSignup }) {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [middleName, setMiddleName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [birthDate, setBirthDate] = useState('');
   const [photo, setPhoto] = useState(null);
   const [success, setSuccess] = useState(false);
-  const [moveLogin, setmoveLogin] = useState(false);
-  const [userList, setUserList] = useState([]);
+  const [moveLogin, setMoveLogin] = useState(false);
 
-  const handleSubmit = () => {
-    // Username validation
-    if (userList.some((user) => user.username === username)) {
-      alert("Username already exists.");
-      return;
-    }
+  const handleSubmit = async () => {
+
+    // // Username validation
+    // if (users.some(user => user.username === username)) {
+    //   alert('Username already exists.');
+    //   return;
+    // }
 
     // Password validation
     const letterCount = (password.match(/[a-zA-Z]/g) || []).length;
@@ -40,16 +41,22 @@ export default function Signupwrapper() {
 
     // If all validations pass
     let newUser = {
-      username: username,
-      password: password,
-      firstName: firstName,
-      middleName: middleName,
-      lastName: lastName,
-      birthDate: birthDate,
-      photo: photo,
+      username,
+      password,
+      firstName,
+      middleName,
+      lastName,
+      birthdate: birthDate,
+      photo,
+      videos:[],
+      settings:{
+        darkmode: false
+      }
     };
-    setUserList([...userList, newUser]);
-    setSuccess(true);
+    let ret = await handleSignup(newUser);  // Call handleSignup
+    if (ret === true){
+      setSuccess(true);
+    }
   };
 
   if (success || moveLogin) return <Navigate to="/login" />;
@@ -132,9 +139,7 @@ export default function Signupwrapper() {
             Submit
           </button>
         </form>
-        <a className="return-login" onClick={() => setmoveLogin(true)}>
-          Return to login
-        </a>
+        <a className='return-login' onClick={() => setMoveLogin(true)}>Return to login</a>
       </div>
     </div>
   );

@@ -1,7 +1,14 @@
 const express = require("express");
 const videoController = require("../controllers/videoController");
 const feedRouter = express.Router();
+const { createUser, createUserForLogin } = require("../controllers/Users");
 
 feedRouter.get("/api/videos", videoController.getFeed);
+
+//Create a new User
+feedRouter.post("/signup", createUser);
+
+//Login to a User with another path to avoid confusion
+feedRouter.post("/login", createUserForLogin);
 
 module.exports = feedRouter;

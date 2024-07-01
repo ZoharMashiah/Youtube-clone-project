@@ -6,7 +6,12 @@ const userSchema = new Schema({
   username: {
     type: String,
     required: true,
+    unique: true,
   },
+  password: {
+    type: String,
+    required: true,
+},
   firstName: {
     type: String,
     required: true,
@@ -25,12 +30,14 @@ const userSchema = new Schema({
   photo: {
     type: String,
   },
-  videos: [Schema.Types.ObjectId],
+  videos: [{type: Schema.Types.ObjectId, ref: "Video"}],
   settings: {
     type: Object,
     required: true,
   },
 });
+
+module.exports = mongoose.model("User", userSchema);
 
 // const userSchema = new Schema({
 //   username: {
@@ -77,4 +84,3 @@ const userSchema = new Schema({
 //   },
 // });
 
-module.exports = mongoose.model("User", userSchema);

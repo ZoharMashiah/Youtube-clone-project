@@ -6,6 +6,9 @@ import AddVideoPopup from "../../components/AddVideo/AddVideoPopup";
 import RightFeed from "../../components/Feed/RightFeed/RightFeed";
 import LeftMenu from "../../components/Feed/LeftMenu/LeftMenu";
 import { useOutletContext } from "react-router-dom";
+import {useContext} from "react";
+import AppContext from "../../AppContext";
+
 
 export default function Feed() {
   const [currentVideo, setCurrentVideo] = useState(0);
@@ -21,6 +24,7 @@ export default function Feed() {
   //   setFilteredVideos(filtered);
   //   setSelectedCategory(category);
   // };
+
 
   return (
     <div className={styles.Home}>
