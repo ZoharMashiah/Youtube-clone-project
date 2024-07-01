@@ -5,11 +5,12 @@ import AppContext from "../../AppContext";
 import axios from "axios";
 
 export default function AddVideoPopup({ onClose }) {
-  const [title, settitle] = useState("");
-  const [description, setdescription] = useState("");
-  const [image, setimage] = useState(null);
-  const [video, setvideo] = useState(null);
-  const [category, setcategory] = useState("");
+  const { currentUser } = useContext(AppContext);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [image, setImage] = useState(null);
+  const [video, setVideo] = useState(null);
+  const [category, setCategory] = useState("");
   const categories = [
     "Music",
     "Mixes",
@@ -27,7 +28,6 @@ export default function AddVideoPopup({ onClose }) {
     "3D printing",
   ];
 
-  const currentUser = useContext(AppContext);
   console.log(currentUser);
 
   const handleSubmit = async (e) => {
@@ -73,15 +73,15 @@ export default function AddVideoPopup({ onClose }) {
 
   useEffect(() => {
     if (currentUser.username === "admin" && currentUser.password === "admin") {
-      settitle("Admin Default Title");
-      setdescription("Admin Default Description");
-      setcategory("Admin Default Category");
+      setTitle("Admin Default Title");
+      setDescription("Admin Default Description");
+      setCategory("Admin Default Category");
     }
   }, [currentUser]);
 
   const createNewVideo = async () => {
     return {
-      user_id: currentUser.id,
+      user_id: currentUser._id,
       title: title,
       description: description,
       category: category,
@@ -91,11 +91,11 @@ export default function AddVideoPopup({ onClose }) {
   };
 
   const resetForm = () => {
-    settitle("");
-    setdescription("");
-    setimage(null);
-    setvideo(null);
-    setcategory("");
+    setTitle("");
+    setDescription("");
+    setImage(null);
+    setVideo(null);
+    setCategory("");
     onClose();
   };
 
@@ -119,13 +119,13 @@ export default function AddVideoPopup({ onClose }) {
             name="title"
             value={title}
             onChange={(e) => {
-              settitle(e.target.value);
+              setTitle(e.target.value);
             }}
           />
           <input
             placeholder="Description"
             value={description}
-            onChange={(e) => setdescription(e.target.value)}
+            onChange={(e) => setDescription(e.target.value)}
             name="description"
           />
           <Dropdown className={styles.dropdown}>
@@ -134,7 +134,7 @@ export default function AddVideoPopup({ onClose }) {
             </Dropdown.Toggle>
             <Dropdown.Menu className={styles.selectCategory}>
               {categories.map((categ) => (
-                <Dropdown.Item key={categ} onClick={() => setcategory(categ)}>
+                <Dropdown.Item key={categ} onClick={() => setCategory(categ)}>
                   {categ}
                 </Dropdown.Item>
               ))}
@@ -153,7 +153,7 @@ export default function AddVideoPopup({ onClose }) {
                 if (file) {
                   try {
                     const dataUrl = await readFileAsDataURL(file);
-                    setvideo(dataUrl);
+                    setVideo(dataUrl);
                   } catch (error) {
                     console.error("Error reading file:", error);
                   }
@@ -175,7 +175,7 @@ export default function AddVideoPopup({ onClose }) {
                 if (file) {
                   try {
                     const dataUrl = await readFileAsDataURL(file);
-                    setimage(dataUrl);
+                    setImage(dataUrl);
                   } catch (error) {
                     console.error("Error reading file:", error);
                   }

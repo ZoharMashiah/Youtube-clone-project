@@ -75,6 +75,9 @@ videoSchema.statics.createVideo = async (videoData) => {
     processedVideo = video;
   }
 
+  console.log("icon: ", icon);
+  console.log("video: ", video);
+
   const newVideo = new Video({
     user_id,
     title,
