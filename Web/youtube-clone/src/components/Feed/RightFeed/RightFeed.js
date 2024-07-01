@@ -56,17 +56,12 @@ export default function RightFeed({ selectedCategory, setselectedCategory, filte
         />
       </div>
       <div>
-        {/* maybe delete video container and wrapper because video show has those and they dont seem to do anything*/}
-        <div id={styles.videoContainer}>
-          <div id={styles.wrapper}>
-            <div className={styles.grid}>
-              {videoList.map((video) => (
-                <div key={video._id} onClick={() => handleClick(video)}>
-                  <VideoShow {...video} />
-                </div>
-              ))}
+        <div className={styles.grid}>
+          {videoList.map((video) => (
+            <div key={video._id} onClick={() => handleClick(video)}>
+              <VideoShow {...video} />
             </div>
-          </div>
+          ))}
         </div>
       </div>
     </div>

@@ -7,7 +7,7 @@ import Signup from "./pages/Signup/Signup";
 import VideoDisplay from "./components/WatchVid/VideoDisplay/VideoDisplay";
 import AppContext from "./AppContext";
 import UserPage from "./pages/UserPage/UserPage";
-import { useEffect ,useContext} from "react"
+import { useEffect, useContext } from "react";
 
 export default function App() {
   // const { currentUser, setCurrentUser } = useContext(AppContext);
@@ -22,16 +22,16 @@ export default function App() {
 
   useEffect(() => {
     const getCurrentUser = async () => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      const response = await fetch(`http://localhost:3000/api/tokens/${token}`)
-      const data = await response.json();
-      if (data.user) {
-        setCurrentUser(data.user);
+      const token = localStorage.getItem("token");
+      if (token) {
+        const response = await fetch(`http://localhost:3000/api/tokens/${token}`);
+        const data = await response.json();
+        if (data.user) {
+          setCurrentUser(data.user);
+        }
       }
-    }
-  };
-  getCurrentUser();
+    };
+    getCurrentUser();
   }, []);
 
   return (

@@ -18,13 +18,16 @@ export default function Login({}) {
       if (response.status == 200) {
         localStorage.setItem("token", response.data.token);
         setCurrentUser(response.data.user); // Set the current user
+        while (currentUser === null);
+        console.log(currentUser);
+        alert("current user", currentUser);
         return true;
       } else {
-        alert("Login failed");
+        alert("Login failed now");
         return false;
       }
     } catch (error) {
-      alert("Login failed");
+      alert("Login failed", error.msg);
     }
   };
 

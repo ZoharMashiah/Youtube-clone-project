@@ -19,12 +19,12 @@ export default function Loginwrapper({ handleLogin, setUsername, setPassword }) 
     }
   };
 
-  // since state updates are brtched, navigate only after the current user is set
+  // since state updates are batched, navigate only after the current user is set
   useEffect(() => {
-    if (goFeed) {
+    if (currentUser) {
       navigate("/");
     }
-  }, [goFeed, navigate]);
+  }, [currentUser, navigate]);
 
   return (
     <div className="login-wrapper">

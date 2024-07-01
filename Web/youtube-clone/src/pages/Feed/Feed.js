@@ -1,17 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import AppContext from "../../AppContext";
 import styles from "./Feed.module.css";
-import LowerFeed from "../../components/Feed/LowerFeed--/LowerFeed";
 import VideoDisplay from "../../components/WatchVid/VideoDisplay/VideoDisplay";
 import AddVideoPopup from "../../components/AddVideo/AddVideoPopup";
 import RightFeed from "../../components/Feed/RightFeed/RightFeed";
 import LeftMenu from "../../components/Feed/LeftMenu/LeftMenu";
 import { useOutletContext } from "react-router-dom";
-import { useContext } from "react";
-import AppContext from "../../AppContext";
 
 export default function Feed() {
   const [currentVideo, setCurrentVideo] = useState(0);
   const { trigger, setTrigger } = useOutletContext();
+  const { currentUser } = useContext(AppContext);
+
+  console.log("current user: ", currentUser);
 
   // not gonna stay here ofc
   const [selectedCategory, setSelectedCategory] = useState(null);
