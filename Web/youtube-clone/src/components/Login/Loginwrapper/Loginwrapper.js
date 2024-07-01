@@ -5,30 +5,23 @@ import Userfield from "../Userfield/Userfield";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import AppContext from "../../../AppContext";
 
-export default function Loginwrapper() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+export default function Loginwrapper({ handleLogin, setUsername, setPassword }) {
+  const [move, setMove] = useState(false);
+  const [goFeed, setgoFeed] = useState(false);
   const [userList, setUserList] = useState([]);
   const { currentUser, setCurrentUser } = useContext(AppContext);
   const navigate = useNavigate();
 
-  const handleSubmit = () => {
-    console.log("userlist: ", userList);
-    const user = userList.find((user) => user.username === username);
-    if (user) {
-      if (user.password === password) {
-        setCurrentUser(user);
-      } else {
-        alert("Incorrect password.");
-      }
-    } else {
-      alert("Username does not exist.");
+  const handleSubmit = async (setCurrentUser) => {
+    let ret = await handleLogin(setCurrentUser); // Call handleLogin from props
+    if (ret == true) {
+      setgoFeed(true);
     }
   };
 
   // since state updates are batched, navigate only after the current user is set
   useEffect(() => {
-    if (currentUser) {
+    if (goFeed) {
       console.log("logged in as: ", currentUser);
       navigate("/");
     }
@@ -75,7 +68,7 @@ export default function Loginwrapper() {
           <p>Register</p>
         </button>
       </div>
-      <button className="confirm-button" onClick={handleSubmit}>
+      <button className="confirm-button" onClick={async () => await handleSubmit(setCurrentUser)}>
         Confirm
       </button>
     </div>

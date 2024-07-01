@@ -6,8 +6,10 @@ import Login from "./pages/Login/Login";
 import Signup from "./pages/Signup/Signup";
 import VideoDisplay from "./components/WatchVid/VideoDisplay/VideoDisplay";
 import AppContext from "./AppContext";
+import { useEffect ,useContext} from "react"
 
 export default function App() {
+  // const { currentUser, setCurrentUser } = useContext(AppContext);
   const [currentUser, setCurrentUser] = useState(null);
   const [darkMode, setDarkMode] = useState(false);
 
@@ -16,6 +18,20 @@ export default function App() {
   };
 
   const contextValue = { currentUser, setCurrentUser, darkMode, toggleDarkMode };
+
+  useEffect(() => {
+    const getCurrentUser = async () => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      const response = await fetch(`http://localhost:3000/api/tokens/${token}`)
+      const data = await response.json();
+      if (data.user) {
+        setCurrentUser(data.user);
+      }
+    }
+  };
+  getCurrentUser();
+  }, []);
 
   return (
     <AppContext.Provider value={contextValue}>
