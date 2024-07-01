@@ -5,6 +5,7 @@ const {
   getComment,
   deleteComment,
   updateComment,
+  deleteAllComment
 } = require("../services/comments");
 
 const postComment = async (req, res) => {
@@ -44,13 +45,22 @@ const getOneComment = async (req, res) => {
 };
 
 const deleteOneComment = async (req, res) => {
-  const { commentId } = req.params;
-  try {
-    res.status(200).json(await deleteComment(commentId));
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-};
+    const { commentId } = req.params
+    try {
+        res.status(200).json(await deleteComment(commentId))
+    } catch (error) {
+        res.status(400).json({error: error.message})
+    }
+}
+
+const deleteComments = async (req, res) => {
+    const { videoId } = req.params
+    try {
+        res.status(200).json(await deleteAllComment(videoId))
+    } catch (error) {
+        res.status(400).json({error: error.message})
+    }
+}
 
 const updateOneComment = async (req, res) => {
   const { commentId } = req.params;
@@ -62,10 +72,11 @@ const updateOneComment = async (req, res) => {
 };
 
 module.exports = {
-  postComment,
-  postCommentInsideComment,
-  getAllComments,
-  getOneComment,
-  deleteOneComment,
-  updateOneComment,
-};
+    postComment,
+    postCommentInsideComment,
+    getAllComments,
+    getOneComment,
+    deleteOneComment,
+    updateOneComment,
+    deleteComments
+}
