@@ -28,6 +28,7 @@ export default function AddVideoPopup({ onClose }) {
   ];
 
   const currentUser = useContext(AppContext);
+  console.log(currentUser);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

@@ -2,7 +2,6 @@ import React, { useState, useContext } from "react";
 import axios from "axios";
 import "./Login.css";
 import Loginwrapper from "../../components/Login/Loginwrapper/Loginwrapper";
-import icon from "../../components/Login/LoginImages/1716994828673_imgbg.net.png";
 import Logo from "../../components/Feed/Logo/Logo";
 import AppContext from "../../AppContext";
 
@@ -11,19 +10,20 @@ export default function Login({}) {
   const [password, setPassword] = useState("");
   const { darkMode, toggleDarkMode, currentUser } = useContext(AppContext);
 
-  const handleLogin = async (setCurrentUser) => {
+  const handleLogin = async () => {
     try {
       //change the localhost3000 to api.
-      const response = await axios.post("http://localhost:3000/api/tokens", { username, password });
+      const response = await axios.post("api/tokens", { username, password });
       if (response.status == 200) {
-        localStorage.setItem("token", response.data.token);
-        setCurrentUser(response.data.user); // Set the current user
-        while (currentUser === null);
-        console.log(currentUser);
-        alert("current user", currentUser);
-        return true;
+        const { user, token } = response.data;
+        localStorage.setItem("token", token);
+
+        console.log("Logged in as: ", currentUser);
+
+        return user;
       } else {
-        alert("Login failed now");
+        alert("Login failed: could not get user");
+        console.log("Login failed: could not get user");
         return false;
       }
     } catch (error) {

@@ -3,21 +3,20 @@ import "./Signupwrapper.css";
 import { Navigate } from "react-router-dom";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import AppContext from "../../../AppContext";
-import UserField from '../../userField/UserField';
+import UserField from "../../userField/UserField";
 
 export default function Signupwrapper({ users, handleSignup }) {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [middleName, setMiddleName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [birthDate, setBirthDate] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [middleName, setMiddleName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [birthDate, setBirthDate] = useState(new Date());
   const [photo, setPhoto] = useState(null);
   const [success, setSuccess] = useState(false);
   const [moveLogin, setMoveLogin] = useState(false);
 
   const handleSubmit = async () => {
-
     // // Username validation
     // if (users.some(user => user.username === username)) {
     //   alert('Username already exists.');
@@ -48,13 +47,13 @@ export default function Signupwrapper({ users, handleSignup }) {
       lastName,
       birthdate: birthDate,
       photo,
-      videos:[],
-      settings:{
-        darkmode: false
-      }
+      videos: [],
+      settings: {
+        darkmode: false,
+      },
     };
-    let ret = await handleSignup(newUser);  // Call handleSignup
-    if (ret === true){
+    let ret = await handleSignup(newUser); // Call handleSignup
+    if (ret === true) {
       setSuccess(true);
     }
   };
@@ -139,7 +138,9 @@ export default function Signupwrapper({ users, handleSignup }) {
             Submit
           </button>
         </form>
-        <a className='return-login' onClick={() => setMoveLogin(true)}>Return to login</a>
+        <a className="return-login" onClick={() => setMoveLogin(true)}>
+          Return to login
+        </a>
       </div>
     </div>
   );

@@ -11,7 +11,6 @@ const getAllUsers = async (req, res) => {
 //get a single user
 const getUser = async (req, res) => {
   const { userId } = req.params;
-
   if (!mongoose.Types.ObjectId.isValid(userId)) {
     return res.status(404).json({ message: `User with id ${userId} not valid` });
   }
@@ -90,7 +89,7 @@ const createUserForLogin = async (req, res) => {
       return res.status(401).json({ message: "Invalid password" });
     }
     const token = jwt.sign({ userId: user._id }, "SECRET_KEY", { expiresIn: "5h" });
-    res.status(200).json({ token });
+    res.status(200).json({ user, token });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

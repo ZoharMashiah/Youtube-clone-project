@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Layout from "./pages/Layout";
+import Layout from "./pages/Layout/Layout";
 import Feed from "./pages/Feed/Feed";
 import Login from "./pages/Login/Login";
 import Signup from "./pages/Signup/Signup";
@@ -24,7 +24,7 @@ export default function App() {
     const getCurrentUser = async () => {
       const token = localStorage.getItem("token");
       if (token) {
-        const response = await fetch(`http://localhost:3000/api/tokens/${token}`);
+        const response = await fetch(`api/tokens/${token}`);
         const data = await response.json();
         if (data.user) {
           setCurrentUser(data.user);

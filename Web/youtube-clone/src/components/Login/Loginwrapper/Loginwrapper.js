@@ -6,25 +6,30 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import AppContext from "../../../AppContext";
 
 export default function Loginwrapper({ handleLogin, setUsername, setPassword }) {
-  const [move, setMove] = useState(false);
-  const [goFeed, setgoFeed] = useState(false);
-  const [userList, setUserList] = useState([]);
   const { currentUser, setCurrentUser } = useContext(AppContext);
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = async (setCurrentUser) => {
-    let ret = await handleLogin(setCurrentUser); // Call handleLogin from props
-    if (ret == true) {
-      setgoFeed(true);
+  const handleSubmit = async () => {
+    setIsLoading(true);
+    try {
+      let user = await handleLogin(); // Call handleLogin from props
+      if (user) {
+        setCurrentUser(user);
+      }
+    } catch (error) {
+      console.error("Login failed:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   // since state updates are batched, navigate only after the current user is set
   useEffect(() => {
-    if (currentUser) {
+    if (currentUser && !isLoading) {
       navigate("/");
     }
-  }, [currentUser, navigate]);
+  }, [currentUser, isLoading, navigate]);
 
   return (
     <div className="login-wrapper">
@@ -42,7 +47,7 @@ export default function Loginwrapper({ handleLogin, setUsername, setPassword }) 
           <p>Register</p>
         </button>
       </div>
-      <button className="confirm-button" onClick={async () => await handleSubmit(setCurrentUser)}>
+      <button className="confirm-button" onClick={async () => await handleSubmit()}>
         Confirm
       </button>
     </div>
