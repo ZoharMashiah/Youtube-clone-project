@@ -6,21 +6,25 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import AppContext from "../../../AppContext";
 
 export default function Loginwrapper({ handleLogin, setUsername, setPassword }) {
+  const [move, setMove] = useState(false);
+  const [goFeed, setgoFeed] = useState(false);
+  const [userList, setUserList] = useState([]);
   const { currentUser, setCurrentUser } = useContext(AppContext);
   const navigate = useNavigate();
 
   const handleSubmit = async (setCurrentUser) => {
-    let user = await handleLogin(); // Call handleLogin from props
-    if (user) {
-      setCurrentUser(user);
+    let ret = await handleLogin(setCurrentUser); // Call handleLogin from props
+    if (ret == true) {
+      setgoFeed(true);
     }
   };
 
+  // since state updates are brtched, navigate only after the current user is set
   useEffect(() => {
-    if (currentUser) {
+    if (goFeed) {
       navigate("/");
     }
-  }, [currentUser, navigate]);
+  }, [goFeed, navigate]);
 
   return (
     <div className="login-wrapper">
