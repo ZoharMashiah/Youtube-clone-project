@@ -1,19 +1,18 @@
-import React from 'react'
-import { useState } from 'react';
+import React, {useState} from 'react'
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 
-export default function UserInfo() {
-    const [show, setShow] = useState(false);
+export default function EditVideo({setEditButton}) {
+    const [show, setShow] = useState(true);
     const [edit, setEdit] = useState(false);
     const [title, setTitle] = useState("shsvhsvkhsv")
-    const [description, setDescription] = useState("ihvidhvihdihvishdvihishdihishvihishdihhdvihdihjjjjjjjjjj")
+    const [description, setDescription] = useState("ihvidhvihdihvishdvihishdihishvihishdihhdvihdih")
     const [editedTitle, setEditedTitle] = useState("")
     const [editedDescription, setEditedDescription] = useState("")
 
     const handleClose = () => {
-        setShow(false);
+      setEditButton(false)
     }
     const handleShow = () => {
         setShow(true);
@@ -30,17 +29,10 @@ export default function UserInfo() {
     }
     const handleCancle = () => setEdit(false);
 
-  return (
-      <div style={{textAlign:"center"}}>
-          <img src='utilites/png-transparent-user-profile-2018-in-sight-user-conference-expo-business-default-business-angle-service-people-thumbnail.png' style={{width: "100px", height:"100px", borderRadius:"50px"}}/>
-          <h4>Usraname</h4>
-          <div>
-          <>
-      <button style={{borderWidth: "0px", color: "blue", backgroundColor: "white"}} onClick={handleShow}>
-        Details
-      </button>
 
-      <Modal show={show} onHide={handleClose}>
+  return (
+      <div>
+          <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Details</Modal.Title>
         </Modal.Header>
@@ -89,8 +81,6 @@ export default function UserInfo() {
       </Modal.Footer>
       </>}
       </Modal>
-    </>
-          </div>
     </div>
   )
 }

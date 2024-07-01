@@ -1,4 +1,5 @@
 const Video = require("../models/Video");
+const User = require("../models/User")
 
 class VideoService {
   static async getTopVideos(numberOfVideos) {
@@ -24,6 +25,8 @@ class VideoService {
   }
 
   static async getUserVideoList(userId) {
+    const user = await User.findById({_id:userId})
+    console.log(user)
     const userVideoList = await User.findById(userId, "videos").sort({ title: 1 });
     return userVideoList;
   }

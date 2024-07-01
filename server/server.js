@@ -21,7 +21,7 @@ mongoose
     app.use(bodyParser.json({ limit: "50mb" }));
     app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
     app.use(fileUpload());
-    // app.use("/", feedRouter);
+    app.use("/", feedRouter);
     app.use("/api/users", userRouter);
     app.use("/api/tokens",tokenRouter);
 

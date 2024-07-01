@@ -11,7 +11,7 @@ export default function Signupwrapper({ users, handleSignup }) {
   const [firstName, setFirstName] = useState('');
   const [middleName, setMiddleName] = useState('');
   const [lastName, setLastName] = useState('');
-  const [birthDate, setBirthDate] = useState('');
+  const [birthDate, setBirthDate] = useState(new Date());
   const [photo, setPhoto] = useState(null);
   const [success, setSuccess] = useState(false);
   const [moveLogin, setMoveLogin] = useState(false);
@@ -54,7 +54,7 @@ export default function Signupwrapper({ users, handleSignup }) {
       }
     };
     let ret = await handleSignup(newUser);  // Call handleSignup
-    if (ret === true){
+    if (ret === true) {
       setSuccess(true);
     }
   };

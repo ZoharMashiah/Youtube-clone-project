@@ -8,6 +8,7 @@ export default function UserPage() {
           <div>
               <UserInfo />
           </div>
+          <hr/>
           <div>
               <UserVideos />
           </div>

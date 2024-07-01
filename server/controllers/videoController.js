@@ -8,7 +8,7 @@ async function getFeed(req, res) {
     const mostViewed = await VideoService.getTopVideos(numberOfVideos);
     const randomVideos = await VideoService.getRandomVideos(numberOfVideos, mostViewed);
     const videoList = Util.randomizeArray([...mostViewed, ...randomVideos]);
-
+    console.log(videoList)
     console.log("Fetching list ended successfully");
     res.status(200).json(videoList);
   } catch (error) {
@@ -20,10 +20,11 @@ async function getFeed(req, res) {
 }
 
 async function getUserVideoList(req, res) {
-  const userId = req.params.id;
+  const userId = req.params.userId;
   try {
     const userVideoList = await VideoService.getUserVideoList(userId);
     console.log("Fetched user video list successfully");
+    console.log(userVideoList)
     res.status(200).json(userVideoList);
   } catch (error) {
     console.error("Error fetching user video list:", userId, error);

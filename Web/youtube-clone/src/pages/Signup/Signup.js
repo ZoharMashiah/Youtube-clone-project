@@ -30,7 +30,7 @@ export default function Signup({ }) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(newUser),
-    });
+      });
     if (res.ok) {
       return true
       // Update state to login page

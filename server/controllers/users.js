@@ -25,7 +25,7 @@ const getUser = async (req, res) => {
 //create a user
 const createUser = async (req, res) => {
     //add doc to db
-    try{
+  try {
         const { username, password, firstName, middleName, lastName, birthdate, photo, videos, settings } = req.body
         const user = await User.create({ username, password, firstName, middleName, lastName, birthdate, photo, videos, settings })
         const token = jwt.sign({ userId: user._id }, 'SECRET_KEY' , { expiresIn: '5h'});
@@ -77,7 +77,7 @@ const createUserForLogin = async (req, res) => {
             return res.status(401).json({ message: 'Invalid password' });
         }
         const token = jwt.sign({ userId: user._id }, 'SECRET_KEY', { expiresIn: '5h' });
-        res.status(200).json({ token });
+        res.status(200).json({ user, token });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
