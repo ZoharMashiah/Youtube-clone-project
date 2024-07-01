@@ -65,12 +65,14 @@ videoSchema.statics.createVideo = async (videoData) => {
 
   let processedIcon = "";
   if (icon) {
-    processedIcon = util.validateBase64(icon, "image/jpeg");
+    // processedIcon = util.validateBase64(icon, "image/jpeg");
+    processedIcon = icon;
   }
 
   let processedVideo = "";
   if (video) {
-    processedVideo = util.validateBase64(video, "video/mp4");
+    // processedVideo = util.validateBase64(video, "video/mp4");
+    processedVideo = video;
   }
 
   const newVideo = new Video({

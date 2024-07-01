@@ -3,8 +3,6 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const path = require("path");
 const fileUpload = require("express-fileupload");
-// const jwt = require("jsonwebtoken");
-// const session = require("express-session");
 const mongoose = require("mongoose");
 
 const feedRouter = require("./routes/feedRoutes");
