@@ -1,27 +1,23 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import styles from "./RightFeed.module.css";
 import Categories from "../Categories/Categories";
 import VideoShow from "../VideoShow/VideoShow";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import AppContext from "../../../AppContext";
 
-export default function RightFeed({
-  selectedCategory,
-  setselectedCategory,
-  filterdedVideos,
-  setcurrentVideo,
-  filterVideosCategory,
-}) {
+export default function RightFeed({ selectedCategory, setselectedCategory, filterdedVideos, filterVideosCategory }) {
   const [videoList, setVideoList] = useState([]);
   const navigate = useNavigate();
+  const { currentUser } = useContext(AppContext);
 
   useEffect(() => {
+    console.log("current user: ", currentUser);
     fetchFeed();
   }, []);
 
   const handleClick = (video) => {
     console.log("clicked a video");
-    setcurrentVideo(video);
     navigate(`/users/${video.userId}/videos/${video._id}`);
   };
 

@@ -40,7 +40,7 @@ export default function AddVideoPopup({ onClose }) {
 
     try {
       const newVideo = await createNewVideo();
-      const address = `/api/users/${currentUser.id}/videos`;
+      const address = `/api/users/${currentUser._id}/videos`;
       console.log("Sending request to:", address);
 
       const res = await axios.post(address, newVideo);

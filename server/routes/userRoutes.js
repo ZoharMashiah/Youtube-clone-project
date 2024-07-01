@@ -2,7 +2,7 @@ const express = require("express");
 const { createUser, getAllUsers, getUser, deleteUser, updateUser } = require("../controllers/Users");
 const videoRouter = require("./videoRoutes");
 
-const userRouter = express.Router();
+const userRouter = express.Router({ mergeParams: true });
 
 userRouter.get("/", getAllUsers);
 userRouter.post("/", createUser);

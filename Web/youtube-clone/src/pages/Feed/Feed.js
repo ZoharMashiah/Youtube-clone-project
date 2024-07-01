@@ -37,7 +37,6 @@ export default function Feed() {
                   selectedCategory={selectedCategory}
                   setselectedCategory={setSelectedCategory}
                   filterdedVideos={filteredVideos}
-                  setcurrentVideo={0}
                   filterVideosCategory={filterVideosCategory}
                 />
               </div>

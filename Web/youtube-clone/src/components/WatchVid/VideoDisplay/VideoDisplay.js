@@ -11,7 +11,7 @@ export default function VideoDisplay() {
   const [currentVideo, setCurrentVideo] = useState(null);
 
   useEffect(() => {
-    fetchVideo();
+    fetchVideo(creatorId, videoId);
   }, [videoId, creatorId]);
 
   const fetchVideo = async (creatorId, videoId) => {
@@ -23,23 +23,30 @@ export default function VideoDisplay() {
     }
   };
 
+  if (!currentVideo) {
+    return <div>Loading...</div>; // Or any loading indicator
+  }
+
   return (
     <div className={styles.VideoDisplayWrapper}>
       <div className={styles.LeftVideoShowWrapper}>
         <div className={styles.UpperVideoWrapper}>
           <div class="embed-responsive embed-responsive-1by1  w-100" className={styles.videoPlayerWrapper}>
-            <iframe
-              class="embed-responsive-item"
-              src={currentVideo.video}
-              allowfullscreen
-              className={styles.videoPlayer}
-            ></iframe>
+            {!currentVideo ? (
+              <div>Loading...</div>
+            ) : (
+              <iframe
+                className={`embed-responsive-item ${styles.videoPlayer}`}
+                src={currentVideo.video}
+                allowFullScreen
+              ></iframe>
+            )}
           </div>
-          <div className={styles.textWrapper}>
+          {/* <div className={styles.textWrapper}>
             <h2>{currentVideo.title}</h2>
             <Buttons currentVideo={currentVideo} deleteVideo={videoId} />
             <Description currentVideo={currentVideo} />
-          </div>
+          </div> */}
         </div>
         <div className={styles.CommentsWrapper}>
           {/* <Comments
@@ -52,9 +59,9 @@ export default function VideoDisplay() {
             /> */}
         </div>
       </div>
-      <div className={styles.SugestedVideosWrapper}>
+      {/* <div className={styles.SuggestedVideosWrapper}>
         <SuggestedVideos currentVideo={currentVideo} />
-      </div>
+      </div> */}
     </div>
   );
 }

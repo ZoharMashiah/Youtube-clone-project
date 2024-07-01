@@ -39,6 +39,7 @@ async function getVideo(req, res) {
     const video = await Video.findById(videoId);
 
     if (video == null) {
+      console.error("Video is null", videoId, error);
       throw error;
     }
 
@@ -72,7 +73,8 @@ async function updateVideo(req, res) {
 }
 
 async function createVideo(req, res) {
-  const userId = req.params.id;
+  const userId = req.params.userId;
+  console.log("******************************", userId, "*******");
   try {
     const videoData = await Video.createVideo(userId);
     console.log("Video upload processed successfully");

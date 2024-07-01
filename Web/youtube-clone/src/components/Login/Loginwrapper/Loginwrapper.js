@@ -13,13 +13,11 @@ export default function Loginwrapper() {
   const navigate = useNavigate();
 
   const handleSubmit = () => {
-    console.log("handling submit..");
     console.log("userlist: ", userList);
     const user = userList.find((user) => user.username === username);
     if (user) {
       if (user.password === password) {
         setCurrentUser(user);
-        console.log("setcurr user: ", user);
       } else {
         alert("Incorrect password.");
       }
@@ -28,32 +26,34 @@ export default function Loginwrapper() {
     }
   };
 
-  // since state updates are brtched, navigate only after the current user is set
+  // since state updates are batched, navigate only after the current user is set
   useEffect(() => {
     if (currentUser) {
+      console.log("logged in as: ", currentUser);
       navigate("/");
     }
   }, [currentUser, navigate]);
 
-  // just creating the admin here until the db is up and running
+  // creating the admin here until the db is up and running
   useEffect(() => {
-    createFakeUser();
+    createAdmin();
   }, []);
-  const createFakeUser = () => {
-    const fakeUser = {
-      id: 89,
+  const createAdmin = () => {
+    const admin = {
+      _id: "6680ea618a9e992cd65322df",
       username: "admin",
+      firstName: "admin",
+      middleName: "admin",
+      lastName: "admin",
       password: "admin",
-      firstName: "Test",
-      middleName: "",
-      lastName: "User",
-      birthDate: "1990-01-01",
-      photo: "",
+      birthdate: "1990-05-15",
+      photo: "https://example.com/photos/john_doe.jpg",
+      videos: ["6680174737cf5a681ee7dda5", "60d5ecb8b4f6a12345678902"],
     };
 
     setUserList((prevUsers) => {
-      if (!prevUsers.some((user) => user.username === fakeUser.username)) {
-        return [...prevUsers, fakeUser];
+      if (!prevUsers.some((user) => user.username === admin.username)) {
+        return [...prevUsers, admin];
       }
       return prevUsers;
     });
