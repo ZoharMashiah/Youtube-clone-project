@@ -1,7 +1,6 @@
 .Home {
   display: flex;
   flex-direction: row;
-
   overflow-y: auto;
 }
 
@@ -14,11 +13,23 @@
   height: fit-content;
   width: fit-content;
   overflow: hidden;
+  flex-shrink: 0;
 }
 
-.Right {
-  /* position: absolute; */
-  right: 0vw;
-  height: 80vh;
-  max-width: 80vw;
+.FeedContainer {
+  display: flex;
+  flex-direction: column;
+  max-width: 85%;
+}
+
+.categories {
+  height: fit-content;
+  overflow-x: scroll;
+}
+
+.videoGrid {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: start;
 }

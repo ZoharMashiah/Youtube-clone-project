@@ -6,7 +6,7 @@ import axios from "axios";
 import Buttons from "../Buttons/Buttons";
 import Description from "../Description/Description";
 
-export default function VideoDisplay() {
+export default function VideoDisplay(videoList) {
   const { creatorId, videoId } = useParams();
   const [currentVideo, setCurrentVideo] = useState(null);
 
@@ -25,6 +25,7 @@ export default function VideoDisplay() {
 
   return (
     <div className={styles.VideoDisplayWrapper}>
+      <div>hi</div>
       {/* <div className={styles.LeftVideoShowWrapper}>
         <div className={styles.UpperVideoWrapper}>
           <div class="embed-responsive embed-responsive-1by1  w-100" className={styles.videoPlayerWrapper}>
@@ -58,7 +59,7 @@ export default function VideoDisplay() {
       </div> */}
 
       <div className={styles.SuggestedVideosWrapper}>
-        <SuggestedVideos currentVideo={currentVideo} />
+        <SuggestedVideos currentVideo={currentVideo} videoList={videoList} />
       </div>
     </div>
   );

@@ -5,12 +5,12 @@
   justify-items: center;
   align-items: center;
   height: fit-content;
-  margin: 0px 30px;
+  margin: 0px 40px;
 }
 
 .hr {
   align-self: center;
-  width: 100%;
+  width: 70%;
   height: 2px;
   background-color: rgb(134, 133, 133);
   border-width: 0px;
