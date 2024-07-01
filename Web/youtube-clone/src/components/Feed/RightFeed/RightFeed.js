@@ -16,11 +16,6 @@ export default function RightFeed({ selectedCategory, setselectedCategory, filte
     fetchFeed();
   }, []);
 
-  const handleClick = (video) => {
-    console.log("clicked a video");
-    navigate(`/users/${video.userId}/videos/${video._id}`);
-  };
-
   const fetchFeed = async () => {
     try {
       const res = await axios.get("/api/videos");
@@ -31,6 +26,10 @@ export default function RightFeed({ selectedCategory, setselectedCategory, filte
     }
   };
 
+  const handleClick = (video) => {
+    console.log("clicked a video");
+    navigate(`/users/${video.userId}/videos/${video._id}`);
+  };
   // // filter a list of videos by id
   // const filterVideos = () => {
   //   let arr = videos.filter((video) => video.title.toLowerCase().includes(searchText.toLowerCase()));

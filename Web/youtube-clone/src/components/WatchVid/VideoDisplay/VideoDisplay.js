@@ -29,7 +29,7 @@ export default function VideoDisplay() {
 
   return (
     <div className={styles.VideoDisplayWrapper}>
-      <div className={styles.LeftVideoShowWrapper}>
+      {/* <div className={styles.LeftVideoShowWrapper}>
         <div className={styles.UpperVideoWrapper}>
           <div class="embed-responsive embed-responsive-1by1  w-100" className={styles.videoPlayerWrapper}>
             {!currentVideo ? (
@@ -42,11 +42,11 @@ export default function VideoDisplay() {
               ></iframe>
             )}
           </div>
-          {/* <div className={styles.textWrapper}>
+          <div className={styles.textWrapper}>
             <h2>{currentVideo.title}</h2>
             <Buttons currentVideo={currentVideo} deleteVideo={videoId} />
             <Description currentVideo={currentVideo} />
-          </div> */}
+          </div>
         </div>
         <div className={styles.CommentsWrapper}>
           {/* <Comments
@@ -56,12 +56,13 @@ export default function VideoDisplay() {
               currentUser={currentUser}
               editComment={editComment}
               deleteComment={deleteComment}
-            /> */}
+            />
         </div>
-      </div>
-      {/* <div className={styles.SuggestedVideosWrapper}>
-        <SuggestedVideos currentVideo={currentVideo} />
       </div> */}
+
+      <div className={styles.SuggestedVideosWrapper}>
+        <SuggestedVideos currentVideo={currentVideo} />
+      </div>
     </div>
   );
 }

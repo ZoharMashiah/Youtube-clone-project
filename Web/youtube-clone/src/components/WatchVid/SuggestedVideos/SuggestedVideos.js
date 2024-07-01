@@ -7,6 +7,7 @@ import axios from "axios";
 export default function SuggestedVideos(currentVideo) {
   const [videoList, setVideoList] = useState([]);
   const navigate = useNavigate();
+  currentVideo = { _id: "" };
 
   useEffect(() => {
     fetchFeed();
