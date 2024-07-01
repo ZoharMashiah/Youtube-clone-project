@@ -31,21 +31,6 @@ export default function RightFeed({ selectedCategory, setselectedCategory, filte
     }
   };
 
-  // // filter a list of videos by id
-  // const filterVideos = () => {
-  //   let arr = videos.filter((video) => video.title.toLowerCase().includes(searchText.toLowerCase()));
-  //   setcurrentVideo(0);
-  //   setfilterdedVideos(arr);
-  // };
-  // // filter a list of videos by category
-  // const filterVideosCategory = (category) => {
-  //   if (category === "All") setfilterdedVideos(videos);
-  //   else {
-  //     let arr = videos.filter((video) => video.category === category);
-  //     setfilterdedVideos(arr);
-  //   }
-  // };
-
   return (
     <div className={styles.container}>
       <div className={styles.categories}>
@@ -58,9 +43,7 @@ export default function RightFeed({ selectedCategory, setselectedCategory, filte
       <div>
         <div className={styles.grid}>
           {videoList.map((video) => (
-            <div key={video._id} onClick={() => handleClick(video)}>
-              <VideoShow {...video} />
-            </div>
+            <VideoShow key={video._id} {...video} onClick={() => handleClick(video)} />
           ))}
         </div>
       </div>

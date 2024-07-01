@@ -23,10 +23,6 @@ export default function VideoDisplay() {
     }
   };
 
-  if (!currentVideo) {
-    return <div>Loading...</div>; // Or any loading indicator
-  }
-
   return (
     <div className={styles.VideoDisplayWrapper}>
       <div className={styles.LeftVideoShowWrapper}>
@@ -35,11 +31,12 @@ export default function VideoDisplay() {
             {!currentVideo ? (
               <div>Loading...</div>
             ) : (
-              <iframe
-                className={`embed-responsive-item ${styles.videoPlayer}`}
-                src={currentVideo.video}
-                allowFullScreen
-              ></iframe>
+              // <iframe
+              //   className={`embed-responsive-item ${styles.videoPlayer}`}
+              //   src={currentVideo.video}
+              //   allowFullScreen
+              // ></iframe>
+              ""
             )}
           </div>
           {/* <div className={styles.textWrapper}>

@@ -12,8 +12,9 @@
   transition-delay: 10ms;
   transition-timing-function: linear;
 }
+
 .videoCard {
-  margin: 3vh;
+  margin: 3%;
 }
 
 .imageWrapper {
