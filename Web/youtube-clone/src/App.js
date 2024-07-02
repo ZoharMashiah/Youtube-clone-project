@@ -15,10 +15,13 @@ export default function App() {
   const [videoList, setVideoList] = useState([]);
 
   const toggleDarkMode = () => {
-    setDarkMode((prev) => !prev);
+    const newDarkMode = !darkMode;
+    setDarkMode(!darkMode);
+    if (currentUser) {
+      currentUser.settings.darkMode = !currentUser.settings.darkMode;
+    }
+    document.body.classList.toggle("dark-mode", newDarkMode);
   };
-
-  const contextValue = { currentUser, setCurrentUser, darkMode, toggleDarkMode, videoList, setVideoList };
 
   useEffect(() => {
     const getCurrentUser = async () => {
@@ -26,21 +29,26 @@ export default function App() {
       if (token) {
         const response = await fetch(`api/tokens/${token}`);
         const data = await response.json();
-        if (data.user) {
-          setCurrentUser(data.user);
+        const { user } = data;
+        if (user) {
+          setCurrentUser(user);
+          if (currentUser.settings.darkMode) {
+            toggleDarkMode();
+          }
         }
       }
     };
     getCurrentUser();
   }, []);
 
+  const contextValue = { currentUser, setCurrentUser, darkMode, toggleDarkMode, videoList, setVideoList };
   return (
     <AppContext.Provider value={contextValue}>
       <BrowserRouter>
         <Routes>
           <Route element={<Layout />}>
             <Route path="/" element={<Feed />} />
-            <Route path="/users/:userId/videos/:videoId" element={<VideoDisplay />}/>
+            <Route path="/users/:userId/videos/:videoId" element={<VideoDisplay />} />
             <Route path="/userpage" element={<UserPage />} />
           </Route>
           <Route path="/login" element={<Login />} />

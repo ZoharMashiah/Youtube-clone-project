@@ -2,14 +2,30 @@ const mongoose = require("mongoose");
 const User = require("../models/User");
 
 const videoSchema = new mongoose.Schema({
-  user_id: { type: mongoose.Schema.Types.ObjectId, ref: "user" },
-  title: String,
+  user: {
+    type: mongoose.Schema.Types.Object,
+  },
+  title: {
+    type: String,
+  },
   description: String,
   category: String,
-  publication_date: Date,
-  views: Number,
-  like: Number,
-  dislike: Number,
+  publication_date: {
+    type: Date,
+    default: Date.now,
+  },
+  views: {
+    type: Number,
+    default: 0,
+  },
+  like: {
+    type: Number,
+    default: 0,
+  },
+  dislike: {
+    type: Number,
+    default: 0,
+  },
   comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "comment" }],
   icon: String,
   video: String,
@@ -60,43 +76,30 @@ videoSchema.statics.deleteVideo = async function (videoId, userId) {
   }
 };
 
-videoSchema.statics.createVideo = async (videoData) => {
+videoSchema.statics.createVideo = async function (videoData) {
   const { user_id, title, description, category, video, icon } = videoData;
 
-  let processedIcon = "";
-  if (icon) {
-    // processedIcon = util.validateBase64(icon, "image/jpeg");
-    processedIcon = icon;
+  const user = await User.findById(user_id);
+  if (!user) {
+    throw new Error(`User not found for id ${user_id}`);
   }
 
-  let processedVideo = "";
-  if (video) {
-    // processedVideo = util.validateBase64(video, "video/mp4");
-    processedVideo = video;
-  }
-
-  console.log("icon: ", icon);
-  console.log("video: ", video);
-
-  const newVideo = new Video({
-    user_id,
+  const newVideo = new this({
+    user: {
+      _id: user._id,
+      username: user.username,
+      photo: user.photo,
+    },
     title,
     description,
     category,
-    publication_date: Date.now(),
-    views: 0,
-    like: 0,
-    dislike: 0,
-    comments: [],
-    icon: processedIcon,
-    video: processedVideo,
+    icon,
+    video,
   });
 
-  await newVideo.save();
-
-  return {
-    videoId: newVideo._id,
-  };
+  const savedVideo = await newVideo.save();
+  await User.findByIdAndUpdate(user._id, { $push: { videos: savedVideo._id } });
+  return savedVideo;
 };
 
 const Video = mongoose.model("Video", videoSchema);

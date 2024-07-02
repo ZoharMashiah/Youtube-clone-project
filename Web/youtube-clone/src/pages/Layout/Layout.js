@@ -6,10 +6,9 @@ import AppContext from "../../AppContext";
 export default function Layout() {
   const [searchText, setSearchText] = useState("");
   const [trigger, setTrigger] = useState(false);
-  const { darkMode } = useContext(AppContext);
 
   return (
-    <div className={` ${darkMode ? "dark-mode" : ""}`}>
+    <div>
       <div>
         <UpBar setSearchText={setSearchText} setTrigger={setTrigger} />
       </div>

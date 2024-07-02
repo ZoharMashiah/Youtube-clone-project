@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import styles from "./AddVideoPopup.module.css";
 import Dropdown from "react-bootstrap/Dropdown";
 import AppContext from "../../AppContext";
@@ -30,10 +30,11 @@ export default function AddVideoPopup({ onClose }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const isAdmin = currentUser.username === "admin" && currentUser.password === "admin";
 
-    if (!isAdmin && !isFormValid()) {
-      alert("Fill all the fields!");
+    const isFormValid =
+      title.trim() !== "" && description.trim() !== "" && category.trim() !== "" && image !== null && video !== null;
+    if (!isFormValid) {
+      alert("Fill all of the fields!");
       return;
     }
 
@@ -42,6 +43,7 @@ export default function AddVideoPopup({ onClose }) {
       const address = `/api/users/${currentUser._id}/videos`;
       console.log("Sending request to:", address);
 
+      console.log("***newVideo: ", newVideo);
       const res = await axios.post(address, newVideo);
 
       console.log(res.data);
@@ -62,20 +64,6 @@ export default function AddVideoPopup({ onClose }) {
       resetForm();
     }
   };
-
-  const isFormValid = () => {
-    return (
-      title.trim() !== "" && description.trim() !== "" && category.trim() !== "" && image !== null && video !== null
-    );
-  };
-
-  useEffect(() => {
-    if (currentUser.username === "admin" && currentUser.password === "admin") {
-      setTitle("Admin Default Title");
-      setDescription("Admin Default Description");
-      setCategory("Admin Default Category");
-    }
-  }, [currentUser]);
 
   const createNewVideo = async () => {
     return {
@@ -150,7 +138,9 @@ export default function AddVideoPopup({ onClose }) {
                 const file = e.target.files[0];
                 if (file) {
                   try {
+                    console.log("file: ", file);
                     const dataUrl = await readFileAsDataURL(file);
+                    console.log("dataurl: ", dataUrl);
                     setVideo(dataUrl);
                   } catch (error) {
                     console.error("Error reading file:", error);
@@ -181,7 +171,6 @@ export default function AddVideoPopup({ onClose }) {
               }}
             />
           </div>
-
           <div className="btn-group">
             <button class="btn btn-primary" className={styles.cancelBtn} onClick={onClose}>
               Cancel
