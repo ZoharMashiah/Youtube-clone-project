@@ -4,7 +4,7 @@ import styles from "./UpperButtons.module.css";
 import {AppContext} from "../../../AppContext";
 
 const DarkModeButton = ({ darkMode, toggleDarkMode }) => (
-  <button className={styles.darkModeButton} onClick={toggleDarkMode}>
+  <button className={styles.darkModeButton} onClick={() => toggleDarkMode(true)}>
     {darkMode ? "Light Mode" : "Dark Mode"}
   </button>
 );
@@ -45,7 +45,7 @@ const UserButtons = ({ currentUser, setCurrentUser, darkMode ,toggleDarkMode }) 
             setCurrentUser(null);
             localStorage.removeItem("token");
             if (darkMode)
-              toggleDarkMode()
+              toggleDarkMode(false)
           }}
           className={styles.signBtn}
         >
@@ -59,7 +59,7 @@ const UserButtons = ({ currentUser, setCurrentUser, darkMode ,toggleDarkMode }) 
 
 const ButtonsWrapper = ({ setTrigger }) => {
   const { currentUser, setCurrentUser, darkMode, toggleDarkMode, setDarkMode } = useContext(AppContext);
-  console.log("darkmode: ",darkMode, currentUser?.settings.darkmode)
+  console.log("darkmode: ",darkMode, currentUser?.settings.darkMode)
 
   return (
     <div className={styles.buttonsWrapper}>

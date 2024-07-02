@@ -10,19 +10,21 @@ import { useEffect } from "react";
 import UserPage from "./pages/UserPage/UserPage";
 
 export default function App() {
-  const {setCurrentUser, currentUser, setDarkMode, toggleDarkMode} = useContext(AppContext)
+  const {setCurrentUser , toggleDarkMode, setDark} = useContext(AppContext)
 
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem("token")
   useEffect(() => {
     const getCurrentUser = async () => {
       if (token) {
         const response = await fetch(`api/tokens/${token}`);
         const data = await response.json();
-        const { user } = data;
-        if (user) {
-          setCurrentUser(user);
-          if (user.settings.darkMode == true){
-            toggleDarkMode();
+        if (data.user) {
+          setCurrentUser(data.user);
+          console.log(data.user)
+          if (data.user.settings.darkMode) {
+            setDark(true)
+          } else {
+            setDark(false)
           }
         }
       }

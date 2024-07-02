@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styles from "./Comment.module.css";
 import { useParams } from "react-router-dom";
-import AppContext from "../../../AppContext";
+import {AppContext} from "../../../AppContext";
 
 export default function Comment({ _id, userId, title, user, date, icon, triger, setTriger }) {
   const { currentUser, setCurrentUser } = useContext(AppContext);

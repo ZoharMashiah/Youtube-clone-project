@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./Comments.module.css";
 import Comment from "../Comment/Comment";
 import { useParams } from "react-router-dom";
-import AppContext from "../../../AppContext";
+import {AppContext} from "../../../AppContext";
 
 export default function Comments({ currentVideo, currentUser, editComment, deleteComment }) {
   const { currentUser, setCurrentUser } = useContext(AppContext);

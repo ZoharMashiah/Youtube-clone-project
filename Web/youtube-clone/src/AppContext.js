@@ -7,8 +7,9 @@ export const AppContextProvider = ({ children }) => {
   const [darkMode, setDarkMode] = useState(false)
   const [videoList, setVideoList] = useState([]);
 
-  const toggleDarkMode = async () => {
-    if (currentUser != null) {
+  const toggleDarkMode = async (indicator) => {
+    const newDarkMode = !darkMode;
+    if (indicator && currentUser != null) {
       const res = await fetch(`/api/users/${currentUser._id}`, {
         method: "PATCH",
         headers: {
@@ -18,6 +19,11 @@ export const AppContextProvider = ({ children }) => {
       })
     }
     setDarkMode(!darkMode);
+    document.body.classList.toggle("dark-mode", newDarkMode);
+  };
+  const setDark = (dark) => {
+    setDarkMode(dark);
+    document.body.classList.toggle("dark-mode", dark);
   };
 
   const value = {
@@ -26,7 +32,8 @@ export const AppContextProvider = ({ children }) => {
     darkMode,
     toggleDarkMode,
     videoList,
-    setVideoList
+    setVideoList,
+    setDark
   }
 
   return (<AppContext.Provider value={value}>
