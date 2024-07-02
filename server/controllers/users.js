@@ -40,7 +40,7 @@ const createUser = async (req, res) => {
     console.log("created user: ", user);
     const token = jwt.sign({ userId: user._id }, "SECRET_KEY", { expiresIn: "5h" });
 
-    res.status(200).json({ user, token }); // Changed response to include token
+    res.status(200).json({ user, token });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -78,16 +78,16 @@ const createUserForLogin = async (req, res) => {
   try {
     console.log("Finding user");
     const user = await User.findOne({ username });
-    console.log(user);
     if (!user) {
       console.log("User not found");
       return res.status(404).json({ message: "User not found" });
     }
     if (password !== user.password) {
-      // Compare plain text passwords
       console.log("Invalid password");
       return res.status(401).json({ message: "Invalid password" });
     }
+
+    console.log("found user: ", user.username);
     const token = jwt.sign({ userId: user._id }, "SECRET_KEY", { expiresIn: "5h" });
     res.status(200).json({ user, token });
   } catch (error) {

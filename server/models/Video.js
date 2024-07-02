@@ -92,7 +92,9 @@ videoSchema.statics.createVideo = async (videoData) => {
     video: processedVideo,
   });
 
-  await newVideo.save();
+  const savedVideo = await newVideo.save();
+
+  User.findByIdAndUpdate(user_id, { $push: { videos: savedVideo._id } }, { new: true });
 
   return {
     videoId: newVideo._id,

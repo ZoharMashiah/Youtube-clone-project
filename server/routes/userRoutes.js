@@ -1,12 +1,5 @@
 const express = require("express");
-const {
-  createUser,
-  createUserForLogin,
-  getAllUsers,
-  getUser,
-  deleteUser,
-  updateUser,
-} = require("../controllers/Users");
+const { createUser, getAllUsers, getUser, deleteUser, updateUser } = require("../controllers/users");
 const videoRouter = require("./videoRoutes");
 
 const userRouter = express.Router({ mergeParams: true });

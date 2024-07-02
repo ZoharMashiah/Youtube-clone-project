@@ -1,4 +1,5 @@
 const Video = require("../models/Video");
+const User = require("../models/User.js");
 const VideoService = require("../services/VideoService.js");
 const Util = require("../util/util.js");
 
@@ -103,7 +104,7 @@ async function deleteVideo(req, res) {
       throw new Error("Video not found");
     }
 
-    await user.updateOne({ _id: userId }, { $pull: { videos: videoId } }).session(session);
+    await User.updateOne({ _id: userId }, { $pull: { videos: videoId } }).session(session);
     await session.commitTransaction();
 
     console.log("Deleted video successfully");
