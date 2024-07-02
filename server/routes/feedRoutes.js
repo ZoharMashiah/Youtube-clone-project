@@ -4,6 +4,7 @@ const feedRouter = express.Router();
 const { createUser, createUserForLogin } = require("../controllers/Users");
 
 feedRouter.get("/api/videos", videoController.getFeed);
+feedRouter.post("/api/videos/filter", videoController.filterVideos);
 
 //Create a new User
 feedRouter.post("/signup", createUser);

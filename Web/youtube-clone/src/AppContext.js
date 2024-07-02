@@ -6,6 +6,7 @@ export const AppContextProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null)
   const [darkMode, setDarkMode] = useState(false)
   const [videoList, setVideoList] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("All");
 
   const toggleDarkMode = async (indicator) => {
     const newDarkMode = !darkMode;
@@ -33,7 +34,9 @@ export const AppContextProvider = ({ children }) => {
     toggleDarkMode,
     videoList,
     setVideoList,
-    setDark
+    setDark,
+    selectedCategory,
+    setSelectedCategory
   }
 
   return (<AppContext.Provider value={value}>

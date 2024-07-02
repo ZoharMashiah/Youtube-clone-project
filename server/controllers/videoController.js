@@ -116,4 +116,25 @@ async function deleteVideo(req, res) {
   }
 }
 
-module.exports = { getFeed, getUserVideoList, getVideo, updateVideo, createVideo, deleteVideo };
+async function filterVideos(req, res) {
+  const videoId = req.params.pid;
+  const userId = req.params.userId;
+  const {search, text} = req.body
+
+  try {
+    let filtered;
+    if (search) {
+      filtered = (await Video.find({})).filter((video) => video.title.toLowerCase().includes(text.toLowerCase()))
+    } else {
+      filtered = await Video.find({category: text})
+    }
+    res.status(200).json(filtered);
+  } catch (error) {
+    console.error("Error deleting video:", videoId, error);
+    res.status(500).json({
+      error: error.message,
+    });
+  }
+}
+
+module.exports = { getFeed, getUserVideoList, getVideo, updateVideo, createVideo, deleteVideo, filterVideos };

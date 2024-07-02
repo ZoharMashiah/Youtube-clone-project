@@ -40,7 +40,7 @@ export default function Feed() {
 
   const handleClick = (video, videoList) => {
     console.log("clicked a video");
-    navigate(`/users/${video.userId}/videos/${video._id}`);
+    navigate(`/users/${video.user._id}/videos/${video._id}`);
   };
 
   return (
