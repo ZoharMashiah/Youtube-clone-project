@@ -11,10 +11,13 @@ import { useEffect } from "react";
 export default function App() {
   const [currentUser, setCurrentUser] = useState(null);
   const [darkMode, setDarkMode] = useState(false);
+  // const [darkMode, setDarkMode] = useState(currentUser.settings.darkMode);
   const [videoList, setVideoList] = useState([]);
 
   const toggleDarkMode = () => {
-    setDarkMode((prev) => !prev);
+    const newDarkMode = !darkMode;
+    setDarkMode(newDarkMode);
+    document.body.classList.toggle("dark-mode", newDarkMode);
   };
 
   const contextValue = { currentUser, setCurrentUser, darkMode, toggleDarkMode, videoList, setVideoList };

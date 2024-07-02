@@ -74,7 +74,7 @@ async function updateVideo(req, res) {
 
 async function createVideo(req, res) {
   const userId = req.params.userId;
-  console.log("******************************", userId, "*******");
+  console.log("********* id of creator: ", userId, "*******");
   try {
     const videoData = await Video.createVideo(userId);
     console.log("Video upload processed successfully");
