@@ -12,16 +12,14 @@ import UserPage from "./pages/UserPage/UserPage";
 export default function App() {
   const [currentUser, setCurrentUser] = useState(null);
   const [darkMode, setDarkMode] = useState(false);
-  // const [darkMode, setDarkMode] = useState(currentUser.settings.darkMode);
   const [videoList, setVideoList] = useState([]);
 
   const toggleDarkMode = () => {
     const newDarkMode = !darkMode;
     setDarkMode(newDarkMode);
+    currentUser.settings.darkMode = !currentUser.settings.darkMode;
     document.body.classList.toggle("dark-mode", newDarkMode);
   };
-
-  const contextValue = { currentUser, setCurrentUser, darkMode, toggleDarkMode, videoList, setVideoList };
 
   useEffect(() => {
     const getCurrentUser = async () => {
@@ -29,14 +27,17 @@ export default function App() {
       if (token) {
         const response = await fetch(`api/tokens/${token}`);
         const data = await response.json();
-        if (data.user) {
-          setCurrentUser(data.user);
+        const { user } = data;
+        if (user) {
+          setCurrentUser(user);
+          setDarkMode(user.settings.darkMode);
         }
       }
     };
     getCurrentUser();
   }, []);
 
+  const contextValue = { currentUser, setCurrentUser, darkMode, toggleDarkMode, videoList, setVideoList };
   return (
     <AppContext.Provider value={contextValue}>
       <BrowserRouter>

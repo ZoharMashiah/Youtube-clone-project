@@ -49,7 +49,7 @@ export default function Signupwrapper({ users, handleSignup }) {
       photo,
       videos: [],
       settings: {
-        darkmode: false,
+        darkMode: false,
       },
     };
     let ret = await handleSignup(newUser); // Call handleSignup
