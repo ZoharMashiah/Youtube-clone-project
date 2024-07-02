@@ -26,8 +26,7 @@ class VideoService {
 
   static async getUserVideoList(userId) {
     const user = await User.findById({_id:userId})
-    console.log(user)
-    const userVideoList = await User.findById(userId, "videos").sort({ title: 1 });
+    const userVideoList = await Video.find({ user_id: user._id }).sort({ title: 1 });
     return userVideoList;
   }
 }

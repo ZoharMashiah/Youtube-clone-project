@@ -6,9 +6,10 @@ export default function UserVideos() {
     const [videoList, setVideoList] = useState([]);
 
     useEffect(() => {
-        const fetchVideos = async () => {
+      const fetchVideos = async () => {
+          // temp
             const userId = "60d5ecb54b24d1a810c4ca1c"
-            const res = await fetch(`http://localhost:3000/api/videos`)
+            const res = await fetch(`/api/users/${userId}/videos`)
             const data = await res.json()
             setVideoList(data)
         }
