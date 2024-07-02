@@ -16,8 +16,10 @@ export default function App() {
 
   const toggleDarkMode = () => {
     const newDarkMode = !darkMode;
-    setDarkMode(newDarkMode);
-    currentUser.settings.darkMode = !currentUser.settings.darkMode;
+    setDarkMode(!darkMode);
+    if (currentUser) {
+      currentUser.settings.darkMode = !currentUser.settings.darkMode;
+    }
     document.body.classList.toggle("dark-mode", newDarkMode);
   };
 
@@ -30,7 +32,9 @@ export default function App() {
         const { user } = data;
         if (user) {
           setCurrentUser(user);
-          setDarkMode(user.settings.darkMode);
+          if (currentUser.settings.darkMode) {
+            toggleDarkMode();
+          }
         }
       }
     };
