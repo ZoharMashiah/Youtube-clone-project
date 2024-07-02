@@ -1,10 +1,18 @@
+.videoCard {
+  display: flex;
+  flex-direction: column;
+  margin: 25px 15px;
+}
+
 #videoImage {
-  margin-bottom: 0.992vw;
   border-radius: 2vw;
-  width: 20vw;
-  height: 20vh;
+  aspect-ratio: 16 / 9;
+  max-width: 30%;
+  min-width: 23%;
+  width: 100%;
   box-shadow: 2px 2px rgba(110, 110, 110, 0.05);
 }
+
 #videoImage:hover {
   border-radius: 4px;
   cursor: pointer;
@@ -12,14 +20,12 @@
   transition-delay: 10ms;
   transition-timing-function: linear;
 }
-.videoCard {
-  margin: 3vh;
-}
 
-.imageWrapper {
+.metaData {
   display: flex;
   flex-direction: row;
 }
+
 .titleWrapper {
   margin-left: 20px;
 }

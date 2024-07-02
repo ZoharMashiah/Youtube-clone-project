@@ -1,37 +1,36 @@
 import React, { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Layout from "./pages/Layout";
+import Layout from "./pages/Layout/Layout";
 import Feed from "./pages/Feed/Feed";
 import Login from "./pages/Login/Login";
 import Signup from "./pages/Signup/Signup";
 import VideoDisplay from "./components/WatchVid/VideoDisplay/VideoDisplay";
 import AppContext from "./AppContext";
-import UserPage from "./pages/UserPage/UserPage";
-import { useEffect ,useContext} from "react"
+import { useEffect } from "react";
 
 export default function App() {
-  // const { currentUser, setCurrentUser } = useContext(AppContext);
   const [currentUser, setCurrentUser] = useState(null);
   const [darkMode, setDarkMode] = useState(false);
+  const [videoList, setVideoList] = useState([]);
 
   const toggleDarkMode = () => {
     setDarkMode((prev) => !prev);
   };
 
-  const contextValue = { currentUser, setCurrentUser, darkMode, toggleDarkMode };
+  const contextValue = { currentUser, setCurrentUser, darkMode, toggleDarkMode, videoList, setVideoList };
 
   useEffect(() => {
     const getCurrentUser = async () => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      const response = await fetch(`http://localhost:3000/api/tokens/${token}`)
-      const data = await response.json();
-      if (data.user) {
-        setCurrentUser(data.user);
+      const token = localStorage.getItem("token");
+      if (token) {
+        const response = await fetch(`api/tokens/${token}`);
+        const data = await response.json();
+        if (data.user) {
+          setCurrentUser(data.user);
+        }
       }
-    }
-  };
-  getCurrentUser();
+    };
+    getCurrentUser();
   }, []);
 
   return (

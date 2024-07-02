@@ -6,12 +6,12 @@ import axios from "axios";
 import Buttons from "../Buttons/Buttons";
 import Description from "../Description/Description";
 
-export default function VideoDisplay() {
+export default function VideoDisplay(videoList) {
   const { creatorId, videoId } = useParams();
   const [currentVideo, setCurrentVideo] = useState(null);
 
   useEffect(() => {
-    fetchVideo();
+    fetchVideo(creatorId, videoId);
   }, [videoId, creatorId]);
 
   const fetchVideo = async (creatorId, videoId) => {
@@ -25,15 +25,20 @@ export default function VideoDisplay() {
 
   return (
     <div className={styles.VideoDisplayWrapper}>
-      <div className={styles.LeftVideoShowWrapper}>
+      <div>hi</div>
+      {/* <div className={styles.LeftVideoShowWrapper}>
         <div className={styles.UpperVideoWrapper}>
           <div class="embed-responsive embed-responsive-1by1  w-100" className={styles.videoPlayerWrapper}>
-            <iframe
-              class="embed-responsive-item"
-              src={currentVideo.video}
-              allowfullscreen
-              className={styles.videoPlayer}
-            ></iframe>
+            {!currentVideo ? (
+              <div>Loading...</div>
+            ) : (
+              // <iframe
+              //   className={`embed-responsive-item ${styles.videoPlayer}`}
+              //   src={currentVideo.video}
+              //   allowFullScreen
+              // ></iframe>
+              ""
+            )}
           </div>
           <div className={styles.textWrapper}>
             <h2>{currentVideo.title}</h2>
@@ -49,11 +54,12 @@ export default function VideoDisplay() {
               currentUser={currentUser}
               editComment={editComment}
               deleteComment={deleteComment}
-            /> */}
+            />
         </div>
-      </div>
-      <div className={styles.SugestedVideosWrapper}>
-        <SuggestedVideos currentVideo={currentVideo} />
+      </div> */}
+
+      <div className={styles.SuggestedVideosWrapper}>
+        <SuggestedVideos currentVideo={currentVideo} videoList={videoList} />
       </div>
     </div>
   );

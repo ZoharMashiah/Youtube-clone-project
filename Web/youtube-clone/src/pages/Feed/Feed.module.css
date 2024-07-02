@@ -1,36 +1,7 @@
 .Home {
   display: flex;
   flex-direction: row;
-  width: 100%;
-  height: 100vh;
-  max-height: 100vh;
-}
-
-.Low {
-  /* position: absolute; */
-  bottom: 0vh;
-  height: 92vh;
-  overflow-x: hidden;
-}
-
-.displayVideoLowerFeed {
-  /* position: absolute; */
-  bottom: 0vh;
-  height: 90vh;
-  overflow: hidden;
-}
-
-.Feed {
-  display: flex;
-  flex-direction: row;
-  overflow: hidden;
-}
-
-.Right {
-  /* position: absolute; */
-  right: 0vw;
-  height: 80vh;
-  max-width: 80vw;
+  overflow-y: auto;
 }
 
 .LeftMenu {
@@ -42,4 +13,23 @@
   height: fit-content;
   width: fit-content;
   overflow: hidden;
+  flex-shrink: 0;
+}
+
+.FeedContainer {
+  display: flex;
+  flex-direction: column;
+  max-width: 85%;
+}
+
+.categories {
+  height: fit-content;
+  overflow-x: scroll;
+}
+
+.videoGrid {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: start;
 }

@@ -39,8 +39,8 @@ export default function VideoShow({
   return (
     <div className={styles.videoCard}>
       {editButton && <EditVideo setEditButton={setEditButton} videoTitle={title} videoDescription={description} />}
-      <Image src={`data:image/jpeg;base64,${icon}`} id={styles.videoImage} onClick={onClick} />
-      <div className={styles.imageWrapper}>
+      <img src={`data:image/jpeg;base64,${icon}`} id={styles.videoImage} onClick={onClick} alt="Video thumbnail" />
+      <div className={styles.metaData}>
         <Image src={user_image} width="40px" height="40px" roundedCircle />
         <div className={styles.titleWrapper}>
           <p id={styles.title} onClick={onClick}>

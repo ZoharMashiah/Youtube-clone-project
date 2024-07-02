@@ -2,28 +2,13 @@ import React, { useEffect, useState } from "react";
 import styles from "./SuggestedVideos.module.css";
 import { useNavigate } from "react-router-dom";
 import ShowVideoSuggested from "../ShowVideoSuggested/ShowVideoSuggested";
-import axios from "axios";
 
-export default function SuggestedVideos(currentVideo) {
-  const [videoList, setVideoList] = useState([]);
+export default function SuggestedVideos(currentVideo, videoList) {
   const navigate = useNavigate();
-
-  useEffect(() => {
-    fetchFeed();
-  }, []);
+  currentVideo = { _id: "" };
 
   const handleClick = (video) => {
     navigate(`/users/${video.userId}/videos/${video._id}`);
-  };
-
-  const fetchFeed = async () => {
-    try {
-      const res = await axios.get("/api/videos");
-      const videoList = res.data;
-      setVideoList(videoList);
-    } catch (error) {
-      console.error("Error fetching videos:", error);
-    }
   };
 
   return (

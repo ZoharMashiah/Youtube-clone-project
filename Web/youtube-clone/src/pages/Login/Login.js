@@ -1,35 +1,35 @@
-
-import React, { useState, useContext } from 'react';
-import axios from 'axios';
-import './Login.css';
-import Loginwrapper from '../../components/Login/Loginwrapper/Loginwrapper';
-import icon from '../../components/Login/LoginImages/1716994828673_imgbg.net.png';
+import React, { useState, useContext } from "react";
+import axios from "axios";
+import "./Login.css";
+import Loginwrapper from "../../components/Login/Loginwrapper/Loginwrapper";
 import Logo from "../../components/Feed/Logo/Logo";
 import AppContext from "../../AppContext";
 
-export default function Login({  }) {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const { darkMode, toggleDarkMode, currentUser} = useContext(AppContext);
+export default function Login({}) {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const { darkMode, toggleDarkMode, currentUser } = useContext(AppContext);
 
-  
-  const handleLogin = async (setCurrentUser) => {
+  const handleLogin = async () => {
     try {
       //change the localhost3000 to api.
-      const response = await axios.post('http://localhost:3000/api/tokens', { username, password });
-      if(response.status == 200){
-        localStorage.setItem('token', response.data.token);
-        setCurrentUser(response.data.user); // Set the current user
-        return true;
+      const response = await axios.post("api/tokens", { username, password });
+      if (response.status == 200) {
+        const { user, token } = response.data;
+        localStorage.setItem("token", token);
+
+        console.log("Logged in as: ", currentUser);
+
+        return user;
       } else {
-        alert('Login failed');
+        alert("Login failed: could not get user");
+        console.log("Login failed: could not get user");
         return false;
       }
     } catch (error) {
-      alert('Login failed');
+      alert("Login failed", error.msg);
     }
   };
-
 
   return (
     <div className={`login-page ${darkMode ? "dark-mode" : ""}`}>
