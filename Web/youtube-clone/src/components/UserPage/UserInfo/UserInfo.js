@@ -1,16 +1,12 @@
 import React from 'react'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 
 export default function UserInfo() {
     const [show, setShow] = useState(false);
-    const [edit, setEdit] = useState(false);
-    const [title, setTitle] = useState("shsvhsvkhsv")
-    const [description, setDescription] = useState("ihvidhvihdihvishdvihishdihishvihishdihhdvihdihjjjjjjjjjj")
-    const [editedTitle, setEditedTitle] = useState("")
-    const [editedDescription, setEditedDescription] = useState("")
+    const [userData, setUserData] = useState({})
 
     const handleClose = () => {
         setShow(false);
@@ -18,17 +14,18 @@ export default function UserInfo() {
     const handleShow = () => {
         setShow(true);
     }
-    const handleEdit = () => {
-        setEditedTitle(title)
-        setEditedDescription(description)
-        setEdit(true);
+  
+  useEffect(() => {
+    const fetchVideos = async () => {
+        // temp should change with the user id of the user page clicked
+        const userId = "60d5ecb54b24d1a810c4ca1c"
+        const res = await fetch(`http://localhost:3000/api/users/${userId}`)
+        const data = await res.json()
+        setUserData(data)
     }
-    const handleSave = () => {
-        setTitle(editedTitle)
-        setDescription(editedDescription)
-        setEdit(false);
-    }
-    const handleCancle = () => setEdit(false);
+    fetchVideos()
+},[])
+
 
   return (
       <div style={{textAlign:"center"}}>
@@ -44,50 +41,23 @@ export default function UserInfo() {
         <Modal.Header closeButton>
           <Modal.Title>Details</Modal.Title>
         </Modal.Header>
-        
-        {edit ? <><Modal.Body>
-          <Form>
-            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-              <Form.Label>Title</Form.Label>
-              <Form.Control
-                type="text"
-                value={editedTitle}
-                onChange={(e) => setEditedTitle(e.target.value)}
-              />
-            </Form.Group>
-            <Form.Group
-              className="mb-3"
-              controlId="exampleForm.ControlTextarea1"
-            >
-              <Form.Label>Description</Form.Label>
-              <Form.Control as="textarea" rows={3} 
-                value={editedDescription}
-                onChange={(e) => setEditedDescription(e.target.value)}
-              />
-            </Form.Group>
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCancle}>
-            Cancle
-          </Button>
-          <Button variant="primary" onClick={handleSave}>
-            Save Changes
-          </Button>
-        </Modal.Footer> 
-        </>
-        : <>
         <Modal.Body>
-        <h4>{title}</h4>
         <p style={{"word-wrap": "break-word"}}>
-          {description}
+          Username: {userData.username}
+        </p>
+        <p style={{"word-wrap": "break-word"}}>
+          First Name: {userData.firstName}
+        </p>
+        <p style={{"word-wrap": "break-word"}}>
+          Last Name: {userData.lastName}
+        </p>
+        <p style={{"word-wrap": "break-word"}}>
+          Birthdate: {(new Date(userData.birthdate)).getDay()}/{(new Date(userData.birthdate)).getMonth()}/{(new Date(userData.birthdate)).getFullYear()}
         </p>
       </Modal.Body>
       <Modal.Footer>
         <Button onClick={handleClose}>Close</Button>
-        <Button onClick={handleEdit}>Edit</Button>
       </Modal.Footer>
-      </>}
       </Modal>
     </>
           </div>

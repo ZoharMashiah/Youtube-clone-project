@@ -38,7 +38,7 @@ export default function VideoShow({
   
   return (
     <div className={styles.videoCard}>
-      {editButton && <EditVideo setEditButton={setEditButton} />}
+      {editButton && <EditVideo setEditButton={setEditButton} videoTitle={title} videoDescription={description} />}
       <Image src={`data:image/jpeg;base64,${icon}`} id={styles.videoImage} onClick={onClick} />
       <div className={styles.imageWrapper}>
         <Image src={user_image} width="40px" height="40px" roundedCircle />
@@ -53,7 +53,7 @@ export default function VideoShow({
             </p>
           </div>
         </div>
-        { currentUser && currentUser._id == user_id && 
+        { currentUser && currentUser._id == user_id &&
         <Dropdown>
             <Dropdown.Toggle variant="white" id="dropdown-basic" style={{content:"none"}}>
               <i class="bi bi-three-dots-vertical"></i>

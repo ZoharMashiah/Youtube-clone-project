@@ -3,11 +3,11 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 
-export default function EditVideo({setEditButton}) {
+export default function EditVideo({setEditButton, videoTitle, videoDescription}) {
     const [show, setShow] = useState(true);
     const [edit, setEdit] = useState(false);
-    const [title, setTitle] = useState("shsvhsvkhsv")
-    const [description, setDescription] = useState("ihvidhvihdihvishdvihishdihishvihishdihhdvihdih")
+    const [title, setTitle] = useState(videoTitle)
+    const [description, setDescription] = useState(videoDescription)
     const [editedTitle, setEditedTitle] = useState("")
     const [editedDescription, setEditedDescription] = useState("")
 
@@ -25,7 +25,8 @@ export default function EditVideo({setEditButton}) {
     const handleSave = () => {
         setTitle(editedTitle)
         setDescription(editedDescription)
-        setEdit(false);
+      setEdit(false);
+      // add edit of the video in the server
     }
     const handleCancle = () => setEdit(false);
 
@@ -34,7 +35,7 @@ export default function EditVideo({setEditButton}) {
       <div>
           <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Details</Modal.Title>
+          <Modal.Title>Edit Video</Modal.Title>
         </Modal.Header>
         
         {edit ? <><Modal.Body>
