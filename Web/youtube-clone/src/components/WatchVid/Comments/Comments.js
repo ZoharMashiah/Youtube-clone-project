@@ -4,12 +4,7 @@ import Comment from "../Comment/Comment";
 import { useParams } from "react-router-dom";
 import AppContext from "../../../AppContext";
 
-export default function Comments({
-  currentVideo,
-  currentUser,
-  editComment,
-  deleteComment,
-}) {
+export default function Comments({ currentVideo, currentUser, editComment, deleteComment }) {
   const { currentUser, setCurrentUser } = useContext(AppContext);
   const { creatorId, videoId } = useParams();
   const [title, setTitle] = useState("");
@@ -30,7 +25,7 @@ export default function Comments({
       userId: currentUser._id,
     };
 
-    const response = await fetch(`http://localhost:3000/api/users/${creatorId}/video/${videoId}/comment/`, {
+    const response = await fetch(`api/users/${creatorId}/video/${videoId}/comment/`, {
       method: "POST",
       body: JSON.stringify(comment),
       headers: {
@@ -114,14 +109,23 @@ export default function Comments({
   const orgenizeComments = (id) => {
     let orgenizeCommen = comments.map((comment) => {
       if (comment.parentId === id) {
-        return <div style={{position:"relative",left:"3vw"}}>
-          <Comment {...comment} currentUser={currentUser} editComment={editComment} deleteComment={deleteComment} triger={triger} setTriger={setTriger} />
-          {orgenizeComments(comment._id)}
-        </div>
+        return (
+          <div style={{ position: "relative", left: "3vw" }}>
+            <Comment
+              {...comment}
+              currentUser={currentUser}
+              editComment={editComment}
+              deleteComment={deleteComment}
+              triger={triger}
+              setTriger={setTriger}
+            />
+            {orgenizeComments(comment._id)}
+          </div>
+        );
       }
-    })
-    return orgenizeCommen
-  }
+    });
+    return orgenizeCommen;
+  };
 
   useEffect(() => {
     const fetchComments = async () => {
@@ -171,22 +175,24 @@ export default function Comments({
           className={styles.profileImage}
         />
       </form>
-      {comments && comments.map((comment) => {
-        if(comment.parentId == undefined){
-          return (
-            <div>
-              <Comment
-                {...comment}
-                currentUser={currentUser}
-                editComment={editComment}
-                deleteComment={deleteComment}
-                triger={triger}
-                setTriger={setTriger}
-              />
-              {orgenizeComments(comment._id)}
-            </div>
-        );}
-      })}
+      {comments &&
+        comments.map((comment) => {
+          if (comment.parentId == undefined) {
+            return (
+              <div>
+                <Comment
+                  {...comment}
+                  currentUser={currentUser}
+                  editComment={editComment}
+                  deleteComment={deleteComment}
+                  triger={triger}
+                  setTriger={setTriger}
+                />
+                {orgenizeComments(comment._id)}
+              </div>
+            );
+          }
+        })}
     </div>
   );
 }

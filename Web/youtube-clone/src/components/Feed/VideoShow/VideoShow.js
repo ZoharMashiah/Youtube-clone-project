@@ -28,8 +28,8 @@ export default function VideoShow({
       : time + " minutes ago";
   return (
     <div className={styles.videoCard}>
-      <Image src={icon} id={styles.videoImage} onClick={onClick} />
-      <div className={styles.imageWrapper}>
+      <img src={icon} id={styles.videoImage} onClick={onClick} alt="Video thumbnail" />
+      <div className={styles.metaData}>
         <Image src={user_image} width="40px" height="40px" roundedCircle />
         <div className={styles.titleWrapper}>
           <p id={styles.title} onClick={onClick}>

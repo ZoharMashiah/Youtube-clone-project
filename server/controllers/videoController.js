@@ -9,7 +9,7 @@ async function getFeed(req, res) {
     const randomVideos = await VideoService.getRandomVideos(numberOfVideos, mostViewed);
     const videoList = Util.randomizeArray([...mostViewed, ...randomVideos]);
 
-    console.log("Fetching list ended successfully");
+    console.log("Fetching video list ended successfully");
     res.status(200).json(videoList);
   } catch (error) {
     console.error("Error fetching video list: ", error);
@@ -23,10 +23,10 @@ async function getUserVideoList(req, res) {
   const userId = req.params.id;
   try {
     const userVideoList = await VideoService.getUserVideoList(userId);
-    console.log("Fetched user video list successfully");
+    console.log("Fetched creator video list successfully");
     res.status(200).json(userVideoList);
   } catch (error) {
-    console.error("Error fetching user video list:", userId, error);
+    console.error("Error fetching creator video list:", userId, error);
     res.status(500).json({
       error: error.message,
     });
@@ -39,6 +39,7 @@ async function getVideo(req, res) {
     const video = await Video.findById(videoId);
 
     if (video == null) {
+      console.error("Video is null", videoId, error);
       throw error;
     }
 
@@ -72,7 +73,8 @@ async function updateVideo(req, res) {
 }
 
 async function createVideo(req, res) {
-  const userId = req.params.id;
+  const userId = req.params.userId;
+  console.log("******************************", userId, "*******");
   try {
     const videoData = await Video.createVideo(userId);
     console.log("Video upload processed successfully");

@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Outlet } from "react-router-dom";
-import UpBar from "../components/Feed/UpBar/UpBar";
+import UpBar from "../../components/Feed/UpBar/UpBar";
+import AppContext from "../../AppContext";
 
 export default function Layout() {
   const [searchText, setSearchText] = useState("");
   const [trigger, setTrigger] = useState(false);
+  const { darkMode } = useContext(AppContext);
 
   return (
-    <div>
+    <div className={` ${darkMode ? "dark-mode" : ""}`}>
       <div>
         <UpBar setSearchText={setSearchText} setTrigger={setTrigger} />
       </div>

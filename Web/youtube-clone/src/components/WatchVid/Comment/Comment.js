@@ -3,13 +3,13 @@ import styles from "./Comment.module.css";
 import { useParams } from "react-router-dom";
 import AppContext from "../../../AppContext";
 
-export default function Comment({ _id,userId, title, user, date, icon, triger, setTriger }) {
+export default function Comment({ _id, userId, title, user, date, icon, triger, setTriger }) {
   const { currentUser, setCurrentUser } = useContext(AppContext);
   const { creatorId, videoId } = useParams();
   const [edit, setedit] = useState(false);
   const [editedTitle, seteditedTitle] = useState(title);
-  const [reply, setreply] = useState(false)
-  const [replyText, setreplyText] = useState("")
+  const [reply, setreply] = useState(false);
+  const [replyText, setreplyText] = useState("");
   let time = ((Date.now() - date) / 60000).toFixed(0);
   let timeStr =
     time > 60
@@ -23,48 +23,46 @@ export default function Comment({ _id,userId, title, user, date, icon, triger, s
       : time + " minuets ago";
 
   const deleteComment = async () => {
-
-    const response = await fetch(`http://localhost:3000/api/users/${creatorId}/video/${videoId}/comment/${_id}`, {
+    const response = await fetch(`api/users/${creatorId}/video/${videoId}/comment/${_id}`, {
       method: "DELETE",
     });
     const json = await response.json();
 
-      if (response.ok) {
-        setTriger(true)
-      }
-  }
+    if (response.ok) {
+      setTriger(true);
+    }
+  };
 
   const handleReply = async () => {
     const comment = {
       title: replyText,
-      userId: currentUser._id
-    }
-    
-    const response = await fetch(`http://localhost:3000/api/users/${creatorId}/video/${videoId}/comment/${_id}`, {
+      userId: currentUser._id,
+    };
+
+    const response = await fetch(`api/users/${creatorId}/video/${videoId}/comment/${_id}`, {
       method: "POST",
       body: JSON.stringify(comment),
       headers: {
-        'Content-Type': 'application/json'
-      }
-    })
+        "Content-Type": "application/json",
+      },
+    });
 
-    const json = await response.json()
+    const json = await response.json();
 
     if (response.ok) {
-      setreplyText("")
-      setreply(false)
-      setTriger(true)
-      console.log('new comment added', json)
+      setreplyText("");
+      setreply(false);
+      setTriger(true);
+      console.log("new comment added", json);
     } else {
-      console.log(response.error)
+      console.log(response.error);
     }
-  }
+  };
 
   const editComment = async () => {
-
     const comment = { title: editedTitle };
 
-    const response = await fetch(`http://localhost:3000/api/users/${creatorId}/video/${videoId}/comment/${_id}`, {
+    const response = await fetch(`api/users/${creatorId}/video/${videoId}/comment/${_id}`, {
       method: "PATCH",
       body: JSON.stringify(comment),
       headers: {
@@ -94,7 +92,7 @@ export default function Comment({ _id,userId, title, user, date, icon, triger, s
                 <button onClick={() => setedit(true)} className={styles.edit}>
                   <i class="bi bi-pencil" className={styles.editIcon}></i>
                 </button>
-                <button onClick={() => deleteComment()} className={styles.remove} >
+                <button onClick={() => deleteComment()} className={styles.remove}>
                   <i class="bi bi-trash" className={styles.editIcon}></i>
                 </button>
               </div>
@@ -120,25 +118,32 @@ export default function Comment({ _id,userId, title, user, date, icon, triger, s
           <p>{title}</p>
         )}
         <h6 className={styles.time}>{timeStr}</h6>
-        { !reply? 
-          <p onClick={() => {
-            if (currentUser != null) setreply(true);
-            else alert("You need to login to write a comment");
-          }}>Reply</p>
-          :
+        {!reply ? (
+          <p
+            onClick={() => {
+              if (currentUser != null) setreply(true);
+              else alert("You need to login to write a comment");
+            }}
+          >
+            Reply
+          </p>
+        ) : (
           <div className={styles.titleWrapper}>
-              <input value={replyText} onChange={e => setreplyText(e.target.value)} className={styles.editText} />
-            <button onClick={() => {
-                setreplyText("")
-                setreply(false)
-              }} className={styles.cancle}>
-                Cancle
-              </button>
-              <button onClick={handleReply} className={styles.save}>
-                save
-              </button>
-            </div>
-        }
+            <input value={replyText} onChange={(e) => setreplyText(e.target.value)} className={styles.editText} />
+            <button
+              onClick={() => {
+                setreplyText("");
+                setreply(false);
+              }}
+              className={styles.cancle}
+            >
+              Cancle
+            </button>
+            <button onClick={handleReply} className={styles.save}>
+              save
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
