@@ -7,8 +7,8 @@ async function getFeed(req, res) {
   try {
     const numberOfVideos = 10;
     const mostViewed = await VideoService.getTopVideos(numberOfVideos);
-    const randomVideos = await VideoService.getRandomVideos(numberOfVideos, mostViewed);
-    const videoList = Util.randomizeArray([...mostViewed, ...randomVideos]);
+    const unchosenVideos = await VideoService.getUnchosenVideos(numberOfVideos, mostViewed);
+    const videoList = Util.randomizeArray([...mostViewed, ...unchosenVideos]);
 
     console.log("Fetching video list ended successfully");
     res.status(200).json(videoList);
@@ -74,10 +74,9 @@ async function updateVideo(req, res) {
 }
 
 async function createVideo(req, res) {
-  const userId = req.params.userId;
-  console.log("********* id of creator: ", userId, "*******");
+  const video = req.body;
   try {
-    const videoData = await Video.createVideo(userId);
+    const videoData = await Video.createVideo(video);
     console.log("Video upload processed successfully");
     res.status(201).json(videoData);
   } catch (error) {

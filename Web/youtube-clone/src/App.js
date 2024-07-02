@@ -43,7 +43,7 @@ export default function App() {
         <Routes>
           <Route element={<Layout />}>
             <Route path="/" element={<Feed />} />
-            <Route path="/users/:userId/videos/:videoId" element={<VideoDisplay />}/>
+            <Route path="/users/:userId/videos/:videoId" element={<VideoDisplay />} />
             <Route path="/userpage" element={<UserPage />} />
           </Route>
           <Route path="/login" element={<Login />} />
