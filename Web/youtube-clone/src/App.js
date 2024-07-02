@@ -18,9 +18,10 @@ export default function App() {
       if (token) {
         const response = await fetch(`api/tokens/${token}`);
         const data = await response.json();
-        if (data.user) {
-          setCurrentUser(data.user);
-          if (data.user.settings.darkMode == true){
+        const { user } = data;
+        if (user) {
+          setCurrentUser(user);
+          if (user.settings.darkMode == true){
             toggleDarkMode();
           }
         }
@@ -34,7 +35,7 @@ export default function App() {
         <Routes>
           <Route element={<Layout />}>
             <Route path="/" element={<Feed />} />
-            <Route path="/users/:userId/videos/:videoId" element={<VideoDisplay />}/>
+            <Route path="/users/:userId/videos/:videoId" element={<VideoDisplay />} />
             <Route path="/userpage" element={<UserPage />} />
           </Route>
           <Route path="/login" element={<Login />} />

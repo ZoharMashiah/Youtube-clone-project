@@ -13,6 +13,7 @@
 
 .ButtonField:hover {
   background-color: rgba(242, 242, 242, 255);
+  color: black;
   cursor: pointer;
 }
 .svgContainer {

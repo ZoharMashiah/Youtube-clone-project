@@ -11,7 +11,7 @@ const userSchema = new Schema({
   password: {
     type: String,
     required: true,
-},
+  },
   firstName: {
     type: String,
     required: true,
@@ -30,7 +30,7 @@ const userSchema = new Schema({
   photo: {
     type: String,
   },
-  videos: [{type: Schema.Types.ObjectId, ref: "Video"}],
+  videos: [{ type: Schema.Types.ObjectId, ref: "Video" }],
   settings: {
     type: Object,
     required: true,
@@ -83,4 +83,3 @@ module.exports = mongoose.model("User", userSchema);
 //     required: true,
 //   },
 // });
-

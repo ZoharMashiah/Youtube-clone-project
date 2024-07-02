@@ -12,13 +12,12 @@ import { useOutletContext } from "react-router-dom";
 
 export default function Feed() {
   const { trigger, setTrigger } = useOutletContext();
-  const { currentUser } = useContext(AppContext);
+  const { currentUser, videoList, setVideoList } = useContext(AppContext);
 
   // not gonna stay here ofc
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [filterVideosCategory, setfilterVideosCategory] = useState([]);
 
-  const [videoList, setVideoList] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -32,7 +31,7 @@ export default function Feed() {
     try {
       const res = await axios.get("/api/videos");
       const videoList = res.data;
-      console.log(videoList);
+      console.log("video list: ", videoList);
       setVideoList(videoList);
     } catch (error) {
       console.error("Error fetching videos:", error);
@@ -65,7 +64,6 @@ export default function Feed() {
           </div>
         </div>
       </div>
-
       {trigger ? <AddVideoPopup onClose={() => setTrigger(false)} /> : ""}
     </div>
   );
