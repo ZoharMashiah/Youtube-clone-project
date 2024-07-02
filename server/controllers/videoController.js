@@ -20,7 +20,7 @@ async function getFeed(req, res) {
 }
 
 async function getUserVideoList(req, res) {
-  const userId = req.params.id;
+  const userId = req.params.userId;
   try {
     const userVideoList = await VideoService.getUserVideoList(userId);
     console.log("Fetched creator video list successfully");
