@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import AppContext from "../../AppContext";
+import {AppContext} from "../../AppContext";
 import styles from "./Feed.module.css";
 import AddVideoPopup from "../../components/AddVideo/AddVideoPopup";
 import axios from "axios";

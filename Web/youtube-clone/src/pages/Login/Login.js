@@ -3,7 +3,7 @@ import axios from "axios";
 import "./Login.css";
 import Loginwrapper from "../../components/Login/Loginwrapper/Loginwrapper";
 import Logo from "../../components/Feed/Logo/Logo";
-import AppContext from "../../AppContext";
+import {AppContext} from "../../AppContext";
 
 export default function Login({}) {
   const [username, setUsername] = useState("");

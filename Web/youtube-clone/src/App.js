@@ -1,41 +1,35 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./pages/Layout/Layout";
 import Feed from "./pages/Feed/Feed";
 import Login from "./pages/Login/Login";
 import Signup from "./pages/Signup/Signup";
 import VideoDisplay from "./components/WatchVid/VideoDisplay/VideoDisplay";
-import AppContext from "./AppContext";
+import {AppContext, AppContextProvider} from "./AppContext";
 import { useEffect } from "react";
 import UserPage from "./pages/UserPage/UserPage";
 
 export default function App() {
-  const [currentUser, setCurrentUser] = useState(null);
-  const [darkMode, setDarkMode] = useState(false);
-  const [videoList, setVideoList] = useState([]);
+  const {setCurrentUser, currentUser, setDarkMode, toggleDarkMode} = useContext(AppContext)
 
-  const toggleDarkMode = () => {
-    setDarkMode((prev) => !prev);
-  };
-
-  const contextValue = { currentUser, setCurrentUser, darkMode, toggleDarkMode, videoList, setVideoList };
-
+  const token = localStorage.getItem("token");
   useEffect(() => {
     const getCurrentUser = async () => {
-      const token = localStorage.getItem("token");
       if (token) {
         const response = await fetch(`api/tokens/${token}`);
         const data = await response.json();
         if (data.user) {
           setCurrentUser(data.user);
+          if (data.user.settings.darkMode == true){
+            toggleDarkMode();
+          }
         }
       }
     };
     getCurrentUser();
-  }, []);
+  }, [token]);
 
   return (
-    <AppContext.Provider value={contextValue}>
       <BrowserRouter>
         <Routes>
           <Route element={<Layout />}>
@@ -47,6 +41,5 @@ export default function App() {
           <Route path="/signup" element={<Signup />} />
         </Routes>
       </BrowserRouter>
-    </AppContext.Provider>
   );
 }

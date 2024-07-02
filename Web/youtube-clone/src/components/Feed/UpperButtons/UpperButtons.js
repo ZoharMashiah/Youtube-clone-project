@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./UpperButtons.module.css";
-import AppContext from "../../../AppContext";
+import {AppContext} from "../../../AppContext";
 
 const DarkModeButton = ({ darkMode, toggleDarkMode }) => (
   <button className={styles.darkModeButton} onClick={toggleDarkMode}>
@@ -20,12 +20,12 @@ const UploadVideo = ({ setTrigger }) => (
   </>
 );
 
-const UserButtons = ({ currentUser, setCurrentUser }) => {
+const UserButtons = ({ currentUser, setCurrentUser, darkMode ,toggleDarkMode }) => {
   const navigate = useNavigate();
 
   return (
     <div className={styles.userWrapper}>
-      <img
+        <img
         src={
           currentUser?.photo ||
           "utilites/png-transparent-user-profile-2018-in-sight-user-conference-expo-business-default-business-angle-service-people-thumbnail.png"
@@ -44,6 +44,8 @@ const UserButtons = ({ currentUser, setCurrentUser }) => {
             navigate("/");
             setCurrentUser(null);
             localStorage.removeItem("token");
+            if (darkMode)
+              toggleDarkMode()
           }}
           className={styles.signBtn}
         >
@@ -56,9 +58,8 @@ const UserButtons = ({ currentUser, setCurrentUser }) => {
 };
 
 const ButtonsWrapper = ({ setTrigger }) => {
-  const { currentUser, setCurrentUser, darkMode, toggleDarkMode } = useContext(AppContext);
-  console.log(darkMode);
-  console.log(toggleDarkMode);
+  const { currentUser, setCurrentUser, darkMode, toggleDarkMode, setDarkMode } = useContext(AppContext);
+  console.log("darkmode: ",darkMode, currentUser?.settings.darkmode)
 
   return (
     <div className={styles.buttonsWrapper}>
@@ -67,10 +68,10 @@ const ButtonsWrapper = ({ setTrigger }) => {
         ""
       ) : (
         <div>
-          <UploadVideo setTrigger={setTrigger} />
+            <UploadVideo setTrigger={setTrigger} />
         </div>
       )}
-      <UserButtons currentUser={currentUser} setCurrentUser={setCurrentUser} />
+      <UserButtons currentUser={currentUser} setCurrentUser={setCurrentUser} darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
     </div>
   );
 };

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./Loginwrapper.css";
 import Userfield from "../Userfield/Userfield";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import AppContext from "../../../AppContext";
+import {AppContext} from "../../../AppContext";
 
 export default function Loginwrapper({ handleLogin, setUsername, setPassword }) {
   const { currentUser, setCurrentUser } = useContext(AppContext);

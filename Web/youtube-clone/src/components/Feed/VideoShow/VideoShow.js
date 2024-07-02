@@ -3,7 +3,7 @@ import { Image } from "react-bootstrap";
 import styles from "./VideoShow.module.css";
 import Dropdown from "react-bootstrap/Dropdown";
 import EditVideo from "../../UserPage/EditVideo/EditVideo";
-import AppConetext from "../../../AppContext"
+import { AppContext } from "../../../AppContext";
 
 export default function VideoShow({
   icon,
@@ -17,7 +17,7 @@ export default function VideoShow({
   onClick,
 }) {
   const [editButton, setEditButton] = useState(false)
-  const {currentUser} = useContext(AppConetext)
+  const {currentUser} = useContext(AppContext)
   let viewers =
     views > 999 ? (views > 999999 ? (views / 1000000).toFixed(0) + "M" : (views / 1000).toFixed(0) + "K") : views;
   let time = ((Date.now() - (new Date(publication_date)).getTime()) / 60000).toFixed(0);
