@@ -23,6 +23,9 @@ const UploadVideo = ({ setTrigger }) => (
 
 const UserButtons = ({ currentUser, setCurrentUser, darkMode ,toggleDarkMode }) => {
   const navigate = useNavigate();
+  const getToUserPage = () => {
+    navigate(`/userpage/${currentUser._id}`, {replace: true});
+  }
 
   return (
     <div className={styles.userWrapper}>
@@ -33,6 +36,7 @@ const UserButtons = ({ currentUser, setCurrentUser, darkMode ,toggleDarkMode }) 
         }
         id={styles.profileImage}
         alt="User profile"
+        onClick={currentUser?() => getToUserPage(): () =>{}}
       />
       {currentUser === null ? (
         <button onClick={() => navigate("/login")} className={styles.signBtn}>

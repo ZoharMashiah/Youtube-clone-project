@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 
-export default function UserInfo() {
+export default function UserInfo({userId}) {
     const [show, setShow] = useState(false);
     const [userData, setUserData] = useState({})
 
@@ -17,10 +17,9 @@ export default function UserInfo() {
   
   useEffect(() => {
     const fetchVideos = async () => {
-        // temp should change with the user id of the user page clicked
-        const userId = "60d5ecb54b24d1a810c4ca1c"
-        const res = await fetch(`http://localhost:3000/api/users/${userId}`)
-        const data = await res.json()
+        const res = await fetch(`/api/users/${userId}`)
+      const data = await res.json()
+      console.log(data.photo)
         setUserData(data)
     }
     fetchVideos()
@@ -29,13 +28,13 @@ export default function UserInfo() {
 
   return (
       <div style={{textAlign:"center"}}>
-          <img src='utilites/png-transparent-user-profile-2018-in-sight-user-conference-expo-business-default-business-angle-service-people-thumbnail.png' style={{width: "100px", height:"100px", borderRadius:"50px"}}/>
-          <h4>Usraname</h4>
+          <img src={userData.photo != null? userData.photo :'utilites/png-transparent-user-profile-2018-in-sight-user-conference-expo-business-default-business-angle-service-people-thumbnail.png'} style={{width: "100px", height:"100px", borderRadius:"50px"}}/>
+          <h4>{userData.username}</h4>
           <div>
           <>
-      <button style={{borderWidth: "0px", color: "blue", backgroundColor: "white"}} onClick={handleShow}>
+      <p style={{borderWidth: "0px", color: "blue", backgroundColor: "transparent"}} onClick={handleShow}>
         Details
-      </button>
+      </p>
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
