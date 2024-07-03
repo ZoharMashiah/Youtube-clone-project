@@ -1,14 +1,16 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import styles from "./AddVideoPopup.module.css";
 import Dropdown from "react-bootstrap/Dropdown";
 import AppContext from "../../AppContext";
+import axios from "axios";
 
 export default function AddVideoPopup({ onClose }) {
-  const [title, settitle] = useState("");
-  const [description, setdescription] = useState("");
-  const [image, setimage] = useState(null);
-  const [video, setvideo] = useState(null);
-  const [category, setcategory] = useState("");
+  const { currentUser } = useContext(AppContext);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [image, setImage] = useState(null);
+  const [video, setVideo] = useState(null);
+  const [category, setCategory] = useState("");
   const categories = [
     "Music",
     "Mixes",
@@ -26,63 +28,46 @@ export default function AddVideoPopup({ onClose }) {
     "3D printing",
   ];
 
-  const currentUser = useContext(AppContext);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const isAdmin = currentUser.username === "admin" && currentUser.password === "admin";
 
-    if (!isAdmin && !isFormValid()) {
-      alert("Fill all the fields!");
+    const isFormValid =
+      title.trim() !== "" && description.trim() !== "" && category.trim() !== "" && image !== null && video !== null;
+    if (!isFormValid) {
+      alert("Fill all of the fields!");
       return;
     }
 
     try {
       const newVideo = await createNewVideo();
-      const address = `/api/users/${currentUser.id}/videos`;
+      const address = `/api/users/${currentUser._id}/videos`;
       console.log("Sending request to:", address);
-      const res = await fetch(address, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newVideo),
-      });
 
-      const data = await res.json();
-      console.log(data);
+      console.log("***newVideo: ", newVideo);
+      const res = await axios.post(address, newVideo);
 
-      if (!res.ok) {
-        console.log("Full response:", res);
-        throw new Error(`HTTP error. status: ${res.status}`);
-      }
-
+      console.log(res.data);
       alert("Upload is successful!");
     } catch (error) {
       console.error("Error adding video:", error);
+      if (error.response) {
+        console.log("Full response:", error.response);
+        console.log("Error data:", error.response.data);
+        console.log("Error status:", error.response.status);
+      } else if (error.request) {
+        console.log("No response received:", error.request);
+      } else {
+        console.log("Error message:", error.message);
+      }
       alert("Failed to add video. Please try again.");
+    } finally {
+      resetForm();
     }
-
-    resetForm();
   };
-
-  const isFormValid = () => {
-    return (
-      title.trim() !== "" && description.trim() !== "" && category.trim() !== "" && image !== null && video !== null
-    );
-  };
-
-  useEffect(() => {
-    if (currentUser.username === "admin" && currentUser.password === "admin") {
-      settitle("Admin Default Title");
-      setdescription("Admin Default Description");
-      setcategory("Admin Default Category");
-    }
-  }, [currentUser]);
 
   const createNewVideo = async () => {
     return {
-      user_id: currentUser.id,
+      user_id: currentUser._id,
       title: title,
       description: description,
       category: category,
@@ -92,11 +77,11 @@ export default function AddVideoPopup({ onClose }) {
   };
 
   const resetForm = () => {
-    settitle("");
-    setdescription("");
-    setimage(null);
-    setvideo(null);
-    setcategory("");
+    setTitle("");
+    setDescription("");
+    setImage(null);
+    setVideo(null);
+    setCategory("");
     onClose();
   };
 
@@ -120,13 +105,13 @@ export default function AddVideoPopup({ onClose }) {
             name="title"
             value={title}
             onChange={(e) => {
-              settitle(e.target.value);
+              setTitle(e.target.value);
             }}
           />
           <input
             placeholder="Description"
             value={description}
-            onChange={(e) => setdescription(e.target.value)}
+            onChange={(e) => setDescription(e.target.value)}
             name="description"
           />
           <Dropdown className={styles.dropdown}>
@@ -135,7 +120,7 @@ export default function AddVideoPopup({ onClose }) {
             </Dropdown.Toggle>
             <Dropdown.Menu className={styles.selectCategory}>
               {categories.map((categ) => (
-                <Dropdown.Item key={categ} onClick={() => setcategory(categ)}>
+                <Dropdown.Item key={categ} onClick={() => setCategory(categ)}>
                   {categ}
                 </Dropdown.Item>
               ))}
@@ -153,8 +138,10 @@ export default function AddVideoPopup({ onClose }) {
                 const file = e.target.files[0];
                 if (file) {
                   try {
+                    console.log("file: ", file);
                     const dataUrl = await readFileAsDataURL(file);
-                    setvideo(dataUrl);
+                    console.log("dataurl: ", dataUrl);
+                    setVideo(dataUrl);
                   } catch (error) {
                     console.error("Error reading file:", error);
                   }
@@ -176,7 +163,7 @@ export default function AddVideoPopup({ onClose }) {
                 if (file) {
                   try {
                     const dataUrl = await readFileAsDataURL(file);
-                    setimage(dataUrl);
+                    setImage(dataUrl);
                   } catch (error) {
                     console.error("Error reading file:", error);
                   }
@@ -184,7 +171,6 @@ export default function AddVideoPopup({ onClose }) {
               }}
             />
           </div>
-
           <div className="btn-group">
             <button class="btn btn-primary" className={styles.cancelBtn} onClick={onClose}>
               Cancel

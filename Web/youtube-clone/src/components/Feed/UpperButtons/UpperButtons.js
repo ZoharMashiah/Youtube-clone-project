@@ -57,6 +57,8 @@ const UserButtons = ({ currentUser, setCurrentUser }) => {
 
 const ButtonsWrapper = ({ setTrigger }) => {
   const { currentUser, setCurrentUser, darkMode, toggleDarkMode } = useContext(AppContext);
+  console.log(darkMode);
+  console.log(toggleDarkMode);
 
   return (
     <div className={styles.buttonsWrapper}>
