@@ -16,6 +16,7 @@ export default function VideoDisplay(videoList) {
 
   const fetchVideo = async (creatorId, videoId) => {
     try {
+      console.log("**********creator id: ", creatorId);
       const response = await axios.get(`/api/users/${creatorId}/videos/${videoId}`);
       setCurrentVideo(response.data);
     } catch (error) {
@@ -26,38 +27,36 @@ export default function VideoDisplay(videoList) {
   return (
     <div className={styles.VideoDisplayWrapper}>
       <div>hi</div>
-      {/* <div className={styles.LeftVideoShowWrapper}>
+      <div className={styles.LeftVideoShowWrapper}>
         <div className={styles.UpperVideoWrapper}>
           <div class="embed-responsive embed-responsive-1by1  w-100" className={styles.videoPlayerWrapper}>
             {!currentVideo ? (
               <div>Loading...</div>
             ) : (
-              // <iframe
-              //   className={`embed-responsive-item ${styles.videoPlayer}`}
-              //   src={currentVideo.video}
-              //   allowFullScreen
-              // ></iframe>
-              ""
+              <iframe
+                className={`embed-responsive-item ${styles.videoPlayer}`}
+                src={currentVideo.video}
+                allowFullScreen
+              ></iframe>
             )}
           </div>
           <div className={styles.textWrapper}>
             <h2>{currentVideo.title}</h2>
-            <Buttons currentVideo={currentVideo} deleteVideo={videoId} />
+            <Buttons currentVideo={currentVideo} deleteVideo={currentVideo._id} />
             <Description currentVideo={currentVideo} />
           </div>
         </div>
-        <div className={styles.CommentsWrapper}>
-          {/* <Comments
-              currentVideo={currentVideo}
-              editVideo={editVideo}
-              videos={videos}
-              currentUser={currentUser}
-              editComment={editComment}
-              deleteComment={deleteComment}
-            />
-        </div>
-      </div> */}
-
+        {/* <div className={styles.CommentsWrapper}>
+          <Comments
+            currentVideo={currentVideo}
+            editVideo={editVideo}
+            videos={videos}
+            currentUser={currentUser}
+            editComment={editComment}
+            deleteComment={deleteComment}
+          />
+        </div> */}
+      </div>
       <div className={styles.SuggestedVideosWrapper}>
         <SuggestedVideos currentVideo={currentVideo} videoList={videoList} />
       </div>

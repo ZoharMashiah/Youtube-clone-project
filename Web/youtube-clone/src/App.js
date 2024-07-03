@@ -25,17 +25,21 @@ export default function App() {
 
   useEffect(() => {
     const getCurrentUser = async () => {
-      const token = localStorage.getItem("token");
-      if (token) {
-        const response = await fetch(`api/tokens/${token}`);
-        const data = await response.json();
-        const { user } = data;
-        if (user) {
-          setCurrentUser(user);
-          if (currentUser.settings.darkMode) {
-            toggleDarkMode();
+      try {
+        const token = localStorage.getItem("token");
+        if (token) {
+          const response = await fetch(`api/tokens/${token}`);
+          const data = await response.json();
+          const { user } = data;
+          if (user) {
+            setCurrentUser(user);
+            if (currentUser.settings.darkMode) {
+              toggleDarkMode();
+            }
           }
         }
+      } catch (error) {
+        console.error("Error fetching current user:", error);
       }
     };
     getCurrentUser();
