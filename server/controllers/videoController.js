@@ -116,6 +116,25 @@ async function deleteVideo(req, res) {
   }
 }
 
+async function deleteAllVideos(userId) {
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(400).json({ message: `User with id ${userId} not found` });
+    }
+    user.videos.map(async (video) => {
+      console.log(video._id)
+      await Video.deleteVideo(video._id, userId);
+    })
+
+    console.log("Deleted video successfully");
+    return true;
+  } catch (error) {
+    console.error("Error deleting video:", error);
+    return false
+  }
+}
+
 async function filterVideos(req, res) {
   const videoId = req.params.pid;
   const userId = req.params.userId;
@@ -137,4 +156,4 @@ async function filterVideos(req, res) {
   }
 }
 
-module.exports = { getFeed, getUserVideoList, getVideo, updateVideo, createVideo, deleteVideo, filterVideos };
+module.exports = { getFeed, getUserVideoList, getVideo, updateVideo, createVideo, deleteVideo, filterVideos, deleteAllVideos };

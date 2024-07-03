@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const videoController = require("./videoController")
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 
@@ -65,6 +66,14 @@ const deleteUser = async (req, res) => {
 
   if (!mongoose.Types.ObjectId.isValid(userId)) {
     return res.status(404).json({ message: `User with id ${userId} not valid` });
+  }
+  const userCheck = await User.findById({ _id: userId });
+  if (!userCheck) {
+    return res.status(400).json({ message: `User with id ${userId} not found` });
+  }
+  const videosDeleted = await videoController.deleteAllVideos(userId)
+  if (!videosDeleted) {
+    return res.status(400).json({ message: `Erroe delte vides for user with id ${userId}` });
   }
   const user = await User.findByIdAndDelete({ _id: userId });
   if (!user) {

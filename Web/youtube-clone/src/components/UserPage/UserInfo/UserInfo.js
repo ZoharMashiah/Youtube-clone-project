@@ -1,19 +1,44 @@
 import React from 'react'
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
+import { AppContext } from '../../../AppContext';
+import { useNavigate, useLocation } from 'react-router-dom';
+
 
 export default function UserInfo({userId}) {
-    const [show, setShow] = useState(false);
-    const [userData, setUserData] = useState({})
+  const [show, setShow] = useState(false);
+  const [userData, setUserData] = useState({})
+  const { currentUser, setCurrentUser, videoList, setVideoList } = useContext(AppContext)
+  const navigate = useNavigate()
+  const location = useLocation();
 
-    const handleClose = () => {
-        setShow(false);
+  const handleClose = () => {
+      setShow(false);
+  }
+  const handleShow = () => {
+      setShow(true);
+  }
+
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
+  
+  const handleDelete = async() => {
+    const res = await fetch(`/api/users/${userId}`, {
+      method: "DELETE"
+    })
+    if (res.ok) {
+      await sleep(2000)
+      setCurrentUser(null)
+      setShow(false);
+      // const newList = videoList.filter((video) => video.user._id != userId)
+      localStorage.removeItem("token")
+      navigate("/", { replace: true })
+      window.location.reload()
+    } else {
+      alert("Error deleting the user!")
     }
-    const handleShow = () => {
-        setShow(true);
-    }
+  }
   
   useEffect(() => {
     const fetchVideos = async () => {
@@ -54,9 +79,12 @@ export default function UserInfo({userId}) {
           Birthdate: {(new Date(userData.birthdate)).getDay()}/{(new Date(userData.birthdate)).getMonth()}/{(new Date(userData.birthdate)).getFullYear()}
         </p>
       </Modal.Body>
-      <Modal.Footer>
-        <Button onClick={handleClose}>Close</Button>
-      </Modal.Footer>
+          <Modal.Footer>
+            {currentUser&& currentUser._id === userId &&
+              <Button variant="danger" onClick={handleDelete}>Delete User</Button>
+            }
+          <Button onClick={handleClose}>Close</Button>
+        </Modal.Footer>
       </Modal>
     </>
           </div>

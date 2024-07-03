@@ -36,7 +36,7 @@ videoSchema.statics.deleteVideo = async function (videoId, userId) {
   session.startTransaction();
 
   try {
-    const video = await this.findOne({ _id: videoId, user_id: userId }).session(session);
+    const video = await this.findById({ _id: videoId }).session(session);
     if (!video) {
       throw new Error("Video not found");
     }
