@@ -3,11 +3,13 @@ import { Image } from "react-bootstrap";
 import styles from "./VideoShow.module.css";
 import Dropdown from "react-bootstrap/Dropdown";
 import EditVideo from "../../UserPage/EditVideo/EditVideo";
-import AppConetext from "../../../AppContext";
+import { AppContext } from "../../../AppContext";
+import { useNavigate } from "react-router-dom";
 
 export default function VideoShow({ icon, title, description, publication_date, views, user, onClick }) {
   const [editButton, setEditButton] = useState(false);
-  const { currentUser } = useContext(AppConetext);
+  const { currentUser } = useContext(AppContext);
+  const navigate = useNavigate();
   let viewers =
     views > 999 ? (views > 999999 ? (views / 1000000).toFixed(0) + "M" : (views / 1000).toFixed(0) + "K") : views;
   let time = ((Date.now() - new Date(publication_date).getTime()) / 60000).toFixed(0);
@@ -26,19 +28,25 @@ export default function VideoShow({ icon, title, description, publication_date, 
 
   const deleteVideo = () => {};
 
+  const getToUserPage = () => {
+    navigate(`/userpage/${user._id}`, { replace: true });
+  };
+
   return (
     <div className={styles.videoCard}>
       {editButton && <EditVideo setEditButton={setEditButton} videoTitle={title} videoDescription={description} />}
       <img src={icon} id={styles.videoImage} onClick={onClick} alt="Video thumbnail" />
       <div className={styles.videoDetails}>
         <div className={styles.metaData}>
-          <Image src={user.photo} width="40px" height="40px" roundedCircle />
+          <Image src={user.photo} width="40px" height="40px" roundedCircle onClick={getToUserPage} />
           <div className={styles.titleWrapper}>
             <p id={styles.title} onClick={onClick}>
               {title}
             </p>
             <div>
-              <span id={styles.user}>{user.username}</span>
+              <span id={styles.user} onClick={getToUserPage}>
+                {user.username}
+              </span>
               <br></br>
               <span id={styles.views}>
                 {viewers} views · {timeStr}

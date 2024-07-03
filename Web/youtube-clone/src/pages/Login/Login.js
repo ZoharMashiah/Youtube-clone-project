@@ -3,9 +3,10 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Login.css";
 import Logo from "../../components/Feed/Logo/Logo";
-import AppContext from "../../AppContext";
+import { AppContext } from "../../AppContext";
 import Userfield from "../../components/Login/Userfield/Userfield";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import DarkModeButton from "../../components/DarkModeButton/DarkModeButton";
 
 export default function Login() {
   const [username, setUsername] = useState("");
@@ -56,9 +57,7 @@ export default function Login() {
 
   return (
     <div className={`login-page ${darkMode ? "dark-mode" : ""}`}>
-      <button className="dark-mode-toggle" onClick={toggleDarkMode}>
-        {darkMode ? "Light Mode" : "Dark Mode"}
-      </button>
+      <DarkModeButton style={"dark-mode-toggle"} />
       <Logo />
       <p className="login-title">Login</p>
       <div className="login-wrapper">

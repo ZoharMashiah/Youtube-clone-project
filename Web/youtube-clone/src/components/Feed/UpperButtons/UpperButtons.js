@@ -1,13 +1,14 @@
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./UpperButtons.module.css";
-import AppContext from "../../../AppContext";
+import { AppContext } from "../../../AppContext";
+import DarkModeButton from "../../DarkModeButton/DarkModeButton";
 
-const DarkModeButton = ({ darkMode, toggleDarkMode }) => (
-  <button className={styles.darkModeButton} onClick={toggleDarkMode}>
-    {darkMode ? "Light Mode" : "Dark Mode"}
-  </button>
-);
+// const DarkModeButton = ({ darkMode, toggleDarkMode }) => (
+//   <button className={styles.darkModeButton} onClick={() => toggleDarkMode(true)}>
+//     {darkMode ? "Light Mode" : "Dark Mode"}
+//   </button>
+// );
 
 const UploadVideo = ({ setTrigger }) => (
   <>
@@ -20,8 +21,11 @@ const UploadVideo = ({ setTrigger }) => (
   </>
 );
 
-const UserButtons = ({ currentUser, setCurrentUser }) => {
+const UserButtons = ({ currentUser, setCurrentUser, darkMode, toggleDarkMode }) => {
   const navigate = useNavigate();
+  const getToUserPage = () => {
+    navigate(`/userpage/${currentUser._id}`, { replace: true });
+  };
 
   return (
     <div className={styles.userWrapper}>
@@ -32,6 +36,7 @@ const UserButtons = ({ currentUser, setCurrentUser }) => {
         }
         id={styles.profileImage}
         alt="User profile"
+        onClick={currentUser ? () => getToUserPage() : () => {}}
       />
       {currentUser === null ? (
         <button onClick={() => navigate("/login")} className={styles.signBtn}>
@@ -44,6 +49,7 @@ const UserButtons = ({ currentUser, setCurrentUser }) => {
             navigate("/");
             setCurrentUser(null);
             localStorage.removeItem("token");
+            if (darkMode) toggleDarkMode(false);
           }}
           className={styles.signBtn}
         >
@@ -57,12 +63,11 @@ const UserButtons = ({ currentUser, setCurrentUser }) => {
 
 const ButtonsWrapper = ({ setTrigger }) => {
   const { currentUser, setCurrentUser, darkMode, toggleDarkMode } = useContext(AppContext);
-  console.log(darkMode);
-  console.log(toggleDarkMode);
+  console.log("darkmode: ", darkMode, currentUser?.settings.darkMode);
 
   return (
     <div className={styles.buttonsWrapper}>
-      <DarkModeButton darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
+      <DarkModeButton style={styles.darkModeButton} />
       {currentUser === null ? (
         ""
       ) : (
@@ -70,7 +75,12 @@ const ButtonsWrapper = ({ setTrigger }) => {
           <UploadVideo setTrigger={setTrigger} />
         </div>
       )}
-      <UserButtons currentUser={currentUser} setCurrentUser={setCurrentUser} />
+      <UserButtons
+        currentUser={currentUser}
+        setCurrentUser={setCurrentUser}
+        darkMode={darkMode}
+        toggleDarkMode={toggleDarkMode}
+      />
     </div>
   );
 };

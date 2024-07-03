@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./Signupwrapper.css";
 import { Navigate } from "react-router-dom";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import AppContext from "../../../AppContext";
+import { AppContext } from "../../../AppContext";
 import UserField from "../../userField/UserField";
 
 export default function Signupwrapper({ users, handleSignup }) {

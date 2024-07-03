@@ -1,5 +1,5 @@
 const express = require("express");
-const { createUserForLogin, getToken } = require("../controllers/Users");
+const { createUserForLogin, getToken } = require("../controllers/users");
 
 const tokenRouter = express.Router();
 

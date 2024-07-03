@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import styles from "./Comment.module.css";
 import { useParams } from "react-router-dom";
-import AppContext from "../../../AppContext";
+import { AppContext } from "../../../AppContext";
+import { useNavigate } from "react-router-dom";
 
 export default function Comment({ _id, userId, title, user, date, icon, triger, setTriger }) {
   const { currentUser, setCurrentUser } = useContext(AppContext);
@@ -21,6 +22,8 @@ export default function Comment({ _id, userId, title, user, date, icon, triger, 
           : (time / 1140).toFixed(0) + " days ago"
         : (time / 60).toFixed(0) + " hours ago"
       : time + " minuets ago";
+
+  const navigate = useNavigate();
 
   const deleteComment = async () => {
     const response = await fetch(`api/users/${creatorId}/video/${videoId}/comment/${_id}`, {
@@ -77,12 +80,18 @@ export default function Comment({ _id, userId, title, user, date, icon, triger, 
     }
   };
 
+  const getToUserPage = () => {
+    navigate(`/userpage/${currentUser._id}`, { replace: true });
+  };
+
   return (
     <div className={styles.commentWrapper}>
-      <img src={icon} className={styles.profileImage} />
+      <img src={icon} className={styles.profileImage} onClick={getToUserPage} />
       <div>
         <div className={styles.user}>
-          <h6 className={styles.user}>{user}</h6>
+          <h6 className={styles.user} onClick={getToUserPage}>
+            {user}
+          </h6>
         </div>
         {currentUser && currentUser._id === userId ? (
           !edit ? (

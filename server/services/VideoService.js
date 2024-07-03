@@ -60,7 +60,12 @@ class VideoService {
 
   static async getUserVideoList(userId) {
     const user = await User.findById({ _id: userId });
-    const userVideoList = await Video.find({ user_id: user._id }).sort({ title: 1 });
+    const cutUser = {
+      _id: user._id,
+      username: user.username,
+      photo: user.photo,
+    }
+    const userVideoList = await Video.find({ user: cutUser }).sort({ title: 1 });
     return userVideoList;
   }
 }

@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import axios from "axios";
 import styles from "./Buttons.module.css";
-import AppContext from "../../../AppContext";
+import { AppContext } from "../../../AppContext";
 
 export default function Buttons({ currentVideo, setCurrentVideo }) {
   const { currentUser, setCurrentUser } = useContext(AppContext);
