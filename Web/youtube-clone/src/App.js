@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./pages/Layout/Layout";
 import Feed from "./pages/Feed/Feed";
@@ -32,7 +32,7 @@ export default function App() {
       }
     };
     getCurrentUser();
-  }, [token, setCurrentUser, toggleDarkMode]);
+  }, [token, setCurrentUser]);
 
   return (
     <BrowserRouter>

@@ -59,7 +59,7 @@ export default function Feed() {
         <div>
           <div className={styles.videoGrid}>
             {videoList.map((video) => (
-              <VideoShow key={video._id} {...video} onClick={() => handleClick(video)} />
+              <VideoShow key={video._id} video={video} onClick={() => handleClick(video)} />
             ))}
           </div>
         </div>

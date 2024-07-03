@@ -10,7 +10,7 @@
     "userImage": "utilites/video1.png",
     "settings": [
       {
-        "darkmode": 0
+        "darkMode": 0
       }
     ],
     "videos": [

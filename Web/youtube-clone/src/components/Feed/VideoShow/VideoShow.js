@@ -6,13 +6,18 @@ import EditVideo from "../../UserPage/EditVideo/EditVideo";
 import { AppContext } from "../../../AppContext";
 import { useNavigate } from "react-router-dom";
 
-export default function VideoShow({ icon, title, description, publication_date, views, user, onClick }) {
+export default function VideoShow({ video, onClick }) {
   const [editButton, setEditButton] = useState(false);
   const { currentUser } = useContext(AppContext);
   const navigate = useNavigate();
-  let viewers =
-    views > 999 ? (views > 999999 ? (views / 1000000).toFixed(0) + "M" : (views / 1000).toFixed(0) + "K") : views;
-  let time = ((Date.now() - new Date(publication_date).getTime()) / 60000).toFixed(0);
+  const viewers = video.views;
+  let views =
+    viewers > 999
+      ? viewers > 999999
+        ? (viewers / 1000000).toFixed(0) + "M"
+        : (viewers / 1000).toFixed(0) + "K"
+      : viewers;
+  let time = ((Date.now() - new Date(video.publication_date).getTime()) / 60000).toFixed(0);
   let timeStr =
     time > 60
       ? time > 1140
@@ -29,32 +34,34 @@ export default function VideoShow({ icon, title, description, publication_date, 
   const deleteVideo = () => {};
 
   const getToUserPage = () => {
-    navigate(`/userpage/${user._id}`, { replace: true });
+    navigate(`/userpage/${video.user._id}`, { replace: true });
   };
 
   return (
     <div className={styles.videoCard}>
-      {editButton && <EditVideo setEditButton={setEditButton} videoTitle={title} videoDescription={description} />}
-      <img src={icon} id={styles.videoImage} onClick={onClick} alt="Video thumbnail" />
+      {editButton && (
+        <EditVideo setEditButton={setEditButton} videoTitle={video.title} videoDescription={video.description} />
+      )}
+      <img src={video.icon} id={styles.videoImage} onClick={onClick} alt="Video thumbnail" />
       <div className={styles.videoDetails}>
         <div className={styles.metaData}>
-          <Image src={user.photo} width="40px" height="40px" roundedCircle onClick={getToUserPage} />
+          <Image src={video.user.photo} width="40px" height="40px" roundedCircle onClick={getToUserPage} />
           <div className={styles.titleWrapper}>
             <p id={styles.title} onClick={onClick}>
-              {title}
+              {video.title}
             </p>
             <div>
               <span id={styles.user} onClick={getToUserPage}>
-                {user.username}
+                {video.user.username}
               </span>
               <br></br>
               <span id={styles.views}>
-                {viewers} views · {timeStr}
+                {views} views · {timeStr}
               </span>
             </div>
           </div>
         </div>
-        {currentUser && currentUser._id == user._id && (
+        {currentUser && currentUser._id == video.user._id && (
           <Dropdown className={styles.ellipsis}>
             <Dropdown.Toggle variant="white" id="dropdown-basic" style={{ content: "none" }}>
               <i class="bi bi-three-dots-vertical"></i>

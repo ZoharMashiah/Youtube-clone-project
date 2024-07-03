@@ -71,7 +71,7 @@ export default function Comments({ currentVideo, currentUser, editComment, delet
       const userId = "667aeb3eaf98ca2e75104d0b";
       const videoId = "667aeb3eaf98ca2e75104d0b";
 
-      const response = await fetch(`http://localhost:3000/api/users/${userId}/video/${videoId}/comment/`);
+      const response = await fetch(`api/users/${userId}/video/${videoId}/comment/`);
       const json = await response.json();
 
       if (response.ok) {

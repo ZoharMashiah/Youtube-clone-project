@@ -19,7 +19,10 @@ export const AppContextProvider = ({ children }) => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ settings: { darkMode: newDarkMode } }),
       }).catch((error) => console.error("Error updating user settings:", error));
+      currentUser.settings.darkMode = newDarkMode;
     }
+
+    console.log("darkMode: ", newDarkMode, "user setting: ", currentUser?.settings.darkMode);
   };
 
   const value = {

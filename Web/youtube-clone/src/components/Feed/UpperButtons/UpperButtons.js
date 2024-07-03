@@ -4,12 +4,6 @@ import styles from "./UpperButtons.module.css";
 import { AppContext } from "../../../AppContext";
 import DarkModeButton from "../../DarkModeButton/DarkModeButton";
 
-// const DarkModeButton = ({ darkMode, toggleDarkMode }) => (
-//   <button className={styles.darkModeButton} onClick={() => toggleDarkMode(true)}>
-//     {darkMode ? "Light Mode" : "Dark Mode"}
-//   </button>
-// );
-
 const UploadVideo = ({ setTrigger }) => (
   <>
     <button className={styles.button} onClick={() => setTrigger(true)}>
@@ -63,7 +57,6 @@ const UserButtons = ({ currentUser, setCurrentUser, darkMode, toggleDarkMode }) 
 
 const ButtonsWrapper = ({ setTrigger }) => {
   const { currentUser, setCurrentUser, darkMode, toggleDarkMode } = useContext(AppContext);
-  console.log("darkmode: ", darkMode, currentUser?.settings.darkMode);
 
   return (
     <div className={styles.buttonsWrapper}>
