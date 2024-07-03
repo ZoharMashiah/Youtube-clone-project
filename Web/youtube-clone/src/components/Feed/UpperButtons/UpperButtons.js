@@ -1,13 +1,14 @@
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./UpperButtons.module.css";
-import {AppContext} from "../../../AppContext";
+import { AppContext } from "../../../AppContext";
+import DarkModeButton from "../../DarkModeButton/DarkModeButton";
 
-const DarkModeButton = ({ darkMode, toggleDarkMode }) => (
-  <button className={styles.darkModeButton} onClick={() => toggleDarkMode(true)}>
-    {darkMode ? "Light Mode" : "Dark Mode"}
-  </button>
-);
+// const DarkModeButton = ({ darkMode, toggleDarkMode }) => (
+//   <button className={styles.darkModeButton} onClick={() => toggleDarkMode(true)}>
+//     {darkMode ? "Light Mode" : "Dark Mode"}
+//   </button>
+// );
 
 const UploadVideo = ({ setTrigger }) => (
   <>
@@ -63,7 +64,7 @@ const ButtonsWrapper = ({ setTrigger }) => {
 
   return (
     <div className={styles.buttonsWrapper}>
-      <DarkModeButton darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
+      <DarkModeButton style={styles.darkModeButton} />
       {currentUser === null ? (
         ""
       ) : (
