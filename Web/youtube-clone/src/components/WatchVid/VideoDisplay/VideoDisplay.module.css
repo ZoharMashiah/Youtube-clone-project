@@ -1,57 +1,46 @@
-.VideoDisplayWrapper {
+.VideoDisplay {
   display: flex;
   flex-direction: row;
-  width: 100vw;
-  height: 100vh;
-  max-height: 100vh;
-  overflow-y: scroll;
-}
-
-.LeftVideoShowWrapper {
-  height: 100vh;
-  width: 70vw;
-  position: absolute;
-  left: 0;
-}
-
-.SuggestedVideosWrapper {
-  height: 100vh;
-  width: 30vw;
-  position: absolute;
-  right: 0;
-  text-align: center;
-}
-
-.LeftVideoShowWrapper {
   width: 100%;
-  height: 100%;
+  justify-content: center;
 }
 
-.UpperVideoWrapper {
-  width: 100%;
-  height: 95%;
-}
-.CommentsWrapper {
-  width: 100%;
-  height: 5%;
-}
-
-.videoPlayer {
-  aspect-ratio: 1.77777778;
-  margin-left: 7%;
-  padding: 0px !important;
-  border-radius: 3%;
+.content {
+  display: flex;
+  flex-direction: row;
+  width: fit-content;
+  justify-content: center;
+  flex-wrap: nowrap;
 }
 
-.videoPlayerWrapper {
-  width: 100%;
-  height: 100%;
+.sideList {
+  margin: 0px 20px;
+  max-width: 25vw;
+  min-width: 15vw;
 }
+
+.videoPlayerContainer {
+  width: 60vw;
+  margin: 0px 20px;
+  border-radius: 15px;
+  margin-bottom: 10px;
+}
+
+.videoWrapper {
+  width: 100%;
+  border-radius: 15px;
+  padding: 10px;
+}
+
 .textWrapper {
   margin-top: 1%;
   margin-left: 7%;
 }
 
+.CommentsWrapper {
+  width: 100%;
+  height: 5%;
+}
 iframe {
   min-height: 60vh;
   min-width: 60vw;

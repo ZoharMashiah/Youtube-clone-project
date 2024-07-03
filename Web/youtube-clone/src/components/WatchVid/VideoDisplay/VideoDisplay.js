@@ -1,51 +1,63 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import styles from "./VideoDisplay.module.css";
-import SuggestedVideos from "../SuggestedVideos/SuggestedVideos";
 import axios from "axios";
 import Buttons from "../Buttons/Buttons";
-import Description from "../Description/Description";
+import Metadata from "../Metadata/Metadata";
+import { AppContext } from "../../../AppContext";
+import HorizontalVideoCard from "../../Feed/VideoShow/HorizontalVideoCard";
 
-export default function VideoDisplay(videoList) {
-  const { creatorId, videoId } = useParams();
+export default function VideoDisplay() {
+  const { userId, videoId } = useParams();
   const [currentVideo, setCurrentVideo] = useState(null);
+  const { videoList } = useContext(AppContext);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchVideo(creatorId, videoId);
-  }, [videoId, creatorId]);
+    if (userId && videoId) {
+      fetchVideo(userId, videoId);
+    } else {
+      console.log("userId or videoId is missing");
+    }
+  }, [userId, videoId]);
 
-  const fetchVideo = async (creatorId, videoId) => {
+  const fetchVideo = async (userId, videoId) => {
     try {
-      console.log("**********creator id: ", creatorId);
-      const response = await axios.get(`/api/users/${creatorId}/videos/${videoId}`);
+      setLoading(true);
+      console.log("Fetching video for creator:", userId, "video:", videoId);
+      const response = await axios.get(`/users/${userId}/videos/${videoId}`);
       setCurrentVideo(response.data);
     } catch (error) {
       console.error("Error fetching video:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!currentVideo) {
+    return <div>Error loading video. Please try again.</div>;
+  }
+
   return (
-    <div className={styles.VideoDisplayWrapper}>
-      <div>hi</div>
-      <div className={styles.LeftVideoShowWrapper}>
-        <div className={styles.UpperVideoWrapper}>
-          <div class="embed-responsive embed-responsive-1by1  w-100" className={styles.videoPlayerWrapper}>
-            {!currentVideo ? (
-              <div>Loading...</div>
-            ) : (
-              <iframe
-                className={`embed-responsive-item ${styles.videoPlayer}`}
-                src={currentVideo.video}
-                allowFullScreen
-              ></iframe>
-            )}
-          </div>
-          <div className={styles.textWrapper}>
-            <h2>{currentVideo.title}</h2>
-            <Buttons currentVideo={currentVideo} deleteVideo={currentVideo._id} />
-            <Description currentVideo={currentVideo} />
-          </div>
+    <div className={styles.VideoDisplay}>
+      <div className={styles.content}>
+        <div className={styles.videoPlayerContainer}>
+          {!currentVideo ? (
+            <div>Loading...</div>
+          ) : (
+            <video className={styles.videoWrapper} src={currentVideo.video} controls></video>
+          )}
         </div>
+
+        {/* <div className={styles.textWrapper}>
+        <h2>{currentVideo.title}</h2>
+        {/* <Buttons currentVideo={currentVideo} deleteVideo={currentVideo._id} /> */}
+        {/* <Description currentVideo={currentVideo} /> 
+      </div> */}
         {/* <div className={styles.CommentsWrapper}>
           <Comments
             currentVideo={currentVideo}
@@ -56,9 +68,11 @@ export default function VideoDisplay(videoList) {
             deleteComment={deleteComment}
           />
         </div> */}
-      </div>
-      <div className={styles.SuggestedVideosWrapper}>
-        <SuggestedVideos currentVideo={currentVideo} videoList={videoList} />
+        <div className={styles.sideList}>
+          {videoList.map((video) => (
+            <HorizontalVideoCard key={video._id} video={video} />
+          ))}
+        </div>
       </div>
     </div>
   );

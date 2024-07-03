@@ -5,7 +5,7 @@ import Feed from "./pages/Feed/Feed";
 import Login from "./pages/Login/Login";
 import Signup from "./pages/Signup/Signup";
 import VideoDisplay from "./components/WatchVid/VideoDisplay/VideoDisplay";
-import { AppContext, AppContextProvider } from "./AppContext";
+import { AppContext } from "./AppContext";
 import { useEffect } from "react";
 import UserPage from "./pages/UserPage/UserPage";
 

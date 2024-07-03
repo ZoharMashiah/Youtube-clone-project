@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./UserVideo.module.css";
-import VideoShow from "../../Feed/VideoShow/VideoShow";
+import HorizontalVideoCard from "../../Feed/VideoShow/HorizontalVideoCard";
 
 export default function UserVideos({ userId }) {
   const [videoList, setVideoList] = useState([]);
@@ -24,7 +24,7 @@ export default function UserVideos({ userId }) {
       <div className={styles.grid}>
         {videoList.map((video) => (
           <div key={video._id}>
-            <VideoShow {...video} onClick={() => handleClick(video)} />
+            <HorizontalVideoCard {...video} onClick={() => handleClick(video)} />
           </div>
         ))}
       </div>
