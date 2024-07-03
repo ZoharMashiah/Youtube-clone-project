@@ -3,7 +3,8 @@ import "./Signup.css";
 import axios from "axios";
 import icon from "../../components/Login/LoginImages/1716994828673_imgbg.net.png";
 import Signupwrapper from "../../components/Signup/Signupwrapper/Signupwrapper";
-import AppContext from "../../AppContext";
+import { AppContext } from "../../AppContext";
+import DarkModeButton from "../../components/DarkModeButton/DarkModeButton";
 
 export default function Signup({}) {
   const [users, setUsers] = useState([]);
@@ -46,9 +47,7 @@ export default function Signup({}) {
 
   return (
     <div className={`Signup-page ${darkMode ? "dark-mode" : ""}`}>
-      <button className="dark-mode-toggle" onClick={toggleDarkMode}>
-        {darkMode ? "Light Mode" : "Dark Mode"}
-      </button>
+      <DarkModeButton style={"dark-mode-toggle"} />
       <Signupwrapper handleSignup={handleSignup} users={users} />
     </div>
   );

@@ -1,26 +1,50 @@
 import React from 'react'
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
+import { AppContext } from '../../../AppContext';
+import { useNavigate, useLocation } from 'react-router-dom';
 
-export default function UserInfo() {
-    const [show, setShow] = useState(false);
-    const [userData, setUserData] = useState({})
 
-    const handleClose = () => {
-        setShow(false);
+export default function UserInfo({userId}) {
+  const [show, setShow] = useState(false);
+  const [userData, setUserData] = useState({})
+  const { currentUser, setCurrentUser, videoList, setVideoList } = useContext(AppContext)
+  const navigate = useNavigate()
+  const location = useLocation();
+
+  const handleClose = () => {
+      setShow(false);
+  }
+  const handleShow = () => {
+      setShow(true);
+  }
+
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
+  
+  const handleDelete = async() => {
+    const res = await fetch(`/api/users/${userId}`, {
+      method: "DELETE"
+    })
+    if (res.ok) {
+      await sleep(2000)
+      setCurrentUser(null)
+      setShow(false);
+      // const newList = videoList.filter((video) => video.user._id != userId)
+      localStorage.removeItem("token")
+      navigate("/", { replace: true })
+      window.location.reload()
+    } else {
+      alert("Error deleting the user!")
     }
-    const handleShow = () => {
-        setShow(true);
-    }
+  }
   
   useEffect(() => {
     const fetchVideos = async () => {
-        // temp should change with the user id of the user page clicked
-        const userId = "60d5ecb54b24d1a810c4ca1c"
-        const res = await fetch(`http://localhost:3000/api/users/${userId}`)
-        const data = await res.json()
+        const res = await fetch(`/api/users/${userId}`)
+      const data = await res.json()
+      console.log(data.photo)
         setUserData(data)
     }
     fetchVideos()
@@ -29,13 +53,13 @@ export default function UserInfo() {
 
   return (
       <div style={{textAlign:"center"}}>
-          <img src='utilites/png-transparent-user-profile-2018-in-sight-user-conference-expo-business-default-business-angle-service-people-thumbnail.png' style={{width: "100px", height:"100px", borderRadius:"50px"}}/>
-          <h4>Usraname</h4>
+          <img src={userData.photo != null? userData.photo :'utilites/png-transparent-user-profile-2018-in-sight-user-conference-expo-business-default-business-angle-service-people-thumbnail.png'} style={{width: "100px", height:"100px", borderRadius:"50px"}}/>
+          <h4>{userData.username}</h4>
           <div>
           <>
-      <button style={{borderWidth: "0px", color: "blue", backgroundColor: "white"}} onClick={handleShow}>
+      <p style={{borderWidth: "0px", color: "blue", backgroundColor: "transparent"}} onClick={handleShow}>
         Details
-      </button>
+      </p>
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
@@ -55,9 +79,12 @@ export default function UserInfo() {
           Birthdate: {(new Date(userData.birthdate)).getDay()}/{(new Date(userData.birthdate)).getMonth()}/{(new Date(userData.birthdate)).getFullYear()}
         </p>
       </Modal.Body>
-      <Modal.Footer>
-        <Button onClick={handleClose}>Close</Button>
-      </Modal.Footer>
+          <Modal.Footer>
+            {currentUser&& currentUser._id === userId &&
+              <Button variant="danger" onClick={handleDelete}>Delete User</Button>
+            }
+          <Button onClick={handleClose}>Close</Button>
+        </Modal.Footer>
       </Modal>
     </>
           </div>

@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import styles from "./Search.module.css";
 import { Button, InputGroup, Form } from "react-bootstrap";
+import { AppContext } from "../../../AppContext";
 
 export default function Search({ filterVideos, setSearchText }) {
+  const {setVideoList} = useContext(AppContext)
   const [text, setText] = useState("");
 
   const handleInputChange = (e) => {
@@ -10,7 +12,18 @@ export default function Search({ filterVideos, setSearchText }) {
     setText(newSearchText);
   };
 
-  const handleButtonClick = () => {
+  const handleButtonClick = async () => {
+    const res = await fetch("/api/videos/filter", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        search: true,
+        text: text
+      })
+    })
+    setVideoList(await res.json())
     setSearchText(text);
   };
 
