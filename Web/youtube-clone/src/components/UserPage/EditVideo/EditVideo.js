@@ -20,16 +20,16 @@ export default function EditVideo({ setEditButton, videoTitle, videoDescription,
   return (
     <Modal show={true} onHide={handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title>Edit Video</Modal.Title>
+        <Modal.Title style={{color: "black"}}>Edit Video</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form>
           <Form.Group className="mb-3" controlId="videoTitle">
-            <Form.Label>Title</Form.Label>
+            <Form.Label style={{color: "black"}}>Title</Form.Label>
             <Form.Control type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
           </Form.Group>
           <Form.Group className="mb-3" controlId="videoDescription">
-            <Form.Label>Description</Form.Label>
+            <Form.Label style={{color: "black"}}>Description</Form.Label>
             <Form.Control as="textarea" rows={3} value={description} onChange={(e) => setDescription(e.target.value)} />
           </Form.Group>
         </Form>

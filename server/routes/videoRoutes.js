@@ -9,6 +9,7 @@ videoRouter.post("/", videoController.createVideo);
 videoRouter.get("/:pid", videoController.getVideo);
 videoRouter.patch("/:pid", videoController.updateVideo);
 videoRouter.delete("/:pid", videoController.deleteVideo);
+videoRouter.post("/:pid/action", videoController.pushLikeOrDisLike);
 
 videoRouter.use("/:pid/comments", commentRouter);
 
