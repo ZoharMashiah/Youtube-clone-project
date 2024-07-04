@@ -27,6 +27,12 @@ const createUser = async (req, res) => {
   //add doc to db
   try {
     const { username, password, firstName, middleName, lastName, birthdate, photo, videos, settings } = req.body;
+    let picture
+    if (photo == null) {
+      picture = process.env.DEFAULT_PHOTO
+    } else {
+      picture = photo
+    }
     const user = await User.create({
       username,
       password,
@@ -34,7 +40,7 @@ const createUser = async (req, res) => {
       middleName,
       lastName,
       birthdate,
-      photo,
+      photo: picture,
       videos,
       settings,
     });
