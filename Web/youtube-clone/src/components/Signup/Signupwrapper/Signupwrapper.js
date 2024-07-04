@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import "./Signupwrapper.css";
 import { Navigate } from "react-router-dom";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import { AppContext } from "../../../AppContext";
 
 export default function Signupwrapper({ handleSignup }) {
   const [username, setUsername] = useState("");
@@ -13,6 +14,7 @@ export default function Signupwrapper({ handleSignup }) {
   const [photo, setPhoto] = useState(null);
   const [success, setSuccess] = useState(false);
   const [moveLogin, setMoveLogin] = useState(false);
+  const {readFileAsDataURL} = useContext(AppContext)
 
   const handleSubmit = async () => {
     // Password validation
@@ -122,7 +124,17 @@ export default function Signupwrapper({ handleSignup }) {
             <input
               accept=".png, .jpg, .jpeg"
               type="file"
-              onChange={(e) => setPhoto(URL.createObjectURL(e.target.files[0]))}
+              onChange={async (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                  try {
+                    const dataUrl = await readFileAsDataURL(file);
+                    setPhoto(dataUrl);
+                  } catch (error) {
+                    console.error("Error reading file:", error);
+                  }
+                }
+              }}
               className="input-field"
             />
           </div>

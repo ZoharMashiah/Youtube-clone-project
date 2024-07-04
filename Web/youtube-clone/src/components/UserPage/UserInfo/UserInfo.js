@@ -10,7 +10,6 @@ export default function UserInfo({ userId }) {
   const [userData, setUserData] = useState({});
   const { currentUser, setCurrentUser, videoList, setVideoList } = useContext(AppContext);
   const navigate = useNavigate();
-  const location = useLocation();
 
   const handleClose = () => {
     setShow(false);
@@ -54,32 +53,23 @@ export default function UserInfo({ userId }) {
       <h4>{userData.username}</h4>
       <div>
         <>
-          <p style={{ borderWidth: "0px", color: "blue", backgroundColor: "transparent" }} onClick={handleShow}>
+          <p style={{textDecoration: "underline"}} onClick={handleShow}>
             Details
           </p>
 
-          <Modal show={show} onHide={handleClose}>
-            <Modal.Header closeButton>
-              <Modal.Title>Details</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <p style={{ "word-wrap": "break-word" }}>Username: {userData.username}</p>
+          <div show={show} onHide={handleClose}>
               <p style={{ "word-wrap": "break-word" }}>First Name: {userData.firstName}</p>
               <p style={{ "word-wrap": "break-word" }}>Last Name: {userData.lastName}</p>
               <p style={{ "word-wrap": "break-word" }}>
                 Birthdate: {new Date(userData.birthdate).getDay()}/{new Date(userData.birthdate).getMonth()}/
                 {new Date(userData.birthdate).getFullYear()}
               </p>
-            </Modal.Body>
-            <Modal.Footer>
               {currentUser && currentUser._id === userId && (
                 <Button variant="danger" onClick={handleDelete}>
                   Delete User
                 </Button>
               )}
-              <Button onClick={handleClose}>Close</Button>
-            </Modal.Footer>
-          </Modal>
+          </div>
         </>
       </div>
     </div>

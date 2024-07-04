@@ -25,6 +25,15 @@ export const AppContextProvider = ({ children }) => {
     console.log("darkMode: ", newDarkMode, "user setting: ", currentUser?.settings.darkMode);
   };
 
+  const readFileAsDataURL = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (event) => resolve(event.target.result);
+      reader.onerror = (error) => reject(error);
+      reader.readAsDataURL(file);
+    });
+  };
+
   const value = {
     currentUser,
     setCurrentUser,
@@ -34,6 +43,7 @@ export const AppContextProvider = ({ children }) => {
     setVideoList,
     selectedCategory,
     setSelectedCategory,
+    readFileAsDataURL
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

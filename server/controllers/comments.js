@@ -11,7 +11,7 @@ const {
 const postComment = async (req, res) => {
   const { pid } = req.params;
   try {
-    res.status(200).json(await createComment(req.body.userId, req.body.title, pid));
+    res.status(200).json(await createComment(req.body.user, req.body.title, pid));
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -20,7 +20,7 @@ const postComment = async (req, res) => {
 const postCommentInsideComment = async (req, res) => {
   const { pid, commentId } = req.params;
   try {
-    res.status(200).json(await createCommentInsideComment(commentId, req.body.userId, req.body.title, pid));
+    res.status(200).json(await createCommentInsideComment(commentId, req.body.user, req.body.title, pid));
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
