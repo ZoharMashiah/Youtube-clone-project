@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import styles from "./AddVideoPopup.module.css";
 import Dropdown from "react-bootstrap/Dropdown";
-import AppContext from "../../AppContext";
+import {AppContext} from "../../AppContext";
 import axios from "axios";
 
 export default function AddVideoPopup({ onClose }) {

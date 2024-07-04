@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import AppContext from "../../AppContext";
+import {AppContext} from "../../AppContext";
 import styles from "./Feed.module.css";
 import AddVideoPopup from "../../components/AddVideo/AddVideoPopup";
 import axios from "axios";
@@ -40,7 +40,7 @@ export default function Feed() {
 
   const handleClick = (video, videoList) => {
     console.log("clicked a video");
-    navigate(`/users/${video.userId}/videos/${video._id}`);
+    navigate(`/users/${video.user._id}/videos/${video._id}`);
   };
 
   return (
