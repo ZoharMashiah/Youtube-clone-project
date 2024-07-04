@@ -4,8 +4,8 @@ import { Button, InputGroup, Form } from "react-bootstrap";
 import { useNavigate, useLocation } from "react-router-dom";
 import { AppContext } from "../../../AppContext";
 
-export default function Search({ filterVideos, setSearchText }) {
-  const {setVideoList, videoList} = useContext(AppContext)
+export default function Search({ setSearchText }) {
+  const {setVideoList, videoList, filterVideos} = useContext(AppContext)
   const [text, setText] = useState("");
   const navigate = useNavigate()
   const location = useLocation()
@@ -16,18 +16,7 @@ export default function Search({ filterVideos, setSearchText }) {
   };
 
   const handleButtonClick = async () => {
-    const res = await fetch("/api/videos/filter", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        search: true,
-        text: text
-      })
-    })
-    setVideoList(await res.json())
-    setSearchText(text);
+    await filterVideos(true, text)
     navigate("/", { replace: true })
   };
 
