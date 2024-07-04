@@ -104,14 +104,7 @@ export default function Comments({ currentVideo, currentUser, editComment, delet
             else alert("You need to login to write a comment");
           }}
         />
-        <img
-          src={
-            currentUser?.photo == null
-              ? "utilites/png-transparent-user-profile-2018-in-sight-user-conference-expo-business-default-business-angle-service-people-thumbnail.png"
-              : currentUser.photo
-          }
-          className={styles.profileImage}
-        />
+        <img src={userData.photo} alt="User Profile" className={styles.profileImage} />
       </form>
       {comments &&
         comments.map((comment) => {

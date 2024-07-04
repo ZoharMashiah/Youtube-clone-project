@@ -50,14 +50,7 @@ export default function UserInfo({ userId }) {
 
   return (
     <div style={{ textAlign: "center" }}>
-      <img
-        src={
-          userData.photo != null
-            ? userData.photo
-            : "utilites/png-transparent-user-profile-2018-in-sight-user-conference-expo-business-default-business-angle-service-people-thumbnail.png"
-        }
-        style={{ width: "100px", height: "100px", borderRadius: "50px" }}
-      />
+      <img src={userData.photo} alt="User Profile" style={{ width: "100px", height: "100px", borderRadius: "50px" }} />
       <h4>{userData.username}</h4>
       <div>
         <>
