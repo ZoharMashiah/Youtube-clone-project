@@ -68,7 +68,7 @@ export default function VideoDisplay() {
 
   return (
     <div className={styles.VideoDisplay}>
-      {currentVideo === null && loading ? (
+      {currentVideo === null || loading ? (
         <img src="/utilites/loading.svg" className={styles.loading} alt="Loading..." />
       ) : (
         <div className={styles.content}>

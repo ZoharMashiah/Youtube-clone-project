@@ -37,10 +37,9 @@ async function getUserVideoList(req, res) {
 async function getVideo(req, res) {
   const videoId = req.params.pid;
   try {
-    const video = await Video.findById(videoId);
-
-    if (video == null) {
-      console.error("Video is null", videoId, error);
+    const video = await Video.findByIdAndUpdate(videoId, { $inc: { views: 1 } }, { new: true, runValidators: true });
+    if (!video) {
+      console.error("Video was not found", videoId, error);
       throw error;
     }
 

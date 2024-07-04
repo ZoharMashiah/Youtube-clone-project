@@ -10,7 +10,7 @@ import EditVideo from "../UserPage/EditVideo/EditVideo";
 export default function Ellipsis({ video, setTitle, setDescription }) {
   const [isEditing, setIsEditing] = useState(false);
   const navigate = useNavigate();
-  const { currentUser, videoList, setVideoList } = useContext(AppContext);
+  const { currentUser, setVideoList } = useContext(AppContext);
 
   const deleteVideo = async () => {
     try {
