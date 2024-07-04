@@ -17,7 +17,7 @@ export default function App() {
     const getCurrentUser = async () => {
       if (token) {
         try {
-          const response = await fetch(`api/tokens/${token}`);
+          const response = await fetch(`/api/tokens/${token}`);
           const data = await response.json();
           if (data.user) {
             setCurrentUser(data.user);

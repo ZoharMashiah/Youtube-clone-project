@@ -12,8 +12,8 @@ const Comment = new Schema({
   childernId: {
     type: [Schema.Types.ObjectId],
   },
-  userId: {
-    type: Schema.Types.ObjectId,
+  user:{
+    type: Schema.Types.Object,
     required: true,
   },
   title: {

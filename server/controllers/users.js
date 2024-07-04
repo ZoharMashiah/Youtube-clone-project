@@ -27,6 +27,12 @@ const createUser = async (req, res) => {
   //add doc to db
   try {
     const { username, password, firstName, middleName, lastName, birthdate, photo, videos, settings } = req.body;
+    let picture
+    if (photo == null) {
+      picture = process.env.DEFAULT_PHOTO
+    } else {
+      picture = photo
+    }
     const user = await User.create({
       username,
       password,
@@ -34,7 +40,7 @@ const createUser = async (req, res) => {
       middleName,
       lastName,
       birthdate,
-      photo,
+      photo: picture,
       videos,
       settings,
     });
@@ -104,16 +110,17 @@ const createUserForLogin = async (req, res) => {
 };
 
 const getToken = async (req, res) => {
-  const { token } = req.params;
   try {
+    const { token } = req.params;
     const decoded = jwt.verify(token, "SECRET_KEY");
     const user = await User.findById(decoded.userId);
-    console.log(user);
+    
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
     res.status(200).json({ user });
   } catch (error) {
+    console.log(error.message)
     res.status(500).json({ error: error.message });
   }
 };
