@@ -69,12 +69,12 @@
 .ellipsis :global(.dropdown-toggle::after) {
   display: none !important;
 }
-#title {
+/* #title {
   font-size: 15px;
   font-weight: 600;
   margin-bottom: 5px;
   cursor: pointer;
-}
+} */
 #user {
   font-size: 13px;
   font-weight: 500;

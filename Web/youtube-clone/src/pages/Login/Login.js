@@ -12,7 +12,7 @@ export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const { darkMode, toggleDarkMode, currentUser, setCurrentUser } = useContext(AppContext);
+  const { darkMode, currentUser, setCurrentUser } = useContext(AppContext);
   const navigate = useNavigate();
 
   const handleLogin = async () => {
@@ -82,26 +82,3 @@ export default function Login() {
     </div>
   );
 }
-
-// const checkAuth = async () => {
-//   const token = localStorage.getItem("token");
-//   if (token) {
-//     try {
-//       const response = await axios.get("api/verify-token", {
-//         headers: { Authorization: `Bearer ${token}` },
-//       });
-//       if (response.data.user) {
-//         setCurrentUser(response.data.user);
-//       }
-//     } catch (error) {
-//       console.error("Token verification failed:", error);
-//       localStorage.removeItem("token");
-//       setCurrentUser(null);
-//     }
-//   }
-// };
-
-// // Check auth status on component mount
-// useEffect(() => {
-//   checkAuth();
-// }, []);

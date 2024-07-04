@@ -5,7 +5,7 @@ import EditVideo from "../../UserPage/EditVideo/EditVideo";
 import { AppContext } from "../../../AppContext";
 import { useNavigate } from "react-router-dom";
 
-export default function VideoShow({ video, onClick }) {
+export default function VideoShow({ video }) {
   const [editButton, setEditButton] = useState(false);
   const { currentUser } = useContext(AppContext);
   const navigate = useNavigate();
@@ -29,10 +29,6 @@ export default function VideoShow({ video, onClick }) {
 
   const deleteVideo = () => {};
 
-  // const goToVideoPage = () => {
-  //   navigate(`/users/${video.user._id}/videos/${video._id}`);
-  // };
-
   const getToUserPage = () => {
     navigate(`/userpage/${video.user._id}`, { replace: true });
   };
@@ -43,9 +39,7 @@ export default function VideoShow({ video, onClick }) {
         <EditVideo setEditButton={setEditButton} videoTitle={video.title} videoDescription={video.description} />
       )}
       <div className={styles.titleWrapper}>
-        <p id={styles.title} onClick={onClick}>
-          {video.title}
-        </p>
+        <p id={styles.title}>{video.title}</p>
         <div>
           <span id={styles.user} onClick={() => getToUserPage()}>
             {video.user.username}
