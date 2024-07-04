@@ -57,7 +57,6 @@ export default function Login() {
   return (
     <div className={`login-page ${darkMode ? "dark-mode" : ""}`}>
       <DarkModeButton style={"dark-mode-toggle"} />
-      <DarkModeButton style={"dark-mode-toggle"} />
       <Logo />
       <p className="login-title">Login</p>
       <div className="login-wrapper">
