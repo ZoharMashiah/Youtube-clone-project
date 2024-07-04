@@ -35,13 +35,13 @@ export default function EditVideo({setEditButton, videoTitle, videoDescription})
       <div>
           <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Edit Video</Modal.Title>
+          <Modal.Title style={{color: "black"}}>Edit Video</Modal.Title>
         </Modal.Header>
         
         {edit ? <><Modal.Body>
           <Form>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-              <Form.Label>Title</Form.Label>
+              <Form.Label style={{color: "black"}}>Title</Form.Label>
               <Form.Control
                 type="text"
                 value={editedTitle}
@@ -52,7 +52,7 @@ export default function EditVideo({setEditButton, videoTitle, videoDescription})
               className="mb-3"
               controlId="exampleForm.ControlTextarea1"
             >
-              <Form.Label>Description</Form.Label>
+              <Form.Label style={{color: "black"}}>Description</Form.Label>
               <Form.Control as="textarea" rows={3} 
                 value={editedDescription}
                 onChange={(e) => setEditedDescription(e.target.value)}
@@ -71,8 +71,8 @@ export default function EditVideo({setEditButton, videoTitle, videoDescription})
         </>
         : <>
         <Modal.Body>
-        <h4>{title}</h4>
-        <p style={{"word-wrap": "break-word"}}>
+        <h4 style={{color: "black"}}>{title}</h4>
+        <p style={{"word-wrap": "break-word", color: "black"}}>
           {description}
         </p>
       </Modal.Body>

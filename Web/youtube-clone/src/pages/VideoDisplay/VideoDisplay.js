@@ -81,12 +81,12 @@ export default function VideoDisplay() {
                 <Metadata currentVideo={currentVideo} />
               </div>
               <Description currentVideo={currentVideo} />
-              </div>
-              <div className={styles.CommentsWrapper}>
-                <Comments
+            </div>
+            <div className={styles.CommentsWrapper}>
+              <Comments
                   currentVideo={currentVideo}
                 />
-              </div>
+            </div>
           </div>
         </div>
       )}

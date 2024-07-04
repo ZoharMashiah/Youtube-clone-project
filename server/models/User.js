@@ -31,6 +31,8 @@ const userSchema = new Schema({
     type: String,
   },
   videos: [{ type: Schema.Types.ObjectId, ref: "Video" }],
+  likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "user" }],
+  dislikes: [{ type: mongoose.Schema.Types.ObjectId, ref: "user" }],
   settings: {
     type: Object,
     required: true,
