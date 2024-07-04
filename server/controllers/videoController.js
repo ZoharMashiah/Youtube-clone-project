@@ -36,12 +36,8 @@ async function getUserVideoList(req, res) {
 
 async function getVideo(req, res) {
   const videoId = req.params.pid;
-  console.log(req);
   try {
-    console.log("***********id", videoId);
     const video = await Video.findById(videoId);
-
-    console.log("***********vid", video);
 
     if (video == null) {
       console.error("Video is null", videoId, error);
@@ -49,7 +45,6 @@ async function getVideo(req, res) {
     }
 
     console.log("Fetched video successfully");
-    console.log("***********VIDEO", video);
     res.status(200).json(video);
   } catch (error) {
     console.error("Error fetching video:", videoId, error);
@@ -81,7 +76,9 @@ async function updateVideo(req, res) {
 async function createVideo(req, res) {
   const video = req.body;
   try {
-    const videoData = await Video.createVideo(video);
+    const newVideo = await Video.createVideo(video);
+    const videoData = await Video.findDataById(newVideo._id);
+
     console.log("Video upload processed successfully");
     res.status(201).json(videoData);
   } catch (error) {

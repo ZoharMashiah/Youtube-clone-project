@@ -76,6 +76,24 @@ videoSchema.statics.deleteVideo = async function (videoId, userId) {
   }
 };
 
+videoSchema.statics.findDataById = async function (videoId) {
+  try {
+    const video = await this.findById(videoId, {
+      comments: 0,
+      video: 0,
+    });
+
+    if (!video) {
+      throw new Error("Video not found");
+    }
+
+    return video;
+  } catch (error) {
+    console.log("Error fetching video:", error.message);
+    throw error;
+  }
+};
+
 videoSchema.statics.createVideo = async function (videoData) {
   const { user_id, title, description, category, video, icon } = videoData;
 
