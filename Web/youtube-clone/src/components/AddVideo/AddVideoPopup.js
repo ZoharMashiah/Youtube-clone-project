@@ -1,11 +1,11 @@
 import React, { useState, useContext } from "react";
 import styles from "./AddVideoPopup.module.css";
 import Dropdown from "react-bootstrap/Dropdown";
-import {AppContext} from "../../AppContext";
+import { AppContext } from "../../AppContext";
 import axios from "axios";
 
 export default function AddVideoPopup({ onClose }) {
-  const { currentUser } = useContext(AppContext);
+  const { currentUser, videoList, setVideoList } = useContext(AppContext);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [image, setImage] = useState(null);
@@ -43,10 +43,8 @@ export default function AddVideoPopup({ onClose }) {
       const address = `/api/users/${currentUser._id}/videos`;
       console.log("Sending request to:", address);
 
-      console.log("***newVideo: ", newVideo);
       const res = await axios.post(address, newVideo);
-
-      console.log(res.data);
+      console.log("************", res.data);
       alert("Upload is successful!");
     } catch (error) {
       console.error("Error adding video:", error);
@@ -138,9 +136,7 @@ export default function AddVideoPopup({ onClose }) {
                 const file = e.target.files[0];
                 if (file) {
                   try {
-                    console.log("file: ", file);
                     const dataUrl = await readFileAsDataURL(file);
-                    console.log("dataurl: ", dataUrl);
                     setVideo(dataUrl);
                   } catch (error) {
                     console.error("Error reading file:", error);

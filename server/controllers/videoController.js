@@ -21,7 +21,7 @@ async function getFeed(req, res) {
 }
 
 async function getUserVideoList(req, res) {
-  const userId = req.params.userId;
+  const userId = req.params.id;
   try {
     const userVideoList = await VideoService.getUserVideoList(userId);
     console.log("Fetched creator video list successfully");
@@ -76,7 +76,9 @@ async function updateVideo(req, res) {
 async function createVideo(req, res) {
   const video = req.body;
   try {
-    const videoData = await Video.createVideo(video);
+    const newVideo = await Video.createVideo(video);
+    const videoData = await Video.findDataById(newVideo._id);
+
     console.log("Video upload processed successfully");
     res.status(201).json(videoData);
   } catch (error) {
@@ -89,7 +91,7 @@ async function createVideo(req, res) {
 
 async function deleteVideo(req, res) {
   const videoId = req.params.pid;
-  const userId = req.params.userId;
+  const userId = req.params.id;
   const session = await mongoose.startSession();
   session.startTransaction();
 
@@ -123,29 +125,28 @@ async function deleteAllVideos(userId) {
       return res.status(400).json({ message: `User with id ${userId} not found` });
     }
     user.videos.map(async (video) => {
-      console.log(video._id)
+      console.log(video._id);
       await Video.deleteVideo(video._id, userId);
-    })
+    });
 
     console.log("Deleted video successfully");
     return true;
   } catch (error) {
     console.error("Error deleting video:", error);
-    return false
+    return false;
   }
 }
 
 async function filterVideos(req, res) {
   const videoId = req.params.pid;
-  const userId = req.params.userId;
-  const {search, text} = req.body
+  const { search, text } = req.body;
 
   try {
     let filtered;
     if (search) {
-      filtered = (await Video.find({})).filter((video) => video.title.toLowerCase().includes(text.toLowerCase()))
+      filtered = (await Video.find({})).filter((video) => video.title.toLowerCase().includes(text.toLowerCase()));
     } else {
-      filtered = await Video.find({category: text})
+      filtered = await Video.find({ category: text });
     }
     res.status(200).json(filtered);
   } catch (error) {
@@ -156,4 +157,13 @@ async function filterVideos(req, res) {
   }
 }
 
-module.exports = { getFeed, getUserVideoList, getVideo, updateVideo, createVideo, deleteVideo, filterVideos, deleteAllVideos };
+module.exports = {
+  getFeed,
+  getUserVideoList,
+  getVideo,
+  updateVideo,
+  createVideo,
+  deleteVideo,
+  filterVideos,
+  deleteAllVideos,
+};

@@ -3,10 +3,12 @@ import styles from "./Comment.module.css";
 import { useParams } from "react-router-dom";
 import { AppContext } from "../../../AppContext";
 import { useNavigate } from "react-router-dom";
+import { AppContext } from "../../../AppContext";
+import { useNavigate } from "react-router-dom";
 
 export default function Comment({ _id, userId, title, user, date, icon, triger, setTriger }) {
   const { currentUser, setCurrentUser } = useContext(AppContext);
-  const { creatorId, videoId } = useParams();
+  const { creatorId: userId, videoId } = useParams();
   const [edit, setedit] = useState(false);
   const [editedTitle, seteditedTitle] = useState(title);
   const [reply, setreply] = useState(false);
@@ -22,11 +24,11 @@ export default function Comment({ _id, userId, title, user, date, icon, triger, 
           : (time / 1140).toFixed(0) + " days ago"
         : (time / 60).toFixed(0) + " hours ago"
       : time + " minuets ago";
-  
-  const navigate = useNavigate()
+
+  const navigate = useNavigate();
 
   const deleteComment = async () => {
-    const response = await fetch(`api/users/${creatorId}/video/${videoId}/comment/${_id}`, {
+    const response = await fetch(`/api/users/${userId}/video/${videoId}/comment/${_id}`, {
       method: "DELETE",
     });
     const json = await response.json();
@@ -42,7 +44,7 @@ export default function Comment({ _id, userId, title, user, date, icon, triger, 
       userId: currentUser._id,
     };
 
-    const response = await fetch(`api/users/${creatorId}/video/${videoId}/comment/${_id}`, {
+    const response = await fetch(`api/users/${userId}/video/${videoId}/comment/${_id}`, {
       method: "POST",
       body: JSON.stringify(comment),
       headers: {
@@ -65,7 +67,7 @@ export default function Comment({ _id, userId, title, user, date, icon, triger, 
   const editComment = async () => {
     const comment = { title: editedTitle };
 
-    const response = await fetch(`api/users/${creatorId}/video/${videoId}/comment/${_id}`, {
+    const response = await fetch(`api/users/${userId}/video/${videoId}/comment/${_id}`, {
       method: "PATCH",
       body: JSON.stringify(comment),
       headers: {
@@ -81,15 +83,17 @@ export default function Comment({ _id, userId, title, user, date, icon, triger, 
   };
 
   const getToUserPage = () => {
-    navigate(`/userpage/${currentUser._id}`, {replace: true});
-  }
+    navigate(`/userpage/${currentUser._id}`, { replace: true });
+  };
 
   return (
     <div className={styles.commentWrapper}>
-      <img src={icon} className={styles.profileImage} onClick={getToUserPage}/>
+      <img src={icon} className={styles.profileImage} onClick={getToUserPage} />
       <div>
         <div className={styles.user}>
-          <h6 className={styles.user} onClick={getToUserPage}>{user}</h6>
+          <h6 className={styles.user} onClick={getToUserPage}>
+            {user}
+          </h6>
         </div>
         {currentUser && currentUser._id === userId ? (
           !edit ? (

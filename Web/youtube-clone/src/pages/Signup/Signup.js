@@ -1,15 +1,23 @@
 import React, { useState, useEffect, useContext } from "react";
 import "./Signup.css";
 import axios from "axios";
-import icon from "../../components/Login/LoginImages/1716994828673_imgbg.net.png";
 import Signupwrapper from "../../components/Signup/Signupwrapper/Signupwrapper";
 import { AppContext } from "../../AppContext";
+import { useNavigate } from "react-router-dom";
+
 import DarkModeButton from "../../components/DarkModeButton/DarkModeButton";
 
 export default function Signup({}) {
   const [users, setUsers] = useState([]);
+  const { currentUser } = useContext(AppContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
+    if (currentUser) {
+      console.log("Logged in as: ", currentUser);
+      navigate("/");
+    }
+
     const fetchUsers = async () => {
       try {
         const response = await axios.get("/api/users");
@@ -19,9 +27,9 @@ export default function Signup({}) {
       }
     };
     fetchUsers();
-  }, []);
+  }, [currentUser, navigate]);
 
-  const { darkMode, toggleDarkMode } = useContext(AppContext);
+  const { darkMode } = useContext(AppContext);
 
   const handleSignup = async (newUser) => {
     try {
@@ -34,11 +42,9 @@ export default function Signup({}) {
       });
       if (res.ok) {
         return true;
-        // Update state to login page
       } else {
         return false;
       }
-      // Update state to login page
     } catch (error) {
       console.error("Signup error:", error);
       alert("Signup failed", error);
@@ -48,7 +54,7 @@ export default function Signup({}) {
   return (
     <div className={`Signup-page ${darkMode ? "dark-mode" : ""}`}>
       <DarkModeButton style={"dark-mode-toggle"} />
-      <Signupwrapper handleSignup={handleSignup} users={users} />
+      <Signupwrapper handleSignup={handleSignup} />
     </div>
   );
 }

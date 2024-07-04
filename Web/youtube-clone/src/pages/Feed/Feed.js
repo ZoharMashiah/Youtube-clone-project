@@ -1,13 +1,11 @@
 import React, { useState, useEffect, useContext } from "react";
-import {AppContext} from "../../AppContext";
+import { AppContext } from "../../AppContext";
 import styles from "./Feed.module.css";
 import AddVideoPopup from "../../components/AddVideo/AddVideoPopup";
 import axios from "axios";
 import Categories from "../../components/Feed/Categories/Categories";
-import VideoShow from "../../components/Feed/VideoShow/VideoShow";
+import VerticalVideoCard from "../../components/Feed/VideoShow/VerticalVideoCard";
 import LeftMenu from "../../components/Feed/LeftMenu/LeftMenu";
-
-import { useNavigate } from "react-router-dom";
 import { useOutletContext } from "react-router-dom";
 
 export default function Feed() {
@@ -18,10 +16,7 @@ export default function Feed() {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [filterVideosCategory, setfilterVideosCategory] = useState([]);
 
-  const navigate = useNavigate();
-
   useEffect(() => {
-    console.log("current user: ", currentUser);
     if (trigger === false) {
       fetchFeed();
     }
@@ -36,11 +31,6 @@ export default function Feed() {
     } catch (error) {
       console.error("Error fetching videos:", error);
     }
-  };
-
-  const handleClick = (video, videoList) => {
-    console.log("clicked a video");
-    navigate(`/users/${video.user._id}/videos/${video._id}`);
   };
 
   return (
@@ -59,7 +49,7 @@ export default function Feed() {
         <div>
           <div className={styles.videoGrid}>
             {videoList.map((video) => (
-              <VideoShow key={video._id} {...video} onClick={() => handleClick(video)} />
+              <VerticalVideoCard key={video._id} video={video} />
             ))}
           </div>
         </div>

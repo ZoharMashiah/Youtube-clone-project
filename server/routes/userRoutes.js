@@ -6,10 +6,10 @@ const userRouter = express.Router({ mergeParams: true });
 
 userRouter.get("/", getAllUsers);
 userRouter.post("/signup", createUser);
-userRouter.get("/:userId", getUser);
-userRouter.patch("/:userId", updateUser);
-userRouter.delete("/:userId", deleteUser);
+userRouter.get("/:id", getUser);
+userRouter.patch("/:id", updateUser);
+userRouter.delete("/:id", deleteUser);
 
-userRouter.use("/:userId/videos", videoRouter);
+userRouter.use("/:id/videos", videoRouter);
 
 module.exports = userRouter;

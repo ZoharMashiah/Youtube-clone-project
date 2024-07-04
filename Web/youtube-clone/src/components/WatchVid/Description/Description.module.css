@@ -1,22 +1,16 @@
-.descriptionWrapper{
-    width: 94%;
-    height: 20%;
-    border-radius: 20px;
-    background-color: #f2f2f2;
-    box-shadow: 1px 1px 1px 1px rgb(67, 67, 67);
+.descriptionWrapper {
+  padding: 0px 10px;
+  border-radius: 10px;
+  background-color: #f2f2f2;
+  box-shadow: 1px 1px 1px 1px rgb(67, 67, 67);
 }
-.views{
-    margin-left: 3%;
-    margin-top: 2%;
-    margin-bottom: 0.5%;
-    color: black;
-    font-size: small;
-    font-weight: 700;
+.views {
+  color: black;
+  font-size: small;
+  font-weight: 700;
 }
-.description{
-    margin-left: 3%;
-    color: black;
-    font-size: small;
-    font-weight: 700;
-    top:-100px;
+
+.description {
+  color: black;
+  font-size: small;
 }

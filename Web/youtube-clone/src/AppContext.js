@@ -1,30 +1,28 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 
 const AppContext = React.createContext(null);
 
 export const AppContextProvider = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState(null)
-  const [darkMode, setDarkMode] = useState(false)
+  const [currentUser, setCurrentUser] = useState(null);
+  const [darkMode, setDarkMode] = useState(false);
   const [videoList, setVideoList] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("All");
 
-  const toggleDarkMode = async (indicator) => {
+  const toggleDarkMode = () => {
     const newDarkMode = !darkMode;
-    if (indicator && currentUser != null) {
-      const res = await fetch(`/api/users/${currentUser._id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({settings: {darkMode: !darkMode}})
-      })
-    }
-    setDarkMode(!darkMode);
+    setDarkMode(newDarkMode);
     document.body.classList.toggle("dark-mode", newDarkMode);
-  };
-  const setDark = (dark) => {
-    setDarkMode(dark);
-    document.body.classList.toggle("dark-mode", dark);
+
+    if (currentUser) {
+      fetch(`/api/users/${currentUser._id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ settings: { darkMode: newDarkMode } }),
+      }).catch((error) => console.error("Error updating user settings:", error));
+      currentUser.settings.darkMode = newDarkMode;
+    }
+
+    console.log("darkMode: ", newDarkMode, "user setting: ", currentUser?.settings.darkMode);
   };
 
   const value = {
@@ -34,14 +32,11 @@ export const AppContextProvider = ({ children }) => {
     toggleDarkMode,
     videoList,
     setVideoList,
-    setDark,
     selectedCategory,
-    setSelectedCategory
-  }
+    setSelectedCategory,
+  };
 
-  return (<AppContext.Provider value={value}>
-    {children}
-  </AppContext.Provider>)
-}
+  return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
+};
 
-export {AppContext};
+export { AppContext };

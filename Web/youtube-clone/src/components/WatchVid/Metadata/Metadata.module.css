@@ -34,6 +34,8 @@
 .videoDetails {
   display: flex;
   flex-direction: row;
+  margin-left: 20px;
+
   width: 100%;
   justify-content: space-between;
 }
@@ -43,14 +45,6 @@
   display: flex;
   height: 100%;
   flex-direction: row;
-  min-width: 200px;
-}
-
-.titleWrapper {
-  margin-left: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
 }
 
 .ellipsis :global(.dropdown-toggle) {
@@ -69,12 +63,12 @@
 .ellipsis :global(.dropdown-toggle::after) {
   display: none !important;
 }
-/* #title {
+#title {
   font-size: 15px;
   font-weight: 600;
   margin-bottom: 5px;
-  cursor: pointer;
-} */
+  /* cursor: pointer; */
+}
 #user {
   font-size: 13px;
   font-weight: 500;

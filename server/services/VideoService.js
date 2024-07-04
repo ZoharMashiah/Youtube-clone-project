@@ -21,22 +21,6 @@ class VideoService {
     }
   }
 
-  // static #addUserToVideos(videoList) {
-  //   return Promise.all(
-  //     videoList.map(async (video) => {
-  //       console.log("***********", video);
-  //       const user = await User.findById(video.user_id);
-  //       if (!user) {
-  //         throw new Error(`User not found for video with id ${video._id}`);
-  //       }
-  //       return {
-  //         ...video.toObject(),
-  //         user: user.toObject(),
-  //       };
-  //     })
-  //   );
-  // }
-
   static async getUnchosenVideos(numberOfVideos, notIn) {
     try {
       const videos = await Video.aggregate([
@@ -64,7 +48,7 @@ class VideoService {
       _id: user._id,
       username: user.username,
       photo: user.photo,
-    }
+    };
     const userVideoList = await Video.find({ user: cutUser }).sort({ title: 1 });
     return userVideoList;
   }

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Login.css";
 import Logo from "../../components/Feed/Logo/Logo";
-import {AppContext} from "../../AppContext";
+import { AppContext } from "../../AppContext";
 import Userfield from "../../components/Login/Userfield/Userfield";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import DarkModeButton from "../../components/DarkModeButton/DarkModeButton";
@@ -12,7 +12,7 @@ export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const { darkMode, toggleDarkMode, currentUser, setCurrentUser } = useContext(AppContext);
+  const { darkMode, currentUser, setCurrentUser } = useContext(AppContext);
   const navigate = useNavigate();
 
   const handleLogin = async () => {
@@ -21,7 +21,6 @@ export default function Login() {
       if (response.status === 200) {
         const { user, token } = response.data;
         localStorage.setItem("token", token);
-        console.log("Logged in as: ", user);
         return user;
       } else {
         alert("Login failed: could not get user");
@@ -82,26 +81,3 @@ export default function Login() {
     </div>
   );
 }
-
-// const checkAuth = async () => {
-//   const token = localStorage.getItem("token");
-//   if (token) {
-//     try {
-//       const response = await axios.get("api/verify-token", {
-//         headers: { Authorization: `Bearer ${token}` },
-//       });
-//       if (response.data.user) {
-//         setCurrentUser(response.data.user);
-//       }
-//     } catch (error) {
-//       console.error("Token verification failed:", error);
-//       localStorage.removeItem("token");
-//       setCurrentUser(null);
-//     }
-//   }
-// };
-
-// // Check auth status on component mount
-// useEffect(() => {
-//   checkAuth();
-// }, []);
