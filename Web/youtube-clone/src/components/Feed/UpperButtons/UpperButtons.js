@@ -61,6 +61,7 @@ const ButtonsWrapper = ({ setTrigger }) => {
   return (
     <div className={styles.buttonsWrapper}>
       <DarkModeButton style={styles.darkModeButton} />
+      <DarkModeButton style={styles.darkModeButton} />
       {currentUser === null ? (
         ""
       ) : (

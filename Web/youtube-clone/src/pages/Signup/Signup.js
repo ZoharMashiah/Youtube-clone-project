@@ -60,6 +60,7 @@ export default function Signup({}) {
   return (
     <div className={`Signup-page ${darkMode ? "dark-mode" : ""}`}>
       <DarkModeButton style={"dark-mode-toggle"} />
+      <DarkModeButton style={"dark-mode-toggle"} />
       <Signupwrapper handleSignup={handleSignup} users={users} />
     </div>
   );

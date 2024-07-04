@@ -3,6 +3,8 @@ import styles from "./Comment.module.css";
 import { useParams } from "react-router-dom";
 import { AppContext } from "../../../AppContext";
 import { useNavigate } from "react-router-dom";
+import { AppContext } from "../../../AppContext";
+import { useNavigate } from "react-router-dom";
 
 export default function Comment({ _id, userId, title, user, date, icon, triger, setTriger }) {
   const { currentUser, setCurrentUser } = useContext(AppContext);

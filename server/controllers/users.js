@@ -73,7 +73,7 @@ const deleteUser = async (req, res) => {
   }
   const videosDeleted = await videoController.deleteAllVideos(userId);
   if (!videosDeleted) {
-    return res.status(400).json({ message: `Erroe delte vides for user with id ${userId}` });
+    return res.status(400).json({ message: `Error deleting videos for user with id ${userId}` });
   }
   const user = await User.findByIdAndDelete({ _id: userId });
   if (!user) {
@@ -109,6 +109,7 @@ const getToken = async (req, res) => {
   try {
     const decoded = jwt.verify(token, "SECRET_KEY");
     const user = await User.findById(decoded.userId);
+    console.log(user);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }

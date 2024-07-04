@@ -7,6 +7,7 @@ import { AppContext } from "../../AppContext";
 import Userfield from "../../components/Login/Userfield/Userfield";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import DarkModeButton from "../../components/DarkModeButton/DarkModeButton";
+import DarkModeButton from "../../components/DarkModeButton/DarkModeButton";
 
 export default function Login() {
   const [username, setUsername] = useState("");
@@ -57,6 +58,7 @@ export default function Login() {
 
   return (
     <div className={`login-page ${darkMode ? "dark-mode" : ""}`}>
+      <DarkModeButton style={"dark-mode-toggle"} />
       <DarkModeButton style={"dark-mode-toggle"} />
       <Logo />
       <p className="login-title">Login</p>
