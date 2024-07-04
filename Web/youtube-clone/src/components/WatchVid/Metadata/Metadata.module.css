@@ -7,6 +7,12 @@
   padding: 0px 5px;
 }
 
+.container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
 .sideListVideoCard {
   display: flex;
   height: fit-content;
@@ -47,22 +53,6 @@
   flex-direction: row;
 }
 
-.ellipsis :global(.dropdown-toggle) {
-  outline: none !important;
-  box-shadow: none !important;
-  border: none !important;
-}
-
-.ellipsis :global(.dropdown-toggle:focus),
-.ellipsis :global(.dropdown-toggle:active) {
-  outline: none !important;
-  box-shadow: none !important;
-  border: none !important;
-}
-
-.ellipsis :global(.dropdown-toggle::after) {
-  display: none !important;
-}
 #title {
   font-size: 15px;
   font-weight: 600;

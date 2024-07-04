@@ -102,7 +102,6 @@ const createUserForLogin = async (req, res) => {
       return res.status(401).json({ message: "Invalid password" });
     }
 
-    console.log("found user: ", user.username);
     const token = jwt.sign({ userId: user._id }, "SECRET_KEY", { expiresIn: "5h" });
     res.status(200).json({ user, token });
   } catch (error) {

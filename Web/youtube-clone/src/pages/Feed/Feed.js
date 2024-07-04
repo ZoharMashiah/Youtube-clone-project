@@ -10,24 +10,24 @@ import { useOutletContext } from "react-router-dom";
 
 export default function Feed() {
   const { trigger, setTrigger } = useOutletContext();
-  const { currentUser, videoList, setVideoList, isFilltered, fillteredVideoList, stopFillter } = useContext(AppContext);
+  const { videoList, setVideoList, isFilltered, fillteredVideoList } = useContext(AppContext);
 
   useEffect(() => {
+    const fetchFeed = async () => {
+      try {
+        const res = await axios.get("/api/videos");
+        const videoList = res.data;
+        console.log("video list: ", videoList);
+        setVideoList(videoList);
+      } catch (error) {
+        console.error("Error fetching videos:", error);
+      }
+    };
+
     if (trigger === false) {
       fetchFeed();
     }
   }, [trigger]);
-
-  const fetchFeed = async () => {
-    try {
-      const res = await axios.get("/api/videos");
-      const videoList = res.data;
-      console.log("video list: ", videoList);
-      setVideoList(videoList);
-    } catch (error) {
-      console.error("Error fetching videos:", error);
-    }
-  };
 
   return (
     <div className={styles.Home}>
@@ -36,19 +36,13 @@ export default function Feed() {
       </div>
       <div className={styles.FeedContainer}>
         <div className={styles.categories}>
-          <Categories/>
+          <Categories />
         </div>
         <div>
           <div className={styles.videoGrid}>
-            {!isFilltered? 
-              videoList.map((video) => (
-              <VerticalVideoCard key={video._id} video={video} />
-            ))
-              :
-            fillteredVideoList.map((video) => (
-              <VerticalVideoCard key={video._id} video={video} />
-              ))
-            }
+            {!isFilltered
+              ? videoList.map((video) => <VerticalVideoCard key={video._id} video={video} />)
+              : fillteredVideoList.map((video) => <VerticalVideoCard key={video._id} video={video} />)}
           </div>
         </div>
       </div>

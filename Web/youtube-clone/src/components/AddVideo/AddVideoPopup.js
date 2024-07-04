@@ -5,7 +5,7 @@ import { AppContext } from "../../AppContext";
 import axios from "axios";
 
 export default function AddVideoPopup({ onClose }) {
-  const { currentUser, videoList, setVideoList } = useContext(AppContext);
+  const { currentUser } = useContext(AppContext);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [image, setImage] = useState(null);
@@ -44,7 +44,6 @@ export default function AddVideoPopup({ onClose }) {
       console.log("Sending request to:", address);
 
       const res = await axios.post(address, newVideo);
-      console.log("************", res.data);
       alert("Upload is successful!");
     } catch (error) {
       console.error("Error adding video:", error);

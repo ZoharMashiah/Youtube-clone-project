@@ -8,7 +8,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 export default function UserInfo({ userId }) {
   const [show, setShow] = useState(false);
   const [userData, setUserData] = useState({});
-  const { currentUser, setCurrentUser, videoList, setVideoList } = useContext(AppContext);
+  const { currentUser, setCurrentUser } = useContext(AppContext);
   const navigate = useNavigate();
 
   const handleClose = () => {
