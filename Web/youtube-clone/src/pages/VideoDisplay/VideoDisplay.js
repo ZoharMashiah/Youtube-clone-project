@@ -84,7 +84,7 @@ export default function VideoDisplay() {
                   roundedCircle
                   onClick={getToUserPage}
                 />
-                <Metadata currentVideo={currentVideo} />
+                <Metadata currentVideo={currentVideo} setCurrentVideo={setCurrentVideo} />
               </div>
               <Description currentVideo={currentVideo} />
             </div>

@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import styles from "./Metadata.module.css";
 import { useNavigate } from "react-router-dom";
 import Buttons from "../Buttons/Buttons";
-import Ellipsis from "../../Ellipsis/Ellipsis";
+import VideoMenu from "../../VideoMenu/VideoMenu";
 
-export default function Metadata({ currentVideo }) {
+export default function Metadata({ currentVideo, setCurrentVideo }) {
   const navigate = useNavigate();
 
   const getToUserPage = () => {
@@ -20,7 +20,7 @@ export default function Metadata({ currentVideo }) {
         </span>
         <Buttons currentVideo={currentVideo} />
       </div>
-      <Ellipsis video={currentVideo} />
+      <VideoMenu currentVideo={currentVideo} setCurrentVideo={setCurrentVideo} />
     </div>
   );
 }

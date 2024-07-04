@@ -2,20 +2,20 @@ import React, { useState, useContext } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { AppContext } from "../../AppContext";
-import styles from "./Ellipsis.module.css";
+import styles from "./VideoMenu.module.css";
 import Dropdown from "react-bootstrap/Dropdown";
 
 import EditVideo from "../UserPage/EditVideo/EditVideo";
 
-export default function Ellipsis({ video, setTitle, setDescription }) {
+export default function VideoMenu({ currentVideo, setCurrentVideo }) {
   const [isEditing, setIsEditing] = useState(false);
   const navigate = useNavigate();
-  const { currentUser, videoList, setVideoList } = useContext(AppContext);
+  const { currentUser, setVideoList } = useContext(AppContext);
 
   const deleteVideo = async () => {
     try {
-      console.log("Deleting video:", video._id);
-      const address = `/api/users/${video.user._id}/videos/${video._id}`;
+      console.log("Deleting video:", currentVideo._id);
+      const address = `/api/users/${currentVideo.user._id}/videos/${currentVideo._id}`;
       const response = await axios.delete(address);
       if (response.status === 200) {
         console.log("Video deleted successfully");
@@ -24,7 +24,7 @@ export default function Ellipsis({ video, setTitle, setDescription }) {
         if (isVideoDisplayPath) {
           navigate("/", { replace: true });
         } else {
-          setVideoList((prevList) => prevList.filter((v) => v._id !== video._id));
+          setVideoList((prevList) => prevList.filter((v) => v._id !== currentVideo._id));
         }
       } else {
         console.warn("Unexpected response status:", response.status);
@@ -40,13 +40,21 @@ export default function Ellipsis({ video, setTitle, setDescription }) {
     try {
       console.log("new title: ", newTitle);
       console.log("newDescription: ", newDescription);
-      const response = await axios.patch(`/api/users/${video.user._id}/videos/${video._id}`, {
+      const response = await axios.patch(`/api/users/${currentVideo.user._id}/videos/${currentVideo._id}`, {
         title: newTitle,
         description: newDescription,
       });
 
-      setTitle(newTitle);
-      setDescription(newDescription);
+      setVideoList((prevList) =>
+        prevList.map((v) => (v._id === currentVideo._id ? { ...v, title: newTitle, description: newDescription } : v))
+      );
+
+      setCurrentVideo((prevVideo) => ({
+        ...prevVideo,
+        title: newTitle,
+        description: newDescription,
+      }));
+
       console.log(response.status);
 
       if (response.status === 200) {
@@ -59,13 +67,13 @@ export default function Ellipsis({ video, setTitle, setDescription }) {
 
   return (
     <div>
-      {currentUser && currentUser._id === video.user._id && (
+      {currentUser && currentUser._id === currentVideo.user._id && (
         <Dropdown className={styles.ellipsis}>
           {isEditing && (
             <EditVideo
               setEditButton={setIsEditing}
-              videoTitle={video.title}
-              videoDescription={video.description}
+              videoTitle={currentVideo.title}
+              videoDescription={currentVideo.description}
               onSave={handleSaveVideo}
             />
           )}

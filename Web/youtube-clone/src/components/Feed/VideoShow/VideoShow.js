@@ -1,11 +1,8 @@
 import React, { useState, useContext } from "react";
 import styles from "./VideoShow.module.css";
-import Dropdown from "react-bootstrap/Dropdown";
 import EditVideo from "../../UserPage/EditVideo/EditVideo";
-import Ellipsis from "../../Ellipsis/Ellipsis";
-import { AppContext } from "../../../AppContext";
+import VideoMenu from "../../VideoMenu/VideoMenu";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 
 export default function VideoShow({ video }) {
   const [editButton, setEditButton] = useState(false);
@@ -50,7 +47,7 @@ export default function VideoShow({ video }) {
           </span>
         </div>
       </div>
-      <Ellipsis video={video} setTitle={setTitle} setDescription={setDescription} />
+      <VideoMenu currentVideo={video} setTitle={setTitle} setDescription={setDescription} />
     </div>
   );
 }
