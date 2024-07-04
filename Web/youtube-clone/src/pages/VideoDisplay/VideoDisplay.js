@@ -7,7 +7,7 @@ import HorizontalVideoCard from "../../components/Feed/VideoShow/HorizontalVideo
 import Description from "../../components/WatchVid/Description/Description";
 import Metadata from "../../components/WatchVid/Metadata/Metadata";
 import { Image } from "react-bootstrap";
-import Comments from "../../components/WatchVid/Comments/Comments"
+import Comments from "../../components/WatchVid/Comments/Comments";
 
 export default function VideoDisplay() {
   const { userId, videoId } = useParams();
@@ -75,25 +75,21 @@ export default function VideoDisplay() {
         <div className={styles.content}>
           <div className={styles.videoPlayerContainer}>
             <video className={styles.videoWrapper} src={currentVideo.video} controls></video>
+            <div className={styles.metaData}>
+              <Image
+                src={currentVideo.user.photo}
+                alt="User Profile"
+                width="40px"
+                height="40px"
+                roundedCircle
+                onClick={getToUserPage}
+              />
+              <Metadata currentVideo={currentVideo} setCurrentVideo={setCurrentVideo} />
+            </div>
             <div className={styles.decriptionWrapper}>
-              <div className={styles.metaData}>
-                <Image
-                  src={currentVideo.user.photo}
-                  alt="User Profile"
-                  width="40px"
-                  height="40px"
-                  roundedCircle
-                  onClick={getToUserPage}
-                />
-                <Metadata currentVideo={currentVideo} setCurrentVideo={setCurrentVideo} />
-              </div>
               <Description currentVideo={currentVideo} />
-              </div>
-              <div className={styles.CommentsWrapper}>
-                <Comments
-                  currentVideo={currentVideo}
-                />
-              </div>
+            </div>
+            <Comments currentVideo={currentVideo} />
           </div>
         </div>
       )}

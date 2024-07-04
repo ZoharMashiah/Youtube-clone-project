@@ -13,11 +13,13 @@ export default function Metadata({ currentVideo, setCurrentVideo }) {
 
   return (
     <div className={styles.videoDetails}>
-      <div className={styles.titleWrapper}>
-        <p id={styles.title}>{currentVideo.title}</p>
-        <span id={styles.user} onClick={() => getToUserPage()}>
-          {currentVideo.user.username}
-        </span>
+      <div className={styles.container}>
+        <div className={styles.titleWrapper}>
+          <p id={styles.title}>{currentVideo.title}</p>
+          <span id={styles.user} onClick={() => getToUserPage()}>
+            {currentVideo.user.username}
+          </span>
+        </div>
         <Buttons currentVideo={currentVideo} />
       </div>
       <VideoMenu currentVideo={currentVideo} setCurrentVideo={setCurrentVideo} />

@@ -5,19 +5,12 @@ import { useParams } from "react-router-dom";
 import { AppContext } from "../../../AppContext";
 
 export default function Comments({ currentVideo }) {
-  const { currentUser, setCurrentUser } = useContext(AppContext);
+  const { currentUser } = useContext(AppContext);
   const { userId, videoId } = useParams();
   const [title, setTitle] = useState("");
   const [comments, setComments] = useState([]);
   const [triger, setTriger] = useState(false);
 
-  // const getMaxId = () => {
-  //   let id = 0;
-  //   currentVideo.comments.map((com) => {
-  //     if (com.id > id) id = com.id;
-  //   });
-  //   return id;
-  // };
   const addCommentToVideo = async (e) => {
     e.preventDefault();
     const comment = {
@@ -25,7 +18,7 @@ export default function Comments({ currentVideo }) {
       user: {
         _id: currentUser._id,
         username: currentUser.username,
-        photo: currentUser.photo
+        photo: currentUser.photo,
       },
     };
     const response = await fetch(`/api/users/${userId}/videos/${videoId}/comments/`, {
@@ -52,12 +45,7 @@ export default function Comments({ currentVideo }) {
       if (comment.parentId === id) {
         return (
           <div style={{ position: "relative", left: "3vw" }} className={styles.commentWrapper}>
-            <Comment
-              {...comment}
-              currentUser={currentUser}
-              triger={triger}
-              setTriger={setTriger}
-            />
+            <Comment {...comment} currentUser={currentUser} triger={triger} setTriger={setTriger} />
             {orgenizeComments(comment._id)}
           </div>
         );
@@ -108,12 +96,7 @@ export default function Comments({ currentVideo }) {
           if (comment.parentId == undefined) {
             return (
               <div>
-                <Comment
-                  {...comment}
-                  currentUser={currentUser}
-                  triger={triger}
-                  setTriger={setTriger}
-                />
+                <Comment {...comment} currentUser={currentUser} triger={triger} setTriger={setTriger} />
                 {orgenizeComments(comment._id)}
               </div>
             );

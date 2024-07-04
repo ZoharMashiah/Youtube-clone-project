@@ -1,8 +1,9 @@
 .buttonsWrapper {
-  width: 94%;
-  height: 10%;
+  width: fit-content;
+  height: fit-content;
   display: flex;
   flex-direction: row;
+  justify-self: center;
   align-items: center;
 }
 
@@ -16,8 +17,6 @@
 }
 
 .likedDislikedWrapper {
-  margin: 20px;
-  margin-left: 50%;
   display: flex;
   flex-direction: row;
   align-items: center;

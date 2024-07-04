@@ -7,6 +7,12 @@
   padding: 0px 5px;
 }
 
+.container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
 .sideListVideoCard {
   display: flex;
   height: fit-content;
