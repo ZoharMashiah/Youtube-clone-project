@@ -9,7 +9,9 @@ import axios from "axios";
 
 export default function VideoShow({ video }) {
   const [editButton, setEditButton] = useState(false);
-  const { currentUser } = useContext(AppContext);
+  const [videoTitle, setTitle] = useState(video.title);
+  const [videoDescription, setDescription] = useState(video.title);
+
   const navigate = useNavigate();
 
   const views = video.views;
@@ -27,28 +29,6 @@ export default function VideoShow({ video }) {
         : (time / 60).toFixed(0) + " hours ago"
       : time + " minutes ago";
 
-  // const editVideo = () => setEditButton(true);
-
-  // const deleteVideo = async () => {
-  //   try {
-  //     console.log("Deleting video:", video._id);
-  //     const address = `/api/users/${video.user._id}/videos/${video._id}`;
-  //     const response = await axios.delete(address);
-  //     if (response.status === 200) {
-  //       console.log("Video deleted successfully");
-  //       getToFeed();
-  //     } else {
-  //       console.warn("Unexpected response status:", response.status);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error deleting video:", error);
-  //   }
-  // };
-
-  // const getToFeed = () => {
-  //   navigate("/", { replace: true });
-  // };
-
   const getToUserPage = () => {
     navigate(`/userpage/${video.user._id}`);
   };
@@ -56,10 +36,10 @@ export default function VideoShow({ video }) {
   return (
     <div className={styles.videoDetails}>
       {editButton && (
-        <EditVideo setEditButton={setEditButton} videoTitle={video.title} videoDescription={video.description} />
+        <EditVideo setEditButton={setEditButton} videoTitle={videoTitle} videoDescription={videoDescription} />
       )}
       <div className={styles.titleWrapper}>
-        <p id={styles.title}>{video.title}</p>
+        <p id={styles.title}>{videoTitle}</p>
         <div>
           <span id={styles.user} onClick={() => getToUserPage()}>
             {video.user.username}
@@ -70,7 +50,7 @@ export default function VideoShow({ video }) {
           </span>
         </div>
       </div>
-      <Ellipsis video={video} />
+      <Ellipsis video={video} setTitle={setTitle} setDescription={setDescription} />
     </div>
   );
 }

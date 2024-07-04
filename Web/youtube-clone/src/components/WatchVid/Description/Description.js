@@ -2,7 +2,6 @@ import React from "react";
 import styles from "./Description.module.css";
 
 export default function Description({ currentVideo }) {
-  console.log("******************", currentVideo);
   const views = currentVideo.views;
   let viewers =
     views > 999 ? (views > 999999 ? (views / 1000000).toFixed(0) + "M" : (views / 1000).toFixed(0) + "K") : views;

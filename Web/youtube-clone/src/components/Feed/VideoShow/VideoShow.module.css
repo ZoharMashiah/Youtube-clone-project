@@ -53,33 +53,18 @@
   justify-content: space-between;
 }
 
-.ellipsis :global(.dropdown-toggle) {
-  outline: none !important;
-  box-shadow: none !important;
-  border: none !important;
-}
-
-.ellipsis :global(.dropdown-toggle:focus),
-.ellipsis :global(.dropdown-toggle:active) {
-  outline: none !important;
-  box-shadow: none !important;
-  border: none !important;
-}
-
-.ellipsis :global(.dropdown-toggle::after) {
-  display: none !important;
-}
-/* #title {
+#title {
   font-size: 15px;
   font-weight: 600;
   margin-bottom: 5px;
-  cursor: pointer;
-} */
+}
+
 #user {
   font-size: 13px;
   font-weight: 500;
   color: rgb(110, 110, 110);
 }
+
 #views {
   font-size: 12px;
   font-weight: 500;

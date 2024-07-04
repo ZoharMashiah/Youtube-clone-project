@@ -64,7 +64,7 @@ async function updateVideo(req, res) {
       throw error;
     }
     console.log("Updated video successfully");
-    res.status(200);
+    res.status(200).json();
   } catch (error) {
     console.error("Error updating video:", videoId, error);
     res.status(500).json({

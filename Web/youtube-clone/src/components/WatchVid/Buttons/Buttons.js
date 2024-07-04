@@ -13,10 +13,8 @@ export default function Buttons({ currentVideo }) {
   const isLiked = false;
   const isDisliked = false;
 
-  // Early return if currentVideo is undefined
   if (!currentVideo) {
-    console.log("*************************");
-    return null; // or return a loading indicator
+    return null; // a loading indicator
   }
 
   return (

@@ -44,7 +44,6 @@ export default function AddVideoPopup({ onClose }) {
       console.log("Sending request to:", address);
 
       const res = await axios.post(address, newVideo);
-      console.log("************", res.data);
       alert("Upload is successful!");
     } catch (error) {
       console.error("Error adding video:", error);

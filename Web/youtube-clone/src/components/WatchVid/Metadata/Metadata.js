@@ -5,7 +5,6 @@ import Buttons from "../Buttons/Buttons";
 import Ellipsis from "../../Ellipsis/Ellipsis";
 
 export default function Metadata({ currentVideo }) {
-  const [editButton, setEditButton] = useState(false);
   const navigate = useNavigate();
 
   const getToUserPage = () => {
