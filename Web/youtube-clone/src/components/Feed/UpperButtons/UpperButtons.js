@@ -9,9 +9,9 @@ const UploadVideo = ({ setTrigger }) => (
     <button className={styles.button} onClick={() => setTrigger(true)}>
       <i className="bi bi-camera-reels" id={styles.icon} />
     </button>
-    <button className={styles.button}>
+    {/* <button className={styles.button}>
       <i className="bi bi-bell" id={styles.icon} />
-    </button>
+    </button> */}
   </>
 );
 
@@ -23,33 +23,27 @@ const UserButtons = ({ currentUser, setCurrentUser, darkMode, toggleDarkMode }) 
 
   return (
     <div className={styles.userWrapper}>
-      <img
-        src={
-          currentUser?.photo ||
-          "utilites/png-transparent-user-profile-2018-in-sight-user-conference-expo-business-default-business-angle-service-people-thumbnail.png"
-        }
-        id={styles.profileImage}
-        alt="User profile"
-        onClick={currentUser ? () => getToUserPage() : () => {}}
-      />
       {currentUser === null ? (
         <button onClick={() => navigate("/login")} className={styles.signBtn}>
           <i className="bi bi-person"></i>
           <span>Sign in</span>
         </button>
       ) : (
-        <button
-          onClick={() => {
-            navigate("/");
-            setCurrentUser(null);
-            localStorage.removeItem("token");
-            if (darkMode) toggleDarkMode(false);
-          }}
-          className={styles.signBtn}
-        >
-          <i className="bi bi-person"></i>
-          <span>Sign out</span>
-        </button>
+        <div>
+          <img src={currentUser.photo} id={styles.profileImage} alt="User profile" onClick={() => getToUserPage()} />
+          <button
+            onClick={() => {
+              navigate("/");
+              setCurrentUser(null);
+              localStorage.removeItem("token");
+              if (darkMode) toggleDarkMode(false);
+            }}
+            className={styles.signBtn}
+          >
+            <i className="bi bi-person"></i>
+            <span>Sign out</span>
+          </button>
+        </div>
       )}
     </div>
   );

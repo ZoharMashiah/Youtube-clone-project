@@ -2,10 +2,8 @@ import React, { useState } from "react";
 import "./Signupwrapper.css";
 import { Navigate } from "react-router-dom";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import AppContext from "../../../AppContext";
-import UserField from "../../userField/UserField";
 
-export default function Signupwrapper({ users, handleSignup }) {
+export default function Signupwrapper({ handleSignup }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -17,12 +15,6 @@ export default function Signupwrapper({ users, handleSignup }) {
   const [moveLogin, setMoveLogin] = useState(false);
 
   const handleSubmit = async () => {
-    // // Username validation
-    // if (users.some(user => user.username === username)) {
-    //   alert('Username already exists.');
-    //   return;
-    // }
-
     // Password validation
     const letterCount = (password.match(/[a-zA-Z]/g) || []).length;
     const digitCount = (password.match(/\d/g) || []).length;

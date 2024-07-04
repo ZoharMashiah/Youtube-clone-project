@@ -16,10 +16,6 @@ export default function Signup({}) {
     if (currentUser) {
       console.log("Logged in as: ", currentUser);
       navigate("/");
-    } else {
-      console.log("Logged in as: ", currentUser);
-
-      navigate("/");
     }
 
     const fetchUsers = async () => {
@@ -46,11 +42,9 @@ export default function Signup({}) {
       });
       if (res.ok) {
         return true;
-        // Update state to login page
       } else {
         return false;
       }
-      // Update state to login page
     } catch (error) {
       console.error("Signup error:", error);
       alert("Signup failed", error);
@@ -60,8 +54,7 @@ export default function Signup({}) {
   return (
     <div className={`Signup-page ${darkMode ? "dark-mode" : ""}`}>
       <DarkModeButton style={"dark-mode-toggle"} />
-      <DarkModeButton style={"dark-mode-toggle"} />
-      <Signupwrapper handleSignup={handleSignup} users={users} />
+      <Signupwrapper handleSignup={handleSignup} />
     </div>
   );
 }

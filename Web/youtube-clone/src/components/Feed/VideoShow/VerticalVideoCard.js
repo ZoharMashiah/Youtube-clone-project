@@ -19,7 +19,14 @@ export default function VerticalVideoCard({ video }) {
     <div className={styles.feedVideoCard}>
       <img src={video.icon} id={styles.videoImage} onClick={() => goToVideoPage()} alt="Video thumbnail" />
       <div className={styles.metaData}>
-        <Image src={video.user.photo} width="40px" height="40px" roundedCircle onClick={() => getToUserPage()} />
+        <Image
+          src={video.user.photo}
+          width="40px"
+          height="40px"
+          roundedCircle
+          alt="User profile"
+          onClick={() => getToUserPage()}
+        />
         <VideoShow video={video} />
       </div>
     </div>
