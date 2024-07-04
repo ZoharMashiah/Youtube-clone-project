@@ -10,11 +10,7 @@ import { useOutletContext } from "react-router-dom";
 
 export default function Feed() {
   const { trigger, setTrigger } = useOutletContext();
-  const { currentUser, videoList, setVideoList } = useContext(AppContext);
-
-  // not gonna stay here ofc
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [filterVideosCategory, setfilterVideosCategory] = useState([]);
+  const { currentUser, videoList, setVideoList, isFilltered, fillteredVideoList, stopFillter } = useContext(AppContext);
 
   useEffect(() => {
     if (trigger === false) {
@@ -40,17 +36,19 @@ export default function Feed() {
       </div>
       <div className={styles.FeedContainer}>
         <div className={styles.categories}>
-          <Categories
-            selectedCategory={selectedCategory}
-            setselectedCategory={setSelectedCategory}
-            filterVideosCategory={filterVideosCategory}
-          />
+          <Categories/>
         </div>
         <div>
           <div className={styles.videoGrid}>
-            {videoList.map((video) => (
+            {!isFilltered? 
+              videoList.map((video) => (
               <VerticalVideoCard key={video._id} video={video} />
-            ))}
+            ))
+              :
+            fillteredVideoList.map((video) => (
+              <VerticalVideoCard key={video._id} video={video} />
+              ))
+            }
           </div>
         </div>
       </div>

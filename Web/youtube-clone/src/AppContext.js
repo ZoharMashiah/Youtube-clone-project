@@ -6,7 +6,9 @@ export const AppContextProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [darkMode, setDarkMode] = useState(false);
   const [videoList, setVideoList] = useState([]);
+  const [fillteredVideoList, setFillteredVideoList] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const [isFilltered, setIsFilltered] = useState(false)
 
   const toggleDarkMode = () => {
     const newDarkMode = !darkMode;
@@ -34,6 +36,26 @@ export const AppContextProvider = ({ children }) => {
     });
   };
 
+  const filterVideos = async (search, text) => {
+    console.log(text)
+    const res = await fetch("/api/videos/filter", {
+      method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          search, text
+        })
+    })
+    console.log(res)
+    setFillteredVideoList(await res.json())
+    setIsFilltered(true)
+  }
+
+  const stopFillter = () => {
+    setIsFilltered(false)
+  }
+
   const value = {
     currentUser,
     setCurrentUser,
@@ -43,7 +65,12 @@ export const AppContextProvider = ({ children }) => {
     setVideoList,
     selectedCategory,
     setSelectedCategory,
-    readFileAsDataURL
+    readFileAsDataURL,
+    filterVideos,
+    setIsFilltered,
+    stopFillter,
+    isFilltered,
+    fillteredVideoList,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

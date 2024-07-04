@@ -6,30 +6,17 @@ import { AppContext } from '../../../AppContext'
 import axios from 'axios'
 
 export default function Categories({ }) {
-  const {setVideoList, selectedCategory, setSelectedCategory} = useContext(AppContext)
+  const {setVideoList, selectedCategory, setSelectedCategory, filterVideos,stopFillter} = useContext(AppContext)
 
   const [categories, setCategories] = useState(["All", "Music", "Mixes", "JavaScript", "Gaming", "Bouldering", "Display devices", "AI", "Computer Hardware", "Table News", "Inventions", "News", "Comedy clubs", "Skills", "3D printing"])
 
   const onClickHandle = async (category) => {
     setSelectedCategory(category)
     if(category != "All"){
-    const res = await fetch("/api/videos/filter", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        search: false,
-        text: category
-      })
-    })
-    setVideoList(await res.json())
+      await filterVideos(false, category)
     } 
     else {
-      const res = await axios.get("/api/videos");
-      const videoList = res.data;
-      console.log("video list: ", videoList);
-      setVideoList(videoList);
+      stopFillter()
     }
     
   }
