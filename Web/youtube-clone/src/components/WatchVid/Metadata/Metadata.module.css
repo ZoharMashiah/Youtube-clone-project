@@ -1,0 +1,81 @@
+.feedVideoCard {
+  display: flex;
+  height: fit-content;
+  width: 325px;
+  flex-direction: column;
+  margin: 25px 15px;
+  padding: 0px 5px;
+}
+
+.sideListVideoCard {
+  display: flex;
+  height: fit-content;
+  width: 450px;
+  flex-direction: row;
+  margin-bottom: 25px;
+  padding: 0px 5px;
+}
+
+#videoImage {
+  border-radius: 15px;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  box-shadow: 2px 2px rgba(110, 110, 110, 0.05);
+}
+
+#videoImage:hover {
+  border-radius: 4px;
+  cursor: pointer;
+  transition-property: border-radius;
+  transition-delay: 10ms;
+  transition-timing-function: linear;
+}
+
+.videoDetails {
+  display: flex;
+  flex-direction: row;
+  margin-left: 20px;
+
+  width: 100%;
+  justify-content: space-between;
+}
+
+.metaData {
+  padding-top: 10px;
+  display: flex;
+  height: 100%;
+  flex-direction: row;
+}
+
+.ellipsis :global(.dropdown-toggle) {
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+.ellipsis :global(.dropdown-toggle:focus),
+.ellipsis :global(.dropdown-toggle:active) {
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+.ellipsis :global(.dropdown-toggle::after) {
+  display: none !important;
+}
+#title {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 5px;
+  /* cursor: pointer; */
+}
+#user {
+  font-size: 13px;
+  font-weight: 500;
+  color: rgb(110, 110, 110);
+}
+#views {
+  font-size: 12px;
+  font-weight: 500;
+  color: rgb(110, 110, 110);
+}

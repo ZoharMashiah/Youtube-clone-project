@@ -1,0 +1,16 @@
+.descriptionWrapper {
+  padding: 0px 10px;
+  border-radius: 10px;
+  background-color: #f2f2f2;
+  box-shadow: 1px 1px 1px 1px rgb(67, 67, 67);
+}
+.views {
+  color: black;
+  font-size: small;
+  font-weight: 700;
+}
+
+.description {
+  color: black;
+  font-size: small;
+}
