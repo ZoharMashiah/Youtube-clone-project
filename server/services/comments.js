@@ -3,13 +3,19 @@ const mongoose = require("mongoose");
 const Video = require("../models/Video")
 
 const createComment = async (user, title, videoId) => {
-  const comment = new Comment({
+  const comment = await Comment.create({
     videoId: videoId,
     childernId: [],
     user: user,
     title: title,
   });
-  return await comment.save();
+
+  const video = await Video.findById({ _id: videoId })
+  const videoList = [...video.comments,comment._id]
+  // add recursivly and remove from list
+  await Video.findByIdAndUpdate({ _id: video._id }, { comments: videoList });
+
+  return comment;
 };
 
 const createCommentInsideComment = async (parentId, user, title, videoId) => {
