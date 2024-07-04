@@ -2,22 +2,22 @@ const Comment = require("../models/Comment");
 const mongoose = require("mongoose");
 const Video = require("../models/Video")
 
-const createComment = async (userId, title, videoId) => {
+const createComment = async (user, title, videoId) => {
   const comment = new Comment({
     videoId: videoId,
     childernId: [],
-    userId: userId,
+    user: user,
     title: title,
   });
   return await comment.save();
 };
 
-const createCommentInsideComment = async (parentId, userId, title, videoId) => {
+const createCommentInsideComment = async (parentId, user, title, videoId) => {
   const comment = new Comment({
     parentId: parentId,
     videoId: videoId,
     childernId: [],
-    userId: userId,
+    user: user,
     title: title,
   });
   const parent = await Comment.findById({ _id: parentId });

@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import styles from "./Comments.module.css";
 import Comment from "../Comment/Comment";
 import { useParams } from "react-router-dom";
 import { AppContext } from "../../../AppContext";
 
-export default function Comments({ currentVideo, currentUser, editComment, deleteComment }) {
+export default function Comments({ currentVideo }) {
   const { currentUser, setCurrentUser } = useContext(AppContext);
-  const { creatorId, videoId } = useParams();
+  const { userId, videoId } = useParams();
   const [title, setTitle] = useState("");
   const [comments, setComments] = useState([]);
   const [triger, setTriger] = useState(false);
@@ -22,10 +22,13 @@ export default function Comments({ currentVideo, currentUser, editComment, delet
     e.preventDefault();
     const comment = {
       title: title,
-      userId: currentUser._id,
+      user: {
+        _id: currentUser._id,
+        username: currentUser.username,
+        photo: currentUser.photo
+      },
     };
-
-    const response = await fetch(`api/users/${creatorId}/video/${videoId}/comment/`, {
+    const response = await fetch(`/api/users/${userId}/videos/${videoId}/comments/`, {
       method: "POST",
       body: JSON.stringify(comment),
       headers: {
@@ -40,7 +43,7 @@ export default function Comments({ currentVideo, currentUser, editComment, delet
       setTriger(true);
       console.log("new comment added", json);
     } else {
-      console.log(response.error);
+      alert(response.error);
     }
   };
 
@@ -48,12 +51,10 @@ export default function Comments({ currentVideo, currentUser, editComment, delet
     let orgenizeCommen = comments.map((comment) => {
       if (comment.parentId === id) {
         return (
-          <div style={{ position: "relative", left: "3vw" }}>
+          <div style={{ position: "relative", left: "3vw" }} className={styles.commentWrapper}>
             <Comment
               {...comment}
               currentUser={currentUser}
-              editComment={editComment}
-              deleteComment={deleteComment}
               triger={triger}
               setTriger={setTriger}
             />
@@ -67,11 +68,7 @@ export default function Comments({ currentVideo, currentUser, editComment, delet
 
   useEffect(() => {
     const fetchComments = async () => {
-      // temp
-      const userId = "667aeb3eaf98ca2e75104d0b";
-      const videoId = "667aeb3eaf98ca2e75104d0b";
-
-      const response = await fetch(`api/users/${userId}/video/${videoId}/comment/`);
+      const response = await fetch(`/api/users/${userId}/videos/${videoId}/comments/`);
       const json = await response.json();
 
       if (response.ok) {
@@ -91,7 +88,7 @@ export default function Comments({ currentVideo, currentUser, editComment, delet
           type="submit"
           className={title.length === 0 ? styles.buttonDisabled : styles.button}
           disabled={title.length === 0}
-          //onClick={() => addCommentToVideo(addComment)}
+          onClick={() => addCommentToVideo()}
         >
           Post
         </button>
@@ -104,7 +101,7 @@ export default function Comments({ currentVideo, currentUser, editComment, delet
             else alert("You need to login to write a comment");
           }}
         />
-        <img src={userData.photo} alt="User Profile" className={styles.profileImage} />
+        <img src={currentUser.photo} alt="User Profile" className={styles.profileImage} />
       </form>
       {comments &&
         comments.map((comment) => {
@@ -114,8 +111,6 @@ export default function Comments({ currentVideo, currentUser, editComment, delet
                 <Comment
                   {...comment}
                   currentUser={currentUser}
-                  editComment={editComment}
-                  deleteComment={deleteComment}
                   triger={triger}
                   setTriger={setTriger}
                 />
