@@ -4,8 +4,6 @@ import Dropdown from "react-bootstrap/Dropdown";
 import EditVideo from "../../UserPage/EditVideo/EditVideo";
 import { AppContext } from "../../../AppContext";
 import { useNavigate } from "react-router-dom";
-import { AppContext } from "../../../AppContext";
-import { useNavigate } from "react-router-dom";
 
 export default function VideoShow({ video }) {
   const [editButton, setEditButton] = useState(false);

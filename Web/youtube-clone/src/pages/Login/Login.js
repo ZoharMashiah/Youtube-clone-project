@@ -7,7 +7,6 @@ import { AppContext } from "../../AppContext";
 import Userfield from "../../components/Login/Userfield/Userfield";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import DarkModeButton from "../../components/DarkModeButton/DarkModeButton";
-import DarkModeButton from "../../components/DarkModeButton/DarkModeButton";
 
 export default function Login() {
   const [username, setUsername] = useState("");
