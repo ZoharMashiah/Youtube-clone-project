@@ -10,7 +10,6 @@ export default function UserInfo({ userId }) {
   const [userData, setUserData] = useState({});
   const { currentUser, setCurrentUser, videoList, setVideoList } = useContext(AppContext);
   const navigate = useNavigate();
-  const location = useLocation();
 
   const handleClose = () => {
     setShow(false);

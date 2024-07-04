@@ -105,16 +105,17 @@ const createUserForLogin = async (req, res) => {
 };
 
 const getToken = async (req, res) => {
-  const { token } = req.params;
   try {
+    const { token } = req.params;
     const decoded = jwt.verify(token, "SECRET_KEY");
     const user = await User.findById(decoded.userId);
-    console.log(user);
+    
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
     res.status(200).json({ user });
   } catch (error) {
+    console.log(error.message)
     res.status(500).json({ error: error.message });
   }
 };
