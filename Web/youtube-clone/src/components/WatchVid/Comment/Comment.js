@@ -85,7 +85,7 @@ export default function Comment({ _id,user, title, date, icon, triger, setTriger
   };
 
   const getToUserPage = () => {
-    navigate(`/userpage/${currentUser._id}`, { replace: true });
+    navigate(`/userpage/${currentUser._id}`);
   };
 
   return (

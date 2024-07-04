@@ -1,13 +1,14 @@
 import React, { useState, useContext } from "react";
 import styles from "./VideoShow.module.css";
-import Dropdown from "react-bootstrap/Dropdown";
 import EditVideo from "../../UserPage/EditVideo/EditVideo";
-import { AppContext } from "../../../AppContext";
+import VideoMenu from "../../VideoMenu/VideoMenu";
 import { useNavigate } from "react-router-dom";
 
 export default function VideoShow({ video }) {
   const [editButton, setEditButton] = useState(false);
-  const { currentUser } = useContext(AppContext);
+  const [videoTitle, setTitle] = useState(video.title);
+  const [videoDescription, setDescription] = useState(video.title);
+
   const navigate = useNavigate();
 
   const views = video.views;
@@ -25,21 +26,17 @@ export default function VideoShow({ video }) {
         : (time / 60).toFixed(0) + " hours ago"
       : time + " minutes ago";
 
-  const editVideo = () => setEditButton(true);
-
-  const deleteVideo = () => {};
-
   const getToUserPage = () => {
-    navigate(`/userpage/${video.user._id}`, { replace: true });
+    navigate(`/userpage/${video.user._id}`);
   };
 
   return (
     <div className={styles.videoDetails}>
       {editButton && (
-        <EditVideo setEditButton={setEditButton} videoTitle={video.title} videoDescription={video.description} />
+        <EditVideo setEditButton={setEditButton} videoTitle={videoTitle} videoDescription={videoDescription} />
       )}
       <div className={styles.titleWrapper}>
-        <p id={styles.title}>{video.title}</p>
+        <p id={styles.title}>{videoTitle}</p>
         <div>
           <span id={styles.user} onClick={() => getToUserPage()}>
             {video.user.username}
@@ -50,21 +47,7 @@ export default function VideoShow({ video }) {
           </span>
         </div>
       </div>
-      {currentUser && currentUser._id == video.user._id && (
-        <Dropdown className={styles.ellipsis}>
-          <Dropdown.Toggle variant="white" id="dropdown-basic" style={{ content: "none" }}>
-            <i class="bi bi-three-dots-vertical"></i>
-          </Dropdown.Toggle>
-          <Dropdown.Menu>
-            <Dropdown.Item key={1} onClick={deleteVideo}>
-              Delete
-            </Dropdown.Item>
-            <Dropdown.Item key={2} onClick={editVideo}>
-              Edit
-            </Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
-      )}
+      <VideoMenu currentVideo={video} setTitle={setTitle} setDescription={setDescription} />
     </div>
   );
 }
