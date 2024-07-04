@@ -92,24 +92,11 @@ async function createVideo(req, res) {
 async function deleteVideo(req, res) {
   const videoId = req.params.pid;
   const userId = req.params.id;
-  const session = await mongoose.startSession();
-  session.startTransaction();
 
   try {
     await Video.deleteVideo(videoId, userId);
-    const user = await user.findById(userId);
-    const video = await video.findById(videoId);
-
-    const result = await video.deleteOne({ _id: videoId, user_id: userId }).session(session);
-    if (result.deletedCount === 0) {
-      throw new Error("Video not found");
-    }
-
-    await User.updateOne({ _id: userId }, { $pull: { videos: videoId } }).session(session);
-    await session.commitTransaction();
-
     console.log("Deleted video successfully");
-    res.status(200);
+    res.status(200).json({ message: "Video deleted successfully" });
   } catch (error) {
     console.error("Error deleting video:", videoId, error);
     res.status(500).json({
@@ -122,18 +109,17 @@ async function deleteAllVideos(userId) {
   try {
     const user = await User.findById(userId);
     if (!user) {
-      return res.status(400).json({ message: `User with id ${userId} not found` });
+      throw new Error(`User with id ${userId} not found`);
     }
-    user.videos.map(async (video) => {
-      console.log(video._id);
-      await Video.deleteVideo(video._id, userId);
-    });
 
-    console.log("Deleted video successfully");
+    const deletionPromises = user.videos.map((video) => Video.deleteVideo(video._id, userId));
+    await Promise.all(deletionPromises);
+
+    console.log("All videos deleted successfully");
     return true;
   } catch (error) {
-    console.error("Error deleting video:", error);
-    return false;
+    console.error("Error deleting videos:", error);
+    throw error;
   }
 }
 

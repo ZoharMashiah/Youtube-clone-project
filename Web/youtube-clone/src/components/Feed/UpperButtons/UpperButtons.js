@@ -18,7 +18,7 @@ const UploadVideo = ({ setTrigger }) => (
 const UserButtons = ({ currentUser, setCurrentUser, darkMode, toggleDarkMode }) => {
   const navigate = useNavigate();
   const getToUserPage = () => {
-    navigate(`/userpage/${currentUser._id}`, { replace: true });
+    navigate(`/userpage/${currentUser._id}`);
   };
 
   return (

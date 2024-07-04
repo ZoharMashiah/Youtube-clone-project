@@ -10,7 +10,7 @@ export default function Logo() {
     if (location.pathname === "/") {
       window.location.reload();
     } else {
-      navigate("/", { replace: true });
+      navigate("/");
       setTimeout(() => window.location.reload(), 50);
     }
   };

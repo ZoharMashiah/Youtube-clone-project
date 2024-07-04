@@ -2,8 +2,10 @@ import React, { useState, useContext } from "react";
 import styles from "./VideoShow.module.css";
 import Dropdown from "react-bootstrap/Dropdown";
 import EditVideo from "../../UserPage/EditVideo/EditVideo";
+import Ellipsis from "../../Ellipsis/Ellipsis";
 import { AppContext } from "../../../AppContext";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function VideoShow({ video }) {
   const [editButton, setEditButton] = useState(false);
@@ -25,12 +27,30 @@ export default function VideoShow({ video }) {
         : (time / 60).toFixed(0) + " hours ago"
       : time + " minutes ago";
 
-  const editVideo = () => setEditButton(true);
+  // const editVideo = () => setEditButton(true);
 
-  const deleteVideo = () => {};
+  // const deleteVideo = async () => {
+  //   try {
+  //     console.log("Deleting video:", video._id);
+  //     const address = `/api/users/${video.user._id}/videos/${video._id}`;
+  //     const response = await axios.delete(address);
+  //     if (response.status === 200) {
+  //       console.log("Video deleted successfully");
+  //       getToFeed();
+  //     } else {
+  //       console.warn("Unexpected response status:", response.status);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error deleting video:", error);
+  //   }
+  // };
+
+  // const getToFeed = () => {
+  //   navigate("/", { replace: true });
+  // };
 
   const getToUserPage = () => {
-    navigate(`/userpage/${video.user._id}`, { replace: true });
+    navigate(`/userpage/${video.user._id}`);
   };
 
   return (
@@ -50,21 +70,7 @@ export default function VideoShow({ video }) {
           </span>
         </div>
       </div>
-      {currentUser && currentUser._id == video.user._id && (
-        <Dropdown className={styles.ellipsis}>
-          <Dropdown.Toggle variant="white" id="dropdown-basic" style={{ content: "none" }}>
-            <i class="bi bi-three-dots-vertical"></i>
-          </Dropdown.Toggle>
-          <Dropdown.Menu>
-            <Dropdown.Item key={1} onClick={deleteVideo}>
-              Delete
-            </Dropdown.Item>
-            <Dropdown.Item key={2} onClick={editVideo}>
-              Edit
-            </Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
-      )}
+      <Ellipsis video={video} />
     </div>
   );
 }

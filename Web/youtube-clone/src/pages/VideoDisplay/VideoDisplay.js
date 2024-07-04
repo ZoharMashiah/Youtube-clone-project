@@ -54,7 +54,7 @@ export default function VideoDisplay() {
 
   const getToUserPage = () => {
     if (currentVideo && currentVideo.user) {
-      navigate(`/userpage/${currentVideo.user._id}`, { replace: true });
+      navigate(`/userpage/${currentVideo.user._id}`);
     }
   };
 
@@ -76,7 +76,14 @@ export default function VideoDisplay() {
             <video className={styles.videoWrapper} src={currentVideo.video} controls></video>
             <div className={styles.decriptionWrapper}>
               <div className={styles.metaData}>
-                <Image src={currentVideo.user.photo} width="40px" height="40px" roundedCircle onClick={getToUserPage} />
+                <Image
+                  src={currentVideo.user.photo}
+                  alt="User Profile"
+                  width="40px"
+                  height="40px"
+                  roundedCircle
+                  onClick={getToUserPage}
+                />
                 <Metadata currentVideo={currentVideo} />
               </div>
               <Description currentVideo={currentVideo} />
@@ -95,9 +102,11 @@ export default function VideoDisplay() {
         </div>
       )}
       <div className={styles.sideList}>
-        {videoList.map((video) => (
-          <HorizontalVideoCard key={video._id} video={video} />
-        ))}
+        {videoList
+          .filter((video) => video._id !== currentVideo._id)
+          .map((video) => (
+            <HorizontalVideoCard key={video._id} video={video} />
+          ))}
       </div>
     </div>
   );
