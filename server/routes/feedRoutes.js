@@ -1,7 +1,7 @@
 const express = require("express");
 const videoController = require("../controllers/videoController");
 const feedRouter = express.Router();
-const { createUser, createUserForLogin } = require("../controllers/Users");
+const { createUser, createUserForLogin } = require("../controllers/users");
 
 feedRouter.get("/api/videos", videoController.getFeed);
 feedRouter.post("/api/videos/filter", videoController.filterVideos);

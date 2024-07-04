@@ -5,31 +5,31 @@ const {
   getComment,
   deleteComment,
   updateComment,
-  deleteAllComment
+  deleteAllComment,
 } = require("../services/comments");
 
 const postComment = async (req, res) => {
-  const { videoId } = req.params;
+  const { pid } = req.params;
   try {
-    res.status(200).json(await createComment(req.body.userId, req.body.title, videoId));
+    res.status(200).json(await createComment(req.body.userId, req.body.title, pid));
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 };
 
 const postCommentInsideComment = async (req, res) => {
-  const { videoId, commentId } = req.params;
+  const { pid, commentId } = req.params;
   try {
-    res.status(200).json(await createCommentInsideComment(commentId, req.body.userId, req.body.title, videoId));
+    res.status(200).json(await createCommentInsideComment(commentId, req.body.userId, req.body.title, pid));
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 };
 
 const getAllComments = async (req, res) => {
-  const { videoId } = req.params;
+  const { pid } = req.params;
   try {
-    res.status(200).json(await getComments(videoId));
+    res.status(200).json(await getComments(pid));
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -45,22 +45,22 @@ const getOneComment = async (req, res) => {
 };
 
 const deleteOneComment = async (req, res) => {
-    const { commentId } = req.params
-    try {
-        res.status(200).json(await deleteComment(commentId))
-    } catch (error) {
-        res.status(400).json({error: error.message})
-    }
-}
+  const { commentId } = req.params;
+  try {
+    res.status(200).json(await deleteComment(commentId));
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
 
 const deleteComments = async (req, res) => {
-    const { videoId } = req.params
-    try {
-        res.status(200).json(await deleteAllComment(videoId))
-    } catch (error) {
-        res.status(400).json({error: error.message})
-    }
-}
+  const { pid } = req.params;
+  try {
+    res.status(200).json(await deleteAllComment(pid));
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
 
 const updateOneComment = async (req, res) => {
   const { commentId } = req.params;
@@ -72,11 +72,11 @@ const updateOneComment = async (req, res) => {
 };
 
 module.exports = {
-    postComment,
-    postCommentInsideComment,
-    getAllComments,
-    getOneComment,
-    deleteOneComment,
-    updateOneComment,
-    deleteComments
-}
+  postComment,
+  postCommentInsideComment,
+  getAllComments,
+  getOneComment,
+  deleteOneComment,
+  updateOneComment,
+  deleteComments,
+};

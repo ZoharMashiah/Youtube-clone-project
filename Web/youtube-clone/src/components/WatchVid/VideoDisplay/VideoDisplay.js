@@ -1,17 +1,19 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styles from "./VideoDisplay.module.css";
 import axios from "axios";
-import Buttons from "../Buttons/Buttons";
-import Metadata from "../Metadata/Metadata";
 import { AppContext } from "../../../AppContext";
 import HorizontalVideoCard from "../../Feed/VideoShow/HorizontalVideoCard";
+import Buttons from "../Buttons/Buttons";
+import VideoShow from "../../Feed/VideoShow/VideoShow";
 
 export default function VideoDisplay() {
   const { userId, videoId } = useParams();
   const [currentVideo, setCurrentVideo] = useState(null);
+  const [videoData, setVideoData] = useState(null);
   const { videoList } = useContext(AppContext);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (userId && videoId) {
@@ -25,7 +27,11 @@ export default function VideoDisplay() {
     try {
       setLoading(true);
       console.log("Fetching video for creator:", userId, "video:", videoId);
-      const response = await axios.get(`/users/${userId}/videos/${videoId}`);
+      const address = `/api/users/${userId}/videos/${videoId}`;
+      console.log(address);
+      const response = await axios.get(address);
+      console.log(response.data);
+
       setCurrentVideo(response.data);
     } catch (error) {
       console.error("Error fetching video:", error);
@@ -42,6 +48,10 @@ export default function VideoDisplay() {
     return <div>Error loading video. Please try again.</div>;
   }
 
+  const getToUserPage = () => {
+    navigate(`/userpage/${currentVideo.user._id}`, { replace: true });
+  };
+
   return (
     <div className={styles.VideoDisplay}>
       <div className={styles.content}>
@@ -51,6 +61,17 @@ export default function VideoDisplay() {
           ) : (
             <video className={styles.videoWrapper} src={currentVideo.video} controls></video>
           )}
+        </div>
+        <div>
+          {/* <img
+            src={currentVideo.user.photo}
+            width="40px"
+            height="40px"
+            style="border-radius: 50%;"
+            onclick="getToUserPage()"
+          /> */}
+
+          {/* <VideoShow video={currentVideo} onClick={goToVideoPage} /> */}
         </div>
 
         {/* <div className={styles.textWrapper}>

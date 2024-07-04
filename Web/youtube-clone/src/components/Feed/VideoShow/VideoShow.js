@@ -1,5 +1,4 @@
 import React, { useState, useContext } from "react";
-import { Image } from "react-bootstrap";
 import styles from "./VideoShow.module.css";
 import Dropdown from "react-bootstrap/Dropdown";
 import EditVideo from "../../UserPage/EditVideo/EditVideo";

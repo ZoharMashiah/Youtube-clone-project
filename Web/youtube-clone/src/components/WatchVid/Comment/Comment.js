@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function Comment({ _id, userId, title, user, date, icon, triger, setTriger }) {
   const { currentUser, setCurrentUser } = useContext(AppContext);
-  const { creatorId, videoId } = useParams();
+  const { creatorId: userId, videoId } = useParams();
   const [edit, setedit] = useState(false);
   const [editedTitle, seteditedTitle] = useState(title);
   const [reply, setreply] = useState(false);
@@ -26,7 +26,7 @@ export default function Comment({ _id, userId, title, user, date, icon, triger, 
   const navigate = useNavigate();
 
   const deleteComment = async () => {
-    const response = await fetch(`api/users/${creatorId}/video/${videoId}/comment/${_id}`, {
+    const response = await fetch(`/api/users/${userId}/video/${videoId}/comment/${_id}`, {
       method: "DELETE",
     });
     const json = await response.json();
@@ -42,7 +42,7 @@ export default function Comment({ _id, userId, title, user, date, icon, triger, 
       userId: currentUser._id,
     };
 
-    const response = await fetch(`api/users/${creatorId}/video/${videoId}/comment/${_id}`, {
+    const response = await fetch(`api/users/${userId}/video/${videoId}/comment/${_id}`, {
       method: "POST",
       body: JSON.stringify(comment),
       headers: {
@@ -65,7 +65,7 @@ export default function Comment({ _id, userId, title, user, date, icon, triger, 
   const editComment = async () => {
     const comment = { title: editedTitle };
 
-    const response = await fetch(`api/users/${creatorId}/video/${videoId}/comment/${_id}`, {
+    const response = await fetch(`api/users/${userId}/video/${videoId}/comment/${_id}`, {
       method: "PATCH",
       body: JSON.stringify(comment),
       headers: {

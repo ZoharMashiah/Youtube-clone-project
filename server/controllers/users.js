@@ -11,7 +11,7 @@ const getAllUsers = async (req, res) => {
 
 //get a single user
 const getUser = async (req, res) => {
-  const { userId } = req.params;
+  const userId = req.params.id;
   if (!mongoose.Types.ObjectId.isValid(userId)) {
     return res.status(404).json({ message: `User with id ${userId} not valid` });
   }
@@ -49,7 +49,7 @@ const createUser = async (req, res) => {
 
 //update a user
 const updateUser = async (req, res) => {
-  const { userId } = req.params;
+  const userId = req.params.id;
   if (!mongoose.Types.ObjectId.isValid(userId)) {
     return res.status(404).json({ message: `User with id ${userId} not valid` });
   }
@@ -62,7 +62,7 @@ const updateUser = async (req, res) => {
 
 //delete a user
 const deleteUser = async (req, res) => {
-  const { userId } = req.params;
+  const userId = req.params.id;
 
   if (!mongoose.Types.ObjectId.isValid(userId)) {
     return res.status(404).json({ message: `User with id ${userId} not valid` });

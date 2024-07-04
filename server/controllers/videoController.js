@@ -21,7 +21,7 @@ async function getFeed(req, res) {
 }
 
 async function getUserVideoList(req, res) {
-  const userId = req.params.userId;
+  const userId = req.params.id;
   try {
     const userVideoList = await VideoService.getUserVideoList(userId);
     console.log("Fetched creator video list successfully");
@@ -36,6 +36,7 @@ async function getUserVideoList(req, res) {
 
 async function getVideo(req, res) {
   const videoId = req.params.pid;
+  console.log(req);
   try {
     console.log("***********id", videoId);
     const video = await Video.findById(videoId);
@@ -48,6 +49,7 @@ async function getVideo(req, res) {
     }
 
     console.log("Fetched video successfully");
+    console.log("***********VIDEO", video);
     res.status(200).json(video);
   } catch (error) {
     console.error("Error fetching video:", videoId, error);
@@ -92,7 +94,7 @@ async function createVideo(req, res) {
 
 async function deleteVideo(req, res) {
   const videoId = req.params.pid;
-  const userId = req.params.userId;
+  const userId = req.params.id;
   const session = await mongoose.startSession();
   session.startTransaction();
 
@@ -140,7 +142,6 @@ async function deleteAllVideos(userId) {
 
 async function filterVideos(req, res) {
   const videoId = req.params.pid;
-  const userId = req.params.userId;
   const { search, text } = req.body;
 
   try {
