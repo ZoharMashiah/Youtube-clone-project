@@ -1,11 +1,14 @@
 import React, { useState, useContext } from "react";
 import styles from "./Search.module.css";
 import { Button, InputGroup, Form } from "react-bootstrap";
+import { useNavigate, useLocation } from "react-router-dom";
 import { AppContext } from "../../../AppContext";
 
 export default function Search({ filterVideos, setSearchText }) {
-  const {setVideoList} = useContext(AppContext)
+  const {setVideoList, videoList} = useContext(AppContext)
   const [text, setText] = useState("");
+  const navigate = useNavigate()
+  const location = useLocation()
 
   const handleInputChange = (e) => {
     const newSearchText = e.target.value;
@@ -25,6 +28,7 @@ export default function Search({ filterVideos, setSearchText }) {
     })
     setVideoList(await res.json())
     setSearchText(text);
+    navigate("/", { replace: true })
   };
 
   return (
