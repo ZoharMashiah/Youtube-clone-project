@@ -17,7 +17,6 @@ export default function Feed() {
   const [filterVideosCategory, setfilterVideosCategory] = useState([]);
 
   useEffect(() => {
-    console.log("current user: ", currentUser);
     if (trigger === false) {
       fetchFeed();
     }

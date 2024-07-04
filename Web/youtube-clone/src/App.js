@@ -21,7 +21,6 @@ export default function App() {
           const data = await response.json();
           if (data.user) {
             setCurrentUser(data.user);
-            console.log(data.user);
             if (data.user.settings.darkMode) {
               toggleDarkMode();
             }

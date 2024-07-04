@@ -21,7 +21,6 @@ export default function Login() {
       if (response.status === 200) {
         const { user, token } = response.data;
         localStorage.setItem("token", token);
-        console.log("Logged in as: ", user);
         return user;
       } else {
         alert("Login failed: could not get user");
