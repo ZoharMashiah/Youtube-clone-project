@@ -11,6 +11,20 @@
   width: fit-content;
   justify-content: center;
   flex-wrap: nowrap;
+  justify-content: start;
+}
+
+.videoPlayerContainer {
+  margin: 0px 20px;
+  border-radius: 15px;
+  margin-bottom: 10px;
+  width: auto;
+  height: auto;
+}
+
+.videoWrapper {
+  width: 60vw;
+  border-radius: 15px;
 }
 
 .loading {
@@ -22,21 +36,6 @@
   margin: 0px 20px;
   max-width: 25vw;
   min-width: 15vw;
-}
-
-.videoPlayerContainer {
-  display: flex;
-  flex-direction: column;
-  width: 60vw;
-  margin: 0px 20px;
-  border-radius: 15px;
-  margin-bottom: 10px;
-}
-
-.videoWrapper {
-  width: 100%;
-  border-radius: 15px;
-  margin-bottom: 15px;
 }
 
 .decriptionWrapper {

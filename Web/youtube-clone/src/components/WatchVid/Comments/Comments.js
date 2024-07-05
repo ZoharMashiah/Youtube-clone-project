@@ -40,18 +40,18 @@ export default function Comments({ currentVideo }) {
     }
   };
 
-  const orgenizeComments = (id) => {
-    let orgenizeCommen = comments.map((comment) => {
+  const organizeComments = (id) => {
+    let organizeComment = comments.map((comment) => {
       if (comment.parentId === id) {
         return (
-          <div style={{ position: "relative", left: "3vw" }} className={styles.commentWrapper}>
+          <div style={{ position: "relative", marginLeft: "40px" }} className={styles.commentWrapper}>
             <Comment {...comment} currentUser={currentUser} triger={triger} setTriger={setTriger} />
-            {orgenizeComments(comment._id)}
+            {organizeComments(comment._id)}
           </div>
         );
       }
     });
-    return orgenizeCommen;
+    return organizeComment;
   };
 
   useEffect(() => {
@@ -97,7 +97,7 @@ export default function Comments({ currentVideo }) {
             return (
               <div>
                 <Comment {...comment} currentUser={currentUser} triger={triger} setTriger={setTriger} />
-                {orgenizeComments(comment._id)}
+                {organizeComments(comment._id)}
               </div>
             );
           }

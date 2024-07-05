@@ -146,37 +146,43 @@ const pushLikeOrDisLike = async (req, res) => {
   const videoId = req.params.pid;
   const { action, userId } = req.body;
   try {
-    const video = await Video.findById({ _id: videoId })
-    const user = await User.findById({ _id: userId })
-    
+    const video = await Video.findById({ _id: videoId });
+    const user = await User.findById({ _id: userId });
+
     if (action == "like") {
-      if (user.likes.includes(videoId)){
-        await User.findByIdAndUpdate({ _id: userId }, { likes: user.likes.filter((video) => video._id != videoId) })
-        await Video.findByIdAndUpdate({ _id: videoId }, { like: video.like - 1 })
-        return res.status(200)
+      if (user.likes.includes(videoId)) {
+        await User.findByIdAndUpdate({ _id: userId }, { likes: user.likes.filter((video) => video._id != videoId) });
+        await Video.findByIdAndUpdate({ _id: videoId }, { like: video.like - 1 });
+        return res.status(200);
       }
       if (user.dislikes.includes(videoId)) {
-        await User.findByIdAndUpdate({ _id: userId }, { dislikes: user.dislikes.filter((video) => video._id != videoId) })
-        await Video.findByIdAndUpdate({_id: videoId}, {dislike: video.dislike-1} )
+        await User.findByIdAndUpdate(
+          { _id: userId },
+          { dislikes: user.dislikes.filter((video) => video._id != videoId) }
+        );
+        await Video.findByIdAndUpdate({ _id: videoId }, { dislike: video.dislike - 1 });
       }
-      await User.findByIdAndUpdate({ _id: userId }, { likes: [...user.likes, videoId] })
-      await Video.findByIdAndUpdate({_id: videoId}, {like: video.like+1} )
+      await User.findByIdAndUpdate({ _id: userId }, { likes: [...user.likes, videoId] });
+      await Video.findByIdAndUpdate({ _id: videoId }, { like: video.like + 1 });
     } else {
-      if (user.dislikes.includes(videoId)){
-        await User.findByIdAndUpdate({ _id: userId }, { dislikes: user.dislikes.filter((video) => video._id != videoId) })
-        await Video.findByIdAndUpdate({ _id: videoId }, { dislike: video.dislike - 1 })
-        return res.status(200)
+      if (user.dislikes.includes(videoId)) {
+        await User.findByIdAndUpdate(
+          { _id: userId },
+          { dislikes: user.dislikes.filter((video) => video._id != videoId) }
+        );
+        await Video.findByIdAndUpdate({ _id: videoId }, { dislike: video.dislike - 1 });
+        return res.status(200);
       }
-      if (user.likes.includes(videoId)){
-        await User.findByIdAndUpdate({ _id: userId }, { likes: user.likes.filter((video) => video._id != videoId) })
-        await Video.findByIdAndUpdate({_id: videoId}, {like: video.like-1} )
+      if (user.likes.includes(videoId)) {
+        await User.findByIdAndUpdate({ _id: userId }, { likes: user.likes.filter((video) => video._id != videoId) });
+        await Video.findByIdAndUpdate({ _id: videoId }, { like: video.like - 1 });
       }
-      await User.findByIdAndUpdate({ _id: userId }, { dislikes: [...user.dislikes, videoId] })
-      await Video.findByIdAndUpdate({_id: videoId}, {dislike: video.dislike+1} )
+      await User.findByIdAndUpdate({ _id: userId }, { dislikes: [...user.dislikes, videoId] });
+      await Video.findByIdAndUpdate({ _id: videoId }, { dislike: video.dislike + 1 });
     }
-    res.status(200)
+    res.status(200);
   } catch (error) {
-    console.log(error.message)
+    console.log(error.message);
     res.status(500).json({ error: error.message });
   }
 };
@@ -190,5 +196,5 @@ module.exports = {
   deleteVideo,
   filterVideos,
   deleteAllVideos,
-  pushLikeOrDisLike
+  pushLikeOrDisLike,
 };
