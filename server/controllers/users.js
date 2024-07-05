@@ -27,11 +27,11 @@ const createUser = async (req, res) => {
   //add doc to db
   try {
     const { username, password, firstName, middleName, lastName, birthdate, photo, videos, settings } = req.body;
-    let picture
+    let picture;
     if (photo == null) {
-      picture = process.env.DEFAULT_PHOTO
+      picture = process.env.DEFAULT_PHOTO;
     } else {
-      picture = photo
+      picture = photo;
     }
     const user = await User.create({
       username,
@@ -113,15 +113,15 @@ const getToken = async (req, res) => {
   try {
     const { token } = req.params;
     const decoded = jwt.verify(token, "SECRET_KEY");
-    const user = await User.findById(decoded.userId);
-    
+    const user = await User.findById(decoded.userId).select("-password");
+
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
     res.status(200).json({ user });
   } catch (error) {
-    console.log(error.message)
-    res.status(500).json({ error: error.message });
+    console.log(error.message);
+    res.status(401).json({ error: "Invalid token" });
   }
 };
 

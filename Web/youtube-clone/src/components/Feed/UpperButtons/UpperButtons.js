@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./UpperButtons.module.css";
 import { AppContext } from "../../../AppContext";
@@ -21,6 +21,14 @@ const UserButtons = ({ currentUser, setCurrentUser, darkMode, toggleDarkMode }) 
     navigate(`/userpage/${currentUser._id}`);
   };
 
+  const logout = useCallback(() => {
+    setCurrentUser(null);
+    localStorage.removeItem("token");
+    if (darkMode) toggleDarkMode();
+
+    navigate("/");
+  }, [setCurrentUser, darkMode, toggleDarkMode, navigate]);
+
   return (
     <div className={styles.userWrapper}>
       {currentUser === null ? (
@@ -31,15 +39,7 @@ const UserButtons = ({ currentUser, setCurrentUser, darkMode, toggleDarkMode }) 
       ) : (
         <div>
           <img src={currentUser.photo} id={styles.profileImage} alt="User profile" onClick={() => getToUserPage()} />
-          <button
-            onClick={() => {
-              navigate("/");
-              localStorage.removeItem("token");
-              setCurrentUser(null);
-              if (darkMode) toggleDarkMode(false);
-            }}
-            className={styles.signBtn}
-          >
+          <button onClick={logout} className={styles.signBtn}>
             <i className="bi bi-person"></i>
             <span>Sign out</span>
           </button>

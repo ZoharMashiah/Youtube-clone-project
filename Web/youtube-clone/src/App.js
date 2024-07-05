@@ -8,17 +8,20 @@ import VideoDisplay from "./pages/VideoDisplay/VideoDisplay";
 import { AppContext } from "./AppContext";
 import { useEffect } from "react";
 import UserPage from "./pages/UserPage/UserPage";
+import axios from "axios";
 
 export default function App() {
   const { setCurrentUser, toggleDarkMode } = useContext(AppContext);
 
-  const token = localStorage.getItem("token");
   useEffect(() => {
     const getCurrentUser = async () => {
+      const token = localStorage.getItem("token");
       if (token) {
         try {
-          const response = await fetch(`/api/tokens/${token}`);
-          const data = await response.json();
+          const response = await axios.get(`/api/tokens/${token}`, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          const data = response.data;
           if (data.user) {
             setCurrentUser(data.user);
             if (data.user.settings.darkMode) {
@@ -27,11 +30,37 @@ export default function App() {
           }
         } catch (error) {
           console.error("Error fetching user data:", error);
+          // Clear invalid token
+          localStorage.removeItem("token");
+          setCurrentUser(null);
         }
+      } else {
+        setCurrentUser(null);
       }
     };
     getCurrentUser();
-  }, [token, setCurrentUser, toggleDarkMode]);
+  }, []); // Empty dependency array
+
+  // const token = localStorage.getItem("token");
+  // useEffect(() => {
+  //   const getCurrentUser = async () => {
+  //     if (token) {
+  //       try {
+  //         const response = await fetch(`/api/tokens/${token}`);
+  //         const data = await response.json();
+  //         if (data.user) {
+  //           setCurrentUser(data.user);
+  //           if (data.user.settings.darkMode) {
+  //             toggleDarkMode();
+  //           }
+  //         }
+  //       } catch (error) {
+  //         console.error("Error fetching user data:", error);
+  //       }
+  //     }
+  //   };
+  //   getCurrentUser();
+  // }, [token, setCurrentUser, toggleDarkMode]);
 
   return (
     <BrowserRouter>
