@@ -9,7 +9,7 @@ import { useOutletContext } from "react-router-dom";
 
 export default function Feed() {
   const { trigger, setTrigger } = useOutletContext();
-  const { videoList, isFilltered } = useContext(AppContext);
+  const { videoList, isFilltered, fillteredVideoList } = useContext(AppContext);
 
   return (
     <div className={styles.Home}>
