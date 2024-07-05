@@ -23,9 +23,9 @@ export default function Feed() {
         <div>
           {videoList.length > 0 ? (
             <div className={styles.videoGrid}>
-              {!isFilltered ? videoList.map((video) => <VerticalVideoCard key={video._id} video={video} />) : ""}
-
-              {/* : fillteredVideoList.map((video) => <VerticalVideoCard key={video._id} video={video} /> )} */}
+              {!isFilltered
+                ? videoList.map((video) => <VerticalVideoCard key={video._id} video={video} />)
+                : fillteredVideoList.map((video) => <VerticalVideoCard key={video._id} video={video} />)}
             </div>
           ) : (
             <div>Loading...</div>
