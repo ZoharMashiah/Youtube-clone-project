@@ -21,23 +21,21 @@ class VideoService {
     }
   }
 
-  static async getUnchosenVideos(numberOfVideos, notIn) {
+  static async getUnchosenVideos(numberOfVideos, chosenVideos) {
     try {
-      const videos = await Video.aggregate([
-        { $match: { _id: { $nin: notIn.map((v) => v._id) } } },
-        {
-          $project: {
-            comments: 0,
-            video: 0,
-          },
-        },
-        { $sample: { size: numberOfVideos } },
-      ]);
+      if (!Array.isArray(chosenVideos)) {
+        throw new Error("chosenVideos must be an array");
+      }
 
-      // return await this.#addUserToVideos(videos);
-      return videos;
+      const chosenIds = chosenVideos.map((v) => v._id).filter(Boolean);
+      const query = { _id: { $nin: chosenIds } };
+      const projection = { comments: 0, video: 0 };
+
+      const unchosenVideos = await Video.find(query, projection).sort({ _id: -1 }).limit(numberOfVideos).lean();
+
+      return unchosenVideos;
     } catch (error) {
-      console.log("Error fetching random videos");
+      console.error("Error in getUnchosenVideos:", error);
       throw error;
     }
   }

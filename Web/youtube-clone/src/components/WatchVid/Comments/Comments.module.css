@@ -1,5 +1,4 @@
 .commentsWrapper {
-  margin: auto;
   padding: 0px 30px;
   width: 100%;
 }
@@ -14,36 +13,44 @@
 }
 
 .addCommentWrapper {
+  display: flex;
   width: 100%;
+  margin-bottom: 20px;
+  align-items: center;
+}
+
+.addCommentWrapper input {
+  flex-grow: 1;
+  margin: 0px 10px;
 }
 
 input {
   width: 80%;
-  border: solid;
-  border-top: 3px;
-  border-left: 0px;
-  border-right: 0px;
+  border: none;
+  border-bottom: 1px solid;
   text-align: center;
+}
+
+.button,
+.buttonDisabled {
+  height: fit-content;
+  margin-right: 5px;
+  border: solid;
+  border-radius: 15px;
+  padding: 5px;
+  font-weight: bold;
+  white-space: nowrap;
 }
 
 .button {
   background-color: rgba(0, 34, 255, 0.7);
-  margin-right: 5px;
-  border: solid;
-  border-radius: 15px;
-  padding: 5px;
   border-color: rgba(0, 34, 255, 0.7);
-  font-weight: bold;
   color: white;
   cursor: pointer;
 }
+
 .buttonDisabled {
   background-color: rgba(149, 149, 153, 0.934);
-  margin-right: 5px;
-  border: solid;
-  border-radius: 15px;
-  padding: 5px;
   border-color: rgba(149, 149, 153, 0.934);
-  font-weight: bold;
   color: black;
 }

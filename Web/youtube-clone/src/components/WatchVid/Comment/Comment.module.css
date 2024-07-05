@@ -1,95 +1,65 @@
-.profileImage{
-    margin: 1vw;
-    border-radius: 30px;
-    height: 40px;
-    width: 40px;
-    border-width: 0px;
-    cursor: pointer;
+.profileImage {
+  margin: 10px;
+  border-radius: 30px;
+  height: 40px;
+  width: 40px;
+  border-width: 0px;
+  cursor: pointer;
 }
 
-.user{
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
+.user {
+  display: block;
+  cursor: pointer;
+  font-weight: bold;
 }
 
-.commentWrapper{
-    display: flex;
-    flex-direction: row;
+.reply {
+  cursor: pointer;
 }
 
-.time{
-    color: gray;
-    font-size: 13px;
-    margin-top: 2px;
+.commentWrapper {
+  display: flex;
+  flex-direction: row;
+}
+.body {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.time {
+  color: gray;
+  font-size: 13px;
+  margin: 3px;
+  margin-bottom: 7px;
 }
 
-.user{
-    font-weight: bold;
+.titleWrapper {
+  display: flex;
+  flex-direction: column;
 }
 
-.titleWrapper{
-    display: flex;
-    flex-direction: row;
+.button {
+  padding: 7px;
+  border: none;
+  box-shadow: 1px 1px black;
+  margin: 10px;
+  border-radius: 5px;
 }
 
-
-.edit{
-    position: absolute;
-    left: 60vw;
-    background-color: rgba(221, 221, 221, 0.851);
-    width: 3vw;
-    height: 3vw;
-    border: solid;
-    border-radius: 2vw;
-    border-width: 0px;
-    box-shadow: 1px 1px black;
+.buttonContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+  flex-wrap: nowrap;
 }
 
-.remove{
-    position: absolute;
-    left: 64vw;
-    background-color: rgba(221, 221, 221, 0.851);
-    width: 3vw;
-    height: 3vw;
-    border: solid;
-    border-radius: 2vw;
-    border-width: 0px;
-    box-shadow: 1px 1px black;
+.changeWrapper {
+  display: flex;
+  justify-content: center;
+  width: fit-content;
 }
 
-.cancle{
-    margin: 2vw;
-    margin-left: 10vw;
-    font-weight: bold;
-    background-color: rgba(221, 221, 221, 0.851);
-    width: 5vw;
-    height: 4vh;
-    border: solid;
-    border-radius: 2vw;
-    border-width: 0px;
-    box-shadow: 1px 1px black;
-}
-
-.save{
-    margin: 2vw;
-    margin-left: 1vw;
-    background-color: rgba(221, 221, 221, 0.851);
-    font-weight: bold;
-    width: 5vw;
-    height: 4vh;
-    border: solid;
-    border-radius: 2vw;
-    border-width: 0px;
-    box-shadow: 1px 1px black;
-}
-
-.editText{
-    width: 20vw;
-    height: 4vh;
-}
-
-.change{
-    position:absolute;
-    right: 90vw;
+.editText {
+  width: 20vw;
+  height: 4vh;
 }
