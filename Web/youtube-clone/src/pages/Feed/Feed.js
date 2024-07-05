@@ -9,7 +9,7 @@ import { useOutletContext } from "react-router-dom";
 
 export default function Feed() {
   const { trigger, setTrigger } = useOutletContext();
-  const { videoList, isFilltered, fillteredVideoList } = useContext(AppContext);
+  const { videoList, isFilltered } = useContext(AppContext);
 
   return (
     <div className={styles.Home}>
@@ -21,11 +21,11 @@ export default function Feed() {
           <Categories />
         </div>
         <div>
-          {videoList == [] ? (
+          {videoList.length > 0 ? (
             <div className={styles.videoGrid}>
-              {!isFilltered
-                ? videoList.map((video) => <VerticalVideoCard key={video._id} video={video} />)
-                : fillteredVideoList.map((video) => <VerticalVideoCard key={video._id} video={video} />)}
+              {!isFilltered ? videoList.map((video) => <VerticalVideoCard key={video._id} video={video} />) : ""}
+
+              {/* : fillteredVideoList.map((video) => <VerticalVideoCard key={video._id} video={video} /> )} */}
             </div>
           ) : (
             <div>Loading...</div>

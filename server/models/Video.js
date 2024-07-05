@@ -5,6 +5,8 @@ const Comment = require("./Comment");
 const videoSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.Object,
+    ref: "User",
+    index: true,
   },
   title: {
     type: String,

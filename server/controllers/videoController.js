@@ -5,6 +5,7 @@ const Util = require("../util/util.js");
 
 async function getFeed(req, res) {
   try {
+    console.log("Fetching...");
     const numberOfVideos = 10;
     const mostViewed = await VideoService.getTopVideos(numberOfVideos);
     const unchosenVideos = await VideoService.getUnchosenVideos(numberOfVideos, mostViewed);
