@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
-const User = require("../models/User");
-const CommentService = require("../services/comments");
+const User = require("./User");
+const Comment = require("./Comment");
 
 const videoSchema = new mongoose.Schema({
   user: {
@@ -18,6 +18,7 @@ const videoSchema = new mongoose.Schema({
   views: {
     type: Number,
     default: 0,
+    index: -1,
   },
   like: {
     type: Number,
@@ -43,7 +44,7 @@ videoSchema.statics.deleteVideo = async function (videoId, userId) {
     }
 
     // delete all comments
-    CommentService.deleteAllComment(videoId);
+    await Comment.deleteMany({ videoId: videoId });
 
     // remove video from liked, disliked, history lists
     await User.updateMany(

@@ -31,7 +31,7 @@ export default function App() {
       }
     };
     getCurrentUser();
-  }, [token, setCurrentUser]);
+  }, [token, setCurrentUser, toggleDarkMode]);
 
   return (
     <BrowserRouter>

@@ -6,7 +6,9 @@ const Util = require("../util/util.js");
 async function getFeed(req, res) {
   try {
     const numberOfVideos = 10;
+    console.log("most viewed");
     const mostViewed = await VideoService.getTopVideos(numberOfVideos);
+    console.log("most unchosen");
     const unchosenVideos = await VideoService.getUnchosenVideos(numberOfVideos, mostViewed);
     const videoList = Util.randomizeArray([...mostViewed, ...unchosenVideos]);
 
@@ -76,7 +78,10 @@ async function createVideo(req, res) {
   const video = req.body;
   try {
     const newVideo = await Video.createVideo(video);
-    const videoData = await Video.findDataById(newVideo._id);
+    const videoData = await Video.findDataById(newVideo._id, {
+      comments: 0,
+      video: 0,
+    });
 
     console.log("Video upload processed successfully");
     res.status(201).json(videoData);

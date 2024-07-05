@@ -34,8 +34,8 @@ const UserButtons = ({ currentUser, setCurrentUser, darkMode, toggleDarkMode }) 
           <button
             onClick={() => {
               navigate("/");
-              setCurrentUser(null);
               localStorage.removeItem("token");
+              setCurrentUser(null);
               if (darkMode) toggleDarkMode(false);
             }}
             className={styles.signBtn}

@@ -1,5 +1,4 @@
 import React, { useState, useContext } from "react";
-import axios from "axios";
 import styles from "./Buttons.module.css";
 import { AppContext } from "../../../AppContext";
 
@@ -7,14 +6,18 @@ export default function Buttons({ currentVideo }) {
   const { currentUser } = useContext(AppContext);
   const [numLike, setNumLike] = useState(currentVideo.like);
   const [numDislike, setNumDislike] = useState(currentVideo.dislike);
-  const [isLiked, setIsLiked] = useState(currentUser.likes.includes(currentVideo._id));
-  const [isDisliked, setIsDisliked] = useState(currentUser.dislikes.includes(currentVideo._id));
+  const [isLiked, setIsLiked] = useState(currentUser?.likes.includes(currentVideo._id));
+  const [isDisliked, setIsDisliked] = useState(currentUser?.dislikes.includes(currentVideo._id));
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
   const handleAction = async (action) => {
+    if (!currentUser) {
+      alert("You must log in to react");
+      return;
+    }
     const body = {
       action,
-      userId: currentUser._id,
+      userId: currentUser?._id,
     };
 
     if (action == "like") {

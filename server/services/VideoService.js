@@ -12,8 +12,8 @@ class VideoService {
         }
       )
         .sort({ views: -1 })
-        .limit(numberOfVideos);
-
+        .limit(numberOfVideos)
+        .lean();
       return videos;
     } catch (error) {
       console.log("Error fetching top videos");
@@ -31,7 +31,7 @@ class VideoService {
       const query = { _id: { $nin: chosenIds } };
       const projection = { comments: 0, video: 0 };
 
-      const unchosenVideos = await Video.find(query, projection).sort({ _id: -1 }).limit(numberOfVideos).lean();
+      const unchosenVideos = await Video.find(query, projection).limit(numberOfVideos).lean();
 
       return unchosenVideos;
     } catch (error) {

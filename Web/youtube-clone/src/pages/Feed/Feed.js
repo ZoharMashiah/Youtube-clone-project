@@ -15,19 +15,19 @@ export default function Feed() {
   useEffect(() => {
     const fetchFeed = async () => {
       try {
-        const res = await axios.get("/api/videos");
-        const videoList = res.data;
-        console.log("video list: ", videoList);
-        setVideoList(videoList);
+        const res = await axios.get("/api/videos", { timeout: 0 });
+        const fetchedVideoList = res.data;
+        console.log("video list: ", fetchedVideoList);
+        setVideoList(fetchedVideoList);
       } catch (error) {
         console.error("Error fetching videos:", error);
       }
     };
 
-    if (trigger === false) {
+    if (trigger === false && videoList.length === 0) {
       fetchFeed();
     }
-  }, [trigger]);
+  }, [trigger, videoList]);
 
   return (
     <div className={styles.Home}>
