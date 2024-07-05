@@ -1,18 +1,12 @@
 import React from "react";
 import styles from "./Logo.module.css";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function Logo() {
   const navigate = useNavigate();
-  const location = useLocation();
 
   const handleClick = () => {
-    if (location.pathname === "/") {
-      window.location.reload();
-    } else {
-      navigate("/");
-      setTimeout(() => window.location.reload(), 50);
-    }
+    navigate("/");
   };
 
   return (
