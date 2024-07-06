@@ -44,7 +44,6 @@ const createUser = async (req, res) => {
       videos,
       settings,
     });
-    console.log("created user: ", user);
     const token = jwt.sign({ userId: user._id }, "SECRET_KEY", { expiresIn: "5h" });
 
     res.status(200).json({ user, token });

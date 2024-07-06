@@ -19,7 +19,7 @@ const Comment = new Schema({
     },
   ],
   user: {
-    type: Schema.Types.ObjectId,
+    type: Schema.Types.Object,
     ref: "User",
     required: true,
   },
