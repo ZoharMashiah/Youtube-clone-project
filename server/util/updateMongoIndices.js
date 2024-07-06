@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
-const Video = require("./Video");
-const User = require("./User");
-const Comment = require("./Comment");
-require("dotenv").config({ path: `./config/.env.local` });
+const Video = require("../models/Video");
+const User = require("../models/User");
+const Comment = require("../models/Comment");
+require("dotenv").config({ path: `../config/.env.local` });
 
-async function updateIndices() {
+async function updateMongoIndices() {
   try {
     await mongoose.connect(process.env.MONGO_LINK);
     console.log("Connected to MongoDB");
