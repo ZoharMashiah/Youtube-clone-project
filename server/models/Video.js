@@ -1,16 +1,22 @@
 const mongoose = require("mongoose");
-const User = require("../models/User");
-const CommentService = require("../services/comments");
+const User = require("./User");
+const Comment = require("./Comment");
 
 const videoSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.Object,
+    ref: "User",
+    index: true,
   },
   title: {
     type: String,
+    trim: true,
   },
   description: String,
-  category: String,
+  category: {
+    type: String,
+    index: true,
+  },
   publication_date: {
     type: Date,
     default: Date.now,
@@ -18,6 +24,7 @@ const videoSchema = new mongoose.Schema({
   views: {
     type: Number,
     default: 0,
+    index: -1,
   },
   like: {
     type: Number,
@@ -27,7 +34,7 @@ const videoSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
-  comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "comment" }],
+  comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
   icon: String,
   video: String,
 });
@@ -43,7 +50,7 @@ videoSchema.statics.deleteVideo = async function (videoId, userId) {
     }
 
     // delete all comments
-    CommentService.deleteAllComment(videoId);
+    await Comment.deleteMany({ videoId: videoId });
 
     // remove video from liked, disliked, history lists
     await User.updateMany(

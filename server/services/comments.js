@@ -11,9 +11,9 @@ const createComment = async (user, title, videoId) => {
   });
 
   const video = await Video.findById({ _id: videoId });
-  const videoList = [...video.comments, comment._id];
+  const commentList = [...video.comments, comment._id];
   // add recursivly and remove from list
-  await Video.findByIdAndUpdate({ _id: video._id }, { comments: videoList });
+  await Video.findByIdAndUpdate({ _id: video._id }, { comments: commentList });
 
   return comment;
 };

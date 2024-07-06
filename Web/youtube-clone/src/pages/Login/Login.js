@@ -17,23 +17,18 @@ export default function Login() {
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post("api/tokens", { username, password });
-      if (response.status === 200) {
-        const { user, token } = response.data;
-        localStorage.setItem("token", token);
-        return user;
-      } else {
-        alert("Login failed: could not get user");
-        console.log("Login failed: could not get user");
-        return false;
-      }
+      const response = await axios.post("/api/tokens", { username, password });
+      const { user, token } = response.data;
+      localStorage.setItem("token", token);
+      return user;
     } catch (error) {
-      alert("Login failed", error.message);
-      return false;
+      console.error("Login error:", error.response?.data?.message || error.message);
+      throw error;
     }
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     setIsLoading(true);
     try {
       let user = await handleLogin();
