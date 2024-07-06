@@ -7,7 +7,9 @@ async function getFeed(req, res) {
   try {
     console.log("Fetching...");
     const numberOfVideos = 10;
+    console.log("Top 10 started");
     const mostViewed = await VideoService.getTopVideos(numberOfVideos);
+    console.log("10 other started");
     const unchosenVideos = await VideoService.getUnchosenVideos(numberOfVideos, mostViewed);
     const videoList = Util.randomizeArray([...mostViewed, ...unchosenVideos]);
 

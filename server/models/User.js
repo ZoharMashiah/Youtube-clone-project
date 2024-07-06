@@ -7,6 +7,7 @@ const userSchema = new Schema({
     type: String,
     required: true,
     unique: true,
+    index: true,
   },
   password: {
     type: String,
@@ -31,8 +32,8 @@ const userSchema = new Schema({
     type: String,
   },
   videos: [{ type: Schema.Types.ObjectId, ref: "Video" }],
-  likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Video" }],
-  dislikes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Video" }],
+  likes: [{ type: Schema.Types.ObjectId, ref: "Video" }],
+  dislikes: [{ type: Schema.Types.ObjectId, ref: "Video" }],
   settings: {
     type: Object,
     required: true,

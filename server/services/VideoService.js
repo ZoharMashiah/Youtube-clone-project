@@ -1,8 +1,13 @@
 const Video = require("../models/Video");
 const User = require("../models/User");
+const mongoose = require("mongoose");
 
 class VideoService {
   static async getTopVideos(numberOfVideos) {
+    const latency = await VideoService.measureDatabaseLatency();
+    console.log(`Database latency: ${latency}ms`);
+    const startQuery = Date.now();
+
     try {
       const videos = await Video.find(
         {},
@@ -14,6 +19,12 @@ class VideoService {
         .sort({ views: -1 })
         .limit(numberOfVideos)
         .lean();
+
+      const endQuery = Date.now();
+      console.log(`Query execution time: ${endQuery - startQuery}ms`);
+      console.log(`Total operation time: ${endQuery - startQuery + latency}ms`);
+      console.log(`Number of documents returned for the 10 most viewed videos: ${videos.length}`);
+
       return videos;
     } catch (error) {
       console.log("Error fetching top videos");
@@ -49,6 +60,18 @@ class VideoService {
     };
     const userVideoList = await Video.find({ user: cutUser }).sort({ title: 1 });
     return userVideoList;
+  }
+
+  static async measureDatabaseLatency() {
+    const start = Date.now();
+    try {
+      await mongoose.connection.db.admin().ping();
+      const end = Date.now();
+      return end - start;
+    } catch (error) {
+      console.error("Error pinging database:", error);
+      return null;
+    }
   }
 }
 

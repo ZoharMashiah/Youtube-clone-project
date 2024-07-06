@@ -10,9 +10,13 @@ const videoSchema = new mongoose.Schema({
   },
   title: {
     type: String,
+    trim: true,
   },
   description: String,
-  category: String,
+  category: {
+    type: String,
+    index: true,
+  },
   publication_date: {
     type: Date,
     default: Date.now,
@@ -30,7 +34,7 @@ const videoSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
-  comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "comment" }],
+  comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
   icon: String,
   video: String,
 });

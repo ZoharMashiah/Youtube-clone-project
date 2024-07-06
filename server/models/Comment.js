@@ -4,16 +4,23 @@ const Schema = mongoose.Schema;
 const Comment = new Schema({
   parentId: {
     type: Schema.Types.ObjectId,
+    ref: "Comment",
   },
   videoId: {
     type: Schema.Types.ObjectId,
+    ref: "Video",
     required: true,
+    index: true,
   },
-  childernId: {
-    type: [Schema.Types.ObjectId],
-  },
-  user:{
-    type: Schema.Types.Object,
+  childrenIds: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Comment",
+    },
+  ],
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
     required: true,
   },
   title: {

@@ -34,7 +34,6 @@ export default function VideoDisplay() {
       console.log("Fetching video for creator:", userId, "video:", videoId);
       const address = `/api/users/${userId}/videos/${videoId}`;
       const response = await axios.get(address);
-
       setCurrentVideo(response.data);
       setVideoList((prevVideoList) =>
         prevVideoList.map((video) =>
