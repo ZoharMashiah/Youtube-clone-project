@@ -24,7 +24,6 @@ const UserButtons = ({ currentUser, setCurrentUser, darkMode, toggleDarkMode }) 
   const logout = useCallback(() => {
     setCurrentUser(null);
     localStorage.removeItem("token");
-    if (darkMode) toggleDarkMode();
 
     navigate("/");
   }, [setCurrentUser, darkMode, toggleDarkMode, navigate]);
