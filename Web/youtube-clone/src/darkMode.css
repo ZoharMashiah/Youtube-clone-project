@@ -36,3 +36,8 @@ body.dark-mode .submit-button:hover {
 body.dark-mode .return-login {
   color: #1abc9c;
 }
+
+body.dark-mode #user,
+body.dark-mode #views {
+  color: #bdc3c7;
+}

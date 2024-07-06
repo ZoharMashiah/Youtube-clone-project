@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import styles from "./Logo.module.css";
 import { useNavigate } from "react-router-dom";
+import { AppContext } from "../../../AppContext";
 
 export default function Logo() {
   const navigate = useNavigate();
+  const { stopFilter } = useContext(AppContext);
 
   const handleClick = () => {
+    stopFilter();
     navigate("/");
   };
 
