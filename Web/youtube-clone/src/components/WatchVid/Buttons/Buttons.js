@@ -1,5 +1,4 @@
 import React, { useState, useContext } from "react";
-import axios from "axios";
 import styles from "./Buttons.module.css";
 import { AppContext } from "../../../AppContext";
 
@@ -13,12 +12,12 @@ export default function Buttons({ currentVideo }) {
 
   const handleAction = async (action) => {
     if (!currentUser) {
-      alert("You need to have a user to do like/dislike")
+      alert("You must log in to react");
       return;
     }
     const body = {
       action,
-      userId: currentUser._id,
+      userId: currentUser?._id,
     };
 
     if (action == "like") {

@@ -40,18 +40,18 @@ export default function Comments({ currentVideo }) {
     }
   };
 
-  const organizeComments = (id) => {
-    let organizeComment = comments.map((comment) => {
+  const orgenizeComments = (id) => {
+    let orgenizeCommen = comments.map((comment) => {
       if (comment.parentId === id) {
         return (
-          <div style={{ position: "relative", marginLeft: "40px" }} className={styles.commentWrapper}>
+          <div style={{ position: "relative", left: "3vw" }} className={styles.commentWrapper}>
             <Comment {...comment} currentUser={currentUser} triger={triger} setTriger={setTriger} />
-            {organizeComments(comment._id)}
+            {orgenizeComments(comment._id)}
           </div>
         );
       }
     });
-    return organizeComment;
+    return orgenizeCommen;
   };
 
   useEffect(() => {
@@ -76,7 +76,7 @@ export default function Comments({ currentVideo }) {
           type="submit"
           className={title.length === 0 ? styles.buttonDisabled : styles.button}
           disabled={title.length === 0}
-          onClick={() => addCommentToVideo()}
+          onClick={(e) => addCommentToVideo(e)}
         >
           Post
         </button>
@@ -89,7 +89,7 @@ export default function Comments({ currentVideo }) {
             else alert("You need to login to write a comment");
           }}
         />
-        {currentUser?<img src={currentUser.photo} alt="User Profile" className={styles.profileImage} />:""}
+        {currentUser ? <img src={currentUser.photo} alt="User Profile" className={styles.profileImage} /> : ""}
       </form>
       {comments &&
         comments.map((comment) => {
@@ -97,7 +97,7 @@ export default function Comments({ currentVideo }) {
             return (
               <div>
                 <Comment {...comment} currentUser={currentUser} triger={triger} setTriger={setTriger} />
-                {organizeComments(comment._id)}
+                {orgenizeComments(comment._id)}
               </div>
             );
           }
