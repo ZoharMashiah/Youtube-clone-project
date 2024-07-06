@@ -89,7 +89,7 @@ export default function Comments({ currentVideo }) {
             else alert("You need to login to write a comment");
           }}
         />
-        <img src={currentUser.photo} alt="User Profile" className={styles.profileImage} />
+        {currentUser?<img src={currentUser.photo} alt="User Profile" className={styles.profileImage} />:""}
       </form>
       {comments &&
         comments.map((comment) => {

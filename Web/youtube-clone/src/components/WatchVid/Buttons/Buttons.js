@@ -7,11 +7,15 @@ export default function Buttons({ currentVideo }) {
   const { currentUser } = useContext(AppContext);
   const [numLike, setNumLike] = useState(currentVideo.like);
   const [numDislike, setNumDislike] = useState(currentVideo.dislike);
-  const [isLiked, setIsLiked] = useState(currentUser.likes.includes(currentVideo._id));
-  const [isDisliked, setIsDisliked] = useState(currentUser.dislikes.includes(currentVideo._id));
+  const [isLiked, setIsLiked] = useState(currentUser?.likes.includes(currentVideo._id));
+  const [isDisliked, setIsDisliked] = useState(currentUser?.dislikes.includes(currentVideo._id));
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
   const handleAction = async (action) => {
+    if (!currentUser) {
+      alert("You need to have a user to do like/dislike")
+      return;
+    }
     const body = {
       action,
       userId: currentUser._id,
