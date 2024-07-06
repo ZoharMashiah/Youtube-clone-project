@@ -7,7 +7,6 @@ require("dotenv").config({ path: `./config/.env.local` });
 async function updateIndices() {
   try {
     await mongoose.connect(process.env.MONGO_LINK);
-
     console.log("Connected to MongoDB");
 
     console.log("Syncing Video indices...");
