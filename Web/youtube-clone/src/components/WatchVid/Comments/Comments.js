@@ -1,88 +1,107 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import styles from "./Comments.module.css";
 import Comment from "../Comment/Comment";
+import { useParams } from "react-router-dom";
+import { AppContext } from "../../../AppContext";
 
-export default function Comments({
-  currentVideo,
-  editVideo,
-  videos,
-  currentUser,
-  editCurrent,
-  editComment,
-  deleteComment,
-}) {
-  const [addComment, setAddComment] = useState("");
+export default function Comments({ currentVideo }) {
+  const { currentUser } = useContext(AppContext);
+  const { userId, videoId } = useParams();
+  const [title, setTitle] = useState("");
+  const [comments, setComments] = useState([]);
+  const [triger, setTriger] = useState(false);
 
-  const getMaxId = () => {
-    let id = 0;
-    currentVideo.comments.map((com) => {
-      if (com.id > id) id = com.id;
-    });
-    return id;
-  };
-  const addCommentToVideo = (comment) => {
-    let addedComment = {
-      id: getMaxId() + 1,
-      title: comment,
-      user: currentUser.username,
-      date: Date.now(),
-      icon:
-        currentUser.photo == null
-          ? "utilites/png-transparent-user-profile-2018-in-sight-user-conference-expo-business-default-business-angle-service-people-thumbnail.png"
-          : currentUser.photo,
+  const addCommentToVideo = async (e) => {
+    e.preventDefault();
+    const comment = {
+      title: title,
+      user: {
+        _id: currentUser._id,
+        username: currentUser.username,
+        photo: currentUser.photo,
+      },
     };
-    let changedVideo = {
-      id: currentVideo.id,
-      title: currentVideo.title,
-      description: currentVideo.description,
-      user: currentVideo.user,
-      user_image: currentVideo.user_image,
-      category: currentVideo.category,
-      publication_date: currentVideo.publication_date,
-      icon: currentVideo.icon,
-      video: currentVideo.video,
-      views: currentVideo.views,
-      like: currentVideo.like,
-      dislike: currentVideo.dislike,
-      comments: [...currentVideo.comments,addedComment]
+    const response = await fetch(`/api/users/${userId}/videos/${videoId}/comments/`, {
+      method: "POST",
+      body: JSON.stringify(comment),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const json = await response.json();
+
+    if (response.ok) {
+      setTitle("");
+      setTriger(true);
+      console.log("new comment added", json);
+    } else {
+      alert(response.error);
     }
-    setAddComment("")
-    editVideo(changedVideo)
-  }
+  };
+
+  const orgenizeComments = (id) => {
+    let orgenizeCommen = comments.map((comment) => {
+      if (comment.parentId === id) {
+        return (
+          <div style={{ position: "relative", left: "3vw" }} className={styles.commentWrapper}>
+            <Comment {...comment} currentUser={currentUser} triger={triger} setTriger={setTriger} />
+            {orgenizeComments(comment._id)}
+          </div>
+        );
+      }
+    });
+    return orgenizeCommen;
+  };
+
+  useEffect(() => {
+    const fetchComments = async () => {
+      const response = await fetch(`/api/users/${userId}/videos/${videoId}/comments/`);
+      const json = await response.json();
+
+      if (response.ok) {
+        setComments(json);
+        setTriger(false);
+      }
+    };
+
+    fetchComments();
+  }, [triger]);
 
   return (
     <div className={styles.commentsWrapper}>
       <h4>{currentVideo.comments.length} Comments</h4>
-      <div className={styles.addCommentWrapper}>
+      <form className={styles.addCommentWrapper} onSubmit={addCommentToVideo}>
         <button
-          className={addComment.length === 0 ? styles.buttonDisabled : styles.button}
-          disabled={addComment.length === 0}
-          onClick={() => addCommentToVideo(addComment)}
+          type="submit"
+          className={title.length === 0 ? styles.buttonDisabled : styles.button}
+          disabled={title.length === 0}
+          onClick={(e) => addCommentToVideo(e)}
         >
           Post
         </button>
         <input
           placeholder="Add Comment"
-          value={addComment}
+          type="text"
+          value={title}
           onChange={(e) => {
-            if (currentUser != null) setAddComment(e.target.value);
+            if (currentUser != null) setTitle(e.target.value);
             else alert("You need to login to write a comment");
           }}
         />
-        <img
-          src={
-            currentUser?.photo == null
-              ? "utilites/png-transparent-user-profile-2018-in-sight-user-conference-expo-business-default-business-angle-service-people-thumbnail.png"
-              : currentUser.photo
+        {currentUser ? <img src={currentUser.photo} alt="User Profile" className={styles.profileImage} /> : ""}
+      </form>
+      {comments &&
+        comments.map((comment) => {
+          if (comment.parentId == undefined) {
+            return (
+              <div>
+                <Comment {...comment} currentUser={currentUser} triger={triger} setTriger={setTriger} />
+                {orgenizeComments(comment._id)}
+              </div>
+            );
           }
-          className={styles.profileImage}
-        />
-      </div>
-      {currentVideo.comments.map((comment) => {
-        return (
-          <Comment {...comment} currentUser={currentUser} editComment={editComment} deleteComment={deleteComment} />
-        );
-      })}
+        })}
     </div>
   );
 }

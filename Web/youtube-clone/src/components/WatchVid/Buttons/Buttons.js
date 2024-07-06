@@ -1,44 +1,73 @@
-import React, {useState} from 'react'
-import styles from './Buttons.module.css'
+import React, { useState, useContext } from "react";
+import styles from "./Buttons.module.css";
+import { AppContext } from "../../../AppContext";
 
-export default function Buttons({currentVideo,likedPush, deleteVideo, currentUser}) {
-  const [liked, setliked] = useState(false)
-  const [disliked, setdisliked] = useState(false)
-  const [likeNumber, setlikeNumber] = useState(currentVideo.like)
-  const [dislikeNumber, setdislikeNumber] = useState(currentVideo.dislike)
+export default function Buttons({ currentVideo }) {
+  const { currentUser } = useContext(AppContext);
+  const [numLike, setNumLike] = useState(currentVideo.like);
+  const [numDislike, setNumDislike] = useState(currentVideo.dislike);
+  const [isLiked, setIsLiked] = useState(currentUser?.likes.includes(currentVideo._id));
+  const [isDisliked, setIsDisliked] = useState(currentUser?.dislikes.includes(currentVideo._id));
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+
+  const handleAction = async (action) => {
+    if (!currentUser) {
+      alert("You must log in to react");
+      return;
+    }
+    const body = {
+      action,
+      userId: currentUser?._id,
+    };
+
+    if (action == "like") {
+      if (isLiked == true) {
+        setIsLiked(false);
+        setNumLike(numLike - 1);
+      } else {
+        if (isDisliked == true) {
+          setIsDisliked(false);
+          setNumDislike(numDislike - 1);
+        }
+        setIsLiked(true);
+        setNumLike(numLike + 1);
+      }
+    } else if (action == "dislike") {
+      if (isDisliked == true) {
+        setIsDisliked(false);
+        setNumDislike(numDislike - 1);
+      } else {
+        if (isLiked == true) {
+          setIsLiked(false);
+          setNumLike(numLike - 1);
+        }
+        setIsDisliked(true);
+        setNumDislike(numDislike + 1);
+      }
+    }
+    setIsButtonDisabled(true);
+
+    setTimeout(() => setIsButtonDisabled(false), 2000);
+
+    const res = await fetch(`/api/users/${currentVideo.user._id}/videos/${currentVideo._id}/action`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    });
+  };
+
   return (
     <div className={styles.buttonsWrapper}>
-      <img src={currentVideo.user_image===null? 'utilites/png-transparent-user-profile-2018-in-sight-user-conference-expo-business-default-business-angle-service-people-thumbnail.png': currentVideo.user_image} className={styles.profileImage} />
-      <p className={styles.userName}>{currentVideo.user}</p>
-      <div className={styles.likedDislikedWrapper}>
-        <button className={styles.likedBtn} onClick={() => {
-          if(currentUser != null)
-            likedPush(currentUser.username, true)
-          else
-            alert("You need to have a user to do like or dislike")
-        }}>
-          <p className={styles.num}>{currentVideo.like.length}</p>
-          <i class={currentVideo.like.includes(currentUser?.username) ? "bi bi-hand-thumbs-up-fill" : "bi bi-hand-thumbs-up"} className={styles.liked}></i>
-        </button>
-        <button className={styles.dislikedBtn} onClick={() => {
-          if(currentUser != null)
-            likedPush(currentUser.username, false)
-          else
-            alert("You need to have a user to do like or dislike")
-        }}>
-          <i class={currentVideo.dislike.includes(currentUser?.username) ? "bi bi-hand-thumbs-down-fill" : "bi bi-hand-thumbs-down"} className={styles.liked}></i>
-          <p className={styles.num}>{currentVideo.dislike.length}</p>
-          </button>
-      </div>
-      {/* <button className={styles.shareButton}>
-        <i class="bi bi-share" className={styles.shareIcon}></i>
-      </button> */}
-      { currentUser?.username === currentVideo.user &&
-        <button className={styles.shareButton} onClick={() => {
-          deleteVideo(currentVideo.id)
-      }}>
-        <i class="bi bi-trash" className={styles.liked}></i>
-      </button> }
+      <button disabled={isButtonDisabled} className={styles.likedBtn} onClick={() => handleAction("like")}>
+        <i className={`${styles.liked} ${isLiked ? "bi bi-hand-thumbs-up-fill" : "bi bi-hand-thumbs-up"}`}></i>
+        <p className={styles.num}>{numLike || 0}</p>
+      </button>
+      <button disabled={isButtonDisabled} className={styles.dislikedBtn} onClick={() => handleAction("dislike")}>
+        <i className={`${styles.liked} ${isDisliked ? "bi bi-hand-thumbs-down-fill" : "bi bi-hand-thumbs-down"}`}></i>
+        <p className={styles.num}>{numDislike || 0}</p>
+      </button>
     </div>
-  )
+  );
 }

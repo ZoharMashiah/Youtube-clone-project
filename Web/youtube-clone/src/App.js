@@ -1,68 +1,78 @@
+import React, { useContext } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Layout from "./pages/Layout/Layout";
 import Feed from "./pages/Feed/Feed";
-import "./App.css";
-import React, { useState, useEffect } from "react";
 import Login from "./pages/Login/Login";
 import Signup from "./pages/Signup/Signup";
-import vid from "./data/videos.json";
+import VideoDisplay from "./pages/VideoDisplay/VideoDisplay";
+import { AppContext } from "./AppContext";
+import { useEffect } from "react";
+import UserPage from "./pages/UserPage/UserPage";
+import axios from "axios";
 
-function App() {
-  const [users, setusers] = useState([]);
-  const [currentUser, setcurrentUser] = useState(null);
-  const [darkMode, setDarkMode] = useState(false);
-  const [videos, setVideos] = useState(vid);
+export default function App() {
+  const { setCurrentUser, toggleDarkMode } = useContext(AppContext);
 
   useEffect(() => {
-    createFakeUser();
-  }, []);
-  const createFakeUser = () => {
-    const fakeUser = {
-      id: 89,
-      username: "admin",
-      password: "admin",
-      firstName: "Test",
-      middleName: "",
-      lastName: "User",
-      birthDate: "1990-01-01",
-      photo: "",
-    };
-    setusers((prevUsers) => {
-      if (!prevUsers.some((user) => user.username === fakeUser.username)) {
-        return [...prevUsers, fakeUser];
+    const getCurrentUser = async () => {
+      const token = localStorage.getItem("token");
+      if (token) {
+        try {
+          const response = await axios.get(`/api/tokens/${token}`, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          const data = response.data;
+          if (data.user) {
+            setCurrentUser(data.user);
+            if (data.user.settings.darkMode) {
+              toggleDarkMode();
+            }
+          }
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+          // Clear invalid token
+          localStorage.removeItem("token");
+          setCurrentUser(null);
+        }
+      } else {
+        setCurrentUser(null);
       }
-      return prevUsers;
-    });
-  };
+    };
+    getCurrentUser();
+  }, []); // Empty dependency array
+
+  // const token = localStorage.getItem("token");
+  // useEffect(() => {
+  //   const getCurrentUser = async () => {
+  //     if (token) {
+  //       try {
+  //         const response = await fetch(`/api/tokens/${token}`);
+  //         const data = await response.json();
+  //         if (data.user) {
+  //           setCurrentUser(data.user);
+  //           if (data.user.settings.darkMode) {
+  //             toggleDarkMode();
+  //           }
+  //         }
+  //       } catch (error) {
+  //         console.error("Error fetching user data:", error);
+  //       }
+  //     }
+  //   };
+  //   getCurrentUser();
+  // }, [token, setCurrentUser, toggleDarkMode]);
 
   return (
     <BrowserRouter>
       <Routes>
-        <Route
-          path="/login"
-          element={
-            <Login users={users} setcurrentUser={setcurrentUser} darkMode={darkMode} setDarkMode={setDarkMode} />
-          }
-        />
-        <Route
-          path="/signup"
-          element={<Signup users={users} setusers={setusers} darkMode={darkMode} setDarkMode={setDarkMode} />}
-        />
-        <Route
-          path="/"
-          element={
-            <Feed
-              currentUser={currentUser}
-              setcurrentUser={setcurrentUser}
-              darkMode={darkMode}
-              setDarkMode={setDarkMode}
-              videos={videos}
-              setVideos={setVideos}
-            />
-          }
-        />
+        <Route element={<Layout />}>
+          <Route path="/" element={<Feed />} />
+          <Route path="/users/:userId/videos/:videoId" element={<VideoDisplay />} />
+          <Route path="/userpage/:userId" element={<UserPage />} />
+        </Route>
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
       </Routes>
     </BrowserRouter>
   );
 }
-
-export default App;

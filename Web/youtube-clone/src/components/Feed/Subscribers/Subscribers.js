@@ -6,7 +6,7 @@ export default function Subscribers() {
   return (
     <div>
       <h3>Subscribers</h3>
-      {subscribers.length == 0 ? (
+      {subscribers.length === 0 ? (
         <p>No subscribers yet.</p>
       ) : (
         subscribers.map((subscriber) => {

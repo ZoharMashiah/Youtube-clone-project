@@ -1,14 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import styles from "./AddVideoPopup.module.css";
 import Dropdown from "react-bootstrap/Dropdown";
+import { AppContext } from "../../AppContext";
+import axios from "axios";
 
-export default function AddVideoPopup({ currenUser, setvideos, videos, setfilterdVideos, onClose }) {
-  const [title, settitle] = useState("");
-  const [description, setdescription] = useState("");
-  const [image, setimage] = useState(null);
-  const [video, setvideo] = useState(null);
-  const [category, setcategory] = useState("");
-  const [categories, setCategories] = useState([
+export default function AddVideoPopup({ onClose }) {
+  const { currentUser, videoList, setVideoList } = useContext(AppContext);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [image, setImage] = useState(null);
+  const [video, setVideo] = useState(null);
+  const [category, setCategory] = useState("");
+  const categories = [
     "Music",
     "Mixes",
     "JavaScript",
@@ -23,82 +26,62 @@ export default function AddVideoPopup({ currenUser, setvideos, videos, setfilter
     "Comedy clubs",
     "Skills",
     "3D printing",
-  ]);
+  ];
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const isAdmin = currenUser.username === "admin" && currenUser.password === "admin";
 
-    if (!isAdmin && !isFormValid()) {
-      alert("Fill all the fields!");
+    const isFormValid =
+      title.trim() !== "" && description.trim() !== "" && category.trim() !== "" && image !== null && video !== null;
+    if (!isFormValid) {
+      alert("Fill all of the fields!");
       return;
     }
 
     try {
       const newVideo = await createNewVideo();
-      const address = `/api/users/${currenUser.id}/video`;
-      const res = await fetch(address, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newVideo),
-      });
+      const address = `/api/users/${currentUser._id}/videos`;
+      console.log("Sending request to:", address);
 
-      const data = await res.json();
-      console.log(data);
+      const res = await axios.post(address, newVideo);
 
-      if (!res.ok) {
-        console.log("Full response:", res);
-        console.log("Sending request to:", address);
-        throw new Error(`HTTP error. status: ${res.status}`);
-      }
+      setVideoList([...videoList, res.data]);
 
       alert("Upload is successful!");
     } catch (error) {
       console.error("Error adding video:", error);
+      if (error.response) {
+        console.log("Full response:", error.response);
+        console.log("Error data:", error.response.data);
+        console.log("Error status:", error.response.status);
+      } else if (error.request) {
+        console.log("No response received:", error.request);
+      } else {
+        console.log("Error message:", error.message);
+      }
       alert("Failed to add video. Please try again.");
+    } finally {
+      resetForm();
     }
-
-    resetForm();
   };
-
-  const isFormValid = () => {
-    return (
-      title.trim() !== "" && description.trim() !== "" && category.trim() !== "" && image !== null && video !== null
-    );
-  };
-
-  useEffect(() => {
-    if (currenUser.username === "admin" && currenUser.password === "admin") {
-      settitle("Admin Default Title");
-      setdescription("Admin Default Description");
-      setcategory("Admin Default Category");
-    }
-  }, [currenUser]);
 
   const createNewVideo = async () => {
     return {
+      user_id: currentUser._id,
       title: title,
       description: description,
-      user: currenUser.username,
       category: category,
-      publication_date: Date.now(),
-      icon: image,
       video: video,
-      views: 0,
-      like: [],
-      dislike: [],
-      comments: [],
+      icon: image,
     };
   };
 
   const resetForm = () => {
-    settitle("");
-    setdescription("");
-    setimage(null);
-    setvideo(null);
-    setcategory("");
+    setTitle("");
+    setDescription("");
+    setImage(null);
+    setVideo(null);
+    setCategory("");
     onClose();
   };
 
@@ -122,13 +105,13 @@ export default function AddVideoPopup({ currenUser, setvideos, videos, setfilter
             name="title"
             value={title}
             onChange={(e) => {
-              settitle(e.target.value);
+              setTitle(e.target.value);
             }}
           />
           <input
             placeholder="Description"
             value={description}
-            onChange={(e) => setdescription(e.target.value)}
+            onChange={(e) => setDescription(e.target.value)}
             name="description"
           />
           <Dropdown className={styles.dropdown}>
@@ -137,50 +120,57 @@ export default function AddVideoPopup({ currenUser, setvideos, videos, setfilter
             </Dropdown.Toggle>
             <Dropdown.Menu className={styles.selectCategory}>
               {categories.map((categ) => (
-                <Dropdown.Item key={categ} onClick={() => setcategory(categ)}>
+                <Dropdown.Item key={categ} onClick={() => setCategory(categ)}>
                   {categ}
                 </Dropdown.Item>
               ))}
             </Dropdown.Menu>
           </Dropdown>
-          <input
-            className={styles.videoUpload}
-            type="file"
-            alt="Upload Video"
-            name="video"
-            accept=".mp4"
-            onChange={async (e) => {
-              const file = e.target.files[0];
-              if (file) {
-                try {
-                  const dataUrl = await readFileAsDataURL(file);
-                  setvideo(dataUrl);
-                } catch (error) {
-                  console.error("Error reading file:", error);
+          <div className="mb-3">
+            <label>Upload Video</label>
+            <input
+              className={styles.videoUpload}
+              type="file"
+              alt="Upload Video"
+              name="video"
+              accept=".mp4"
+              onChange={async (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                  try {
+                    const dataUrl = await readFileAsDataURL(file);
+                    setVideo(dataUrl);
+                  } catch (error) {
+                    console.error("Error reading file:", error);
+                  }
                 }
-              }
-            }}
-          />
-          <input
-            className={styles.photoUpload}
-            type="file"
-            alt="Upload Photo"
-            accept=".png, .jpeg, .jpg"
-            name="thumbnail"
-            onChange={async (e) => {
-              const file = e.target.files[0];
-              if (file) {
-                try {
-                  const dataUrl = await readFileAsDataURL(file);
-                  setimage(dataUrl);
-                } catch (error) {
-                  console.error("Error reading file:", error);
+              }}
+            />
+          </div>
+
+          <div className="mb-3">
+            <label>Upload Thumbnail</label>
+            <input
+              className={styles.photoUpload}
+              type="file"
+              alt="Upload Photo"
+              accept=".png, .jpeg, .jpg"
+              name="thumbnail"
+              onChange={async (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                  try {
+                    const dataUrl = await readFileAsDataURL(file);
+                    setImage(dataUrl);
+                  } catch (error) {
+                    console.error("Error reading file:", error);
+                  }
                 }
-              }
-            }}
-          />
+              }}
+            />
+          </div>
           <div className="btn-group">
-            <button class="btn btn-primary" className={styles.cancelBtn} onClick={resetForm}>
+            <button class="btn btn-primary" className={styles.cancelBtn} onClick={onClose}>
               Cancel
             </button>
             <button type="submit" class="btn btn-primary" className={styles.addBtn}>

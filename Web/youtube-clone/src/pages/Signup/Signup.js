@@ -1,20 +1,60 @@
-import React, { useState } from 'react';
-import './Signup.css';
-import icon from '../../components/Login/LoginImages/1716994828673_imgbg.net.png';
-import Signupwrapper from '../../components/Signup/Signupwrapper/Signupwrapper';
+import React, { useState, useEffect, useContext } from "react";
+import "./Signup.css";
+import axios from "axios";
+import Signupwrapper from "../../components/Signup/Signupwrapper/Signupwrapper";
+import { AppContext } from "../../AppContext";
+import { useNavigate } from "react-router-dom";
 
-export default function Signup({ users, setusers, darkMode, setDarkMode }) {
+import DarkModeButton from "../../components/DarkModeButton/DarkModeButton";
 
-  const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
+export default function Signup({}) {
+  const [users, setUsers] = useState([]);
+  const { currentUser } = useContext(AppContext);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (currentUser) {
+      console.log("Logged in as: ", currentUser);
+      navigate("/");
+    }
+
+    const fetchUsers = async () => {
+      try {
+        const response = await axios.get("/api/users");
+        setUsers(response.data);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    };
+    fetchUsers();
+  }, [currentUser, navigate]);
+
+  const { darkMode } = useContext(AppContext);
+
+  const handleSignup = async (newUser) => {
+    try {
+      let res = await fetch("/api/users/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newUser),
+      });
+      if (res.ok) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      console.error("Signup error:", error);
+      alert("Signup failed", error);
+    }
   };
 
   return (
-    <div className={`Signup-page ${darkMode ? 'dark-mode' : ''}`}>
-      <button className='dark-mode-toggle' onClick={toggleDarkMode}>
-        {darkMode ? 'Light Mode' : 'Dark Mode'}
-      </button>
-      <Signupwrapper users={users} setusers={setusers} />
+    <div className={`Signup-page ${darkMode ? "dark-mode" : ""}`}>
+      <DarkModeButton style={"dark-mode-toggle"} />
+      <Signupwrapper handleSignup={handleSignup} />
     </div>
   );
 }

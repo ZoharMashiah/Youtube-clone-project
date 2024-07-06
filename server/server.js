@@ -3,34 +3,39 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const path = require("path");
 const fileUpload = require("express-fileupload");
-const jwt = require("jsonwebtoken");
-const session = require("express-session");
 const mongoose = require("mongoose");
 
-// here the uri to the mongoose, its gonna throw and print an error but wont stop the server
-const mongoURI = "mongodb+srv://blah blah uri here";
+const feedRouter = require("./routes/feedRoutes");
+const userRouter = require("./routes/userRoutes");
+const tokenRouter = require("./routes/tokenRoutes");
 
-const videoRoutes = require("./routes/videoRoutes");
+require("dotenv").config({ path: `./config/.env.local` });
 
 const app = express();
-
-app.use(cors());
-app.use(express.static(path.join(__dirname, "../Web/youtube-clone/build")));
-app.use(bodyParser.json({ limit: "50mb" }));
-app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
-app.use(fileUpload());
-app.use(videoRoutes);
-
 mongoose
-  .connect(mongoURI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(process.env.MONGO_LINK)
   .then(() => {
+    app.use(cors());
+    app.use(express.static(path.join(__dirname, "../Web/youtube-clone/build")));
+    app.use(bodyParser.json({ limit: "50mb" }));
+    app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
+    app.use(fileUpload());
+    app.use("/", feedRouter);
+    app.use("/api/users", userRouter);
+    app.use("/api/tokens", tokenRouter);
+
+    // app.use((req, res, next) => {
+    //   console.log(`${req.method} ${req.url}`);
+    //   next();
+    // });
+
+    app.get("*", (req, res) => {
+      res.sendFile(path.resolve("../Web/youtube-clone", "build", "index.html"));
+    });
+
+    app.listen(process.env.PORT, () => console.log("Server running on port " + process.env.PORT));
     console.log("Connected to mongoose");
   })
   .catch((error) => {
     console.log("Error connecting to mongoose: ", error);
   });
-
-app.listen(3000, () => console.log("Server running on port 3000"));
