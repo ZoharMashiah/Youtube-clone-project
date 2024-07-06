@@ -35,7 +35,16 @@
   display: flex;
   flex-direction: row;
   width: 100%;
+  height: 100%;
   justify-content: space-between;
+}
+
+.titleWrapper {
+  margin-left: 20px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .metaData {
@@ -46,27 +55,15 @@
   min-width: 200px;
 }
 
-.titleWrapper {
-  margin-left: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
 #title {
-  font-size: 15px;
   font-weight: 600;
   margin-bottom: 5px;
 }
 
-#user {
-  font-size: 13px;
-  font-weight: 500;
-  color: rgb(110, 110, 110);
-}
-
-#views {
-  font-size: 12px;
-  font-weight: 500;
-  color: rgb(110, 110, 110);
+#title h2 {
+  font-weight: bold;
+  size: 0.6em;
+  letter-spacing: 50%;
+  padding: 10px;
+  margin-bottom: 5px;
 }

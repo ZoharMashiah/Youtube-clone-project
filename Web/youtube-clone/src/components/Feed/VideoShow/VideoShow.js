@@ -38,11 +38,11 @@ export default function VideoShow({ video }) {
       <div className={styles.titleWrapper}>
         <p id={styles.title}>{videoTitle}</p>
         <div>
-          <span id={styles.user} onClick={() => getToUserPage()}>
+          <span id="user" onClick={() => getToUserPage()}>
             {video.user.username}
           </span>
           <br></br>
-          <span id={styles.views}>
+          <span id="views">
             {viewers} views · {timeStr}
           </span>
         </div>

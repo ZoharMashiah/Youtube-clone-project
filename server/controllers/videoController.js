@@ -132,13 +132,29 @@ async function filterVideos(req, res) {
   try {
     let filtered;
     if (search) {
-      filtered = (await Video.find({})).filter((video) => video.title.toLowerCase().includes(text.toLowerCase()));
+      filtered = (
+        await Video.find(
+          {},
+          {
+            comments: 0,
+            video: 0,
+          }
+        )
+      ).filter((video) => video.title.toLowerCase().includes(text.toLowerCase()));
     } else {
-      filtered = await Video.find({ category: text });
+      filtered = await Video.find(
+        { category: text },
+
+        {
+          comments: 0,
+          video: 0,
+        }
+      ).lean();
     }
+
     res.status(200).json(filtered);
   } catch (error) {
-    console.error("Error deleting video:", videoId, error);
+    console.error("Error filtering videos");
     res.status(500).json({
       error: error.message,
     });
