@@ -1,9 +1,9 @@
 const express = require("express");
-const { createUserForLogin, getToken } = require("../controllers/users");
+const { createUserForLogin, verifyToken } = require("../controllers/users");
 
 const tokenRouter = express.Router();
 
 tokenRouter.post("/", createUserForLogin);
-tokenRouter.get("/:token", getToken);
+tokenRouter.get("/", verifyToken);
 
 module.exports = tokenRouter;

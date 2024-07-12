@@ -25,6 +25,7 @@ export default function VerticalVideoCard({ video }) {
           height="40px"
           roundedCircle
           alt="User profile"
+          id={styles.profileImage}
           onClick={() => getToUserPage()}
         />
         <VideoShow video={video} />

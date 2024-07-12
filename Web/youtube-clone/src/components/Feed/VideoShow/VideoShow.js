@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import styles from "./VideoShow.module.css";
 import EditVideo from "../../UserPage/EditVideo/EditVideo";
 import VideoMenu from "../../VideoMenu/VideoMenu";

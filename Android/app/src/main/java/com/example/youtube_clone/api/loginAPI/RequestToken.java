@@ -1,4 +1,4 @@
-package com.example.youtube_clone.api.loginApi;
+package com.example.youtube_clone.api.loginAPI;
 
 import com.example.youtube_clone.UserN;
 

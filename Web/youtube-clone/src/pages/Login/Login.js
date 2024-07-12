@@ -45,7 +45,7 @@ export default function Login() {
 
   useEffect(() => {
     if (currentUser && !isLoading) {
-      console.log("Logged in as: ", currentUser);
+      console.log("Logged in as: ", currentUser.username);
       navigate("/");
     }
   }, [currentUser, isLoading, navigate]);

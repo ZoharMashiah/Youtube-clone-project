@@ -93,12 +93,11 @@ const createUserForLogin = async (req, res) => {
     console.log("Finding user");
     const user = await User.findOne({ username });
     if (!user) {
-      console.log("User not found");
-      return res.status(404).json({ message: "User not found" });
+      return res.status(401).json({ message: "Invalid credentials" });
     }
+
     if (password !== user.password) {
-      console.log("Invalid password");
-      return res.status(401).json({ message: "Invalid password" });
+      return res.status(401).json({ message: "Invalid credentials" });
     }
 
     console.log("Found:", user.username);
@@ -110,19 +109,20 @@ const createUserForLogin = async (req, res) => {
   }
 };
 
-const getToken = async (req, res) => {
+const verifyToken = async (req, res) => {
+  const token = req.headers.authorization.split(" ")[1];
+
   try {
-    const { token } = req.params;
     const decoded = jwt.verify(token, "SECRET_KEY");
-    const user = await User.findById(decoded.userId).select("-password");
+    const user = await User.findById(decoded.userId);
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    res.status(200).json({ user });
+
+    res.json({ user });
   } catch (error) {
-    console.log(error.message);
-    res.status(401).json({ error: "Invalid token" });
+    res.status(401).json({ message: "Invalid token" });
   }
 };
 
@@ -133,5 +133,5 @@ module.exports = {
   deleteUser,
   updateUser,
   createUserForLogin,
-  getToken,
+  verifyToken,
 };

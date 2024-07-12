@@ -1,4 +1,4 @@
-package com.example.youtube_clone.api.loginApi;
+package com.example.youtube_clone.api.loginAPI;
 
 import com.example.youtube_clone.MyApplication;
 import com.example.youtube_clone.R;
@@ -46,7 +46,7 @@ public class TokenAPI {
                     if (loginResponse != null) {
                         callback.onSuccess(loginResponse);
                     }
-                } else if (response.code() == 401 || response.code() == 404) {
+                } else if (response.code() == 401 || response.code() == 404) {  // if wrong username or wrong password
                     callback.onWrongCredentials();
                 } else {
                     callback.onError("Error: " + response.code() + " " + response.message());

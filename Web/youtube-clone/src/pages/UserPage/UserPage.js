@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import UserInfo from "../../components/UserPage/UserInfo/UserInfo";
-import UserVideos from "../../components/UserPage/UserVideos/UserVideos";
 import HorizontalVideoCard from "../../components/Feed/VideoShow/HorizontalVideoCard";
 import styles from "./UserPage.module.css";
 
 export default function UserPage() {
   const { userId } = useParams();
   const [videoList, setVideoList] = useState([]);
-  console.log(userId);
 
   useEffect(() => {
     const fetchVideos = async () => {

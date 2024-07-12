@@ -7,8 +7,8 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
-import com.example.youtube_clone.api.loginApi.LoginResponse;
-import com.example.youtube_clone.api.loginApi.TokenAPI;
+import com.example.youtube_clone.api.loginAPI.LoginResponse;
+import com.example.youtube_clone.api.loginAPI.TokenAPI;
 import com.example.youtube_clone.databinding.ActivityLoginBinding;
 
 public class LoginActivity extends AppCompatActivity {

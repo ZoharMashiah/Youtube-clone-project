@@ -14,7 +14,7 @@ export default function Signup({}) {
 
   useEffect(() => {
     if (currentUser) {
-      console.log("Logged in as: ", currentUser);
+      console.log("Logged in as: ", currentUser.username);
       navigate("/");
     }
 
