@@ -80,6 +80,7 @@ export default function VideoDisplay() {
         <div className={styles.content}>
           <div className={styles.videoPlayerContainer}>
             <video className={styles.videoWrapper} src={currentVideo.video} controls></video>
+            <h2 id={styles.title}>{currentVideo.title}</h2>
             <div className={styles.metaData}>
               <Image
                 src={currentVideo.user.photo}
