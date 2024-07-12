@@ -23,6 +23,7 @@ export default function Login() {
       return user;
     } catch (error) {
       console.error("Login error:", error.response?.data?.message || error.message);
+      alert("Wrong username or password");
       throw error;
     }
   };

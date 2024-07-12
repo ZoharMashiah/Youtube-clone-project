@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
     private final String[] categories = {"All", "Music", "Mixes", "JavaScript", "Gaming", "Bouldering",
             "Display devices", "AI", "Computer Hardware", "Table News", "Inventions", "News", "Comedy clubs", "Skills", "3D printing"};
 
-    private final Button[] myButton = new Button[15];
+    private final Button[] myButton = new Button[categories.length];
 
     private static final String PREFS_NAME = "prefs";
     private static final String PREF_DARK_MODE = "dark_mode";
