@@ -1,9 +1,9 @@
 import React, { useState, useContext } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { AppContext } from "../../AppContext";
 import styles from "./VideoMenu.module.css";
 import Dropdown from "react-bootstrap/Dropdown";
+import authAxios from "../../util/authAxios";
 
 import EditVideo from "../UserPage/EditVideo/EditVideo";
 
@@ -16,7 +16,7 @@ export default function VideoMenu({ currentVideo, setCurrentVideo }) {
     try {
       console.log("Deleting video:", currentVideo._id);
       const address = `/api/users/${currentVideo.user._id}/videos/${currentVideo._id}`;
-      const response = await axios.delete(address);
+      const response = await authAxios.delete(address);
       if (response.status === 200) {
         console.log("Video deleted successfully");
         const currentPath = window.location.pathname;
@@ -40,7 +40,7 @@ export default function VideoMenu({ currentVideo, setCurrentVideo }) {
     try {
       console.log("new title: ", newTitle);
       console.log("newDescription: ", newDescription);
-      const response = await axios.patch(`/api/users/${currentVideo.user._id}/videos/${currentVideo._id}`, {
+      const response = await authAxios.patch(`/api/users/${currentVideo.user._id}/videos/${currentVideo._id}`, {
         title: newTitle,
         description: newDescription,
       });
