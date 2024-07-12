@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import DarkModeButton from "../../components/DarkModeButton/DarkModeButton";
 
 export default function Signup({}) {
-  const [users, setUsers] = useState([]);
+  const [setUsers] = useState([]);
   const { currentUser } = useContext(AppContext);
   const navigate = useNavigate();
 
@@ -33,21 +33,12 @@ export default function Signup({}) {
 
   const handleSignup = async (newUser) => {
     try {
-      let res = await fetch("/api/users/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newUser),
-      });
-      if (res.ok) {
-        return true;
-      } else {
-        return false;
-      }
+      await axios.post("/api/users/signup", newUser);
+      return true;
     } catch (error) {
       console.error("Signup error:", error);
       alert("Signup failed", error);
+      return false;
     }
   };
 

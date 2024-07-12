@@ -12,31 +12,9 @@ export default function VideoMenu({ currentVideo, setCurrentVideo }) {
   const navigate = useNavigate();
   const { currentUser, setVideoList } = useContext(AppContext);
 
-  const deleteVideo = async () => {
-    try {
-      console.log("Deleting video:", currentVideo._id);
-      const address = `/api/users/${currentVideo.user._id}/videos/${currentVideo._id}`;
-      const response = await authAxios.delete(address);
-      if (response.status === 200) {
-        console.log("Video deleted successfully");
-        const currentPath = window.location.pathname;
-        const isVideoDisplayPath = /^\/users\/[^/]+\/videos\/[^/]+$/.test(currentPath);
-        if (isVideoDisplayPath) {
-          navigate("/", { replace: true });
-        } else {
-          setVideoList((prevList) => prevList.filter((v) => v._id !== currentVideo._id));
-        }
-      } else {
-        console.warn("Unexpected response status:", response.status);
-      }
-    } catch (error) {
-      console.error("Error deleting video:", error);
-    }
-  };
-
   const editVideo = () => setIsEditing(true);
 
-  const handleSaveVideo = async (newTitle, newDescription) => {
+  const handleEditVideo = async (newTitle, newDescription) => {
     try {
       console.log("new title: ", newTitle);
       console.log("newDescription: ", newDescription);
@@ -65,6 +43,28 @@ export default function VideoMenu({ currentVideo, setCurrentVideo }) {
     }
   };
 
+  const deleteVideo = async () => {
+    try {
+      console.log("Deleting video:", currentVideo._id);
+      const address = `/api/users/${currentVideo.user._id}/videos/${currentVideo._id}`;
+      const response = await authAxios.delete(address);
+      if (response.status === 200) {
+        console.log("Video deleted successfully");
+        const currentPath = window.location.pathname;
+        const isVideoDisplayPath = /^\/users\/[^/]+\/videos\/[^/]+$/.test(currentPath);
+        if (isVideoDisplayPath) {
+          navigate("/", { replace: true });
+        } else {
+          setVideoList((prevList) => prevList.filter((v) => v._id !== currentVideo._id));
+        }
+      } else {
+        console.warn("Unexpected response status:", response.status);
+      }
+    } catch (error) {
+      console.error("Error deleting video:", error);
+    }
+  };
+
   return (
     <div>
       {currentUser && currentUser._id === currentVideo.user._id && (
@@ -74,15 +74,15 @@ export default function VideoMenu({ currentVideo, setCurrentVideo }) {
               setEditButton={setIsEditing}
               videoTitle={currentVideo.title}
               videoDescription={currentVideo.description}
-              onSave={handleSaveVideo}
+              onSave={handleEditVideo}
             />
           )}
           <Dropdown.Toggle variant="white" id="dropdown-basic" style={{ content: "none" }}>
             <i className="bi bi-three-dots-vertical"></i>
           </Dropdown.Toggle>
           <Dropdown.Menu>
-            <Dropdown.Item onClick={deleteVideo}>Delete</Dropdown.Item>
             <Dropdown.Item onClick={editVideo}>Edit</Dropdown.Item>
+            <Dropdown.Item onClick={deleteVideo}>Delete</Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
       )}

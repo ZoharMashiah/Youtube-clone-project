@@ -4,6 +4,7 @@ import Button from "react-bootstrap/Button";
 import { Image } from "react-bootstrap";
 import { AppContext } from "../../../AppContext";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function UserInfo({ userId }) {
   const [show, setShow] = useState(false);
@@ -21,25 +22,22 @@ export default function UserInfo({ userId }) {
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
   const handleDelete = async () => {
-    const res = await fetch(`/api/users/${userId}`, {
-      method: "DELETE",
-    });
-    if (res.ok) {
+    try {
+      await axios.delete(`/api/users/${userId}`);
       await sleep(2000);
       setCurrentUser(null);
       setShow(false);
       localStorage.removeItem("token");
       navigate("/", { replace: true });
       window.location.reload();
-    } else {
+    } catch (error) {
       alert("Error deleting the user!");
     }
   };
 
   useEffect(() => {
     const fetchVideos = async () => {
-      const res = await fetch(`/api/users/${userId}`);
-      const data = await res.json();
+      const { data } = await axios.get(`/api/users/${userId}`);
       setUserData(data);
     };
     fetchVideos();

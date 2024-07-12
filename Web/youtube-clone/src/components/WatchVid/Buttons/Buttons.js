@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import styles from "./Buttons.module.css";
 import { AppContext } from "../../../AppContext";
+import axios from "axios";
 
 export default function Buttons({ currentVideo }) {
   const { currentUser } = useContext(AppContext);
@@ -19,13 +20,12 @@ export default function Buttons({ currentVideo }) {
       action,
       userId: currentUser?._id,
     };
-
     if (action == "like") {
-      if (isLiked == true) {
+      if (isLiked) {
         setIsLiked(false);
         setNumLike(numLike - 1);
       } else {
-        if (isDisliked == true) {
+        if (isDisliked) {
           setIsDisliked(false);
           setNumDislike(numDislike - 1);
         }
@@ -33,11 +33,11 @@ export default function Buttons({ currentVideo }) {
         setNumLike(numLike + 1);
       }
     } else if (action == "dislike") {
-      if (isDisliked == true) {
+      if (isDisliked) {
         setIsDisliked(false);
         setNumDislike(numDislike - 1);
       } else {
-        if (isLiked == true) {
+        if (isLiked) {
           setIsLiked(false);
           setNumLike(numLike - 1);
         }
@@ -46,16 +46,8 @@ export default function Buttons({ currentVideo }) {
       }
     }
     setIsButtonDisabled(true);
-
     setTimeout(() => setIsButtonDisabled(false), 2000);
-
-    const res = await fetch(`/api/users/${currentVideo.user._id}/videos/${currentVideo._id}/action`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(body),
-    });
+    await axios.post(`/api/users/${currentVideo.user._id}/videos/${currentVideo._id}/action`, body);
   };
 
   return (

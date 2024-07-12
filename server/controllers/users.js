@@ -3,15 +3,10 @@ const videoController = require("./videoController");
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 
-//get all users
-const getAllUsers = async (req, res) => {
-  const users = await User.find({});
-  res.status(200).json(users);
-};
-
 //get a single user
 const getUser = async (req, res) => {
   const userId = req.params.id;
+
   if (!mongoose.Types.ObjectId.isValid(userId)) {
     return res.status(404).json({ message: `User with id ${userId} not valid` });
   }
@@ -24,7 +19,6 @@ const getUser = async (req, res) => {
 
 //create a user
 const createUser = async (req, res) => {
-  //add doc to db
   try {
     const { username, password, firstName, middleName, lastName, birthdate, photo, videos, settings } = req.body;
     let picture;
@@ -55,6 +49,13 @@ const createUser = async (req, res) => {
 //update a user
 const updateUser = async (req, res) => {
   const userId = req.params.id;
+  const authUser = req.user;
+  console.log(" au", authUser);
+
+  if (authUser._id.toString() !== userId) {
+    return res.status(401).json({ message: "Authentication required" });
+  }
+
   if (!mongoose.Types.ObjectId.isValid(userId)) {
     return res.status(404).json({ message: `User with id ${userId} not valid` });
   }
@@ -68,6 +69,12 @@ const updateUser = async (req, res) => {
 //delete a user
 const deleteUser = async (req, res) => {
   const userId = req.params.id;
+  const authUser = req.user;
+  console.log(" au", authUser);
+
+  if (authUser._id.toString() !== userId) {
+    return res.status(401).json({ message: "Authentication required" });
+  }
 
   if (!mongoose.Types.ObjectId.isValid(userId)) {
     return res.status(404).json({ message: `User with id ${userId} not valid` });
@@ -93,11 +100,11 @@ const createUserForLogin = async (req, res) => {
     console.log("Finding user");
     const user = await User.findOne({ username });
     if (!user) {
-      return res.status(401).json({ message: "Invalid credentials" });
+      return res.status(404).json({ message: "Invalid credentials" });
     }
 
     if (password !== user.password) {
-      return res.status(401).json({ message: "Invalid credentials" });
+      return res.status(404).json({ message: "Invalid credentials" });
     }
 
     console.log("Found:", user.username);
@@ -122,13 +129,12 @@ const verifyToken = async (req, res) => {
 
     res.json({ user });
   } catch (error) {
-    res.status(401).json({ message: "Invalid token" });
+    res.status(404).json({ message: "Invalid token" });
   }
 };
 
 module.exports = {
   createUser,
-  getAllUsers,
   getUser,
   deleteUser,
   updateUser,

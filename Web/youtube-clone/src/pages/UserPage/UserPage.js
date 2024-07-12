@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import UserInfo from "../../components/UserPage/UserInfo/UserInfo";
 import HorizontalVideoCard from "../../components/Feed/VideoShow/HorizontalVideoCard";
 import styles from "./UserPage.module.css";
+import axios from "axios";
 
 export default function UserPage() {
   const { userId } = useParams();
@@ -10,8 +11,7 @@ export default function UserPage() {
 
   useEffect(() => {
     const fetchVideos = async () => {
-      const res = await fetch(`/api/users/${userId}/videos`);
-      const data = await res.json();
+      const { data } = await axios.get(`/api/users/${userId}/videos`);
       setVideoList(data);
     };
     fetchVideos();

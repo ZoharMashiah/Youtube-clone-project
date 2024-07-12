@@ -57,11 +57,11 @@ export const AppContextProvider = ({ children }) => {
     document.body.classList.toggle("dark-mode", newDarkMode);
 
     if (currentUser) {
-      fetch(`/api/users/${currentUser._id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ settings: { darkMode: newDarkMode } }),
-      }).catch((error) => console.error("Error updating user settings:", error));
+      axios
+        .patch(`/api/users/${currentUser._id}`, {
+          settings: { darkMode: newDarkMode },
+        })
+        .catch((error) => console.error("Error updating user settings:", error));
       currentUser.settings.darkMode = newDarkMode;
     }
   };

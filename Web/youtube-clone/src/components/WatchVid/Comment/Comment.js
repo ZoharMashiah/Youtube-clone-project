@@ -3,6 +3,7 @@ import styles from "./Comment.module.css";
 import { useParams } from "react-router-dom";
 import { AppContext } from "../../../AppContext";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function Comment({ _id, user, title, date, setTriger }) {
   const { currentUser, setCurrentUser } = useContext(AppContext);
@@ -26,14 +27,8 @@ export default function Comment({ _id, user, title, date, setTriger }) {
   const navigate = useNavigate();
 
   const deleteComment = async () => {
-    const response = await fetch(`/api/users/${userId}/videos/${videoId}/comments/${_id}`, {
-      method: "DELETE",
-    });
-    const json = await response.json();
-
-    if (response.ok) {
-      setTriger(true);
-    }
+    const { data } = await axios.delete(`/api/users/${userId}/videos/${videoId}/comments/${_id}`);
+    if (data) setTriger(true);
   };
 
   const handleReply = async () => {
@@ -45,42 +40,24 @@ export default function Comment({ _id, user, title, date, setTriger }) {
         photo: currentUser.photo,
       },
     };
-
-    const response = await fetch(`/api/users/${userId}/videos/${videoId}/comments/${_id}`, {
-      method: "POST",
-      body: JSON.stringify(comment),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    const json = await response.json();
-
-    if (response.ok) {
+    try {
+      await axios.post(`/api/users/${userId}/videos/${videoId}/comments/${_id}`, comment);
       setreplyText("");
       setreply(false);
       setTriger(true);
-      console.log("new comment added", json);
-    } else {
-      console.log(response.error);
+    } catch (error) {
+      console.log(error);
     }
   };
 
   const editComment = async () => {
     const comment = { title: editedTitle };
-
-    const response = await fetch(`/api/users/${userId}/videos/${videoId}/comments/${_id}`, {
-      method: "PATCH",
-      body: JSON.stringify(comment),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const json = await response.json();
-
-    if (response.ok) {
+    try {
+      await axios.patch(`/api/users/${userId}/videos/${videoId}/comments/${_id}`, comment);
       setTriger(true);
       setedit(false);
+    } catch (error) {
+      console.log(error);
     }
   };
 

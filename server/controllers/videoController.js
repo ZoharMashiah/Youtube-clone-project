@@ -7,9 +7,7 @@ async function getFeed(req, res) {
   try {
     console.log("Fetching...");
     const numberOfVideos = 10;
-    console.log("Top 10 started");
     const mostViewed = await VideoService.getTopVideos(numberOfVideos);
-    console.log("10 other started");
     const unchosenVideos = await VideoService.getUnchosenVideos(numberOfVideos, mostViewed);
     const videoList = Util.randomizeArray([...mostViewed, ...unchosenVideos]);
 
@@ -57,6 +55,13 @@ async function getVideo(req, res) {
 }
 
 async function updateVideo(req, res) {
+  const userId = req.params.id;
+  const authUser = req.user;
+
+  if (authUser._id.toString() !== userId) {
+    return res.status(401).json({ message: "Authentication required" });
+  }
+
   const videoId = req.params.pid;
   const newData = req.body;
 
@@ -92,8 +97,14 @@ async function createVideo(req, res) {
 }
 
 async function deleteVideo(req, res) {
-  const videoId = req.params.pid;
   const userId = req.params.id;
+  const authUser = req.user;
+
+  if (authUser._id.toString() !== userId) {
+    return res.status(401).json({ message: "Authentication required" });
+  }
+
+  const videoId = req.params.pid;
 
   try {
     await Video.deleteVideo(videoId, userId);
@@ -126,7 +137,6 @@ async function deleteAllVideos(userId) {
 }
 
 async function filterVideos(req, res) {
-  const videoId = req.params.pid;
   const { search, text } = req.body;
 
   try {
