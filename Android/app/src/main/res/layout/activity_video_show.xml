@@ -8,9 +8,12 @@
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:orientation="horizontal"
+        android:background="@color/blueNavy"
 
-        android:background="@color/blueNavy">
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/imageView2"
@@ -32,14 +35,14 @@
             android:id="@+id/themeToggleButton"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_gravity="center"
 
-            android:text="Dark mode"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_weight="1"
             android:backgroundTint="@color/white"
+            android:text="Dark mode"
             android:textColor="@color/blueNavy"
-            android:layout_gravity="center" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </LinearLayout>
 
@@ -59,9 +62,10 @@
             app:srcCompat="@drawable/photo" />
     </FrameLayout>
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:padding="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -173,15 +177,16 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/commentsRecyclerView"
                 android:layout_width="match_parent"
+                android:nestedScrollingEnabled="false"
                 android:layout_height="wrap_content" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/videos"
                 android:layout_width="match_parent"
+                android:nestedScrollingEnabled="false"
                 android:layout_height="wrap_content" />
 
         </LinearLayout>
 
-    </ScrollView>
-
+    </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
