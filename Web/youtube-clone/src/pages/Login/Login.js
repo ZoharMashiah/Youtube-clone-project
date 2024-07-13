@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import authAxios from "../../util/authAxios";
 import "./Login.css";
 import Logo from "../../components/Feed/Logo/Logo";
 import { AppContext } from "../../AppContext";
@@ -17,7 +17,7 @@ export default function Login() {
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post("/api/tokens", { username, password });
+      const response = await authAxios.post("/api/tokens", { username, password });
       const { user, token } = response.data;
       localStorage.setItem("token", token);
       return user;

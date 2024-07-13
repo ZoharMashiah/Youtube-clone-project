@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import "./Signup.css";
-import axios from "axios";
+import authAxios from "../../util/authAxios";
 import Signupwrapper from "../../components/Signup/Signupwrapper/Signupwrapper";
 import { AppContext } from "../../AppContext";
 import { useNavigate } from "react-router-dom";
@@ -20,7 +20,7 @@ export default function Signup({}) {
 
     const fetchUsers = async () => {
       try {
-        const response = await axios.get("/api/users");
+        const response = await authAxios.get("/api/users");
         setUsers(response.data);
       } catch (error) {
         console.error("Error fetching users:", error);
@@ -33,7 +33,7 @@ export default function Signup({}) {
 
   const handleSignup = async (newUser) => {
     try {
-      await axios.post("/api/users/signup", newUser);
+      await authAxios.post("/api/users/signup", newUser);
       return true;
     } catch (error) {
       console.error("Signup error:", error);

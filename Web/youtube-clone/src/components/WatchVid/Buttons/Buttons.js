@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import styles from "./Buttons.module.css";
 import { AppContext } from "../../../AppContext";
-import axios from "axios";
+import authAxios from "../../../util/authAxios";
 
 export default function Buttons({ currentVideo }) {
   const { currentUser } = useContext(AppContext);
@@ -47,7 +47,7 @@ export default function Buttons({ currentVideo }) {
     }
     setIsButtonDisabled(true);
     setTimeout(() => setIsButtonDisabled(false), 2000);
-    await axios.post(`/api/users/${currentVideo.user._id}/videos/${currentVideo._id}/action`, body);
+    await authAxios.post(`/api/users/${currentVideo.user._id}/videos/${currentVideo._id}/action`, body);
   };
 
   return (

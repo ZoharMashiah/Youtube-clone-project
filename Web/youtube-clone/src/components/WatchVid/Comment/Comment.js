@@ -3,10 +3,10 @@ import styles from "./Comment.module.css";
 import { useParams } from "react-router-dom";
 import { AppContext } from "../../../AppContext";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import authAxios from "../../../util/authAxios";
 
 export default function Comment({ _id, user, title, date, setTriger }) {
-  const { currentUser, setCurrentUser } = useContext(AppContext);
+  const { currentUser } = useContext(AppContext);
   const { userId, videoId } = useParams();
   const [edit, setedit] = useState(false);
   const [editedTitle, seteditedTitle] = useState(title);
@@ -27,7 +27,7 @@ export default function Comment({ _id, user, title, date, setTriger }) {
   const navigate = useNavigate();
 
   const deleteComment = async () => {
-    const { data } = await axios.delete(`/api/users/${userId}/videos/${videoId}/comments/${_id}`);
+    const { data } = await authAxios.delete(`/api/users/${userId}/videos/${videoId}/comments/${_id}`);
     if (data) setTriger(true);
   };
 
@@ -41,7 +41,7 @@ export default function Comment({ _id, user, title, date, setTriger }) {
       },
     };
     try {
-      await axios.post(`/api/users/${userId}/videos/${videoId}/comments/${_id}`, comment);
+      await authAxios.post(`/api/users/${userId}/videos/${videoId}/comments/${_id}`, comment);
       setreplyText("");
       setreply(false);
       setTriger(true);
@@ -53,7 +53,7 @@ export default function Comment({ _id, user, title, date, setTriger }) {
   const editComment = async () => {
     const comment = { title: editedTitle };
     try {
-      await axios.patch(`/api/users/${userId}/videos/${videoId}/comments/${_id}`, comment);
+      await authAxios.patch(`/api/users/${userId}/videos/${videoId}/comments/${_id}`, comment);
       setTriger(true);
       setedit(false);
     } catch (error) {

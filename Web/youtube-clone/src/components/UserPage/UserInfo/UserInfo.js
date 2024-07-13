@@ -4,7 +4,7 @@ import Button from "react-bootstrap/Button";
 import { Image } from "react-bootstrap";
 import { AppContext } from "../../../AppContext";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import authAxios from "../../../util/authAxios";
 
 export default function UserInfo({ userId }) {
   const [show, setShow] = useState(false);
@@ -23,7 +23,7 @@ export default function UserInfo({ userId }) {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`/api/users/${userId}`);
+      await authAxios.delete(`/api/users/${userId}`);
       await sleep(2000);
       setCurrentUser(null);
       setShow(false);
@@ -37,7 +37,7 @@ export default function UserInfo({ userId }) {
 
   useEffect(() => {
     const fetchVideos = async () => {
-      const { data } = await axios.get(`/api/users/${userId}`);
+      const { data } = await authAxios.get(`/api/users/${userId}`);
       setUserData(data);
     };
     fetchVideos();
