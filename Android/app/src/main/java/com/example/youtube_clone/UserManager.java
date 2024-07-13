@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.example.youtube_clone.UserDao.UserDao;
+import com.example.youtube_clone.db.AppDB;
 
 public class UserManager {
     private volatile static UserManager instance;

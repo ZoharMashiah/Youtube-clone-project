@@ -1,14 +1,17 @@
-package com.example.youtube_clone;
+package com.example.youtube_clone.db;
 
 import android.content.Context;
 
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.room.TypeConverters;
 
 import com.example.youtube_clone.UserDao.UserDao;
+import com.example.youtube_clone.UserN;
 
-@Database(entities = {UserN.class, Video.class}, version = 1)
+@Database(entities = {UserN.class}, version = 1, exportSchema = false)
+@TypeConverters({StringListConverter.class, UserSettingsConverter.class})
 public abstract class AppDB extends RoomDatabase {
     public abstract UserDao userDao();
 
@@ -28,5 +31,4 @@ public abstract class AppDB extends RoomDatabase {
         }
         return instance;
     }
-
 }
