@@ -21,6 +21,12 @@ const getUser = async (req, res) => {
 const createUser = async (req, res) => {
   try {
     const { username, password, firstName, middleName, lastName, birthdate, photo, videos, settings } = req.body;
+
+    const existingUser = await User.findOne({ username });
+    if (existingUser) {
+      return res.status(409).json({ error: "Username already exists" });
+    }
+
     let picture;
     if (photo == null) {
       picture = process.env.DEFAULT_PHOTO;
@@ -38,9 +44,8 @@ const createUser = async (req, res) => {
       videos,
       settings,
     });
-    const token = jwt.sign({ userId: user._id }, "SECRET_KEY", { expiresIn: "5h" });
 
-    res.status(200).json({ user, token });
+    res.status(200).json({ user });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
