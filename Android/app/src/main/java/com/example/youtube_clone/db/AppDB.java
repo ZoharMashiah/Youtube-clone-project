@@ -11,7 +11,7 @@ import com.example.youtube_clone.UserDao.UserDao;
 import com.example.youtube_clone.UserN;
 
 @Database(entities = {UserN.class}, version = 1, exportSchema = false)
-@TypeConverters({StringListConverter.class, UserSettingsConverter.class})
+@TypeConverters({StringListConverter.class})
 public abstract class AppDB extends RoomDatabase {
     public abstract UserDao userDao();
 

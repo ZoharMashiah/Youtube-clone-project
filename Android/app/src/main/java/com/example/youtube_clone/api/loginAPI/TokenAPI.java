@@ -15,11 +15,7 @@ public class TokenAPI {
     public interface LoginCallback {
         void onSuccess(LoginResponse result);
 
-        void onWrongCredentials();
-
         void onError(String message);
-
-        void onFailure(String message);
     }
 
     Retrofit retrofit;
@@ -52,9 +48,11 @@ public class TokenAPI {
                     LoginResponse loginResponse = response.body();
                     if (loginResponse != null) {
                         callback.onSuccess(loginResponse);
+                    } else {
+                        callback.onError("Empty response received");
                     }
-                } else if (response.code() == 401 || response.code() == 404) {  // if wrong username or wrong password
-                    callback.onWrongCredentials();
+                } else if (response.code() == 404) {
+                    callback.onError("Wrong username or password");
                 } else {
                     callback.onError("Error: " + response.code() + " " + response.message());
                 }
@@ -62,10 +60,9 @@ public class TokenAPI {
 
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable throwable) {
-                callback.onFailure("Network error: " + throwable.getMessage());
+                callback.onError("Network error: " + throwable.getMessage());
             }
         });
-
     }
 
 }

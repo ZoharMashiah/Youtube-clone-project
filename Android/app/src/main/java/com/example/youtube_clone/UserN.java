@@ -1,7 +1,5 @@
 package com.example.youtube_clone;
 
-import android.net.Uri;
-
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -19,6 +17,9 @@ public class UserN {
 
     @SerializedName("username")
     private String username;
+
+    @SerializedName("password")
+    private String password;
 
     @SerializedName("firstName")
     private String firstName;
@@ -44,19 +45,27 @@ public class UserN {
     @SerializedName("dislikes")
     private List<String> dislikedVideos;
 
-    @SerializedName("settings")
-    private UserSettings settings;
+    @SerializedName("darkMode")
+    private boolean darkMode;
 
     // Constructor
     public UserN() {
     }
 
-    public String getUsername() {
-        return username;
+
+    public UserN(String username, String password, String firstName, String middleName, String lastName, String birthDate, String profilePicture, boolean darkMode) {
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.middleName = middleName;
+        this.lastName = lastName;
+        this.birthDate = birthDate;
+        this.profilePicture = profilePicture;
+        this.darkMode = darkMode;
     }
 
-    public Uri getProfileImage() {
-        return null;
+    public String getUsername() {
+        return username;
     }
 
     public String get_id() {
@@ -65,6 +74,14 @@ public class UserN {
 
     public void set_id(String _id) {
         this._id = _id;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public void setUsername(String username) {
@@ -135,18 +152,15 @@ public class UserN {
         this.dislikedVideos = dislikedVideos;
     }
 
-    public UserSettings getSettings() {
-        return settings;
+    public boolean isDarkMode() {
+        return darkMode;
     }
 
-    public void setSettings(UserSettings settings) {
-        this.settings = settings;
+    public void setDarkMode(boolean darkMode) {
+        this.darkMode = darkMode;
     }
 
-
-    public static class UserSettings {
-        @SerializedName("darkMode")
-        private boolean darkMode;
-
+    public void toggleDarkMode(boolean darkMode) {
+        this.darkMode = !this.darkMode;
     }
 }

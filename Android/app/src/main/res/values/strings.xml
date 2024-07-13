@@ -12,5 +12,5 @@
     <string name="middle_name">Middle Name</string>
     <string name="last_name">Last Name</string>
     <string name="category">Category</string>
-    <string name="BaseUrl">http://10.0.2.2:3000/api/</string>
+    <string name="BaseUrl">http://10.0.2.2:3000/</string>
 </resources>

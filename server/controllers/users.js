@@ -12,7 +12,7 @@ const getUser = async (req, res) => {
   }
   const user = await User.findById(userId);
   if (!user) {
-    return res.status(400).json({ message: `User with id ${userId} not found` });
+    return res.status(400).json({ message: `User with id ${userId} not found` }); // i believe you shouldnt give info of what the error was
   }
   res.status(200).json(user);
 };
@@ -20,18 +20,25 @@ const getUser = async (req, res) => {
 //create a user
 const createUser = async (req, res) => {
   try {
-    const { username, password, firstName, middleName, lastName, birthdate, photo, videos, settings } = req.body;
+    let { username, password, firstName, middleName, lastName, birthdate, photo, settings, darkMode } = req.body;
 
     const existingUser = await User.findOne({ username });
     if (existingUser) {
       return res.status(409).json({ error: "Username already exists" });
     }
 
-    let picture;
-    if (photo == null) {
-      picture = process.env.DEFAULT_PHOTO;
-    } else {
-      picture = photo;
+    console.log("req: ", req.body);
+
+    const newSettings = settings || {};
+
+    if (settings === undefined) {
+      newSettings.darkMode = darkMode;
+      settings = newSettings;
+    }
+
+    if (photo == null || photo == "" || photo == undefined) {
+      console.log("photo is:", photo, "using default");
+      photo = process.env.DEFAULT_PHOTO;
     }
     const user = await User.create({
       username,
@@ -40,14 +47,15 @@ const createUser = async (req, res) => {
       middleName,
       lastName,
       birthdate,
-      photo: picture,
-      videos,
+      photo,
       settings,
     });
 
     res.status(200).json({ user });
+    console.log("success");
   } catch (error) {
     res.status(400).json({ error: error.message });
+    console.log("error: ", error.message);
   }
 };
 

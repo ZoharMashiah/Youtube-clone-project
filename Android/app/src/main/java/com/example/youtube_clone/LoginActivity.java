@@ -25,8 +25,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         this.tokenAPI = new TokenAPI();
-
-
         this.binding = ActivityLoginBinding.inflate(getLayoutInflater());
 
         setContentView(binding.getRoot());
@@ -69,7 +67,6 @@ public class LoginActivity extends AppCompatActivity {
             String username = binding.editTextText.getText().toString();
             String password = binding.editTextTextPassword.getText().toString();
             handleLogin(username, password);
-
         });
     }
 
@@ -91,21 +88,7 @@ public class LoginActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onWrongCredentials() {
-                showErrorDialog("Wrong username or password");
-            }
-
-            @Override
             public void onError(String message) {
-                showErrorDialog(message);
-            }
-
-            @Override
-            public void onFailure(String message) {
-                showErrorDialog(message);
-            }
-
-            public void showErrorDialog(String message) {
                 new android.app.AlertDialog.Builder(LoginActivity.this)
                         .setTitle("Login Error")
                         .setMessage(message)
