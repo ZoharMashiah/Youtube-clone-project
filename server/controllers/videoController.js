@@ -59,7 +59,7 @@ async function updateVideo(req, res) {
   const authUser = req.user;
 
   if (authUser._id.toString() !== userId) {
-    return res.status(401).json({ message: "Authentication required" });
+    return res.status(401).json({ message: "Authentication required to update video" });
   }
 
   const videoId = req.params.pid;
@@ -101,7 +101,7 @@ async function deleteVideo(req, res) {
   const authUser = req.user;
 
   if (authUser._id.toString() !== userId) {
-    return res.status(401).json({ message: "Authentication required" });
+    return res.status(401).json({ message: "Authentication required to delete video" });
   }
 
   const videoId = req.params.pid;

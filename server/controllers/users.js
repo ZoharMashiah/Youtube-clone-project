@@ -50,10 +50,9 @@ const createUser = async (req, res) => {
 const updateUser = async (req, res) => {
   const userId = req.params.id;
   const authUser = req.user;
-  console.log(" au", authUser);
 
   if (authUser._id.toString() !== userId) {
-    return res.status(401).json({ message: "Authentication required" });
+    return res.status(401).json({ message: "Authentication required to update user" });
   }
 
   if (!mongoose.Types.ObjectId.isValid(userId)) {
@@ -70,10 +69,9 @@ const updateUser = async (req, res) => {
 const deleteUser = async (req, res) => {
   const userId = req.params.id;
   const authUser = req.user;
-  console.log(" au", authUser);
 
   if (authUser._id.toString() !== userId) {
-    return res.status(401).json({ message: "Authentication required" });
+    return res.status(401).json({ message: "Authentication required to delete user" });
   }
 
   if (!mongoose.Types.ObjectId.isValid(userId)) {
