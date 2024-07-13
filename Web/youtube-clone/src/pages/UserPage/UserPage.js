@@ -23,10 +23,16 @@ export default function UserPage() {
         <UserInfo userId={userId} />
       </div>
       <hr />
-      <div className={styles.videoGrid}>
-        {videoList.map((video) => (
-          <HorizontalVideoCard key={video._id} video={video} />
-        ))}
+      <div>
+        {videoList.length > 0 ? (
+          <div className={styles.videoGrid}>
+            {videoList.map((video) => (
+              <HorizontalVideoCard key={video._id} video={video} />
+            ))}
+          </div>
+        ) : (
+          <div>Loading...</div>
+        )}
       </div>
     </div>
   );
