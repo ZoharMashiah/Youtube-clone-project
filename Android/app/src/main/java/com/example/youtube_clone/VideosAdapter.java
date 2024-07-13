@@ -40,7 +40,7 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.MyViewHold
         long publication_date = videos.get(position).getPublication_date();
         String viewers = views > 999 ? views > 999999 ? ((views / 1000000) + "M") : ((views / 1000) + "K") : Integer.toString(views);
         long time = ((Calendar.getInstance().getTime().getTime() - publication_date) / 60000);
-        String timeStr = time > 60 ? time > 1140 ? time > 43200 ? time > 525600 ? ((time / 525600) + " years ago") : ((time / 43200) + " monthes ago") : ((time / 1140) + " days ago") : ((time / 60) + " hours ago") : (time + " minuets ago");
+        String timeStr = time > 60 ? time > 1140 ? time > 43200 ? time > 525600 ? ((time / 525600) + " years ago") : ((time / 43200) + " months ago") : ((time / 1140) + " days ago") : ((time / 60) + " hours ago") : (time + " minutes ago");
         String info = videos.get(position).getUser() + "·" + viewers + "views·" + timeStr;
 
         holder.videoImage.setImageURI(videos.get(position).getIcon());
