@@ -80,11 +80,11 @@ public class LoginActivity extends AppCompatActivity {
                 UserN current = result.getUser();
                 String token = result.getToken();
 
-                // Set the current user
+                // set the current user
                 UserManager userManager = UserManager.getInstance();
                 userManager.login(current, token);
 
-                // Navigate to MainActivity
+                // navigate to MainActivity
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();

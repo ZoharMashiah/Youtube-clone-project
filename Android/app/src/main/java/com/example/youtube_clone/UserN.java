@@ -2,12 +2,17 @@ package com.example.youtube_clone;
 
 import android.net.Uri;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+@Entity
 public class UserN {
     @SerializedName("_id")
+    @PrimaryKey
     private String _id;
 
     @SerializedName("username")
