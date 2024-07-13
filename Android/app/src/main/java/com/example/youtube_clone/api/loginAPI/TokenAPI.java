@@ -2,7 +2,9 @@ package com.example.youtube_clone.api.loginAPI;
 
 import com.example.youtube_clone.MyApplication;
 import com.example.youtube_clone.R;
+import com.example.youtube_clone.authorization.AuthInterceptor;
 
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -25,8 +27,13 @@ public class TokenAPI {
 
     public TokenAPI() {
 
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(new AuthInterceptor())
+                .build();
+
         this.retrofit = new Retrofit.Builder()
                 .baseUrl(MyApplication.getAppContext().getString(R.string.BaseUrl))
+                .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
