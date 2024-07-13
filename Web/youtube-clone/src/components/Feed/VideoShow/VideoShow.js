@@ -1,13 +1,11 @@
 import React, { useState } from "react";
 import styles from "./VideoShow.module.css";
-import EditVideo from "../../UserPage/EditVideo/EditVideo";
 import VideoMenu from "../../VideoMenu/VideoMenu";
 import { useNavigate } from "react-router-dom";
 
 export default function VideoShow({ video }) {
-  const [editButton, setEditButton] = useState(false);
   const [videoTitle, setTitle] = useState(video.title);
-  const [videoDescription, setDescription] = useState(video.title);
+  const [videoDescription, setDescription] = useState(video.description);
 
   const navigate = useNavigate();
 
@@ -32,9 +30,6 @@ export default function VideoShow({ video }) {
 
   return (
     <div className={styles.videoDetails}>
-      {editButton && (
-        <EditVideo setEditButton={setEditButton} videoTitle={videoTitle} videoDescription={videoDescription} />
-      )}
       <div className={styles.titleWrapper}>
         <p id={styles.title}>{videoTitle}</p>
         <div>

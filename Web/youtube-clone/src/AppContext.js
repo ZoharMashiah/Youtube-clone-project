@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
-import axios from "axios";
+import authAxios from "./util/authAxios";
 
 const AppContext = React.createContext(null);
 
@@ -16,9 +16,7 @@ export const AppContextProvider = ({ children }) => {
       const token = localStorage.getItem("token");
       if (token) {
         try {
-          const response = await axios.get(`/api/tokens`, {
-            headers: { Authorization: `Bearer ${token}` },
-          });
+          const response = await authAxios.get(`/api/tokens`);
           const user = response.data.user;
           if (user) {
             setCurrentUser(user);
@@ -41,7 +39,7 @@ export const AppContextProvider = ({ children }) => {
   useEffect(() => {
     const fetchVideos = async () => {
       try {
-        const res = await axios.get("/api/videos", { timeout: 0 });
+        const res = await authAxios.get("/api/videos", { timeout: 0 });
         setVideoList(res.data);
       } catch (error) {
         console.error("Error fetching videos:", error);
@@ -55,9 +53,8 @@ export const AppContextProvider = ({ children }) => {
     const newDarkMode = !darkMode;
     setDarkMode(newDarkMode);
     document.body.classList.toggle("dark-mode", newDarkMode);
-
     if (currentUser) {
-      axios
+      authAxios
         .patch(`/api/users/${currentUser._id}`, {
           settings: { darkMode: newDarkMode },
         })
@@ -77,7 +74,7 @@ export const AppContextProvider = ({ children }) => {
 
   const filterVideos = useCallback(async (search, text) => {
     try {
-      const res = await axios.post("/api/videos/filter", { search, text });
+      const res = await authAxios.post("/api/videos/filter", { search, text });
       setFilteredVideoList(res.data);
       setIsFiltered(true);
     } catch (error) {

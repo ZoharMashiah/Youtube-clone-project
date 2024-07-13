@@ -9,8 +9,8 @@ import EditVideo from "../UserPage/EditVideo/EditVideo";
 
 export default function VideoMenu({ currentVideo, setCurrentVideo }) {
   const [isEditing, setIsEditing] = useState(false);
-  const navigate = useNavigate();
   const { currentUser, setVideoList } = useContext(AppContext);
+  const navigate = useNavigate();
 
   const editVideo = () => setIsEditing(true);
 
