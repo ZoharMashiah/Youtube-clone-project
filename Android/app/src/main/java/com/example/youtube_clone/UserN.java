@@ -52,7 +52,6 @@ public class UserN {
     public UserN() {
     }
 
-
     public UserN(String username, String password, String firstName, String middleName, String lastName, String birthDate, String profilePicture, boolean darkMode) {
         this.username = username;
         this.password = password;

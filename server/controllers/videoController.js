@@ -81,7 +81,15 @@ async function updateVideo(req, res) {
 }
 
 async function createVideo(req, res) {
+  const userId = req.params.id;
+  const authUser = req.user;
+
+  if (authUser._id.toString() !== userId) {
+    return res.status(401).json({ message: "Authentication required to create a video" });
+  }
+
   const video = req.body;
+
   try {
     const newVideo = await Video.createVideo(video);
     const videoData = await Video.findById(newVideo._id).select("-comments -video");
