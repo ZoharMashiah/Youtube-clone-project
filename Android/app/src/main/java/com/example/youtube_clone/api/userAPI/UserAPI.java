@@ -81,5 +81,32 @@ public class UserAPI {
                 callback.onError("Network error: " + throwable.getMessage());
             }
         });
+
+    }
+
+    public void delete(UserN user, UserCallback callback) {
+        Call<UserN> call = requestUser.postUser(user);
+        call.enqueue(new Callback<UserN>() {
+            @Override
+            public void onResponse(Call<UserN> call, Response<UserN> response) {
+                if (response.isSuccessful()) {
+                    UserN createdUser = response.body();
+                    if (createdUser != null) {
+                        callback.onSuccess(createdUser);
+                    } else {
+                        callback.onError("Signing up Failed: " + response.code());
+                    }
+                } else if (response.code() == 409) {
+                    callback.onError("Username is not available");
+                } else {
+                    callback.onError("Signing up Failed: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserN> call, Throwable throwable) {
+                callback.onError("Network error: " + throwable.getMessage());
+            }
+        });
     }
 }

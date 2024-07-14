@@ -1,0 +1,60 @@
+package com.example.youtube_clone;
+
+
+import android.app.AlertDialog;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.youtube_clone.databinding.ActivityUserPageBinding;
+
+public class UserPage extends AppCompatActivity {
+    private ActivityUserPageBinding binding;
+
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        binding = ActivityUserPageBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        UserN user = null;        // user = getUser() from server
+
+        if (user.get_id().equals(UserManager.getInstance().getCurrentUser().get_id())) {
+            binding.userPageButtons.setVisibility(View.VISIBLE);
+        }
+
+
+        binding.logOut.setOnClickListener(v -> {
+                    UserManager.getInstance().logout();
+                    Intent intent = new Intent(this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+        );
+
+        binding.deleteAccount.setOnClickListener(v -> new AlertDialog.Builder(UserPage.this)
+                .setTitle("Delete Account")
+                .setMessage("Are you sure?")
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    // Perform action here
+                    // delete
+
+                    UserManager.getInstance().logout();
+                    Toast.makeText(UserPage.this, "Deleting Account", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+
+                })
+                .setNegativeButton("No", null)
+                .show());
+
+        binding.usernameProfile.setText(user.getUsername());
+//        List<CompactVideo> videoList = user.getVideos();
+//        binding.numVideos.setText(videoList.size());
+    }
+
+
+}

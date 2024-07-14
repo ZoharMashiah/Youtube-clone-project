@@ -40,6 +40,7 @@ const createUser = async (req, res) => {
       console.log("photo is:", photo, "using default");
       photo = process.env.DEFAULT_PHOTO;
     }
+
     const user = await User.create({
       username,
       password,

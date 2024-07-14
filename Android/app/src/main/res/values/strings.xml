@@ -15,4 +15,6 @@
     <string name="BaseUrl">http://10.0.2.2:3000/</string>
     <string name="dark_mode_btn">Dark Mode</string>
     <string name="add_video_btn">Add Video</string>
+    <string name="delete_account_btn">Delete Account</string>
+    <string name="log_out_btn">Log Out</string>
 </resources>
