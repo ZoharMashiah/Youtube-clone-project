@@ -68,20 +68,20 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
 
-        binding.themeToggleButton.setOnClickListener(v -> {
-            // Toggle dark mode
-            boolean isDarkMode1 = (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES);
-            if (isDarkMode1) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-            } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            }
-
-            // Save the theme preference
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putBoolean(PREF_DARK_MODE, !isDarkMode1);
-            editor.apply();
-        });
+//        binding.themeToggleButton.setOnClickListener(v -> {
+//            // Toggle dark mode
+//            boolean isDarkMode1 = (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES);
+//            if (isDarkMode1) {
+//                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+//            } else {
+//                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+//            }
+//
+//            // Save the theme preference
+//            SharedPreferences.Editor editor = preferences.edit();
+//            editor.putBoolean(PREF_DARK_MODE, !isDarkMode1);
+//            editor.apply();
+//        });
         videoView = binding.video;
 
         RecyclerView recyclerView = findViewById(R.id.commentsRecyclerView);
@@ -115,10 +115,10 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
         binding.video.start();
         binding.date.setText(timeStr);
 
-        binding.imageButtonHomeOriginal.setOnClickListener(v -> {
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-        });
+//        binding..setOnClickListener(v -> {
+//            Intent intent = new Intent(this, MainActivity.class);
+//            startActivity(intent);
+//        });
 
         binding.like.setOnClickListener(v -> {
             if (Users.getInstance().currentUser != null) {

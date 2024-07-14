@@ -92,10 +92,10 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.MyViewHold
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             this.itemView = itemView;
-            videoImage = itemView.findViewById(R.id.imageView4);
-            userImage = itemView.findViewById(R.id.imageView5);
-            title = itemView.findViewById(R.id.textView3);
-            videoInfo = itemView.findViewById(R.id.textView4);
+            videoImage = itemView.findViewById(R.id.videoImg);
+            userImage = itemView.findViewById(R.id.userImg);
+            title = itemView.findViewById(R.id.videoTitle);
+            videoInfo = itemView.findViewById(R.id.videoInfo);
             parent = itemView.findViewById(R.id.parentLayout);
         }
     }
