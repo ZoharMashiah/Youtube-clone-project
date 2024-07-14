@@ -38,10 +38,10 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.MyViewHold
     public void onBindViewHolder(@NonNull VideosAdapter.MyViewHolder holder, int position) {
         int views = videos.get(position).getViews();
         long publication_date = videos.get(position).getPublication_date();
-        String viewers = views > 999 ? views > 999999 ? ((views / 1000000) + "M") : ((views / 1000) + "K") : Integer.toString(views);
+        String viewers = views > 999 ? views > 999999 ? ((views / 1000000) + "M ") : ((views / 1000) + "K ") : Integer.toString(views);
         long time = ((Calendar.getInstance().getTime().getTime() - publication_date) / 60000);
         String timeStr = time > 60 ? time > 1140 ? time > 43200 ? time > 525600 ? ((time / 525600) + " years ago") : ((time / 43200) + " months ago") : ((time / 1140) + " days ago") : ((time / 60) + " hours ago") : (time + " minutes ago");
-        String info = videos.get(position).getUser() + "·" + viewers + "views·" + timeStr;
+        String info = videos.get(position).getUser() + " · " + viewers + "views · " + timeStr;
 
         holder.videoImage.setImageURI(videos.get(position).getIcon());
         holder.userImage.setImageURI(videos.get(position).getUser_image());
@@ -70,10 +70,10 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.MyViewHold
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             this.itemView = itemView;
-            videoImage = itemView.findViewById(R.id.imageView4);
-            userImage = itemView.findViewById(R.id.imageView5);
-            title = itemView.findViewById(R.id.textView3);
-            videoInfo = itemView.findViewById(R.id.textView4);
+            videoImage = itemView.findViewById(R.id.videoImg);
+            userImage = itemView.findViewById(R.id.userImg);
+            title = itemView.findViewById(R.id.videoTitle);
+            videoInfo = itemView.findViewById(R.id.videoInfo);
             parent = itemView.findViewById(R.id.parentLayout);
         }
     }

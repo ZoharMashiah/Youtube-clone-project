@@ -26,7 +26,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:backgroundTint="@color/white"
-                android:textColor="@color/blueNavy"/>
+                android:textColor="@color/blueNavy" />
 
             <ImageView
                 android:id="@+id/imageView3"
@@ -94,7 +94,7 @@
                 android:id="@+id/category"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp"/>
+                android:layout_margin="20dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -103,7 +103,7 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/imageUploadImage"
+                android:id="@+id/upload_image"
                 android:layout_width="wrap_content"
                 android:layout_height="60dp"
                 android:layout_weight="1"
@@ -122,7 +122,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="Add video"
-                android:backgroundTint="@color/blueNavy"/>
+                android:backgroundTint="@color/blueNavy" />
         </LinearLayout>
 
         <Button
@@ -130,14 +130,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Upload"
-            android:backgroundTint="@color/blueNavy"/>
+            android:backgroundTint="@color/blueNavy" />
 
         <ImageButton
             android:id="@+id/imageButtonBack"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/baseline_arrow_back_24"
-            android:backgroundTint="@color/blueNavy"/>
+            android:backgroundTint="@color/blueNavy" />
 
     </LinearLayout>
 

@@ -7,10 +7,12 @@
     <string name="submit">Submit</string>
     <string name="click_here">Click here!</string>
     <string name="don_t_have_an_account_yet">Don\'t have an account yet?</string>
-    <string name="signup">Signup</string>
+    <string name="signup">Sign Up</string>
     <string name="first_name">First Name</string>
     <string name="middle_name">Middle Name</string>
     <string name="last_name">Last Name</string>
     <string name="category">Category</string>
     <string name="BaseUrl">http://10.0.2.2:3000/</string>
+    <string name="dark_mode_btn">Dark Mode</string>
+    <string name="add_video_btn">Add Video</string>
 </resources>

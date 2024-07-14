@@ -3,7 +3,6 @@ package com.example.youtube_clone;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.MediaController;
@@ -11,7 +10,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -39,29 +37,29 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
 
         setContentView(binding.getRoot());
 
-        // Load the saved theme preference
-        SharedPreferences preferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        boolean isDarkMode = preferences.getBoolean(PREF_DARK_MODE, false);
-        if (isDarkMode) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        }
-
-        binding.themeToggleButton.setOnClickListener(v -> {
-            // Toggle dark mode
-            boolean isDarkMode1 = (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES);
-            if (isDarkMode1) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-            } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            }
-
-            // Save the theme preference
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putBoolean(PREF_DARK_MODE, !isDarkMode1);
-            editor.apply();
-        });
+//        // Load the saved theme preference
+//        SharedPreferences preferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+//        boolean isDarkMode = preferences.getBoolean(PREF_DARK_MODE, false);
+//        if (isDarkMode) {
+//            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+//        } else {
+//            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+//        }
+//
+//        binding.themeToggleButton.setOnClickListener(v -> {
+//            // Toggle dark mode
+//            boolean isDarkMode1 = (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES);
+//            if (isDarkMode1) {
+//                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+//            } else {
+//                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+//            }
+//
+//            // Save the theme preference
+//            SharedPreferences.Editor editor = preferences.edit();
+//            editor.putBoolean(PREF_DARK_MODE, !isDarkMode1);
+//            editor.apply();
+//        });
 
         RecyclerView recyclerView = findViewById(R.id.commentsRecyclerView);
 
@@ -101,11 +99,11 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
         } else {
             Toast.makeText(this, "Video URI is not available", Toast.LENGTH_SHORT).show();
         }
-
-        binding.imageButtonHomeOriginal.setOnClickListener(v -> {
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-        });
+//
+//        binding.imageButtonHomeOriginal.setOnClickListener(v -> {
+//            Intent intent = new Intent(this, MainActivity.class);
+//            startActivity(intent);
+//        });
 
         binding.like.setOnClickListener(v -> {
             if (Users.getInstance().currentUser != null) {
