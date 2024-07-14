@@ -22,6 +22,7 @@ const postCommentInsideComment = async (req, res) => {
   try {
     res.status(200).json(await createCommentInsideComment(commentId, req.body.user, req.body.title, pid));
   } catch (error) {
+    console.log(error.message)
     res.status(400).json({ error: error.message });
   }
 };

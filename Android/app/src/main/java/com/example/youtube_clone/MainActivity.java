@@ -18,6 +18,7 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.youtube_clone.api.videoAPI.VideoApi;
 import com.example.youtube_clone.databinding.ActivityMainBinding;
 
 import java.io.IOException;
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
     private static final String PREFS_NAME = "prefs";
     private static final String PREF_DARK_MODE = "dark_mode";
     private ViewModel viewModel;
+    VideosAdapter[] adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
 
         UserManager userManager = UserManager.getInstance();
         userManager.init(MyApplication.getAppContext());
+
 
         // Load the saved theme preference
         SharedPreferences preferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
@@ -74,6 +77,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
             editor.putBoolean(PREF_DARK_MODE, !isDarkMode1);
             editor.apply();
         });
+
+        VideoApi videoApi = new VideoApi();
 
 
         if (Videos.getInstance().videos.isEmpty()) {
@@ -131,9 +136,17 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
             });
         }
 
-        final VideosAdapter[] adapter = {new VideosAdapter(this, videos, this)};
-        binding.mRecyclerView.setAdapter(adapter[0]);
-        binding.mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        videoApi.getFeed().observe(this, videoNS -> {
+            adapter = new VideosAdapter[]{new VideosAdapter(this, videoNS, this)};
+            binding.mRecyclerView.setAdapter(adapter[0]);
+            binding.mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        });
+        if(videoApi.getFeed().getValue() != null) {
+
+            adapter = new VideosAdapter[]{new VideosAdapter(this, videoApi.getFeed().getValue(), this)};
+            binding.mRecyclerView.setAdapter(adapter[0]);
+            binding.mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        }
 
         for (int index = 0; index < categories.length; index++) {
             myButton[index] = new Button(this); //initialize the button here
@@ -154,9 +167,11 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
                 } else {
                     Videos.getInstance().filterdVideos = videos;
                 }
-                adapter[0] = new VideosAdapter(this, Videos.getInstance().filterdVideos, this);
-                binding.mRecyclerView.setAdapter(adapter[0]);
-                binding.mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+                if(videoApi.getFeed().getValue() != null){
+                    adapter[0] = new VideosAdapter(this, videoApi.getFeed().getValue(), this);
+                    binding.mRecyclerView.setAdapter(adapter[0]);
+                    binding.mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+                }
             });
             binding.categories.addView(myButton[index]);
 
@@ -175,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
                     // If the list contains the search query than filter the adapter
                     // using the filter method with the query as its argument
                     Videos.getInstance().filterByTitle(query);
-                    adapter[0] = new VideosAdapter(context, Videos.getInstance().filterdVideos, (RecyclerViewInterface) context);
+                    adapter[0] = new VideosAdapter(context, videoApi.getFeed().getValue(), (RecyclerViewInterface) context);
                     binding.mRecyclerView.setAdapter(adapter[0]);
                     binding.mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
                     return false;
@@ -192,7 +207,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
                 @Override
                 public boolean onClose() {
                     Videos.getInstance().filterdVideos = videos;
-                    adapter[0] = new VideosAdapter(context, Videos.getInstance().filterdVideos, (RecyclerViewInterface) context);
+                    adapter[0] = new VideosAdapter(context, videoApi.getFeed().getValue(), (RecyclerViewInterface) context);
                     binding.mRecyclerView.setAdapter(adapter[0]);
                     binding.mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
                     return false;
@@ -286,7 +301,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
     }
 
     @Override
-    public void onItemClick(Video video) {
+    public void onItemClick(VideoN video) {
         Videos.getInstance().currentVideo = video;
         Intent intent = new Intent(this, videoShowActivity.class);
         startActivity(intent);
