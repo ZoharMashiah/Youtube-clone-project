@@ -45,7 +45,7 @@ public class LoginActivity extends AppCompatActivity {
         tokenAPI.loginUser(username, password, new TokenAPI.LoginCallback() {
             @Override
             public void onSuccess(LoginResponse result) {
-                UserN current = result.getUser();
+                User current = result.getUser();
                 String token = result.getToken();
 
                 // set the current user

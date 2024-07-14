@@ -8,7 +8,7 @@ import com.example.youtube_clone.db.AppDB;
 
 public class UserManager {
     private volatile static UserManager instance;
-    private UserN currentUser;
+    private User currentUser;
     private String token;
     private UserDao userDao;
     private Context context;
@@ -41,7 +41,7 @@ public class UserManager {
         // if verified, a user is returned and insert it here
     }
 
-    public void login(UserN user, String token) {
+    public void login(User user, String token) {
         this.currentUser = user;
         this.token = token;
 
@@ -59,7 +59,7 @@ public class UserManager {
         token = null;
     }
 
-    public UserN getCurrentUser() {
+    public User getCurrentUser() {
         return currentUser;
     }
 

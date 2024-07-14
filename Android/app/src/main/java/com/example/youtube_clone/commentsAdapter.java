@@ -2,11 +2,7 @@ package com.example.youtube_clone;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.os.Handler;
-import android.os.Looper;
-import android.text.Layout;
 import android.view.LayoutInflater;
-import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -18,12 +14,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class commentsAdapter extends RecyclerView.Adapter<commentsAdapter.MyViewHolder>{
+public class commentsAdapter extends RecyclerView.Adapter<commentsAdapter.MyViewHolder> {
 
     Context context;
     ArrayList<Comment> commentsArray;
     commentRecycler commentRecycler;
-    public commentsAdapter(Context context,  ArrayList<Comment> commentsArray, commentRecycler commentRecycler){
+
+    public commentsAdapter(Context context, ArrayList<Comment> commentsArray, commentRecycler commentRecycler) {
         this.context = context;
         this.commentsArray = commentsArray;
         this.commentRecycler = commentRecycler;
@@ -33,7 +30,7 @@ public class commentsAdapter extends RecyclerView.Adapter<commentsAdapter.MyView
     @Override
     public commentsAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.recycler_view_comments, parent,false);
+        View view = inflater.inflate(R.layout.recycler_view_comments, parent, false);
 
         return new commentsAdapter.MyViewHolder(view, commentRecycler);
     }
@@ -44,7 +41,7 @@ public class commentsAdapter extends RecyclerView.Adapter<commentsAdapter.MyView
         holder.tvAuthor.setText(commentsArray.get(position).getUser());
         holder.tvComment.setText(commentsArray.get(position).getTitle());
 
-        if (Users.getInstance().currentUser != null && comment.getUser().equals(Users.getInstance().currentUser.getUsername())) {
+        if (UserManager.getInstance().getCurrentUser() != null && comment.getUser().equals(UserManager.getInstance().getCurrentUser().getUsername())) {
             holder.editButton.setVisibility(View.VISIBLE);
             holder.deleteButton.setVisibility(View.VISIBLE);
 
@@ -104,7 +101,7 @@ public class commentsAdapter extends RecyclerView.Adapter<commentsAdapter.MyView
 //        builder.show();
 //    }
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder{
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvAuthor;
         TextView tvComment;
@@ -124,7 +121,7 @@ public class commentsAdapter extends RecyclerView.Adapter<commentsAdapter.MyView
                 if (commentRecycler != null) {
                     int pos = getAdapterPosition();
 
-                    if(pos != RecyclerView.NO_POSITION){
+                    if (pos != RecyclerView.NO_POSITION) {
                         commentRecycler.deleteElement(pos);
                     }
                 }

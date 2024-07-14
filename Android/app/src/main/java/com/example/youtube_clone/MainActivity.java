@@ -49,7 +49,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
         viewModel = new ViewModelProvider(this).get(ViewModel.class);
 
 
-
         // Load the saved theme preference
         SharedPreferences preferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         boolean isDarkMode = preferences.getBoolean(PREF_DARK_MODE, false);
@@ -115,7 +114,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
             binding.mRecyclerView.setAdapter(adapter[0]);
             binding.mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         });
-        if(videoApi.getFeed().getValue() != null) {
+
+        if (videoApi.getFeed().getValue() != null) {
 
             adapter = new VideosAdapter[]{new VideosAdapter(this, videoApi.getFeed().getValue(), this)};
             binding.mRecyclerView.setAdapter(adapter[0]);
@@ -141,7 +141,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
                 } else {
                     Videos.getInstance().filterdVideos = videos;
                 }
-                if(videoApi.getFeed().getValue() != null){
+                if (videoApi.getFeed().getValue() != null) {
                     adapter[0] = new VideosAdapter(this, videoApi.getFeed().getValue(), this);
                     binding.mRecyclerView.setAdapter(adapter[0]);
                     binding.mRecyclerView.setLayoutManager(new LinearLayoutManager(this));

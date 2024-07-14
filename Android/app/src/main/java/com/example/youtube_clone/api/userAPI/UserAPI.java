@@ -2,7 +2,7 @@ package com.example.youtube_clone.api.userAPI;
 
 import com.example.youtube_clone.MyApplication;
 import com.example.youtube_clone.R;
-import com.example.youtube_clone.UserN;
+import com.example.youtube_clone.User;
 import com.example.youtube_clone.authorization.AuthInterceptor;
 
 import okhttp3.OkHttpClient;
@@ -18,7 +18,7 @@ public class UserAPI {
     RequestUser requestUser;
 
     public interface UserCallback {
-        void onSuccess(UserN user, String message);
+        void onSuccess(User user, String message);
 
         void onError(String message);
     }
@@ -42,28 +42,28 @@ public class UserAPI {
     }
 
     public void get(String id) {    //TODO user page
-        Call<UserN> call = requestUser.getUser(id);
-        call.enqueue(new Callback<UserN>() {
+        Call<User> call = requestUser.getUser(id);
+        call.enqueue(new Callback<User>() {
             @Override
-            public void onResponse(Call<UserN> call, Response<UserN> response) {
-                UserN user = response.body();
+            public void onResponse(Call<User> call, Response<User> response) {
+                User user = response.body();
                 // go to user page
             }
 
             @Override
-            public void onFailure(Call<UserN> call, Throwable throwable) {
+            public void onFailure(Call<User> call, Throwable throwable) {
                 // error cant find user
             }
         });
     }
 
-    public void signUp(UserN user, UserCallback callback) {
-        Call<UserN> call = requestUser.postUser(user);
-        call.enqueue(new Callback<UserN>() {
+    public void signUp(User user, UserCallback callback) {
+        Call<User> call = requestUser.postUser(user);
+        call.enqueue(new Callback<User>() {
             @Override
-            public void onResponse(Call<UserN> call, Response<UserN> response) {
+            public void onResponse(Call<User> call, Response<User> response) {
                 if (response.isSuccessful()) {
-                    UserN createdUser = response.body();
+                    User createdUser = response.body();
                     if (createdUser != null) {
                         callback.onSuccess(createdUser, "User has been created");
                     } else {
@@ -77,14 +77,14 @@ public class UserAPI {
             }
 
             @Override
-            public void onFailure(Call<UserN> call, Throwable throwable) {
+            public void onFailure(Call<User> call, Throwable throwable) {
                 callback.onError("Network error: " + throwable.getMessage());
             }
         });
 
     }
 
-    public void delete(UserN user, UserCallback callback) {
+    public void delete(User user, UserCallback callback) {
         Call<Void> call = requestUser.deleteUser(user.get_id());
         call.enqueue(new Callback<Void>() {
             @Override
