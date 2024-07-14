@@ -28,8 +28,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
     private ActivityMainBinding binding;
 
     private ArrayList<Video> videos;
-    private static final String TAG = "MainActivity";
-
     private final String[] categories = {"All", "Music", "Mixes", "JavaScript", "Gaming", "Bouldering",
             "Display devices", "AI", "Computer Hardware", "Table News", "Inventions", "News", "Comedy clubs", "Skills", "3D printing"};
 
@@ -101,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
         binding.userButton.setOnClickListener(v -> {
             User curr = UserManager.getInstance().getCurrentUser();
             Intent intent;
-            
+
             if (curr != null) {
                 intent = new Intent(this, UserPage.class);
                 intent.putExtra("userId", curr.get_id());
