@@ -3,12 +3,16 @@ package com.example.youtube_clone;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -19,6 +23,9 @@ import androidx.appcompat.app.AppCompatDelegate;
 
 import com.example.youtube_clone.databinding.ActivityAddVideoBinding;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -34,8 +41,10 @@ public class addVideoActivity extends AppCompatActivity implements
     ActivityResultLauncher<String> mTakeVideo;
 
     Uri selectedImageUri = null;
+    String selectedImage;
 
     Uri selectedVideoUri = null;
+    String selectedVideo;
 
     private final String[] categories = {"Music", "Mixes", "JavaScript", "Gaming", "Bouldering",
             "Display devices", "AI", "Computer Hardware", "Table News", "Inventions", "News", "Comedy clubs", "Skills", "3D printing"};
@@ -116,11 +125,35 @@ public class addVideoActivity extends AppCompatActivity implements
 
         binding.button6.setOnClickListener(v -> {
             if (!binding.editTextText.getText().toString().isEmpty() && !binding.editTextText2.getText().toString().isEmpty() && this.selectedImageUri != null && this.selectedVideoUri != null) {
-                Video newVideo = new Video(Videos.getInstance().getNextId(), binding.editTextText.getText().toString(), binding.editTextText2.getText().toString(),
-                        Users.getInstance().currentUser.getUsername(), Users.getInstance().currentUser.getProfileImage(),
-                        binding.category.getSelectedItem().toString(), Calendar.getInstance().getTime().getTime(), this.selectedImageUri,
-                        0, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), this.selectedVideoUri);
-                Videos.getInstance().videos.add(newVideo);
+                InputStream inputStream = null;
+                try {
+                    inputStream = getContentResolver().openInputStream(selectedImageUri);
+                    Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream);
+                    byte[] byteArray = byteArrayOutputStream.toByteArray();
+                    selectedImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
+                    inputStream = getContentResolver().openInputStream(selectedVideoUri);
+                    bitmap = BitmapFactory.decodeStream(inputStream);
+                    byteArrayOutputStream = new ByteArrayOutputStream();
+//                    bitmap.compress(Bitmap.CompressFormat.WEBP, 50, byteArrayOutputStream);
+                    byteArray = byteArrayOutputStream.toByteArray();
+                    selectedVideo = Base64.encodeToString(byteArray, Base64.DEFAULT);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Toast.makeText(this, "Failed to upload image, but the user has been created.", Toast.LENGTH_SHORT).show();
+                } finally {
+                    try {
+                        inputStream.close();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                VideoN videoN = new VideoN(null,UserManager.getInstance().getCurrentUser().get_id(), new SmallUser(UserManager.getInstance().getCurrentUser().get_id(), UserManager.getInstance().getCurrentUser().getUsername(), UserManager.getInstance().getCurrentUser().getProfilePicture()),
+                        binding.editTextText.getText().toString(),binding.editTextText2.getText().toString(),binding.category.getSelectedItem().toString(),Calendar.getInstance().getTime(), 0,0,0,new ArrayList<>(),
+                        selectedImage, selectedVideo);
+                ViewModelsSingelton.getInstance().getVideosViewModel().add(UserManager.getInstance().getCurrentUser().get_id(), videoN);
+                ViewModelsSingelton.getInstance().getVideosViewModel().reload();
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
             } else {

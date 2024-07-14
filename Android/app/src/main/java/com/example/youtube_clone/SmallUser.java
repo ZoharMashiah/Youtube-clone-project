@@ -1,6 +1,8 @@
 package com.example.youtube_clone;
 
-public class SmallUser {
+import java.io.Serializable;
+
+public class SmallUser implements Serializable {
     String _id;
     String username;
     String photo;

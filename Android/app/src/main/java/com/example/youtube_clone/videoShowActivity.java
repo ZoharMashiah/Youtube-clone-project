@@ -8,6 +8,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Base64;
+import android.util.Log;
 import android.widget.MediaController;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -16,12 +17,14 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.youtube_clone.api.videoAPI.VideoApi;
 import com.example.youtube_clone.databinding.ActivityVideoShowBinding;
+import com.example.youtube_clone.reposetories.VideoRepository;
 import com.example.youtube_clone.utils.Base64Utils;
 import com.example.youtube_clone.utils.FileUtils;
 
@@ -52,9 +55,9 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
 
         setContentView(binding.getRoot());
 
-        VideoApi videoApi = new VideoApi();
+        VideosViewModel videosViewModel = ViewModelsSingelton.getInstance().getVideosViewModel();
 
-        MutableLiveData<VideoN> videoN = videoApi.getVideo(Videos.getInstance().currentVideo.getUser()._id, Videos.getInstance().currentVideo.get_id());
+        LiveData<VideoN> videoN = videosViewModel.getVideo(Videos.getInstance().currentVideo.getUser()._id, Videos.getInstance().currentVideo.get_id());
         if(videoN.getValue() == null)
             binding.title.setText("Loding...");
         videoN.observe(this, videoN1 -> {
@@ -217,9 +220,9 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
 //            }
 //        });
 
-            if(videoApi.getVideos().getValue() != null) {
-                for (VideoN vid : Objects.requireNonNull(videoApi.getVideos().getValue())) {
-                    if (vid.get_id() != Videos.getInstance().currentVideo.get_id()) {
+            if(videosViewModel.getVideos().getValue() != null) {
+                for (VideoN vid : videosViewModel.getVideos().getValue()) {
+                    if (!vid.get_id().equals(videoN1.get_id())) {
                         videos.add(vid);
                     }
                 }
@@ -237,9 +240,10 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
 
     @Override
     public void onItemClick(VideoN video) {
-//        Videos.getInstance().currentVideo = video;
-        Intent intent = new Intent(this, videoShowActivity.class);
-        startActivity(intent);
+        Videos.getInstance().currentVideo = video;
+//        Intent intent = new Intent(this, videoShowActivity.class);
+//        startActivity(intent);
+        recreate();
     }
     public byte[] decodeBase64(String base64String) {
         // Remove the prefix if it exists (e.g., "data:video/mp4;base64,")

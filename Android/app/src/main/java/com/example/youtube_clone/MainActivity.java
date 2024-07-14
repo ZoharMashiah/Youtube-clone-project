@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.youtube_clone.api.videoAPI.VideoApi;
 import com.example.youtube_clone.databinding.ActivityMainBinding;
+import com.example.youtube_clone.reposetories.VideoRepository;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -78,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
             editor.apply();
         });
 
-        VideoApi videoApi = new VideoApi();
+        VideosViewModel videosViewModel = ViewModelsSingelton.getInstance().getVideosViewModel();
 
 
         if (Videos.getInstance().videos.isEmpty()) {
@@ -92,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
         }
 
         binding.buttonAddVid.setOnClickListener(v -> {
-            if (Users.getInstance().currentUser != null) {
+            if (userManager.getCurrentUser() != null) {
                 Intent intent = new Intent(this, addVideoActivity.class);
                 startActivity(intent);
             } else {
@@ -136,14 +137,14 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
             });
         }
 
-        videoApi.getFeed().observe(this, videoNS -> {
+        videosViewModel.getFeed().observe(this, videoNS -> {
             adapter = new VideosAdapter[]{new VideosAdapter(this, videoNS, this)};
             binding.mRecyclerView.setAdapter(adapter[0]);
             binding.mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         });
-        if(videoApi.getFeed().getValue() != null) {
+        if(videosViewModel.getFeed().getValue() != null) {
 
-            adapter = new VideosAdapter[]{new VideosAdapter(this, videoApi.getFeed().getValue(), this)};
+            adapter = new VideosAdapter[]{new VideosAdapter(this, videosViewModel.getFeed().getValue(), this)};
             binding.mRecyclerView.setAdapter(adapter[0]);
             binding.mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         }
@@ -167,8 +168,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
                 } else {
                     Videos.getInstance().filterdVideos = videos;
                 }
-                if(videoApi.getFeed().getValue() != null){
-                    adapter[0] = new VideosAdapter(this, videoApi.getFeed().getValue(), this);
+                if(videosViewModel.getFeed().getValue() != null){
+                    adapter[0] = new VideosAdapter(this, videosViewModel.getFeed().getValue(), this);
                     binding.mRecyclerView.setAdapter(adapter[0]);
                     binding.mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
                 }
@@ -190,7 +191,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
                     // If the list contains the search query than filter the adapter
                     // using the filter method with the query as its argument
                     Videos.getInstance().filterByTitle(query);
-                    adapter[0] = new VideosAdapter(context, videoApi.getFeed().getValue(), (RecyclerViewInterface) context);
+                    adapter[0] = new VideosAdapter(context, videosViewModel.getFeed().getValue(), (RecyclerViewInterface) context);
                     binding.mRecyclerView.setAdapter(adapter[0]);
                     binding.mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
                     return false;
@@ -207,7 +208,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
                 @Override
                 public boolean onClose() {
                     Videos.getInstance().filterdVideos = videos;
-                    adapter[0] = new VideosAdapter(context, videoApi.getFeed().getValue(), (RecyclerViewInterface) context);
+                    adapter[0] = new VideosAdapter(context, videosViewModel.getFeed().getValue(), (RecyclerViewInterface) context);
                     binding.mRecyclerView.setAdapter(adapter[0]);
                     binding.mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
                     return false;
