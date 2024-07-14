@@ -1,20 +1,15 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import styles from "./VideoShow.module.css";
-import EditVideo from "../../UserPage/EditVideo/EditVideo";
 import VideoMenu from "../../VideoMenu/VideoMenu";
 import { useNavigate } from "react-router-dom";
 
-export default function VideoShow({ video }) {
-  const [editButton, setEditButton] = useState(false);
-  const [videoTitle, setTitle] = useState(video.title);
-  const [videoDescription, setDescription] = useState(video.title);
-
+export default function VideoShow({ currentVideo, setCurrentVideo }) {
   const navigate = useNavigate();
 
-  const views = video.views;
+  const views = currentVideo.views;
   let viewers =
     views > 999 ? (views > 999999 ? (views / 1000000).toFixed(0) + "M" : (views / 1000).toFixed(0) + "K") : views;
-  let time = ((Date.now() - new Date(video.publication_date).getTime()) / 60000).toFixed(0);
+  let time = ((Date.now() - new Date(currentVideo.publication_date).getTime()) / 60000).toFixed(0);
   let timeStr =
     time > 60
       ? time > 1140
@@ -27,19 +22,16 @@ export default function VideoShow({ video }) {
       : time + " minutes ago";
 
   const getToUserPage = () => {
-    navigate(`/userpage/${video.user._id}`);
+    navigate(`/userpage/${currentVideo.user._id}`);
   };
 
   return (
     <div className={styles.videoDetails}>
-      {editButton && (
-        <EditVideo setEditButton={setEditButton} videoTitle={videoTitle} videoDescription={videoDescription} />
-      )}
       <div className={styles.titleWrapper}>
-        <p id={styles.title}>{videoTitle}</p>
+        <p id={styles.title}>{currentVideo.title}</p>
         <div>
           <span id="user" onClick={() => getToUserPage()}>
-            {video.user.username}
+            {currentVideo.user.username}
           </span>
           <br></br>
           <span id="views">
@@ -47,7 +39,7 @@ export default function VideoShow({ video }) {
           </span>
         </div>
       </div>
-      <VideoMenu currentVideo={video} setTitle={setTitle} setDescription={setDescription} />
+      <VideoMenu currentVideo={currentVideo} setCurrentVideo={setCurrentVideo} />
     </div>
   );
 }

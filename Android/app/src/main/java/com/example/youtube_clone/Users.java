@@ -3,7 +3,11 @@ package com.example.youtube_clone;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.http.GET;
+
 public class Users {
+
+
     private static Users single_instance = null;
     public ArrayList<User> users;
     public User currentUser;

@@ -1,67 +1,13 @@
-import React, { useContext } from "react";
+import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./pages/Layout/Layout";
 import Feed from "./pages/Feed/Feed";
 import Login from "./pages/Login/Login";
 import Signup from "./pages/Signup/Signup";
 import VideoDisplay from "./pages/VideoDisplay/VideoDisplay";
-import { AppContext } from "./AppContext";
-import { useEffect } from "react";
 import UserPage from "./pages/UserPage/UserPage";
-import axios from "axios";
 
 export default function App() {
-  const { setCurrentUser, toggleDarkMode } = useContext(AppContext);
-
-  useEffect(() => {
-    const getCurrentUser = async () => {
-      const token = localStorage.getItem("token");
-      if (token) {
-        try {
-          const response = await axios.get(`/api/tokens/${token}`, {
-            headers: { Authorization: `Bearer ${token}` },
-          });
-          const data = response.data;
-          if (data.user) {
-            setCurrentUser(data.user);
-            if (data.user.settings.darkMode) {
-              toggleDarkMode();
-            }
-          }
-        } catch (error) {
-          console.error("Error fetching user data:", error);
-          // Clear invalid token
-          localStorage.removeItem("token");
-          setCurrentUser(null);
-        }
-      } else {
-        setCurrentUser(null);
-      }
-    };
-    getCurrentUser();
-  }, []); // Empty dependency array
-
-  // const token = localStorage.getItem("token");
-  // useEffect(() => {
-  //   const getCurrentUser = async () => {
-  //     if (token) {
-  //       try {
-  //         const response = await fetch(`/api/tokens/${token}`);
-  //         const data = await response.json();
-  //         if (data.user) {
-  //           setCurrentUser(data.user);
-  //           if (data.user.settings.darkMode) {
-  //             toggleDarkMode();
-  //           }
-  //         }
-  //       } catch (error) {
-  //         console.error("Error fetching user data:", error);
-  //       }
-  //     }
-  //   };
-  //   getCurrentUser();
-  // }, [token, setCurrentUser, toggleDarkMode]);
-
   return (
     <BrowserRouter>
       <Routes>

@@ -3,13 +3,14 @@ import styles from "./Comments.module.css";
 import Comment from "../Comment/Comment";
 import { useParams } from "react-router-dom";
 import { AppContext } from "../../../AppContext";
+import authAxios from "../../../util/authAxios";
 
 export default function Comments({ currentVideo }) {
   const { currentUser } = useContext(AppContext);
   const { userId, videoId } = useParams();
   const [title, setTitle] = useState("");
   const [comments, setComments] = useState([]);
-  const [triger, setTriger] = useState(false);
+  const [trigger, setTrigger] = useState(false);
 
   const addCommentToVideo = async (e) => {
     e.preventDefault();
@@ -21,52 +22,41 @@ export default function Comments({ currentVideo }) {
         photo: currentUser.photo,
       },
     };
-    const response = await fetch(`/api/users/${userId}/videos/${videoId}/comments/`, {
-      method: "POST",
-      body: JSON.stringify(comment),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    const json = await response.json();
-
-    if (response.ok) {
+    try {
+      await authAxios.post(`/api/users/${userId}/videos/${videoId}/comments/`, comment);
       setTitle("");
-      setTriger(true);
-      console.log("new comment added", json);
-    } else {
-      alert(response.error);
+      setTrigger(true);
+    } catch (error) {
+      alert(error.response.data.error);
     }
   };
 
   const orgenizeComments = (id) => {
-    let orgenizeCommen = comments.map((comment) => {
+    let organizeComment = comments.map((comment) => {
       if (comment.parentId === id) {
         return (
-          <div style={{ position: "relative", left: "3vw" }} className={styles.commentWrapper}>
-            <Comment {...comment} currentUser={currentUser} triger={triger} setTriger={setTriger} />
+          <div style={{ marginLeft: "30px" }} className={styles.commentWrapper}>
+            <Comment {...comment} currentUser={currentUser} triger={trigger} setTriger={setTrigger} />
             {orgenizeComments(comment._id)}
           </div>
         );
       }
     });
-    return orgenizeCommen;
+    return organizeComment;
   };
 
   useEffect(() => {
     const fetchComments = async () => {
-      const response = await fetch(`/api/users/${userId}/videos/${videoId}/comments/`);
-      const json = await response.json();
-
-      if (response.ok) {
-        setComments(json);
-        setTriger(false);
+      try {
+        const response = await authAxios.get(`/api/users/${userId}/videos/${videoId}/comments/`);
+        setComments(response.data);
+        setTrigger(false);
+      } catch (error) {
+        console.log(error);
       }
     };
-
     fetchComments();
-  }, [triger]);
+  }, [trigger]);
 
   return (
     <div className={styles.commentsWrapper}>
@@ -96,7 +86,7 @@ export default function Comments({ currentVideo }) {
           if (comment.parentId == undefined) {
             return (
               <div>
-                <Comment {...comment} currentUser={currentUser} triger={triger} setTriger={setTriger} />
+                <Comment {...comment} currentUser={currentUser} triger={trigger} setTriger={setTrigger} />
                 {orgenizeComments(comment._id)}
               </div>
             );

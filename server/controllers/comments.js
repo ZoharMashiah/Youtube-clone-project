@@ -64,6 +64,7 @@ const deleteComments = async (req, res) => {
 
 const updateOneComment = async (req, res) => {
   const { commentId } = req.params;
+
   try {
     res.status(200).json(await updateComment(commentId, req.body.title));
   } catch (error) {

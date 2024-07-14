@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styles from "./VideoDisplay.module.css";
-import axios from "axios";
 import { AppContext } from "../../AppContext";
 import HorizontalVideoCard from "../../components/Feed/VideoShow/HorizontalVideoCard";
 import Description from "../../components/WatchVid/Description/Description";
 import Metadata from "../../components/WatchVid/Metadata/Metadata";
 import { Image } from "react-bootstrap";
 import Comments from "../../components/WatchVid/Comments/Comments";
+import authAxios from "../../util/authAxios";
 
 export default function VideoDisplay() {
   const { userId, videoId } = useParams();
@@ -33,7 +33,7 @@ export default function VideoDisplay() {
       setLoading(true);
       console.log("Fetching video for creator:", userId, "video:", videoId);
       const address = `/api/users/${userId}/videos/${videoId}`;
-      const response = await axios.get(address);
+      const response = await authAxios.get(address);
       setCurrentVideo(response.data);
       setVideoList((prevVideoList) =>
         prevVideoList.map((video) =>
@@ -49,7 +49,7 @@ export default function VideoDisplay() {
 
   const fetchFeed = async () => {
     try {
-      const res = await axios.get("/api/videos");
+      const res = await authAxios.get("/api/videos");
       const videoList = res.data;
       console.log("video list: ", videoList);
       setVideoList(videoList);

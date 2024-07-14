@@ -23,8 +23,6 @@ class VideoService {
       const endQuery = Date.now();
       console.log(`Query execution time: ${endQuery - startQuery}ms`);
       console.log(`Total operation time: ${endQuery - startQuery + latency}ms`);
-      console.log(`Number of documents returned for the 10 most viewed videos: ${videos.length}`);
-
       return videos;
     } catch (error) {
       console.log("Error fetching top videos");
