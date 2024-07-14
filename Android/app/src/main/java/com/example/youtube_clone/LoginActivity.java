@@ -2,6 +2,7 @@ package com.example.youtube_clone;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -54,8 +55,9 @@ public class LoginActivity extends AppCompatActivity {
                 // set the current user
                 UserManager userManager = UserManager.getInstance();
                 userManager.login(current, token);
+                String message = "Hello " + current.getUsername() + "!";
+                Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
 
-                // navigate to MainActivity
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();

@@ -18,7 +18,7 @@ public class UserAPI {
     RequestUser requestUser;
 
     public interface UserCallback {
-        void onSuccess(UserN user);
+        void onSuccess(UserN user, String message);
 
         void onError(String message);
     }
@@ -65,7 +65,7 @@ public class UserAPI {
                 if (response.isSuccessful()) {
                     UserN createdUser = response.body();
                     if (createdUser != null) {
-                        callback.onSuccess(createdUser);
+                        callback.onSuccess(createdUser, "User has been created");
                     } else {
                         callback.onError("Signing up Failed: " + response.code());
                     }
@@ -85,26 +85,19 @@ public class UserAPI {
     }
 
     public void delete(UserN user, UserCallback callback) {
-        Call<UserN> call = requestUser.postUser(user);
-        call.enqueue(new Callback<UserN>() {
+        Call<Void> call = requestUser.deleteUser(user.get_id());
+        call.enqueue(new Callback<Void>() {
             @Override
-            public void onResponse(Call<UserN> call, Response<UserN> response) {
+            public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
-                    UserN createdUser = response.body();
-                    if (createdUser != null) {
-                        callback.onSuccess(createdUser);
-                    } else {
-                        callback.onError("Signing up Failed: " + response.code());
-                    }
-                } else if (response.code() == 409) {
-                    callback.onError("Username is not available");
+                    callback.onSuccess(null, "User was deleted successfully");
                 } else {
-                    callback.onError("Signing up Failed: " + response.code());
+                    callback.onError("Deletion failed: " + response.code());
                 }
             }
 
             @Override
-            public void onFailure(Call<UserN> call, Throwable throwable) {
+            public void onFailure(Call<Void> call, Throwable throwable) {
                 callback.onError("Network error: " + throwable.getMessage());
             }
         });
