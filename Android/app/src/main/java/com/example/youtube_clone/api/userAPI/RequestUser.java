@@ -19,7 +19,7 @@ public interface RequestUser {
     Call<UserN> patchUser();  // update user
 
     @DELETE("api/users/{id}")
-    Call<Void> deleteUser();  // delete user
+    Call<Void> deleteUser(@Path("id") String id);  // delete user
 
     @POST("api/users/signup")
     Call<UserN> postUser(@Body UserN user);  // create user

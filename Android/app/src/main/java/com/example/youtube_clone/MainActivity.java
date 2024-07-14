@@ -1,7 +1,6 @@
 package com.example.youtube_clone;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -11,7 +10,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.ContextCompat;
@@ -50,8 +48,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
 
         viewModel = new ViewModelProvider(this).get(ViewModel.class);
 
-        UserManager userManager = UserManager.getInstance();
-        userManager.init(MyApplication.getAppContext());
 
 
         // Load the saved theme preference
@@ -92,49 +88,27 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
         }
 
         binding.buttonAddVid.setOnClickListener(v -> {
-            if (Users.getInstance().currentUser != null) {
+            if (UserManager.getInstance().getCurrentUser() != null) {
                 Intent intent = new Intent(this, addVideoActivity.class);
                 startActivity(intent);
             } else {
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-                // Set the message show for the Alert time
-                builder.setMessage("You need to have a user to add a video!");
-
-                // Set Alert Title
-                builder.setTitle("Alert !");
-
-                // Set Cancelable false for when the user clicks on the outside the Dialog Box then it will remain show
-                builder.setCancelable(false);
-
-                // Set the positive button with yes name Lambda OnClickListener method is use of DialogInterface interface.
-                builder.setPositiveButton("Cancel", (DialogInterface.OnClickListener) (dialog, which) -> {
-                    // When the user click yes button then app will close
-                    dialog.cancel();
-                });
-
-                // Create the Alert dialog
-                AlertDialog alertDialog = builder.create();
-                // Show the Alert Dialog box
-                alertDialog.show();
+                new android.app.AlertDialog.Builder(this)
+                        .setMessage("You need to have a user to add a video!")
+                        .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
+                        .show();
             }
         });
 
-        if (Users.getInstance().currentUser != null) {
-            binding.imageButton14.setImageURI(Users.getInstance().currentUser.getProfileImage());
-            binding.loginOrLogout.setText("Logout");
-            binding.loginOrLogout.setOnClickListener(v -> {
-                Users.getInstance().currentUser = null;
-                Intent intent = new Intent(MainActivity.this, MainActivity.class);
+        binding.userButton.setOnClickListener(v -> {
+            if (UserManager.getInstance().getCurrentUser() != null) {
+                Intent intent = new Intent(this, UserPage.class);
                 startActivity(intent);
-            });
-        } else {
-            binding.loginOrLogout.setText("Login");
-            binding.loginOrLogout.setOnClickListener(v -> {
+            } else {
                 Intent intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);
-            });
-        }
+            }
+        });
+
 
         videoApi.getFeed().observe(this, videoNS -> {
             adapter = new VideosAdapter[]{new VideosAdapter(this, videoNS, this)};

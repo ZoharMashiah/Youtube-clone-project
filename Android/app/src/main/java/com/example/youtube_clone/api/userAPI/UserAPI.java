@@ -18,7 +18,7 @@ public class UserAPI {
     RequestUser requestUser;
 
     public interface UserCallback {
-        void onSuccess(UserN user);
+        void onSuccess(UserN user, String message);
 
         void onError(String message);
     }
@@ -65,7 +65,7 @@ public class UserAPI {
                 if (response.isSuccessful()) {
                     UserN createdUser = response.body();
                     if (createdUser != null) {
-                        callback.onSuccess(createdUser);
+                        callback.onSuccess(createdUser, "User has been created");
                     } else {
                         callback.onError("Signing up Failed: " + response.code());
                     }
@@ -78,6 +78,26 @@ public class UserAPI {
 
             @Override
             public void onFailure(Call<UserN> call, Throwable throwable) {
+                callback.onError("Network error: " + throwable.getMessage());
+            }
+        });
+
+    }
+
+    public void delete(UserN user, UserCallback callback) {
+        Call<Void> call = requestUser.deleteUser(user.get_id());
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    callback.onSuccess(null, "User was deleted successfully");
+                } else {
+                    callback.onError("Deletion failed: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable throwable) {
                 callback.onError("Network error: " + throwable.getMessage());
             }
         });
