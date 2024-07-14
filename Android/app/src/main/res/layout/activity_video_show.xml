@@ -4,47 +4,47 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/header"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/blueNavy"
+    <!--    <LinearLayout-->
+    <!--        android:id="@+id/header"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="50dp"-->
+    <!--        android:background="@color/blueNavy"-->
 
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+    <!--        android:orientation="horizontal"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="parent">-->
 
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@color/blueNavy"
-            app:srcCompat="@drawable/streambox_imgbg_net" />
+    <!--        <ImageView-->
+    <!--            android:id="@+id/imageView2"-->
+    <!--            android:layout_width="0dp"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_weight="1"-->
+    <!--            android:background="@color/blueNavy"-->
+    <!--            app:srcCompat="@drawable/streambox_imgbg_net" />-->
 
-        <ImageButton
-            android:id="@+id/imageButtonHomeOriginal"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:backgroundTint="@color/blueNavy"
-            app:srcCompat="@drawable/baseline_home_24" />
+    <!--        <ImageButton-->
+    <!--            android:id="@+id/imageButtonHomeOriginal"-->
+    <!--            android:layout_width="0dp"-->
+    <!--            android:layout_height="match_parent"-->
+    <!--            android:layout_weight="1"-->
+    <!--            android:backgroundTint="@color/blueNavy"-->
+    <!--            app:srcCompat="@drawable/baseline_home_24" />-->
 
-        <Button
-            android:id="@+id/themeToggleButton"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
+    <!--        <Button-->
+    <!--            android:id="@+id/themeToggleButton"-->
+    <!--            android:layout_width="0dp"-->
+    <!--            android:layout_height="match_parent"-->
+    <!--            android:layout_gravity="center"-->
 
-            android:layout_weight="1"
-            android:backgroundTint="@color/white"
-            android:text="Dark mode"
-            android:textColor="@color/blueNavy"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    <!--            android:layout_weight="1"-->
+    <!--            android:backgroundTint="@color/white"-->
+    <!--            android:text="Dark mode"-->
+    <!--            android:textColor="@color/blueNavy"-->
+    <!--            app:layout_constraintEnd_toEndOf="parent"-->
+    <!--            app:layout_constraintTop_toTopOf="parent" />-->
 
-    </LinearLayout>
+    <!--    </LinearLayout>-->
 
     <FrameLayout
         android:id="@+id/videoFrame"
@@ -84,8 +84,9 @@
                 <TextView
                     android:id="@+id/title"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="wrap_content"
                     android:textStyle="bold"
+                    android:layout_marginBottom="10dp"
                     android:textSize="20sp"
                     android:text="Title" />
 

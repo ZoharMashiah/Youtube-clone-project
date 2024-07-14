@@ -9,28 +9,21 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.youtube_clone.databinding.ActivityAddVideoBinding;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
 
 public class addVideoActivity extends AppCompatActivity implements
-        AdapterView.OnItemSelectedListener{
+        AdapterView.OnItemSelectedListener {
 
     private SharedPreferences sharedPreferences;
 
@@ -49,6 +42,7 @@ public class addVideoActivity extends AppCompatActivity implements
 
     private static final String PREFS_NAME = "prefs";
     private static final String PREF_DARK_MODE = "dark_mode";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -82,7 +76,7 @@ public class addVideoActivity extends AppCompatActivity implements
         });
 
 
-        mTakePhoto =registerForActivityResult(
+        mTakePhoto = registerForActivityResult(
                 new ActivityResultContracts.GetContent(),
                 new ActivityResultCallback<Uri>() {
                     @Override
@@ -92,7 +86,7 @@ public class addVideoActivity extends AppCompatActivity implements
                 }
         );
 
-        mTakeVideo =registerForActivityResult(
+        mTakeVideo = registerForActivityResult(
                 new ActivityResultContracts.GetContent(),
                 new ActivityResultCallback<Uri>() {
                     @Override
@@ -107,7 +101,7 @@ public class addVideoActivity extends AppCompatActivity implements
             startActivity(intent);
         });
 
-        binding.imageUploadImage.setOnClickListener(v -> mTakePhoto.launch("image/*"));
+        binding.uploadImage.setOnClickListener(v -> mTakePhoto.launch("image/*"));
 
         binding.imageUploadVideo.setOnClickListener(v -> mTakeVideo.launch("video/*"));
 
@@ -115,13 +109,13 @@ public class addVideoActivity extends AppCompatActivity implements
         spin.setOnItemSelectedListener(this);
 
         //Creating the ArrayAdapter instance having the country list
-        ArrayAdapter aa = new ArrayAdapter(this,android.R.layout.simple_spinner_item,categories);
+        ArrayAdapter aa = new ArrayAdapter(this, android.R.layout.simple_spinner_item, categories);
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //Setting the ArrayAdapter data on the Spinner
         spin.setAdapter(aa);
 
         binding.button6.setOnClickListener(v -> {
-            if (!binding.editTextText.getText().toString().isEmpty() && !binding.editTextText2.getText().toString().isEmpty() && this.selectedImageUri!=null&& this.selectedVideoUri!=null) {
+            if (!binding.editTextText.getText().toString().isEmpty() && !binding.editTextText2.getText().toString().isEmpty() && this.selectedImageUri != null && this.selectedVideoUri != null) {
                 Video newVideo = new Video(Videos.getInstance().getNextId(), binding.editTextText.getText().toString(), binding.editTextText2.getText().toString(),
                         Users.getInstance().currentUser.getUsername(), Users.getInstance().currentUser.getProfileImage(),
                         binding.category.getSelectedItem().toString(), Calendar.getInstance().getTime().getTime(), this.selectedImageUri,

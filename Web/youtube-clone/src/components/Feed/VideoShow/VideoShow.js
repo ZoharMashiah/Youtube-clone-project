@@ -25,10 +25,16 @@ export default function VideoShow({ currentVideo, setCurrentVideo }) {
     navigate(`/userpage/${currentVideo.user._id}`);
   };
 
+  const goToVideoPage = () => {
+    navigate(`/users/${currentVideo.user._id}/videos/${currentVideo._id}`);
+  };
+
   return (
     <div className={styles.videoDetails}>
       <div className={styles.titleWrapper}>
-        <p id={styles.title}>{currentVideo.title}</p>
+        <p id={styles.title} onClick={goToVideoPage}>
+          {currentVideo.title}
+        </p>
         <div>
           <span id="user" onClick={() => getToUserPage()}>
             {currentVideo.user.username}

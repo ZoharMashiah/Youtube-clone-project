@@ -71,16 +71,16 @@ public class commentsAdapter extends RecyclerView.Adapter<commentsAdapter.MyView
         builder.setView(input);
 
         // Set up the buttons
-        builder.setPositiveButton("Save", (dialog, which) -> {
-            String newCommentText = input.getText().toString().trim();
-            if (!newCommentText.isEmpty() && !newCommentText.equals(comment.getTitle())) {
-                comment.setTitle(newCommentText);
-                notifyItemChanged(position);
-                // Update the comment in the data source
-                Videos.getInstance().updateComment(comment.getId(), newCommentText);
-            }
-        });
-        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+//        builder.setPositiveButton("Save", (dialog, which) -> {
+//            String newCommentText = input.getText().toString().trim();
+//            if (!newCommentText.isEmpty() && !newCommentText.equals(comment.getTitle())) {
+//                comment.setTitle(newCommentText);
+//                notifyItemChanged(position);
+//                // Update the comment in the data source
+//                Videos.getInstance().updateComment(comment.getId(), newCommentText);
+//            }
+//        });
+//        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
 
         builder.show();
     }

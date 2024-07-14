@@ -1,11 +1,9 @@
 package com.example.youtube_clone;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 
 import com.example.youtube_clone.api.loginAPI.LoginResponse;
 import com.example.youtube_clone.api.loginAPI.TokenAPI;
@@ -28,30 +26,6 @@ public class LoginActivity extends AppCompatActivity {
         this.binding = ActivityLoginBinding.inflate(getLayoutInflater());
 
         setContentView(binding.getRoot());
-
-        // Load the saved theme preference
-        SharedPreferences preferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        boolean isDarkMode = preferences.getBoolean(PREF_DARK_MODE, false);
-        if (isDarkMode) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        }
-
-        binding.themeToggleButton.setOnClickListener(v -> {
-            // Toggle dark mode
-            boolean isDarkMode1 = (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES);
-            if (isDarkMode1) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-            } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            }
-
-            // Save the theme preference
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putBoolean(PREF_DARK_MODE, !isDarkMode1);
-            editor.apply();
-        });
 
         binding.submitBtn.setOnClickListener(v -> {
             Intent intent = new Intent(this, MainActivity.class);

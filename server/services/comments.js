@@ -26,11 +26,11 @@ const createCommentInsideComment = async (parentId, user, title, videoId) => {
     user: user,
     title: title,
   });
-  const parent = await Comment.findById({ _id: parentId });
+  const parent = await Comment.findById({ _id: parentId })
   await Comment.findByIdAndUpdate(
     { _id: parentId },
     {
-      childernId: parent.childernId.concat([comment._id]),
+      childrenIds: [...parent.childrenIds,comment._id],
     }
   );
   return await comment.save();

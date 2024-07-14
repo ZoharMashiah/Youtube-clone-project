@@ -5,10 +5,11 @@ import { AppContext } from "../../../AppContext";
 
 export default function Logo() {
   const navigate = useNavigate();
-  const { stopFilter } = useContext(AppContext);
+  const { stopFilter, setSelectedCategory } = useContext(AppContext);
 
   const handleClick = () => {
     stopFilter();
+    setSelectedCategory("All")
     navigate("/");
   };
 
