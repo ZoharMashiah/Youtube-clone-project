@@ -99,13 +99,16 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
         });
 
         binding.userButton.setOnClickListener(v -> {
-            if (UserManager.getInstance().getCurrentUser() != null) {
-                Intent intent = new Intent(this, UserPage.class);
-                startActivity(intent);
+            User curr = UserManager.getInstance().getCurrentUser();
+            Intent intent;
+            
+            if (curr != null) {
+                intent = new Intent(this, UserPage.class);
+                intent.putExtra("userId", curr.get_id());
             } else {
-                Intent intent = new Intent(this, LoginActivity.class);
-                startActivity(intent);
+                intent = new Intent(this, LoginActivity.class);
             }
+            startActivity(intent);
         });
 
 

@@ -41,18 +41,21 @@ public class UserAPI {
         this.requestUser = retrofit.create(RequestUser.class);
     }
 
-    public void get(String id) {    //TODO user page
+    public void getUser(String id, UserCallback callback) {
         Call<User> call = requestUser.getUser(id);
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
-                User user = response.body();
-                // go to user page
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.onSuccess(response.body(), "Fetched user");
+                } else {
+                    callback.onError("Unsuccessful response");
+                }
             }
 
             @Override
             public void onFailure(Call<User> call, Throwable throwable) {
-                // error cant find user
+                callback.onError("Error fetching user: " + throwable.getMessage());
             }
         });
     }

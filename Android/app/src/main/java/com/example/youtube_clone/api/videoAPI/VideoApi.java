@@ -77,24 +77,28 @@ public class VideoApi {
     }
 
     public MutableLiveData<List<VideoN>> getUserVideos(String uid) {
+        Log.d("DEBUG", "Starting getUserVideos method");
         MutableLiveData<List<VideoN>> videosLiveData = new MutableLiveData<>();
 
+        Log.d("DEBUG", "About to make network call");
         Call<List<VideoN>> call = videoRequest.getUserVideos(uid);
 
+        Log.d("DEBUG", "Enqueueing callback");
         call.enqueue(new Callback<List<VideoN>>() {
             @Override
             public void onResponse(Call<List<VideoN>> call, Response<List<VideoN>> response) {
                 if (response.isSuccessful() && response.body() != null) {
+                    Log.d("API_RESPONSE", "Successful: " + response.body());
                     videosLiveData.setValue(response.body());
                 } else {
-                    // Handle error case
+                    Log.e("API_RESPONSE", "Unsuccessful: " + response.code() + " " + response.message());
                     videosLiveData.setValue(null); // or an empty list
                 }
             }
 
-            @Override
             public void onFailure(Call<List<VideoN>> call, Throwable throwable) {
-                // Handle failure case
+                Log.e("API_FAILURE", "Error: " + throwable.getMessage());
+                throwable.printStackTrace();
                 videosLiveData.setValue(null); // or an empty list
             }
         });

@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,6 +22,7 @@ public class UserPage extends AppCompatActivity {
     private UserAPI userAPI;
     private VideoApi videoApi;
     private MutableLiveData<List<VideoN>> mutableVideoList;
+    private User user;
 
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -32,19 +32,22 @@ public class UserPage extends AppCompatActivity {
         userAPI = new UserAPI();
         videoApi = new VideoApi();
 
-        User user = UserManager.getInstance().getCurrentUser();        // TODO user = getUser() from server
+        String userId = getIntent().getStringExtra("userId");
 
-        if (user != null) {
-            if (user.get_id().equals(UserManager.getInstance().getCurrentUser().get_id())) {
-                binding.userPageButtons.setVisibility(View.VISIBLE);
-            }
+        if (userId != null && !userId.isEmpty()) {
+            getUser(userId);    // async fetch user
+        } else {
+            Toast.makeText(this, "User ID not provided", Toast.LENGTH_SHORT).show();
+            navigateToMainActivity();
         }
 
+        setUpButtons();
+    }
+
+    private void setUpButtons() {
         binding.logOut.setOnClickListener(v -> {
                     UserManager.getInstance().logout();
-                    Intent intent = new Intent(this, MainActivity.class);
-                    startActivity(intent);
-                    finish();
+                    navigateToMainActivity();
                 }
         );
 
@@ -57,40 +60,60 @@ public class UserPage extends AppCompatActivity {
                     UserManager.getInstance().logout();
 
                     Toast.makeText(UserPage.this, "Deleting Account", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(this, MainActivity.class);
-                    startActivity(intent);
-                    finish();
+                    navigateToMainActivity();
 
                 })
                 .setNegativeButton("No", null)
                 .show());
+    }
 
+    private void getUser(String id) {
+        userAPI.getUser(id, new UserAPI.UserCallback() {
+            @Override
+            public void onSuccess(User fetchedUser, String message) {
+                user = fetchedUser;
+                Log.i("UserPage", "Fetched user successfully");
+                updateUIWithUserData();
+            }
 
-//        binding.usernameProfile.setText(user.getUsername());
+            @Override
+            public void onError(String errorMessage) {
+                new AlertDialog.Builder(UserPage.this)
+                        .setTitle("Error Fetching user")
+                        .setMessage(errorMessage)
+                        .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
+                        .show();
+
+                Toast.makeText(UserPage.this, errorMessage, Toast.LENGTH_SHORT).show();
+                navigateToMainActivity();
+            }
+        });
+    }
+
+    private void updateUIWithUserData() {
+        binding.usernameProfile.setText(user.getUsername());
 //        binding.userPageAvatar.setImageBitmap(user.getProfilePicture());
+        loadUserVideos();
+    }
 
-        mutableVideoList = videoApi.getUserVideos(user.get_id());      // get video list
+    private void loadUserVideos() {
+        mutableVideoList = videoApi.getUserVideos(user.get_id());
 
         List<VideoN> videoList = mutableVideoList.getValue();
 
         if (videoList == null) {
             Toast.makeText(UserPage.this, "Error loading videos", Toast.LENGTH_SHORT).show();
             Log.e("UserPage", "Error loading videos");
-
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-            finish();
+            navigateToMainActivity();
+            return;
         }
 
+        binding.numVideos.setText(String.valueOf(videoList.size()));
 
-        binding.numVideos.setText(videoList.size());
-
-        // adapter
         VideosAdapter videosAdapter = new VideosAdapter(this, videoList, (RecyclerViewInterface) this);
         binding.userPageVideos.setAdapter(videosAdapter);
         binding.userPageVideos.setLayoutManager(new LinearLayoutManager(this));
     }
-
 
     private void handleDelete(User user) {
         userAPI.delete(user, new UserAPI.UserCallback() {
@@ -112,6 +135,12 @@ public class UserPage extends AppCompatActivity {
                         .show();
             }
         });
+    }
+
+    private void navigateToMainActivity() {
+        Intent intent = new Intent(UserPage.this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 
 }
