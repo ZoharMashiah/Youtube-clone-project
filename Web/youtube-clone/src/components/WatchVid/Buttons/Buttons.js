@@ -4,7 +4,7 @@ import { AppContext } from "../../../AppContext";
 import authAxios from "../../../util/authAxios";
 
 export default function Buttons({ currentVideo }) {
-  const { currentUser } = useContext(AppContext);
+  const { currentUser, setCurrentUser } = useContext(AppContext);
   const [numLike, setNumLike] = useState(currentVideo.like);
   const [numDislike, setNumDislike] = useState(currentVideo.dislike);
   const [isLiked, setIsLiked] = useState(currentUser?.likes.includes(currentVideo._id));
@@ -20,29 +20,43 @@ export default function Buttons({ currentVideo }) {
       action,
       userId: currentUser?._id,
     };
+    let cu = currentUser
     if (action == "like") {
       if (isLiked) {
         setIsLiked(false);
         setNumLike(numLike - 1);
+        cu.likes = cu.likes.filter(id => id!= currentVideo._id)
+        setCurrentUser(cu)
       } else {
         if (isDisliked) {
           setIsDisliked(false);
           setNumDislike(numDislike - 1);
+          cu.dilikes = cu.dislikes.filter(id => id!= currentVideo._id)
+          setCurrentUser(cu)
         }
         setIsLiked(true);
         setNumLike(numLike + 1);
+        cu.likes= [...cu.likes, currentVideo._id]
+        setCurrentUser(cu)
+        console.log(cu)
       }
     } else if (action == "dislike") {
       if (isDisliked) {
         setIsDisliked(false);
         setNumDislike(numDislike - 1);
+        cu.dislikes = cu.dislikes.filter(id => id!= currentVideo._id)
+        setCurrentUser(cu)
       } else {
         if (isLiked) {
           setIsLiked(false);
           setNumLike(numLike - 1);
+          cu.likes = cu.likes.filter(id => id!= currentVideo._id)
+          setCurrentUser(cu)
         }
         setIsDisliked(true);
         setNumDislike(numDislike + 1);
+        cu.dislikes = [...cu.dislikes, currentVideo._id]
+        setCurrentUser(cu)
       }
     }
     setIsButtonDisabled(true);
