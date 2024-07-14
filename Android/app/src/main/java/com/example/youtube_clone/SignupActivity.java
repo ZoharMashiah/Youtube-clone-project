@@ -70,7 +70,7 @@ public class SignupActivity extends AppCompatActivity {
                 result -> {
                     if (result != null) {
                         selectedImageUri = result;
-                        binding.uploadImage.setImageURI(selectedImageUri); // TODO
+                        binding.uploadImage.setImageURI(selectedImageUri);
                     }
                 }
         );
