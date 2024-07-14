@@ -5,6 +5,7 @@ const Util = require("../util/util.js");
 
 async function getFeed(req, res) {
   try {
+    console.log("Fetching...");
     const numberOfVideos = 10;
     const mostViewed = await VideoService.getTopVideos(numberOfVideos);
     const unchosenVideos = await VideoService.getUnchosenVideos(numberOfVideos, mostViewed);
@@ -21,7 +22,7 @@ async function getFeed(req, res) {
 }
 
 async function getUserVideoList(req, res) {
-  const userId = req.params.userId;
+  const userId = req.params.id;
   try {
     const userVideoList = await VideoService.getUserVideoList(userId);
     console.log("Fetched creator video list successfully");
@@ -37,10 +38,9 @@ async function getUserVideoList(req, res) {
 async function getVideo(req, res) {
   const videoId = req.params.pid;
   try {
-    const video = await Video.findById(videoId);
-
-    if (video == null) {
-      console.error("Video is null", videoId, error);
+    const video = await Video.findByIdAndUpdate(videoId, { $inc: { views: 1 } }, { new: true, runValidators: true });
+    if (!video) {
+      console.error("Video was not found", videoId, error);
       throw error;
     }
 
@@ -55,6 +55,13 @@ async function getVideo(req, res) {
 }
 
 async function updateVideo(req, res) {
+  const userId = req.params.id;
+  const authUser = req.user;
+
+  if (authUser._id.toString() !== userId) {
+    return res.status(401).json({ message: "Authentication required to update video" });
+  }
+
   const videoId = req.params.pid;
   const newData = req.body;
 
@@ -64,7 +71,7 @@ async function updateVideo(req, res) {
       throw error;
     }
     console.log("Updated video successfully");
-    res.status(200);
+    res.status(200).json();
   } catch (error) {
     console.error("Error updating video:", videoId, error);
     res.status(500).json({
@@ -76,7 +83,9 @@ async function updateVideo(req, res) {
 async function createVideo(req, res) {
   const video = req.body;
   try {
-    const videoData = await Video.createVideo(video);
+    const newVideo = await Video.createVideo(video);
+    const videoData = await Video.findById(newVideo._id).select("-comments -video");
+
     console.log("Video upload processed successfully");
     res.status(201).json(videoData);
   } catch (error) {
@@ -88,26 +97,19 @@ async function createVideo(req, res) {
 }
 
 async function deleteVideo(req, res) {
+  const userId = req.params.id;
+  const authUser = req.user;
+
+  if (authUser._id.toString() !== userId) {
+    return res.status(401).json({ message: "Authentication required to delete video" });
+  }
+
   const videoId = req.params.pid;
-  const userId = req.params.userId;
-  const session = await mongoose.startSession();
-  session.startTransaction();
 
   try {
     await Video.deleteVideo(videoId, userId);
-    const user = await user.findById(userId);
-    const video = await video.findById(videoId);
-
-    const result = await video.deleteOne({ _id: videoId, user_id: userId }).session(session);
-    if (result.deletedCount === 0) {
-      throw new Error("Video not found");
-    }
-
-    await User.updateOne({ _id: userId }, { $pull: { videos: videoId } }).session(session);
-    await session.commitTransaction();
-
     console.log("Deleted video successfully");
-    res.status(200);
+    res.status(200).json({ message: "Video deleted successfully" });
   } catch (error) {
     console.error("Error deleting video:", videoId, error);
     res.status(500).json({
@@ -120,40 +122,108 @@ async function deleteAllVideos(userId) {
   try {
     const user = await User.findById(userId);
     if (!user) {
-      return res.status(400).json({ message: `User with id ${userId} not found` });
+      throw new Error(`User with id ${userId} not found`);
     }
-    user.videos.map(async (video) => {
-      console.log(video._id)
-      await Video.deleteVideo(video._id, userId);
-    })
 
-    console.log("Deleted video successfully");
+    const deletionPromises = user.videos.map((video) => Video.deleteVideo(video._id, userId));
+    await Promise.all(deletionPromises);
+
+    console.log("All videos deleted successfully");
     return true;
   } catch (error) {
-    console.error("Error deleting video:", error);
-    return false
+    console.error("Error deleting videos:", error);
+    throw error;
   }
 }
 
 async function filterVideos(req, res) {
-  const videoId = req.params.pid;
-  const userId = req.params.userId;
-  const {search, text} = req.body
+  const { search, text } = req.body;
 
   try {
     let filtered;
     if (search) {
-      filtered = (await Video.find({})).filter((video) => video.title.toLowerCase().includes(text.toLowerCase()))
+      filtered = (
+        await Video.find(
+          {},
+          {
+            comments: 0,
+            video: 0,
+          }
+        )
+      ).filter((video) => video.title.toLowerCase().includes(text.toLowerCase()));
     } else {
-      filtered = await Video.find({category: text})
+      filtered = await Video.find(
+        { category: text },
+
+        {
+          comments: 0,
+          video: 0,
+        }
+      ).lean();
     }
+
     res.status(200).json(filtered);
   } catch (error) {
-    console.error("Error deleting video:", videoId, error);
+    console.error("Error filtering videos");
     res.status(500).json({
       error: error.message,
     });
   }
 }
 
-module.exports = { getFeed, getUserVideoList, getVideo, updateVideo, createVideo, deleteVideo, filterVideos, deleteAllVideos };
+const pushLikeOrDisLike = async (req, res) => {
+  const videoId = req.params.pid;
+  const { action, userId } = req.body;
+  try {
+    const video = await Video.findById({ _id: videoId });
+    const user = await User.findById({ _id: userId });
+
+    if (action == "like") {
+      if (user.likes.includes(videoId)) {
+        await User.findByIdAndUpdate({ _id: userId }, { likes: user.likes.filter((video) => video._id != videoId) });
+        await Video.findByIdAndUpdate({ _id: videoId }, { like: video.like - 1 });
+        return res.status(200);
+      }
+      if (user.dislikes.includes(videoId)) {
+        await User.findByIdAndUpdate(
+          { _id: userId },
+          { dislikes: user.dislikes.filter((video) => video._id != videoId) }
+        );
+        await Video.findByIdAndUpdate({ _id: videoId }, { dislike: video.dislike - 1 });
+      }
+      await User.findByIdAndUpdate({ _id: userId }, { likes: [...user.likes, videoId] });
+      await Video.findByIdAndUpdate({ _id: videoId }, { like: video.like + 1 });
+    } else {
+      if (user.dislikes.includes(videoId)) {
+        await User.findByIdAndUpdate(
+          { _id: userId },
+          { dislikes: user.dislikes.filter((video) => video._id != videoId) }
+        );
+        await Video.findByIdAndUpdate({ _id: videoId }, { dislike: video.dislike - 1 });
+        return res.status(200);
+      }
+      if (user.likes.includes(videoId)) {
+        await User.findByIdAndUpdate({ _id: userId }, { likes: user.likes.filter((video) => video._id != videoId) });
+        await Video.findByIdAndUpdate({ _id: videoId }, { like: video.like - 1 });
+      }
+      await User.findByIdAndUpdate({ _id: userId }, { dislikes: [...user.dislikes, videoId] });
+      await Video.findByIdAndUpdate({ _id: videoId }, { dislike: video.dislike + 1 });
+    }
+    res.status(200);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports = {
+  getFeed,
+  getUserVideoList,
+  getVideo,
+  updateVideo,
+  createVideo,
+  deleteVideo,
+  filterVideos,
+  deleteAllVideos,
+  pushLikeOrDisLike,
+};

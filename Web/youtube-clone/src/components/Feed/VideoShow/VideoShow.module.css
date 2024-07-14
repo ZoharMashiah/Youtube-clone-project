@@ -1,4 +1,4 @@
-.videoCard {
+.feedVideoCard {
   display: flex;
   height: fit-content;
   width: 325px;
@@ -7,10 +7,19 @@
   padding: 0px 5px;
 }
 
+.sideListVideoCard {
+  display: flex;
+  height: fit-content;
+  width: 450px;
+  flex-direction: row;
+  margin-bottom: 25px;
+  padding: 0px 5px;
+}
+
 #videoImage {
   border-radius: 15px;
-  aspect-ratio: 16 / 9;
   width: 100%;
+  aspect-ratio: 16 / 9;
   box-shadow: 2px 2px rgba(110, 110, 110, 0.05);
 }
 
@@ -22,54 +31,43 @@
   transition-timing-function: linear;
 }
 
+#profileImage {
+  cursor: pointer;
+}
+
 .videoDetails {
   display: flex;
   flex-direction: row;
-  padding-top: 10px;
+  width: 100%;
+  height: 100%;
   justify-content: space-between;
-}
-
-.metaData {
-  display: flex;
-  flex-direction: row;
 }
 
 .titleWrapper {
   margin-left: 20px;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  gap: 10px;
 }
 
-.ellipsis :global(.dropdown-toggle) {
-  outline: none !important;
-  box-shadow: none !important;
-  border: none !important;
+.metaData {
+  padding-top: 10px;
+  display: flex;
+  height: 100%;
+  flex-direction: row;
+  min-width: 200px;
 }
 
-.ellipsis :global(.dropdown-toggle:focus),
-.ellipsis :global(.dropdown-toggle:active) {
-  outline: none !important;
-  box-shadow: none !important;
-  border: none !important;
-}
-
-.ellipsis :global(.dropdown-toggle::after) {
-  display: none !important;
-}
 #title {
-  font-size: 15px;
   font-weight: 600;
   margin-bottom: 5px;
-  cursor: pointer;
 }
-#user {
-  font-size: 13px;
-  font-weight: 500;
-  color: rgb(110, 110, 110);
-}
-#views {
-  font-size: 12px;
-  font-weight: 500;
-  color: rgb(110, 110, 110);
+
+#title h2 {
+  font-weight: bold;
+  size: 0.6em;
+  letter-spacing: 50%;
+  padding: 10px;
+  margin-bottom: 5px;
 }

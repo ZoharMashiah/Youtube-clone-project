@@ -6,10 +6,11 @@ const videoRouter = express.Router({ mergeParams: true });
 
 videoRouter.get("/", videoController.getUserVideoList);
 videoRouter.post("/", videoController.createVideo);
-videoRouter.get("/:videoId", videoController.getVideo);
-videoRouter.patch("/:videoId", videoController.updateVideo);
-videoRouter.delete("/:videoId", videoController.deleteVideo);
+videoRouter.get("/:pid", videoController.getVideo);
+videoRouter.patch("/:pid", videoController.updateVideo);
+videoRouter.delete("/:pid", videoController.deleteVideo);
+videoRouter.post("/:pid/action", videoController.pushLikeOrDisLike);
 
-videoRouter.use("/:videoId/comments", commentRouter);
+videoRouter.use("/:pid/comments", commentRouter);
 
 module.exports = videoRouter;

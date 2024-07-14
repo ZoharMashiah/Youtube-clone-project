@@ -1,32 +1,45 @@
 const User = require("../models/User");
-const videoController = require("./videoController")
+const videoController = require("./videoController");
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 
-//get all users
-const getAllUsers = async (req, res) => {
-  const users = await User.find({});
-  res.status(200).json(users);
-};
-
 //get a single user
 const getUser = async (req, res) => {
-  const { userId } = req.params;
+  const userId = req.params.id;
+
   if (!mongoose.Types.ObjectId.isValid(userId)) {
     return res.status(404).json({ message: `User with id ${userId} not valid` });
   }
   const user = await User.findById(userId);
   if (!user) {
-    return res.status(400).json({ message: `User with id ${userId} not found` });
+    return res.status(400).json({ message: `User with id ${userId} not found` }); // i believe you shouldnt give info of what the error was
   }
   res.status(200).json(user);
 };
 
 //create a user
 const createUser = async (req, res) => {
-  //add doc to db
   try {
-    const { username, password, firstName, middleName, lastName, birthdate, photo, videos, settings } = req.body;
+    let { username, password, firstName, middleName, lastName, birthdate, photo, settings, darkMode } = req.body;
+
+    const existingUser = await User.findOne({ username });
+    if (existingUser) {
+      return res.status(409).json({ error: "Username already exists" });
+    }
+
+    console.log("req: ", req.body);
+
+    const newSettings = settings || {};
+
+    if (settings === undefined) {
+      newSettings.darkMode = darkMode;
+      settings = newSettings;
+    }
+
+    if (photo == null || photo == "" || photo == undefined) {
+      console.log("photo is:", photo, "using default");
+      photo = process.env.DEFAULT_PHOTO;
+    }
     const user = await User.create({
       username,
       password,
@@ -35,21 +48,26 @@ const createUser = async (req, res) => {
       lastName,
       birthdate,
       photo,
-      videos,
       settings,
     });
-    console.log("created user: ", user);
-    const token = jwt.sign({ userId: user._id }, "SECRET_KEY", { expiresIn: "5h" });
 
-    res.status(200).json({ user, token });
+    res.status(200).json({ user });
+    console.log("success");
   } catch (error) {
     res.status(400).json({ error: error.message });
+    console.log("error: ", error.message);
   }
 };
 
 //update a user
 const updateUser = async (req, res) => {
-  const { userId } = req.params;
+  const userId = req.params.id;
+  const authUser = req.user;
+
+  if (authUser._id.toString() !== userId) {
+    return res.status(401).json({ message: "Authentication required to update user" });
+  }
+
   if (!mongoose.Types.ObjectId.isValid(userId)) {
     return res.status(404).json({ message: `User with id ${userId} not valid` });
   }
@@ -62,7 +80,12 @@ const updateUser = async (req, res) => {
 
 //delete a user
 const deleteUser = async (req, res) => {
-  const { userId } = req.params;
+  const userId = req.params.id;
+  const authUser = req.user;
+
+  if (authUser._id.toString() !== userId) {
+    return res.status(401).json({ message: "Authentication required to delete user" });
+  }
 
   if (!mongoose.Types.ObjectId.isValid(userId)) {
     return res.status(404).json({ message: `User with id ${userId} not valid` });
@@ -71,9 +94,9 @@ const deleteUser = async (req, res) => {
   if (!userCheck) {
     return res.status(400).json({ message: `User with id ${userId} not found` });
   }
-  const videosDeleted = await videoController.deleteAllVideos(userId)
+  const videosDeleted = await videoController.deleteAllVideos(userId);
   if (!videosDeleted) {
-    return res.status(400).json({ message: `Erroe delte vides for user with id ${userId}` });
+    return res.status(400).json({ message: `Error deleting videos for user with id ${userId}` });
   }
   const user = await User.findByIdAndDelete({ _id: userId });
   if (!user) {
@@ -88,15 +111,15 @@ const createUserForLogin = async (req, res) => {
     console.log("Finding user");
     const user = await User.findOne({ username });
     if (!user) {
-      console.log("User not found");
-      return res.status(404).json({ message: "User not found" });
-    }
-    if (password !== user.password) {
-      console.log("Invalid password");
-      return res.status(401).json({ message: "Invalid password" });
+      return res.status(404).json({ message: "Invalid credentials" });
     }
 
-    console.log("found user: ", user.username);
+    if (password !== user.password) {
+      return res.status(404).json({ message: "Invalid credentials" });
+    }
+
+    console.log("Found:", user.username);
+
     const token = jwt.sign({ userId: user._id }, "SECRET_KEY", { expiresIn: "5h" });
     res.status(200).json({ user, token });
   } catch (error) {
@@ -104,27 +127,28 @@ const createUserForLogin = async (req, res) => {
   }
 };
 
-const getToken = async (req, res) => {
-  const { token } = req.params;
+const verifyToken = async (req, res) => {
+  const token = req.headers.authorization.split(" ")[1];
+
   try {
     const decoded = jwt.verify(token, "SECRET_KEY");
     const user = await User.findById(decoded.userId);
-    console.log(user)
+
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    res.status(200).json({ user });
+
+    res.json({ user });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(404).json({ message: "Invalid token" });
   }
 };
 
 module.exports = {
   createUser,
-  getAllUsers,
   getUser,
   deleteUser,
   updateUser,
   createUserForLogin,
-  getToken,
+  verifyToken,
 };

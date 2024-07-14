@@ -6,16 +6,16 @@ const {
   getOneComment,
   deleteOneComment,
   updateOneComment,
-  deleteComments
+  deleteComments,
 } = require("../controllers/comments");
 const commentRouter = express.Router({ mergeParams: true });
 
-commentRouter.post("/", postComment);
 commentRouter.get("/", getAllComments);
-commentRouter.post("/:commentId", postCommentInsideComment);
 commentRouter.get("/:commentId", getOneComment);
-commentRouter.delete("/:commentId", deleteOneComment);
+commentRouter.post("/", postComment);
+commentRouter.post("/:commentId", postCommentInsideComment);
 commentRouter.patch("/:commentId", updateOneComment);
-commentRouter.delete("/", deleteComments)
+commentRouter.delete("/", deleteComments);
+commentRouter.delete("/:commentId", deleteOneComment);
 
 module.exports = commentRouter;

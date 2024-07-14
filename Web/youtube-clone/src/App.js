@@ -1,48 +1,24 @@
-import React, { useState, useContext } from "react";
+import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./pages/Layout/Layout";
 import Feed from "./pages/Feed/Feed";
 import Login from "./pages/Login/Login";
 import Signup from "./pages/Signup/Signup";
-import VideoDisplay from "./components/WatchVid/VideoDisplay/VideoDisplay";
-import {AppContext, AppContextProvider} from "./AppContext";
-import { useEffect } from "react";
+import VideoDisplay from "./pages/VideoDisplay/VideoDisplay";
 import UserPage from "./pages/UserPage/UserPage";
 
 export default function App() {
-  const {setCurrentUser , toggleDarkMode, setDark} = useContext(AppContext)
-
-  const token = localStorage.getItem("token")
-  useEffect(() => {
-    const getCurrentUser = async () => {
-      if (token) {
-        const response = await fetch(`api/tokens/${token}`);
-        const data = await response.json();
-        if (data.user) {
-          setCurrentUser(data.user);
-          console.log(data.user)
-          if (data.user.settings.darkMode) {
-            setDark(true)
-          } else {
-            setDark(false)
-          }
-        }
-      }
-    };
-    getCurrentUser();
-  }, [token]);
-
   return (
-      <BrowserRouter>
-        <Routes>
-          <Route element={<Layout />}>
-            <Route path="/" element={<Feed />} />
-            <Route path="/users/:userId/videos/:videoId" element={<VideoDisplay />} />
-            <Route path="/userpage/:userId" element={<UserPage />} />
-          </Route>
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-        </Routes>
-      </BrowserRouter>
+    <BrowserRouter>
+      <Routes>
+        <Route element={<Layout />}>
+          <Route path="/" element={<Feed />} />
+          <Route path="/users/:userId/videos/:videoId" element={<VideoDisplay />} />
+          <Route path="/userpage/:userId" element={<UserPage />} />
+        </Route>
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+      </Routes>
+    </BrowserRouter>
   );
 }

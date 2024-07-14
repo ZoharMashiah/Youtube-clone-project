@@ -7,6 +7,7 @@ const userSchema = new Schema({
     type: String,
     required: true,
     unique: true,
+    index: true,
   },
   password: {
     type: String,
@@ -18,6 +19,7 @@ const userSchema = new Schema({
   },
   middleName: {
     type: String,
+    default: "",
   },
   lastName: {
     type: String,
@@ -30,7 +32,18 @@ const userSchema = new Schema({
   photo: {
     type: String,
   },
-  videos: [{ type: Schema.Types.ObjectId, ref: "Video" }],
+  videos: {
+    type: [{ type: Schema.Types.ObjectId, ref: "Video" }],
+    default: [],
+  },
+  likes: {
+    type: [{ type: Schema.Types.ObjectId, ref: "Video" }],
+    default: [],
+  },
+  dislikes: {
+    type: [{ type: Schema.Types.ObjectId, ref: "Video" }],
+    default: [],
+  },
   settings: {
     type: Object,
     required: true,
@@ -38,48 +51,3 @@ const userSchema = new Schema({
 });
 
 module.exports = mongoose.model("User", userSchema);
-
-// const userSchema = new Schema({
-//   username: {
-//     type: String,
-//     required: true,
-//   },
-//   firstName: {
-//     type: String,
-//     required: true,
-//   },
-//   middleName: {
-//     type: String,
-//   },
-//   lastName: {
-//     type: String,
-//     required: true,
-//   },
-//   birthdate: {
-//     type: String,
-//     required: true,
-//   },
-//   photo: {
-//     type: String,
-//   },
-//   videos: [{ type: mongoose.Schema.Types.ObjectId, ref: "video" }],
-//   settings: {
-//     type: Object,
-//     required: true,
-//   },
-//   history: [{ type: mongoose.Schema.Types.ObjectId, ref: "video" }],
-//   settings: {
-//     type: Object,
-//     required: true,
-//   },
-//   likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "user" }],
-//   settings: {
-//     type: Object,
-//     required: true,
-//   },
-//   dislikes: [{ type: mongoose.Schema.Types.ObjectId, ref: "user" }],
-//   settings: {
-//     type: Object,
-//     required: true,
-//   },
-// });

@@ -3,16 +3,19 @@ package com.example.youtube_clone;
 import android.net.Uri;
 
 import java.io.Serializable;
-import java.util.Date;
 
 public class User implements Serializable {
     private String username;
+    private String password;
     private String firstName;
     private String middleName;
     private String lastName;
-    private String password;
     private String birthDate;
-    private Uri profileImage;
+    private Uri profileImage;   // to remove
+    private String profilePicture;
+
+    private boolean darkMode;
+
 
     public User(String username, String firstName, String middleName, String lastName,
                 String password, String birthDate, Uri profileImage) {

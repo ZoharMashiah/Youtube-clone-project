@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import authAxios from "../../util/authAxios";
 import "./Login.css";
 import Logo from "../../components/Feed/Logo/Logo";
-import {AppContext} from "../../AppContext";
+import { AppContext } from "../../AppContext";
 import Userfield from "../../components/Login/Userfield/Userfield";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import DarkModeButton from "../../components/DarkModeButton/DarkModeButton";
@@ -12,29 +12,24 @@ export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const { darkMode, toggleDarkMode, currentUser, setCurrentUser } = useContext(AppContext);
+  const { darkMode, currentUser, setCurrentUser } = useContext(AppContext);
   const navigate = useNavigate();
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post("api/tokens", { username, password });
-      if (response.status === 200) {
-        const { user, token } = response.data;
-        localStorage.setItem("token", token);
-        console.log("Logged in as: ", user);
-        return user;
-      } else {
-        alert("Login failed: could not get user");
-        console.log("Login failed: could not get user");
-        return false;
-      }
+      const response = await authAxios.post("/api/tokens", { username, password });
+      const { user, token } = response.data;
+      localStorage.setItem("token", token);
+      return user;
     } catch (error) {
-      alert("Login failed", error.message);
-      return false;
+      console.error("Login error:", error.response?.data?.message || error.message);
+      alert("Wrong username or password");
+      throw error;
     }
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     setIsLoading(true);
     try {
       let user = await handleLogin();
@@ -50,7 +45,7 @@ export default function Login() {
 
   useEffect(() => {
     if (currentUser && !isLoading) {
-      console.log("Logged in as: ", currentUser);
+      console.log("Logged in as: ", currentUser.username);
       navigate("/");
     }
   }, [currentUser, isLoading, navigate]);
@@ -82,26 +77,3 @@ export default function Login() {
     </div>
   );
 }
-
-// const checkAuth = async () => {
-//   const token = localStorage.getItem("token");
-//   if (token) {
-//     try {
-//       const response = await axios.get("api/verify-token", {
-//         headers: { Authorization: `Bearer ${token}` },
-//       });
-//       if (response.data.user) {
-//         setCurrentUser(response.data.user);
-//       }
-//     } catch (error) {
-//       console.error("Token verification failed:", error);
-//       localStorage.removeItem("token");
-//       setCurrentUser(null);
-//     }
-//   }
-// };
-
-// // Check auth status on component mount
-// useEffect(() => {
-//   checkAuth();
-// }, []);

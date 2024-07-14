@@ -1,37 +1,30 @@
 package com.example.youtube_clone;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.app.Instrumentation;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.view.View;
-import android.widget.Button;
+import android.util.Base64;
 import android.widget.DatePicker;
-import android.widget.ImageView;
+import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
-import com.example.youtube_clone.databinding.ActivityLoginBinding;
+import com.example.youtube_clone.api.userAPI.UserAPI;
 import com.example.youtube_clone.databinding.ActivitySignupBinding;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -41,15 +34,17 @@ public class SignupActivity extends AppCompatActivity {
     ActivityResultLauncher<String> mTakePhoto;
     Uri selectedImageUri = null;
 
-
+    private UserAPI userAPI;
     private ActivitySignupBinding binding;
 
     private static final String PREFS_NAME = "prefs";
     private static final String PREF_DARK_MODE = "dark_mode";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        this.userAPI = new UserAPI();
         binding = ActivitySignupBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -77,15 +72,6 @@ public class SignupActivity extends AppCompatActivity {
             editor.apply();
         });
 
-        mTakePhoto =registerForActivityResult(
-                new ActivityResultContracts.GetContent(),
-                new ActivityResultCallback<Uri>() {
-                    @Override
-                    public void onActivityResult(Uri o) {
-                        selectedImageUri = o;
-                    }
-                }
-        );
 
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Date date = new Date();
@@ -100,7 +86,7 @@ public class SignupActivity extends AppCompatActivity {
                 @Override
                 public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                     month = month + 1;
-                    dateStr[0] = dayOfMonth + "/"+month+"/"+year;
+                    dateStr[0] = dayOfMonth + "-" + month + "-" + year;
                     binding.editTextDate.setText(dateStr[0]);
                 }
             }, year, month, day);
@@ -109,6 +95,15 @@ public class SignupActivity extends AppCompatActivity {
         });
 
         binding.imageUploadImage.setOnClickListener(v -> mTakePhoto.launch("image/*"));
+        mTakePhoto = registerForActivityResult(
+                new ActivityResultContracts.GetContent(),
+                result -> {
+                    if (result != null) {
+                        selectedImageUri = result;
+                        binding.imageUploadImage.setImageURI(selectedImageUri);
+                    }
+                }
+        );
 
         binding.submitBtn.setOnClickListener(v -> {
             String username = binding.editTextUsername.getText().toString();
@@ -117,55 +112,64 @@ public class SignupActivity extends AppCompatActivity {
             String lastName = binding.editTextLastName.getText().toString();
             String password = binding.editTextPassword.getText().toString();
             String birthDate = dateStr[0];
+            String photo = null;
+            boolean darkMode = false;   // TODO get current darkmode
 
-            if(!username.isEmpty() && Users.getInstance().getUser(username) == null && checkVallid(password)&&
-                    !firstName.isEmpty() && !lastName.isEmpty()) {
-                Intent intent = new Intent(this, LoginActivity.class);
-                Users users = Users.getInstance();
-                User newUser = new User(username, firstName, middleName, lastName, password, birthDate, selectedImageUri);
-                users.users.add(newUser);
-                startActivity(intent);
+            if (username.isEmpty() || firstName.isEmpty() || middleName.isEmpty()
+                    || lastName.isEmpty() || password.isEmpty() || birthDate == null || birthDate.isEmpty()) {
+                String message = "You need to fill all the fields, and the password should have at least 2 letters, 2 numbers and 8 characters!";
+                new android.app.AlertDialog.Builder(this)
+                        .setTitle("Login Error")
+                        .setMessage(message)
+                        .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
+                        .show();
             } else {
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-                // Set the message show for the Alert time
-                builder.setMessage("You need to fill all the fields and the password should be with 2 letters 2 numbers and with at least 8 chars!");
-
-                // Set Alert Title
-                builder.setTitle("Alert !");
-
-                // Set Cancelable false for when the user clicks on the outside the Dialog Box then it will remain show
-                builder.setCancelable(false);
-
-                // Set the positive button with yes name Lambda OnClickListener method is use of DialogInterface interface.
-                builder.setPositiveButton("Cancel", (DialogInterface.OnClickListener) (dialog, which) -> {
-                    // When the user click yes button then app will close
-                    dialog.cancel();
-                });
-
-                // Create the Alert dialog
-                AlertDialog alertDialog = builder.create();
-                // Show the Alert Dialog box
-                alertDialog.show();
+                if (selectedImageUri != null) {
+                    InputStream inputStream = null;
+                    try {
+                        inputStream = getContentResolver().openInputStream(selectedImageUri);
+                        Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream);
+                        byte[] byteArray = byteArrayOutputStream.toByteArray();
+                        photo = Base64.encodeToString(byteArray, Base64.DEFAULT);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        Toast.makeText(this, "Failed to upload image, but the user has been created.", Toast.LENGTH_SHORT).show();
+                    } finally {
+                        try {
+                            inputStream.close();
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }
+                UserN newUser = new UserN(username, password, firstName, middleName, lastName, birthDate, photo, darkMode);
+                handleSignUp(newUser);
             }
         });
     }
 
-    private boolean checkVallid(String password) {
-        int countNum = 0, countLetter = 0;
+    private void handleSignUp(UserN newUser) {
+        userAPI.signUp(newUser, new UserAPI.UserCallback() {
+            @Override
+            public void onSuccess(UserN user) {
+                // navigate to MainActivity
+                Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
 
-        for (int i = 0; i< password.length(); i++){
-            char c = password.charAt(i);
-            if((c >= 'a' && c<= 'z') || (c >= 'A' && c<= 'Z'))
-                countLetter++;
-            else if(c >= '0' && c <= '9')
-                countNum++;
-        }
-
-        return countLetter >= 2 && countNum >= 2 && password.length() >= 8;
+            @Override
+            public void onError(String message) {
+                new AlertDialog.Builder(SignupActivity.this)
+                        .setTitle("Error signing up")
+                        .setMessage(message)
+                        .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
+                        .show();
+            }
+        });
     }
-
-
 }
 
 

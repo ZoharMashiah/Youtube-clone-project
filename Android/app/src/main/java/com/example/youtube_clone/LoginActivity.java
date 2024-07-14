@@ -1,34 +1,32 @@
 package com.example.youtube_clone;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
-import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
+import com.example.youtube_clone.api.loginAPI.LoginResponse;
+import com.example.youtube_clone.api.loginAPI.TokenAPI;
 import com.example.youtube_clone.databinding.ActivityLoginBinding;
 
-import java.util.List;
-
 public class LoginActivity extends AppCompatActivity {
+    private TokenAPI tokenAPI;
 
     private ActivityLoginBinding binding;
 
     private static final String PREFS_NAME = "prefs";
     private static final String PREF_DARK_MODE = "dark_mode";
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = ActivityLoginBinding.inflate(getLayoutInflater());
+        this.tokenAPI = new TokenAPI();
+        this.binding = ActivityLoginBinding.inflate(getLayoutInflater());
+
         setContentView(binding.getRoot());
 
         // Load the saved theme preference
@@ -68,37 +66,37 @@ public class LoginActivity extends AppCompatActivity {
         binding.submitBtn.setOnClickListener(v -> {
             String username = binding.editTextText.getText().toString();
             String password = binding.editTextTextPassword.getText().toString();
-
-
-            User current = Users.getInstance().getUser(username);
-
-            if(current != null && current.getPassword().equals(password)) {
-                Users.getInstance().currentUser = current;
-                Intent intent = new Intent(this, MainActivity.class);
-                startActivity(intent);
-            } else {
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-                // Set the message show for the Alert time
-                builder.setMessage("Username or password incorrect!");
-
-                // Set Alert Title
-                builder.setTitle("Alert !");
-
-                // Set Cancelable false for when the user clicks on the outside the Dialog Box then it will remain show
-                builder.setCancelable(false);
-
-                // Set the positive button with yes name Lambda OnClickListener method is use of DialogInterface interface.
-                builder.setPositiveButton("Cancel", (DialogInterface.OnClickListener) (dialog, which) -> {
-                    // When the user click yes button then app will close
-                    dialog.cancel();
-                });
-
-                // Create the Alert dialog
-                AlertDialog alertDialog = builder.create();
-                // Show the Alert Dialog box
-                alertDialog.show();
-            }
+            handleLogin(username, password);
         });
     }
+
+    private void handleLogin(String username, String password) {
+        tokenAPI.loginUser(username, password, new TokenAPI.LoginCallback() {
+            @Override
+            public void onSuccess(LoginResponse result) {
+                UserN current = result.getUser();
+                String token = result.getToken();
+
+                // set the current user
+                UserManager userManager = UserManager.getInstance();
+                userManager.login(current, token);
+
+                // navigate to MainActivity
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+
+            @Override
+            public void onError(String message) {
+                new android.app.AlertDialog.Builder(LoginActivity.this)
+                        .setTitle("Login Error")
+                        .setMessage(message)
+                        .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
+                        .show();
+            }
+
+        });
+    }
+
 }

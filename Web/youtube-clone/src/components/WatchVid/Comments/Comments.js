@@ -1,149 +1,62 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import styles from "./Comments.module.css";
 import Comment from "../Comment/Comment";
 import { useParams } from "react-router-dom";
-import {AppContext} from "../../../AppContext";
+import { AppContext } from "../../../AppContext";
+import authAxios from "../../../util/authAxios";
 
-export default function Comments({ currentVideo, currentUser, editComment, deleteComment }) {
-  const { currentUser, setCurrentUser } = useContext(AppContext);
-  const { creatorId, videoId } = useParams();
+export default function Comments({ currentVideo }) {
+  const { currentUser } = useContext(AppContext);
+  const { userId, videoId } = useParams();
   const [title, setTitle] = useState("");
   const [comments, setComments] = useState([]);
-  const [triger, setTriger] = useState(false);
+  const [trigger, setTrigger] = useState(false);
 
-  // const getMaxId = () => {
-  //   let id = 0;
-  //   currentVideo.comments.map((com) => {
-  //     if (com.id > id) id = com.id;
-  //   });
-  //   return id;
-  // };
   const addCommentToVideo = async (e) => {
     e.preventDefault();
     const comment = {
       title: title,
-      userId: currentUser._id,
-    };
-
-    const response = await fetch(`api/users/${creatorId}/video/${videoId}/comment/`, {
-      method: "POST",
-      body: JSON.stringify(comment),
-      headers: {
-        "Content-Type": "application/json",
+      user: {
+        _id: currentUser._id,
+        username: currentUser.username,
+        photo: currentUser.photo,
       },
-    });
-
-    const json = await response.json();
-
-    if (response.ok) {
+    };
+    try {
+      await authAxios.post(`/api/users/${userId}/videos/${videoId}/comments/`, comment);
       setTitle("");
-      setTriger(true);
-      console.log("new comment added", json);
-    } else {
-      console.log(response.error);
+      setTrigger(true);
+    } catch (error) {
+      alert(error.response.data.error);
     }
-    // let addedComment = {
-    //   id: getMaxId() + 1,
-    //   title: comment,
-    //   user: currentUser.username,
-    //   date: Date.now(),
-    //   icon:
-    //     currentUser.photo == null
-    //       ? "utilites/png-transparent-user-profile-2018-in-sight-user-conference-expo-business-default-business-angle-service-people-thumbnail.png"
-    //       : currentUser.photo,
-    // };
-    // let changedVideo = {
-    //   id: currentVideo.id,
-    //   title: currentVideo.title,
-    //   description: currentVideo.description,
-    //   user: currentVideo.user,
-    //   user_image: currentVideo.user_image,
-    //   category: currentVideo.category,
-    //   publication_date: currentVideo.publication_date,
-    //   icon: currentVideo.icon,
-    //   video: currentVideo.video,
-    //   views: currentVideo.views,
-    //   like: currentVideo.like,
-    //   dislike: currentVideo.dislike,
-    //   comments: [...currentVideo.comments,addedComment]
-    // }
-    // editVideo(changedVideo)
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   try {
-
-  //     const comment = { title: title }
-
-  //   // temp
-  //     const userId = "667aeb3eaf98ca2e75104d0b"
-  //     const videoId = "667aeb3eaf98ca2e75104d0b"
-
-  //     const address = `http://localhost:3000/api/users/${userId}/video/${videoId}/comment/`;
-  //     const res = await fetch(address, {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify(comment),
-  //     });
-
-  //     const data = await res.json();
-  //     alert(data.error);
-
-  //     if (!res.ok) {
-  //       console.log("Full response:", res);
-  //       console.log("Sending request to:", address);
-  //       throw new Error(`HTTP error. status: ${res.status}`);
-  //     }
-
-  //     alert("Upload is successful!");
-  //   } catch (error) {
-  //     console.error("Error adding video:", error);
-  //     alert("Failed to add video. Please try again.");
-  //   }
-  // };
-
   const orgenizeComments = (id) => {
-    let orgenizeCommen = comments.map((comment) => {
+    let organizeComment = comments.map((comment) => {
       if (comment.parentId === id) {
         return (
-          <div style={{ position: "relative", left: "3vw" }}>
-            <Comment
-              {...comment}
-              currentUser={currentUser}
-              editComment={editComment}
-              deleteComment={deleteComment}
-              triger={triger}
-              setTriger={setTriger}
-            />
+          <div style={{ marginLeft: "30px" }} className={styles.commentWrapper}>
+            <Comment {...comment} currentUser={currentUser} triger={trigger} setTriger={setTrigger} />
             {orgenizeComments(comment._id)}
           </div>
         );
       }
     });
-    return orgenizeCommen;
+    return organizeComment;
   };
 
   useEffect(() => {
     const fetchComments = async () => {
-      // temp
-      const userId = "667aeb3eaf98ca2e75104d0b";
-      const videoId = "667aeb3eaf98ca2e75104d0b";
-
-      const response = await fetch(`http://localhost:3000/api/users/${userId}/video/${videoId}/comment/`);
-      const json = await response.json();
-
-      if (response.ok) {
-        setComments(json);
-        setTriger(false);
+      try {
+        const response = await authAxios.get(`/api/users/${userId}/videos/${videoId}/comments/`);
+        setComments(response.data);
+        setTrigger(false);
+      } catch (error) {
+        console.log(error);
       }
     };
-
     fetchComments();
-  }, [triger]);
+  }, [trigger]);
 
   return (
     <div className={styles.commentsWrapper}>
@@ -153,7 +66,7 @@ export default function Comments({ currentVideo, currentUser, editComment, delet
           type="submit"
           className={title.length === 0 ? styles.buttonDisabled : styles.button}
           disabled={title.length === 0}
-          //onClick={() => addCommentToVideo(addComment)}
+          onClick={(e) => addCommentToVideo(e)}
         >
           Post
         </button>
@@ -166,28 +79,14 @@ export default function Comments({ currentVideo, currentUser, editComment, delet
             else alert("You need to login to write a comment");
           }}
         />
-        <img
-          src={
-            currentUser?.photo == null
-              ? "utilites/png-transparent-user-profile-2018-in-sight-user-conference-expo-business-default-business-angle-service-people-thumbnail.png"
-              : currentUser.photo
-          }
-          className={styles.profileImage}
-        />
+        {currentUser ? <img src={currentUser.photo} alt="User Profile" className={styles.profileImage} /> : ""}
       </form>
       {comments &&
         comments.map((comment) => {
           if (comment.parentId == undefined) {
             return (
               <div>
-                <Comment
-                  {...comment}
-                  currentUser={currentUser}
-                  editComment={editComment}
-                  deleteComment={deleteComment}
-                  triger={triger}
-                  setTriger={setTriger}
-                />
+                <Comment {...comment} currentUser={currentUser} triger={trigger} setTriger={setTrigger} />
                 {orgenizeComments(comment._id)}
               </div>
             );
