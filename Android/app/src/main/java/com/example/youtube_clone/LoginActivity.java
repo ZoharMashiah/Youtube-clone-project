@@ -14,10 +14,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private ActivityLoginBinding binding;
 
-    private static final String PREFS_NAME = "prefs";
-    private static final String PREF_DARK_MODE = "dark_mode";
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
