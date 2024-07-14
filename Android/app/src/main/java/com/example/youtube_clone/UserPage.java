@@ -4,6 +4,7 @@ package com.example.youtube_clone;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -15,14 +16,26 @@ public class UserPage extends AppCompatActivity {
     private ActivityUserPageBinding binding;
 
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         binding = ActivityUserPageBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        UserN user = null;        // user = getUser() from server
+        Log.d("UserPage", "onCreate started");
+        Log.d("UserPage", "UserManager instance: " + UserManager.getInstance());
+        UserN currentUser = UserManager.getInstance().getCurrentUser();
+        Log.d("UserPage", "Current user: " + currentUser);
+        if (currentUser != null) {
+            Log.d("UserPage", "User ID: " + currentUser.get_id());
+        }
+        Log.d("UserPage", "About to check user ID equality");
 
-        if (user.get_id().equals(UserManager.getInstance().getCurrentUser().get_id())) {
-            binding.userPageButtons.setVisibility(View.VISIBLE);
+        UserN user = UserManager.getInstance().getCurrentUser();        // TODO user = getUser() from server
+
+        if (user != null) {
+            if (user.get_id().equals(UserManager.getInstance().getCurrentUser().get_id())) {
+                binding.userPageButtons.setVisibility(View.VISIBLE);
+            }
         }
 
 

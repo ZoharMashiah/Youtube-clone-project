@@ -46,8 +46,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
 
         viewModel = new ViewModelProvider(this).get(ViewModel.class);
 
-        UserManager userManager = UserManager.getInstance();
-        userManager.init(MyApplication.getAppContext());
 
         // Load the saved theme preference
         SharedPreferences preferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
