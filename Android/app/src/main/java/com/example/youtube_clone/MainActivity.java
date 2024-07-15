@@ -154,12 +154,12 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
             binding.mRecyclerView.setAdapter(adapter[0]);
             binding.mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         });
-        if(videosViewModel.getFeed().getValue() != null) {
-
-            adapter = new VideosAdapter[]{new VideosAdapter(this, videosViewModel.getFeed().getValue(), this)};
-            binding.mRecyclerView.setAdapter(adapter[0]);
-            binding.mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        }
+//        if(videosViewModel.getFeed().getValue() != null) {
+//
+//            adapter = new VideosAdapter[]{new VideosAdapter(this, videosViewModel.getFeed().getValue(), this)};
+//            binding.mRecyclerView.setAdapter(adapter[0]);
+//            binding.mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+//        }
 
         for (int index = 0; index < categories.length; index++) {
             myButton[index] = new Button(this); //initialize the button here
