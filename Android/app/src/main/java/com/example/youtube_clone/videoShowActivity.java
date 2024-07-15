@@ -124,7 +124,7 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
             recyclerView.setAdapter(adapter[0]);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
         });
-            commentApi.getAllComments(Videos.getInstance().currentVideo.getUser().get_id(), Videos.getInstance().currentVideo.get_id());
+            commentApi.getAllComments(videosViewModel.getCurrentVideo().getValue().getUser().get_id(), videosViewModel.getCurrentVideo().getValue().get_id());
 
 
         int views = videoN1.getViews();
@@ -218,15 +218,16 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
         binding.submitComment.setOnClickListener(v -> {
             if (UserManager.getInstance().getCurrentUser() != null) {
                 CommentData newComment = new CommentData("",
-                        Videos.getInstance().currentVideo.get_id(),
+                        videosViewModel.getCurrentVideo().getValue().get_id(),
                         new ArrayList<>(),
                 new SmallUser(UserManager.getInstance().getCurrentUser().get_id(),UserManager.getInstance().getCurrentUser().getUsername(),
                         UserManager.getInstance().getCurrentUser().getProfilePicture()),
                 binding.addComment.getText().toString(),
                 Calendar.getInstance().getTime().getTime());
-                commentApi.postComment(Videos.getInstance().currentVideo.getUser().get_id(),
-                        Videos.getInstance().currentVideo.get_id(),
+                commentApi.postComment(videosViewModel.getCurrentVideo().getValue().getUser().get_id(),
+                        videosViewModel.getCurrentVideo().getValue().get_id(),
                         newComment);
+                binding.addComment.setText("");
 
 
                 //Videos.getInstance().currentVideo.addComment(newComment);
@@ -273,8 +274,8 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
 
     @Override
     public void deleteElement(int position) {
-       commentApi.deleteComment(Videos.getInstance().currentVideo.getUser().get_id(),
-               Videos.getInstance().currentVideo.get_id(),
+       commentApi.deleteComment(videosViewModel.getCurrentVideo().getValue().getUser().get_id(),
+               videosViewModel.getCurrentVideo().getValue().get_id(),
                listComments.get(position).get_id());
         adapter[0].notifyItemRemoved(position);
     }
