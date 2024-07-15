@@ -4,13 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -25,7 +23,6 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements RecyclerViewInterface {
 
     private ActivityMainBinding binding;
-
     private ArrayList<Video> videos;
     private final String[] categories = {"All", "Music", "Mixes", "JavaScript", "Gaming", "Bouldering",
             "Display devices", "AI", "Computer Hardware", "Table News", "Inventions", "News", "Comedy clubs", "Skills", "3D printing"};
@@ -40,36 +37,17 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
 
-        boolean isDarkMode = true;
-        if (!isDarkMode) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        }
+        // apply dark mode prefs, has to be before setContent
+        DarkModeUtils.applyDarkMode(DarkModeUtils.isDarkMode());
 
         setContentView(binding.getRoot());
 
         viewModel = new ViewModelProvider(this).get(ViewModel.class);
 
 
-        // Load the saved theme preference
-//        SharedPreferences preferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-//        boolean isDarkMode = preferences.getBoolean(PREF_DARK_MODE, false);
-
-
         binding.themeToggleButton.setOnClickListener(v -> {
-            // Toggle dark mode
-            boolean isDarkMode1 = (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES);
-            if (isDarkMode1) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-            } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            }
-
-//            // Save the theme preference
-//            SharedPreferences.Editor editor = preferences.edit();
-//            editor.putBoolean(PREF_DARK_MODE, !isDarkMode1);
-//            editor.apply();
+            DarkModeUtils.toggleDarkMode();
+            recreate(); // has to recreate the app because its a system-wide change
         });
 
         VideoApi videoApi = new VideoApi();
@@ -125,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
         }
 
         for (int index = 0; index < categories.length; index++) {
-            myButton[index] = new Button(this); //initialize the button here
+            myButton[index] = new Button(this); // initialize the button here
             myButton[index].setText(categories[index]);
             myButton[index].setBackgroundColor(ContextCompat.getColor(this, R.color.primary));
             myButton[index].setTextColor(ContextCompat.getColor(this, R.color.on_primary));
@@ -154,12 +132,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
 
             Context context = this;
 
-            binding.search.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    binding.search.setIconified(false);
-                }
-            });
+            binding.search.setOnClickListener(v -> binding.search.setIconified(false));
             binding.search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 // Override onQueryTextSubmit method which is call when submit query is searched
                 @Override
