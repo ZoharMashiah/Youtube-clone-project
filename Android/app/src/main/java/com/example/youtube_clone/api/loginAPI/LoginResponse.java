@@ -1,19 +1,19 @@
 package com.example.youtube_clone.api.loginAPI;
 
 
-import com.example.youtube_clone.UserN;
+import com.example.youtube_clone.User;
 
 public class LoginResponse {
-    private final UserN user;
+    private final User user;
     private final String token;
 
 
-    public LoginResponse(UserN user, String token) {
+    public LoginResponse(User user, String token) {
         this.token = token;
         this.user = user;
     }
 
-    public UserN getUser() {
+    public User getUser() {
         return user;
     }
 

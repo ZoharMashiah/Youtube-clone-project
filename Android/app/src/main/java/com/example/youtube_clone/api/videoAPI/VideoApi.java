@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.youtube_clone.MyApplication;
 import com.example.youtube_clone.R;
+import com.example.youtube_clone.Room.Video.VideoDao;
 import com.example.youtube_clone.Video;
 import com.example.youtube_clone.VideoN;
 import com.example.youtube_clone.api.loginAPI.RequestToken;
@@ -23,11 +24,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class VideoApi {
 
     MutableLiveData<List<VideoN>> videoList;
+    MutableLiveData<List<VideoN>> videoListFiltered;
     Retrofit retrofit;
     videoRequest videoRequest;
     MutableLiveData<VideoN> video;
 
-    public VideoApi() {
+    public VideoApi(MutableLiveData<List<VideoN>> videoListData, VideoDao dao) {
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(new AuthInterceptor())
                 .build();
@@ -39,8 +41,9 @@ public class VideoApi {
                 .build();
 
         this.videoRequest = retrofit.create(videoRequest.class);
-        videoList = new MutableLiveData<>();
+        this.videoList = videoListData;
         video = new MutableLiveData<>();
+        videoListFiltered = new MutableLiveData<>();
     }
 
     public MutableLiveData<List<VideoN>> getFeed() {
@@ -77,7 +80,106 @@ public class VideoApi {
         return video;
     }
 
-    public MutableLiveData<List<VideoN>> getVideos(){
+    public MutableLiveData<List<VideoN>> getUserVideos(String uid) {
+        Log.d("DEBUG", "Starting getUserVideos method");
+        MutableLiveData<List<VideoN>> videosLiveData = new MutableLiveData<>();
+
+        Log.d("DEBUG", "About to make network call");
+        Call<List<VideoN>> call = videoRequest.getUserVideos(uid);
+
+        Log.d("DEBUG", "Enqueueing callback");
+        call.enqueue(new Callback<List<VideoN>>() {
+            @Override
+            public void onResponse(Call<List<VideoN>> call, Response<List<VideoN>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Log.d("API_RESPONSE", "Successful: " + response.body());
+                    videosLiveData.setValue(response.body());
+                } else {
+                    Log.e("API_RESPONSE", "Unsuccessful: " + response.code() + " " + response.message());
+                    videosLiveData.setValue(null); // or an empty list
+                }
+            }
+
+            public void onFailure(Call<List<VideoN>> call, Throwable throwable) {
+                Log.e("API_FAILURE", "Error: " + throwable.getMessage());
+                throwable.printStackTrace();
+                videosLiveData.setValue(null); // or an empty list
+            }
+        });
+
+        return videosLiveData;
+    }
+
+    public MutableLiveData<List<VideoN>> getVideos() {
         return videoList;
+    }
+
+    public void add(String uid, VideoN videoN) {
+        Call<Void> call = videoRequest.addVideo(uid, videoN);
+
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable throwable) {
+
+            }
+        });
+    }
+
+    public MutableLiveData<List<VideoN>> filterVideos(Boolean search, String text) {
+        Filter filter = new Filter(search, text);
+        Call<List<VideoN>> call = videoRequest.filterList(filter);
+
+        call.enqueue(new Callback<List<VideoN>>() {
+            @Override
+            public void onResponse(Call<List<VideoN>> call, Response<List<VideoN>> response) {
+                videoListFiltered.setValue(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<List<VideoN>> call, Throwable throwable) {
+                videoListFiltered.setValue(null);
+            }
+        });
+        return videoListFiltered;
+    }
+
+    public MutableLiveData<List<VideoN>> getVideoListFiltered() {
+        return videoListFiltered;
+    }
+
+    public void editVideo(String uid, String vid, VideoN newVid) {
+        Call<Void> call = videoRequest.editVideo(uid, vid, newVid);
+
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable throwable) {
+
+            }
+        });
+    }
+
+    public void deleteVideo(String uid, String Vid) {
+        Call<Void> call = videoRequest.deleteVideo(uid, Vid);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable throwable) {
+
+            }
+        });
     }
 }

@@ -1,12 +1,21 @@
 package com.example.youtube_clone;
 
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+import com.google.gson.annotations.SerializedName;
+
 import java.util.Date;
 import java.util.List;
-
+@Entity
 public class VideoN {
+    @PrimaryKey @NonNull
     String _id;
 
+    @SerializedName("user")
     SmallUser user;
+    String user_id;
     String title;
     String description;
     String category;
@@ -18,7 +27,8 @@ public class VideoN {
     String icon;
     String video;
 
-    public VideoN(String _id, SmallUser user, String title, String description, String category, Date publication_date, int views, int like, int dislike, List<String> comments, String icon, String video) {
+
+    public VideoN(String _id,String user_id, SmallUser user, String title, String description, String category, Date publication_date, int views, int like, int dislike, List<String> comments, String icon, String video) {
         this._id = _id;
         this.user = user;
         this.title = title;
@@ -31,6 +41,7 @@ public class VideoN {
         this.comments = comments;
         this.icon = icon;
         this.video = video;
+        this.user_id = user_id;
     }
 
     public String get_id() {
@@ -127,5 +138,13 @@ public class VideoN {
 
     public void setVideo(String video) {
         this.video = video;
+    }
+
+    public String getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
     }
 }

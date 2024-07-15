@@ -8,6 +8,10 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Base64;
+import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -16,6 +20,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,6 +28,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.youtube_clone.api.commentAPI.commentAPI;
 import com.example.youtube_clone.api.videoAPI.VideoApi;
 import com.example.youtube_clone.databinding.ActivityVideoShowBinding;
+import com.example.youtube_clone.reposetories.VideoRepository;
 import com.example.youtube_clone.utils.Base64Utils;
 import com.example.youtube_clone.utils.FileUtils;
 
@@ -50,6 +56,7 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
     private MediaPlayer mediaPlayer;
     private VideoView videoView;
 
+    private VideosViewModel videosViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,12 +66,14 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
 
         setContentView(binding.getRoot());
 
-        VideoApi videoApi = new VideoApi();
+        videosViewModel = ViewModelsSingelton.getInstance().getVideosViewModel();
 
-        MutableLiveData<VideoN> videoN = videoApi.getVideo(Videos.getInstance().currentVideo.getUser()._id, Videos.getInstance().currentVideo.get_id());
-        if(videoN.getValue() == null)
+        videosViewModel.getCurrentVideo().observe(this, video -> {
+            if(video != null){
+        LiveData<VideoN> videoNew = videosViewModel.getVideo(video.getUser()._id, video.get_id());
+        if(videoNew.getValue() == null)
             binding.title.setText("Loding...");
-        videoN.observe(this, videoN1 -> {
+        videoNew.observe(this, videoN1 -> {
 
         // Load the saved theme preference
         SharedPreferences preferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
@@ -73,6 +82,21 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+
+        if(UserManager.getInstance().getCurrentUser() == null || !videoN1.getUser().get_id().equals(UserManager.getInstance().getCurrentUser().get_id())){
+            binding.editBtn.setVisibility(View.INVISIBLE);
+            binding.deleteBtn.setVisibility(View.INVISIBLE);
+        } else {
+            binding.editBtn.setOnClickListener(v -> {
+                showAlertDialog(videoN1.getTitle(), videoN1.getDescription(), videosViewModel.getCurrentVideo().getValue());
+            });
+            binding.deleteBtn.setOnClickListener(v -> {
+                videosViewModel.delete(videoN1.getUser().get_id(),videoN1.get_id());
+                videosViewModel.reload();
+                videosViewModel.setCurrentVideo(null);
+                finish();
+            });
         }
 
 //        binding.themeToggleButton.setOnClickListener(v -> {
@@ -132,10 +156,10 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
 //        });
 
         binding.like.setOnClickListener(v -> {
-            if (Users.getInstance().currentUser != null) {
+            if (UserManager.getInstance().getCurrentUser() != null) {
                 //Videos.getInstance().currentVideo.addLike(Users.getInstance().currentUser.getUsername());
-                binding.counterLike.setText(Integer.toString(Videos.getInstance().currentVideo.getLike()));
-                binding.counterDislike.setText(Integer.toString(Videos.getInstance().currentVideo.getDislike()));
+                binding.counterLike.setText(Integer.toString(video.getLike()));
+                binding.counterDislike.setText(Integer.toString(video.getDislike()));
             } else {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
@@ -162,10 +186,10 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
         });
 
         binding.dislike.setOnClickListener(v -> {
-            if (Users.getInstance().currentUser != null) {
+            if (UserManager.getInstance().getCurrentUser() != null) {
                 //Videos.getInstance().currentVideo.addDislike(Users.getInstance().currentUser.getUsername());
-                binding.counterLike.setText(Integer.toString(Videos.getInstance().currentVideo.getLike()));
-                binding.counterDislike.setText(Integer.toString(Videos.getInstance().currentVideo.getDislike()));
+                binding.counterLike.setText(Integer.toString(video.getLike()));
+                binding.counterDislike.setText(Integer.toString(video.getDislike()));
             } else {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
@@ -235,9 +259,9 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
             }
         });
 
-            if(videoApi.getVideos().getValue() != null) {
-                for (VideoN vid : Objects.requireNonNull(videoApi.getVideos().getValue())) {
-                    if (vid.get_id() != Videos.getInstance().currentVideo.get_id()) {
+            if(videosViewModel.getVideos().getValue() != null) {
+                for (VideoN vid : videosViewModel.getVideos().getValue()) {
+                    if (!vid.get_id().equals(videoN1.get_id())) {
                         videos.add(vid);
                     }
                 }
@@ -245,7 +269,7 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
         binding.videos.setAdapter(adapterVid[0]);
         binding.videos.setLayoutManager(new LinearLayoutManager(this));
         }
-        });}
+        });}});}
 
     @Override
     public void deleteElement(int position) {
@@ -257,9 +281,10 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
 
     @Override
     public void onItemClick(VideoN video) {
-//        Videos.getInstance().currentVideo = video;
-        Intent intent = new Intent(this, videoShowActivity.class);
-        startActivity(intent);
+        videosViewModel.setCurrentVideo(video);
+//        Intent intent = new Intent(this, videoShowActivity.class);
+//        startActivity(intent);
+//        recreate();
     }
     public byte[] decodeBase64(String base64String) {
         // Remove the prefix if it exists (e.g., "data:video/mp4;base64,")
@@ -281,6 +306,41 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
         } else {
             Toast.makeText(this, "Video file not found", Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void showAlertDialog(String title, String description, VideoN videoN) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+
+        EditText titleEditText = new EditText(this);
+        titleEditText.setText(title);
+        titleEditText.setHint("Enter title");
+        layout.addView(titleEditText);
+
+        EditText descriptionEditText = new EditText(this);
+        descriptionEditText.setText(description);
+        descriptionEditText.setHint("Enter description");
+        layout.addView(descriptionEditText);
+
+        builder.setView(layout);
+
+        builder.setPositiveButton("Save", (dialogInterface, i) -> {
+            videoN.setTitle(titleEditText.getText().toString());
+            videoN.setDescription(descriptionEditText.getText().toString());
+            videosViewModel.editVideo(videoN.getUser()._id, videoN.get_id(),videoN);
+            binding.title.setText(titleEditText.getText().toString());
+            binding.description.setText(descriptionEditText.getText().toString());
+            videosViewModel.reload();
+        });
+
+        builder.setNegativeButton("Cancel", (dialogInterface, i) -> {
+            dialogInterface.dismiss();
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.example.youtube_clone;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,10 +14,6 @@ public class LoginActivity extends AppCompatActivity {
     private TokenAPI tokenAPI;
 
     private ActivityLoginBinding binding;
-
-    private static final String PREFS_NAME = "prefs";
-    private static final String PREF_DARK_MODE = "dark_mode";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,14 +45,15 @@ public class LoginActivity extends AppCompatActivity {
         tokenAPI.loginUser(username, password, new TokenAPI.LoginCallback() {
             @Override
             public void onSuccess(LoginResponse result) {
-                UserN current = result.getUser();
+                User current = result.getUser();
                 String token = result.getToken();
 
                 // set the current user
                 UserManager userManager = UserManager.getInstance();
                 userManager.login(current, token);
+                String message = "Hello " + current.getUsername() + "!";
+                Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
 
-                // navigate to MainActivity
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();
