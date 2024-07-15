@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
 //        }
 
         binding.buttonAddVid.setOnClickListener(v -> {
-            if (userManager.getCurrentUser() != null) {
+            if (Users.getInstance().currentUser != null) {
                 Intent intent = new Intent(this, addVideoActivity.class);
                 startActivity(intent);
             } else {
@@ -135,28 +135,26 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
             }
         });
 
-        if (Users.getInstance().currentUser != null) {
-            binding.imageButton14.setImageURI(Users.getInstance().currentUser.getProfileImage());
-            binding.loginOrLogout.setText("Logout");
-            binding.loginOrLogout.setOnClickListener(v -> {
-                Users.getInstance().currentUser = null;
-                Intent intent = new Intent(MainActivity.this, MainActivity.class);
-                startActivity(intent);
-            });
-        } else {
-            binding.loginOrLogout.setText("Login");
-            binding.loginOrLogout.setOnClickListener(v -> {
-                Intent intent = new Intent(this, LoginActivity.class);
-                startActivity(intent);
-            });
-        }
+        binding.userButton.setOnClickListener(v -> {
+            User curr = UserManager.getInstance().getCurrentUser();
+            Intent intent;
+
+            if (curr != null) {
+                intent = new Intent(this, UserPage.class);
+                intent.putExtra("userId", curr.get_id());
+            } else {
+                intent = new Intent(this, LoginActivity.class);
+            }
+            startActivity(intent);
+        });
+
 
         videosViewModel.getFeed().observe(this, videoNS -> {
             adapter = new VideosAdapter[]{new VideosAdapter(this, videoNS, this)};
             binding.mRecyclerView.setAdapter(adapter[0]);
             binding.mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         });
-        if(videosViewModel.getFeed().getValue() != null) {
+        if(videoApi.getFeed().getValue() != null) {
 
             adapter = new VideosAdapter[]{new VideosAdapter(this, videosViewModel.getFeed().getValue(), this)};
             binding.mRecyclerView.setAdapter(adapter[0]);

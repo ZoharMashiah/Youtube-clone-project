@@ -9,7 +9,7 @@ public class ViewModel extends androidx.lifecycle.ViewModel {
         if (foo == null) {
             foo = new MutableLiveData<>();
         }
-        
+
         return foo;
     }
 }
