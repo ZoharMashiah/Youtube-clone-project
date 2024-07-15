@@ -1,13 +1,17 @@
 package com.example.youtube_clone;
 
+import android.content.ContentResolver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-import android.util.Base64;
+import android.provider.MediaStore;
+import android.util.Base64OutputStream;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -28,6 +32,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
+import android.util.Base64;
 
 public class addVideoActivity extends AppCompatActivity implements
         AdapterView.OnItemSelectedListener {
@@ -127,27 +132,17 @@ public class addVideoActivity extends AppCompatActivity implements
             if (!binding.editTextText.getText().toString().isEmpty() && !binding.editTextText2.getText().toString().isEmpty() && this.selectedImageUri != null && this.selectedVideoUri != null) {
                 InputStream inputStream = null;
                 try {
-                    inputStream = getContentResolver().openInputStream(selectedImageUri);
-                    Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream);
-                    byte[] byteArray = byteArrayOutputStream.toByteArray();
-                    selectedImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
-                    inputStream = getContentResolver().openInputStream(selectedVideoUri);
-                    bitmap = BitmapFactory.decodeStream(inputStream);
-                    byteArrayOutputStream = new ByteArrayOutputStream();
-//                    bitmap.compress(Bitmap.CompressFormat.WEBP, 50, byteArrayOutputStream);
-                    byteArray = byteArrayOutputStream.toByteArray();
-                    selectedVideo = Base64.encodeToString(byteArray, Base64.DEFAULT);
+                    selectedImage = encodeImageUriToBase64(this, selectedImageUri);
+                    selectedVideo = encodeVideoUriToBase64(this,selectedVideoUri);
                 } catch (IOException e) {
                     e.printStackTrace();
                     Toast.makeText(this, "Failed to upload image, but the user has been created.", Toast.LENGTH_SHORT).show();
                 } finally {
-                    try {
-                        inputStream.close();
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
+//                    try {
+////                        inputStream.close();
+//                    } catch (IOException e) {
+//                        throw new RuntimeException(e);
+//                    }
                 }
                 VideoN videoN = new VideoN(null,UserManager.getInstance().getCurrentUser().get_id(), new SmallUser(UserManager.getInstance().getCurrentUser().get_id(), UserManager.getInstance().getCurrentUser().getUsername(), UserManager.getInstance().getCurrentUser().getProfilePicture()),
                         binding.editTextText.getText().toString(),binding.editTextText2.getText().toString(),binding.category.getSelectedItem().toString(),Calendar.getInstance().getTime(), 0,0,0,new ArrayList<>(),
@@ -190,5 +185,47 @@ public class addVideoActivity extends AppCompatActivity implements
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+
+    // Convert URI to Bitmap for images
+    public Bitmap uriToBitmap(Context context, Uri uri) throws IOException {
+        return MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
+    }
+
+    // Convert Bitmap to Base64 for images
+    public String bitmapToBase64(Bitmap bitmap) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream.toByteArray();
+        return Base64.encodeToString(byteArray, Base64.NO_WRAP);
+    }
+
+    // Convert Image URI to Base64
+    public String encodeImageUriToBase64(Context context, Uri imageUri) throws IOException {
+        Bitmap bitmap = uriToBitmap(context, imageUri);
+        return "data:image/jpeg;base64," + bitmapToBase64(bitmap);
+    }
+
+    // Convert URI to Byte Array for videos
+    public byte[] uriToByteArray(Context context, Uri uri) throws IOException {
+        InputStream inputStream = context.getContentResolver().openInputStream(uri);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        byte[] buffer = new byte[1024];
+        int len;
+        while ((len = inputStream.read(buffer)) != -1) {
+            byteArrayOutputStream.write(buffer, 0, len);
+        }
+        return byteArrayOutputStream.toByteArray();
+    }
+
+    // Convert Byte Array to Base64 for videos
+    public String byteArrayToBase64(byte[] byteArray) {
+        return Base64.encodeToString(byteArray, Base64.NO_WRAP);
+    }
+
+    // Convert Video URI to Base64
+    public String encodeVideoUriToBase64(Context context, Uri videoUri) throws IOException {
+        byte[] videoBytes = uriToByteArray(context, videoUri);
+        return "data:video/mp4;base64," + byteArrayToBase64(videoBytes);
     }
 }

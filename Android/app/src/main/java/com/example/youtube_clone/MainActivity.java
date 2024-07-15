@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
     private static final String PREF_DARK_MODE = "dark_mode";
     private ViewModel viewModel;
     VideosAdapter[] adapter;
+    private VideosViewModel videosViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,18 +80,31 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
             editor.apply();
         });
 
-        VideosViewModel videosViewModel = ViewModelsSingelton.getInstance().getVideosViewModel();
+        videosViewModel = ViewModelsSingelton.getInstance().getVideosViewModel();
 
+        videosViewModel.getIsFiltered().observe(this, v -> {
+            adapter = new VideosAdapter[]{new VideosAdapter(this, videosViewModel.getFeed().getValue(), this)};
+            binding.mRecyclerView.setAdapter(adapter[0]);
+            binding.mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        });
 
-        if (Videos.getInstance().videos.isEmpty()) {
-            String jsonString = loadJSONFromAsset();
+        videosViewModel.getVideosFiltered().observe(this, videoNS -> {
+            if (Boolean.TRUE.equals(videosViewModel.getIsFiltered().getValue())) {
+                adapter = new VideosAdapter[]{new VideosAdapter(this, videosViewModel.getFeed().getValue(), this)};
+                binding.mRecyclerView.setAdapter(adapter[0]);
+                binding.mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+            }
+        });
 
-            videos = loadVideosFromJson(JsonParser.parseVideosJson(jsonString));
-
-            Videos.getInstance().videos = videos;
-        } else {
-            videos = Videos.getInstance().videos;
-        }
+//        if (Videos.getInstance().videos.isEmpty()) {
+//            String jsonString = loadJSONFromAsset();
+//
+//            videos = loadVideosFromJson(JsonParser.parseVideosJson(jsonString));
+//
+//            Videos.getInstance().videos = videos;
+//        } else {
+//            videos = Videos.getInstance().videos;
+//        }
 
         binding.buttonAddVid.setOnClickListener(v -> {
             if (userManager.getCurrentUser() != null) {
@@ -163,11 +177,12 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
 
             int finalIndex = index;
             myButton[index].setOnClickListener(v -> {
-                if (finalIndex != 0) {
-                    Videos.getInstance().filterByCategory(categories[finalIndex]);
-                } else {
-                    Videos.getInstance().filterdVideos = videos;
-                }
+//                if (finalIndex != 0) {
+//                    Videos.getInstance().filterByCategory(categories[finalIndex]);
+//                } else {
+//                    Videos.getInstance().filterdVideos = videos;
+//                }
+                videosViewModel.filterVideos(false, categories[finalIndex]);
                 if(videosViewModel.getFeed().getValue() != null){
                     adapter[0] = new VideosAdapter(this, videosViewModel.getFeed().getValue(), this);
                     binding.mRecyclerView.setAdapter(adapter[0]);
@@ -191,9 +206,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
                     // If the list contains the search query than filter the adapter
                     // using the filter method with the query as its argument
                     Videos.getInstance().filterByTitle(query);
-                    adapter[0] = new VideosAdapter(context, videosViewModel.getFeed().getValue(), (RecyclerViewInterface) context);
-                    binding.mRecyclerView.setAdapter(adapter[0]);
-                    binding.mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+                    videosViewModel.filterVideos(true, query);
                     return false;
                 }
 
@@ -218,21 +231,21 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
 
     }
 
-    private ArrayList<Video> loadVideosFromJson(ArrayList<LocalVideo> vids) {
-        ArrayList<Video> Videos = new ArrayList<>();
-        for (LocalVideo lv : vids) {
-            ArrayList<Comment> comments = new ArrayList<>();
-            for (LocalComment lc : lv.getComments()) {
-                comments.add(new Comment(lc.getId(), lc.getTitle(), lc.getUser(), lc.getDate(), getResesource(lc.getIcon())));
-            }
-            Video video = new Video(lv.getId(), lv.getTitle(), lv.getDescription(), lv.getUser(),
-                    getResesource(lv.getUser_image()), lv.getCategory(), lv.getPublication_date(),
-                    getResesource(lv.getIcon()), lv.getViews(), lv.getLike(), lv.getDislike(), comments,
-                    getResesource(lv.getVideo()));
-            Videos.add(video);
-        }
-        return Videos;
-    }
+//    private ArrayList<Video> loadVideosFromJson(ArrayList<LocalVideo> vids) {
+//        ArrayList<Video> Videos = new ArrayList<>();
+//        for (LocalVideo lv : vids) {
+//            ArrayList<Comment> comments = new ArrayList<>();
+//            for (LocalComment lc : lv.getComments()) {
+//                comments.add(new Comment(lc.getId(), lc.getTitle(), lc.getUser(), lc.getDate(), getResesource(lc.getIcon())));
+//            }
+//            Video video = new Video(lv.getId(), lv.getTitle(), lv.getDescription(), lv.getUser(),
+//                    getResesource(lv.getUser_image()), lv.getCategory(), lv.getPublication_date(),
+//                    getResesource(lv.getIcon()), lv.getViews(), lv.getLike(), lv.getDislike(), comments,
+//                    getResesource(lv.getVideo()));
+//            Videos.add(video);
+//        }
+//        return Videos;
+//    }
 
     public String loadJSONFromAsset() {
         String json = null;
@@ -250,60 +263,60 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
         return json;
     }
 
-    private Uri getResesource(String videoIdentifier) {
-        switch (videoIdentifier) {
-            case "video_image1.png":
-                return Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.video_image1);
-            case "video1.mp4":
-                return Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.video1);
-            case "video_image2.png":
-                return Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.video_image2);
-            case "video2.mp4":
-                return Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.video2);
-            case "video_image3.png":
-                return Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.video_image3);
-            case "video3.mp4":
-                return Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.video3);
-            case "video_image4.png":
-                return Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.video_image4);
-            case "video4.mp4":
-                return Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.video4);
-            case "video_image5.png":
-                return Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.video_image5);
-            case "video5.mp4":
-                return Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.video5);
-            case "video_image6.png":
-                return Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.video_image6);
-            case "video6.mp4":
-                return Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.video6);
-            case "video_image7.png":
-                return Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.video_image7);
-            case "video7.mp4":
-                return Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.video7);
-            case "video_image8.png":
-                return Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.video_image8);
-            case "video8.mp4":
-                return Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.video8);
-            case "video_image9.png":
-                return Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.video_image9);
-            case "video9.mp4":
-                return Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.video9);
-            case "video_image10.png":
-                return Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.video_image10);
-            case "video10.mp4":
-                return Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.video10);
-            case "video_image11.png":
-                return Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.video_image11);
-            case "video11.mp4":
-                return Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.video11);
-            default:
-                return Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.video_image1);
-        }
-    }
+//    private Uri getResesource(String videoIdentifier) {
+//        switch (videoIdentifier) {
+//            case "video_image1.png":
+//                return Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.video_image1);
+//            case "video1.mp4":
+//                return Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.video1);
+//            case "video_image2.png":
+//                return Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.video_image2);
+//            case "video2.mp4":
+//                return Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.video2);
+//            case "video_image3.png":
+//                return Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.video_image3);
+//            case "video3.mp4":
+//                return Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.video3);
+//            case "video_image4.png":
+//                return Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.video_image4);
+//            case "video4.mp4":
+//                return Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.video4);
+//            case "video_image5.png":
+//                return Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.video_image5);
+//            case "video5.mp4":
+//                return Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.video5);
+//            case "video_image6.png":
+//                return Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.video_image6);
+//            case "video6.mp4":
+//                return Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.video6);
+//            case "video_image7.png":
+//                return Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.video_image7);
+//            case "video7.mp4":
+//                return Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.video7);
+//            case "video_image8.png":
+//                return Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.video_image8);
+//            case "video8.mp4":
+//                return Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.video8);
+//            case "video_image9.png":
+//                return Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.video_image9);
+//            case "video9.mp4":
+//                return Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.video9);
+//            case "video_image10.png":
+//                return Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.video_image10);
+//            case "video10.mp4":
+//                return Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.video10);
+//            case "video_image11.png":
+//                return Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.video_image11);
+//            case "video11.mp4":
+//                return Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.video11);
+//            default:
+//                return Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.video_image1);
+//        }
+//    }
 
     @Override
     public void onItemClick(VideoN video) {
-        Videos.getInstance().currentVideo = video;
+        videosViewModel.setCurrentVideo(video);
         Intent intent = new Intent(this, videoShowActivity.class);
         startActivity(intent);
     }

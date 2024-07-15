@@ -18,12 +18,14 @@ import java.util.List;
 public class VideoRepository {
     private VideoDao dao;
     private VideoListData videoListData;
+    private MutableLiveData<List<VideoN>> videoListFilteredData;
     private VideoApi api;
 
     public VideoRepository() {
         //AppDB db = Room.databaseBuilder(ApplicationPro.getApplicationContext(), AppDB.class,"database-name" ).build();
         videoListData = new VideoListData();
         api = new VideoApi(videoListData, dao);
+        videoListFilteredData =  api.getVideoListFiltered();
     }
 
     public void add(String uid, VideoN videoN) {
@@ -36,6 +38,22 @@ public class VideoRepository {
 
     class VideoListData extends MutableLiveData<List<VideoN>> {
         public VideoListData() {
+            super();
+            setValue(new ArrayList<>());
+        }
+
+        @Override
+        protected void onActive() {
+            super.onActive();
+
+            new Thread(() -> {
+
+            }).start();
+        }
+    }
+
+    class VideoListFilteredData extends MutableLiveData<List<VideoN>> {
+        public VideoListFilteredData() {
             super();
             setValue(new ArrayList<>());
         }
@@ -64,5 +82,18 @@ public class VideoRepository {
 
     public void reload() {
         api.getFeed();
+    }
+
+    public LiveData<List<VideoN>> filterVideos(Boolean search, String text) {
+        api.filterVideos(search, text);
+        return videoListFilteredData;
+    }
+
+    public LiveData<List<VideoN>> getVideoListFilteredData() {
+        return videoListFilteredData;
+    }
+
+    public void editVideo(String uid, String vid, VideoN newVid) {
+        api.editVideo(uid, vid, newVid);
     }
 }

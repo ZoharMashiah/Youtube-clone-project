@@ -24,6 +24,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class VideoApi {
 
     MutableLiveData<List<VideoN>> videoList;
+    MutableLiveData<List<VideoN>> videoListFiltered;
     Retrofit retrofit;
     videoRequest videoRequest;
     MutableLiveData<VideoN> video;
@@ -42,6 +43,7 @@ public class VideoApi {
         this.videoRequest = retrofit.create(videoRequest.class);
         this.videoList = videoListData;
         video = new MutableLiveData<>();
+        videoListFiltered = new MutableLiveData<>();
     }
 
     public MutableLiveData<List<VideoN>> getFeed() {
@@ -84,6 +86,44 @@ public class VideoApi {
 
     public void add(String uid, VideoN videoN) {
         Call<Void> call = videoRequest.addVideo(uid, videoN);
+
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable throwable) {
+
+            }
+        });
+    }
+
+    public MutableLiveData<List<VideoN>> filterVideos(Boolean search, String text) {
+        Filter filter = new Filter(search, text);
+        Call<List<VideoN>> call = videoRequest.filterList(filter);
+
+        call.enqueue(new Callback<List<VideoN>>() {
+            @Override
+            public void onResponse(Call<List<VideoN>> call, Response<List<VideoN>> response) {
+                videoListFiltered.setValue(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<List<VideoN>> call, Throwable throwable) {
+                videoListFiltered.setValue(null);
+            }
+        });
+        return videoListFiltered;
+    }
+
+    public MutableLiveData<List<VideoN>> getVideoListFiltered() {
+        return videoListFiltered;
+    }
+
+    public void editVideo(String uid, String vid, VideoN newVid) {
+        Call<Void> call = videoRequest.editVideo(uid, vid, newVid);
 
         call.enqueue(new Callback<Void>() {
             @Override
