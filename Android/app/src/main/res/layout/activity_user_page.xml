@@ -87,6 +87,17 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <Button
+            android:id="@+id/logOut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/primary"
+            android:textColor="@color/on_primary"
+            android:text="@string/log_out_btn"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
             android:id="@+id/deleteAccount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -95,18 +106,6 @@
             android:text="@string/delete_account_btn"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
-        <Button
-            android:id="@+id/logOut"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/primary_dark"
-            android:textColor="@color/on_primary"
-            android:text="@string/log_out_btn"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
 

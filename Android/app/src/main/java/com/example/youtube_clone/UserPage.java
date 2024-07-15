@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,10 +42,11 @@ public class UserPage extends AppCompatActivity {
             navigateToMainActivity();
         }
 
-        setUpButtons();
+
     }
 
     private void setUpButtons() {
+        binding.userPageButtons.setVisibility(View.VISIBLE);
         binding.logOut.setOnClickListener(v -> {
                     UserManager.getInstance().logout();
                     navigateToMainActivity();
@@ -73,6 +75,10 @@ public class UserPage extends AppCompatActivity {
             public void onSuccess(User fetchedUser, String message) {
                 user = fetchedUser;
                 Log.i("UserPage", "Fetched user successfully");
+                if (user != null) {
+                    setUpButtons();
+
+                }
                 updateUIWithUserData();
             }
 
@@ -104,7 +110,7 @@ public class UserPage extends AppCompatActivity {
         if (videoList == null) {
             Toast.makeText(UserPage.this, "Error loading videos", Toast.LENGTH_SHORT).show();
             Log.e("UserPage", "Error loading videos");
-            navigateToMainActivity();
+            // navigateToMainActivity();
             return;
         }
 

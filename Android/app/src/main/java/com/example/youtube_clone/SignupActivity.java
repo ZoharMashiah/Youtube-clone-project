@@ -76,7 +76,7 @@ public class SignupActivity extends AppCompatActivity {
                 }
         );
 
-        binding.submitBtn.setOnClickListener(v -> {
+        binding.loginBtn.setOnClickListener(v -> {
             String username = binding.editTextUsername.getText().toString();
             String firstName = binding.editTextFirstName.getText().toString();
             String middleName = binding.editTextMiddleName.getText().toString();
@@ -84,7 +84,7 @@ public class SignupActivity extends AppCompatActivity {
             String password = binding.editTextPassword.getText().toString();
             String birthDate = selectedDate;
             String photo = null;
-            boolean darkMode = false;   // TODO get current darkmode
+            boolean darkMode = DarkModeUtils.isDarkMode();
 
             if (username.isEmpty() || firstName.isEmpty() || middleName.isEmpty()
                     || lastName.isEmpty() || password.isEmpty() || birthDate == null || birthDate.isEmpty()) {

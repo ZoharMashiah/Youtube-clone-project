@@ -2,6 +2,7 @@ package com.example.youtube_clone;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.example.youtube_clone.UserDao.UserDao;
 import com.example.youtube_clone.api.loginAPI.TokenAPI;
@@ -42,39 +43,39 @@ public class UserManager {
         token = prefs.getString(JWT_TOKEN, null);
 
         if (token != null) {
-
             tokenAPI.verify(token, new TokenAPI.LoginCallback() {
                 @Override
                 public void onSuccess(TokenResponse result) {
                     currentUser = result.getUser();
                     token = result.getToken();
+                    updateTokenLocally(token);
+
+                    Log.d("UserManager", "verified correctly");
                 }
 
                 @Override
                 public void onError(String message) {
                     currentUser = null;
                     token = null;
+                    Log.d("UserManager", "Session expired");
                 }
             });
         }
+
+        Log.d("UserManager", "Token is null");
+
     }
 
     public void login(User user, String token) {
         this.currentUser = user;
         this.token = token;
-
-        if (context == null) {
-            throw new IllegalStateException("Context is null, call init()");
-        }
-
-        SharedPreferences.Editor editor = context.getSharedPreferences(USER_PREFS, Context.MODE_PRIVATE).edit();
-        editor.putString(JWT_TOKEN, token);
-        editor.apply();
+        updateTokenLocally(token);
     }
 
     public void logout() {
         currentUser = null;
         token = null;
+        updateTokenLocally(token);
     }
 
     public User getCurrentUser() {
@@ -87,5 +88,12 @@ public class UserManager {
 
     public boolean isLoggedIn() {
         return currentUser != null && token != null;
+    }
+
+    public void updateTokenLocally(String token) {
+        SharedPreferences prefs = context.getSharedPreferences(USER_PREFS, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(JWT_TOKEN, token);
+        editor.apply();
     }
 }

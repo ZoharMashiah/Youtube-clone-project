@@ -40,8 +40,7 @@ public class TokenAPI {
     }
 
     public void verify(String token, LoginCallback callback) {
-        Call<TokenResponse> call = requestToken.verifyLogin(token);
-
+        Call<TokenResponse> call = requestToken.verifyLogin("Bearer " + token);
         call.enqueue(new Callback<TokenResponse>() {
             @Override
             public void onResponse(Call<TokenResponse> call, Response<TokenResponse> response) {
@@ -55,9 +54,9 @@ public class TokenAPI {
                 } else if (response.code() == 404) {
                     callback.onError("Session expired");
                 } else {
-                    String message = "Failure: " + response.code() + " " + response.message();
+                    String message = "Verification failed: " + response.code() + " " + response.message();
                     callback.onError(message);
-                    Log.e("TokenAPI", "onError: " + message);
+                    Log.e("TokenAPI", message);
                 }
             }
 
@@ -70,11 +69,13 @@ public class TokenAPI {
 
     public void loginUser(String username, String password, LoginCallback callback) {
 
-        Call<TokenResponse> call = requestToken.login(username, password);
+        LoginRequest request = new LoginRequest(username, password);
+        Call<TokenResponse> call = requestToken.login(request);
 
         call.enqueue(new Callback<TokenResponse>() {
             @Override
             public void onResponse(Call<TokenResponse> call, Response<TokenResponse> response) {
+
                 if (response.isSuccessful()) {
                     TokenResponse tokenResponse = response.body();
                     if (tokenResponse != null) {

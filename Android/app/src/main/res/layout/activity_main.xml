@@ -85,6 +85,7 @@
             android:layout_height="match_parent"
             android:backgroundTint="@color/primary"
             android:drawableLeft="@drawable/baseline_add_circle_24"
+            android:drawablePadding="8dp"
             android:text="@string/add_video_btn"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
