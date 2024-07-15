@@ -9,9 +9,11 @@ import com.example.youtube_clone.R;
 import com.example.youtube_clone.Video;
 import com.example.youtube_clone.VideoN;
 import com.example.youtube_clone.api.loginAPI.RequestToken;
+import com.example.youtube_clone.authorization.AuthInterceptor;
 
 import java.util.List;
 
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -26,8 +28,13 @@ public class VideoApi {
     MutableLiveData<VideoN> video;
 
     public VideoApi() {
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(new AuthInterceptor())
+                .build();
+
         this.retrofit = new Retrofit.Builder()
                 .baseUrl(MyApplication.getAppContext().getString(R.string.BaseUrl))
+                .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

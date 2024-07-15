@@ -2,11 +2,7 @@ package com.example.youtube_clone;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.os.Handler;
-import android.os.Looper;
-import android.text.Layout;
 import android.view.LayoutInflater;
-import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -16,16 +12,24 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.youtube_clone.api.commentAPI.commentAPI;
+
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.http.Body;
 
 public class commentsAdapter extends RecyclerView.Adapter<commentsAdapter.MyViewHolder>{
 
     Context context;
-    ArrayList<Comment> commentsArray;
+    List<CommentData> commentsArray;
     commentRecycler commentRecycler;
-    public commentsAdapter(Context context,  ArrayList<Comment> commentsArray, commentRecycler commentRecycler){
+    public commentsAdapter(Context context,  List<CommentData> commentsArray, commentRecycler commentRecycler){
         this.context = context;
-        this.commentsArray = commentsArray;
+        if(commentsArray == null){
+            this.commentsArray = new ArrayList<>();
+        }else
+            this.commentsArray = commentsArray;
         this.commentRecycler = commentRecycler;
     }
 
@@ -40,11 +44,11 @@ public class commentsAdapter extends RecyclerView.Adapter<commentsAdapter.MyView
 
     @Override
     public void onBindViewHolder(@NonNull commentsAdapter.MyViewHolder holder, int position) {
-        Comment comment = commentsArray.get(position);
-        holder.tvAuthor.setText(commentsArray.get(position).getUser());
+        CommentData comment = commentsArray.get(position);
+        holder.tvAuthor.setText(commentsArray.get(position).getUser().getUsername());
         holder.tvComment.setText(commentsArray.get(position).getTitle());
 
-        if (Users.getInstance().currentUser != null && comment.getUser().equals(Users.getInstance().currentUser.getUsername())) {
+        if (UserManager.getInstance().getCurrentUser() != null && comment.getUser().get_id().equals(UserManager.getInstance().getCurrentUser().get_id())) {
             holder.editButton.setVisibility(View.VISIBLE);
             holder.deleteButton.setVisibility(View.VISIBLE);
 
@@ -61,7 +65,7 @@ public class commentsAdapter extends RecyclerView.Adapter<commentsAdapter.MyView
         return commentsArray.size();
     }
 
-    private void showEditCommentDialog(Comment comment, int position) {
+    private void showEditCommentDialog(CommentData comment, int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Edit Comment");
 
@@ -71,16 +75,20 @@ public class commentsAdapter extends RecyclerView.Adapter<commentsAdapter.MyView
         builder.setView(input);
 
         // Set up the buttons
-//        builder.setPositiveButton("Save", (dialog, which) -> {
-//            String newCommentText = input.getText().toString().trim();
-//            if (!newCommentText.isEmpty() && !newCommentText.equals(comment.getTitle())) {
-//                comment.setTitle(newCommentText);
-//                notifyItemChanged(position);
-//                // Update the comment in the data source
-//                Videos.getInstance().updateComment(comment.getId(), newCommentText);
-//            }
-//        });
-//        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+        builder.setPositiveButton("Save", (dialog, which) -> {
+            String newCommentText = input.getText().toString().trim();
+            if (!newCommentText.isEmpty() && !newCommentText.equals(comment.getTitle())) {
+                comment.setTitle(newCommentText);
+                notifyItemChanged(position);
+                // Update the comment in the data source
+                commentAPI comments = new commentAPI();
+                comments.updateComment(Videos.getInstance().currentVideo.getUser().get_id(),
+                        Videos.getInstance().currentVideo.get_id(),
+                        comment.get_id(),
+                        comment);
+            }
+        });
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
 
         builder.show();
     }

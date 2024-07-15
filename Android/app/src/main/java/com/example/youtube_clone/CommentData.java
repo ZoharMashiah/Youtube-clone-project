@@ -1,14 +1,16 @@
 package com.example.youtube_clone;
 
+import java.util.List;
+
 public class CommentData {
     String _id;
     String videoId;
-    String[] childrenId;
+    List<String> childrenId;
     SmallUser user;
     String title;
     long date;
 
-    public CommentData(String _id, String videoId, String[] childrenId, SmallUser user, String title, long date) {
+    public CommentData(String _id, String videoId, List<String> childrenId, SmallUser user, String title, long date) {
         this._id = _id;
         this.videoId = videoId;
         this.childrenId = childrenId;
@@ -33,11 +35,11 @@ public class CommentData {
         this.videoId = videoId;
     }
 
-    public String[] getChildrenId() {
+    public List<String> getChildrenId() {
         return childrenId;
     }
 
-    public void setChildrenId(String[] childrenId) {
+    public void setChildrenId(List<String> childrenId) {
         this.childrenId = childrenId;
     }
 
