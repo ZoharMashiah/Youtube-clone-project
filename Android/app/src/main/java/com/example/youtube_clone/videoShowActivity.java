@@ -64,10 +64,10 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
 
         videosViewModel.getCurrentVideo().observe(this, video -> {
             if(video != null){
-        LiveData<VideoN> videoN = videosViewModel.getVideo(video.getUser()._id, video.get_id());
-        if(videoN.getValue() == null)
+        LiveData<VideoN> videoNew = videosViewModel.getVideo(video.getUser()._id, video.get_id());
+        if(videoNew.getValue() == null)
             binding.title.setText("Loding...");
-        videoN.observe(this, videoN1 -> {
+        videoNew.observe(this, videoN1 -> {
 
         // Load the saved theme preference
         SharedPreferences preferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
@@ -140,7 +140,7 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
 //        });
 
         binding.like.setOnClickListener(v -> {
-            if (Users.getInstance().currentUser != null) {
+            if (UserManager.getInstance().getCurrentUser() != null) {
                 //Videos.getInstance().currentVideo.addLike(Users.getInstance().currentUser.getUsername());
                 binding.counterLike.setText(Integer.toString(video.getLike()));
                 binding.counterDislike.setText(Integer.toString(video.getDislike()));
@@ -170,7 +170,7 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
         });
 
         binding.dislike.setOnClickListener(v -> {
-            if (Users.getInstance().currentUser != null) {
+            if (UserManager.getInstance().getCurrentUser() != null) {
                 //Videos.getInstance().currentVideo.addDislike(Users.getInstance().currentUser.getUsername());
                 binding.counterLike.setText(Integer.toString(video.getLike()));
                 binding.counterDislike.setText(Integer.toString(video.getDislike()));
@@ -305,7 +305,9 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
             videoN.setTitle(titleEditText.getText().toString());
             videoN.setDescription(descriptionEditText.getText().toString());
             videosViewModel.editVideo(videoN.getUser()._id, videoN.get_id(),videoN);
-            videosViewModel.setCurrentVideo(videoN);
+            binding.title.setText(titleEditText.getText().toString());
+            binding.description.setText(descriptionEditText.getText().toString());
+            videosViewModel.reload();
         });
 
         builder.setNegativeButton("Cancel", (dialogInterface, i) -> {

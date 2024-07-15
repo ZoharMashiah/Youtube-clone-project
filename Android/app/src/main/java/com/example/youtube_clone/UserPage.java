@@ -30,7 +30,7 @@ public class UserPage extends AppCompatActivity {
         binding = ActivityUserPageBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         userAPI = new UserAPI();
-        videoApi = new VideoApi();
+        videoApi = new VideoApi(mutableVideoList,null);
 
         String userId = getIntent().getStringExtra("userId");
 

@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
 //        }
 
         binding.buttonAddVid.setOnClickListener(v -> {
-            if (Users.getInstance().currentUser != null) {
+            if (UserManager.getInstance().getCurrentUser() != null) {
                 Intent intent = new Intent(this, addVideoActivity.class);
                 startActivity(intent);
             } else {
@@ -154,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
             binding.mRecyclerView.setAdapter(adapter[0]);
             binding.mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         });
-        if(videoApi.getFeed().getValue() != null) {
+        if(videosViewModel.getFeed().getValue() != null) {
 
             adapter = new VideosAdapter[]{new VideosAdapter(this, videosViewModel.getFeed().getValue(), this)};
             binding.mRecyclerView.setAdapter(adapter[0]);
