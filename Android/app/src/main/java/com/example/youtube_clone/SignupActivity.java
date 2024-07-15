@@ -69,6 +69,7 @@ public class SignupActivity extends AppCompatActivity {
                 new ActivityResultContracts.GetContent(),
                 result -> {
                     if (result != null) {
+                        binding.uploadImage.clearColorFilter();
                         selectedImageUri = result;
                         binding.uploadImage.setImageURI(selectedImageUri);
                     }

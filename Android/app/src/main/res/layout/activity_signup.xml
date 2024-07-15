@@ -186,7 +186,6 @@
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 app:tint="@color/system_icon"
-
                 app:srcCompat="@android:drawable/ic_menu_today" />
 
             <Button
@@ -214,8 +213,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                app:tint="@color/system_icon"
-
                 app:srcCompat="@drawable/ic_upload_image" />
 
         </FrameLayout>
