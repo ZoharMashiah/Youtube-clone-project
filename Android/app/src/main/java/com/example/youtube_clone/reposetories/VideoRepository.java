@@ -96,4 +96,8 @@ public class VideoRepository {
     public void editVideo(String uid, String vid, VideoN newVid) {
         api.editVideo(uid, vid, newVid);
     }
+
+    public void deleteVideo(String uid, String vid) {
+        api.deleteVideo(uid, vid);
+    }
 }

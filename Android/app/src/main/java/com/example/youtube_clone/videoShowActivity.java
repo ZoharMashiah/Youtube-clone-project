@@ -85,6 +85,12 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
             binding.editBtn.setOnClickListener(v -> {
                 showAlertDialog(videoN1.getTitle(), videoN1.getDescription(), videosViewModel.getCurrentVideo().getValue());
             });
+            binding.deleteBtn.setOnClickListener(v -> {
+                videosViewModel.delete(videoN1.getUser().get_id(),videoN1.get_id());
+                videosViewModel.reload();
+                videosViewModel.setCurrentVideo(null);
+                finish();
+            });
         }
 
 //        binding.themeToggleButton.setOnClickListener(v -> {

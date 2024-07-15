@@ -167,4 +167,19 @@ public class VideoApi {
             }
         });
     }
+
+    public void deleteVideo(String uid, String Vid) {
+        Call<Void> call = videoRequest.deleteVideo(uid, Vid);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable throwable) {
+
+            }
+        });
+    }
 }

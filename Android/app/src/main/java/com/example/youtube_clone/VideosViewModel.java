@@ -35,8 +35,8 @@ public class VideosViewModel extends ViewModel {
         repository.add(uid, videoN);
     }
 
-    public void delete(VideoN videoN) {
-        repository.delete(videoN);
+    public void delete(String uid, String vid) {
+        repository.deleteVideo(uid, vid);
     }
 
     public void reload() {
