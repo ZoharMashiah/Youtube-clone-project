@@ -100,4 +100,8 @@ public class VideoRepository {
     public void deleteVideo(String uid, String vid) {
         api.deleteVideo(uid, vid);
     }
+
+    public void doAction(String uid, String vid, String userId, String action) {
+        api.doAction(uid, vid, userId, action);
+    }
 }

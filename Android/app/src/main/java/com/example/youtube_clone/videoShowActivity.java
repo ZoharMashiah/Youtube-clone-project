@@ -52,6 +52,7 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
 
     private VideosViewModel videosViewModel;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -148,8 +149,25 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
         binding.like.setOnClickListener(v -> {
             if (UserManager.getInstance().getCurrentUser() != null) {
                 //Videos.getInstance().currentVideo.addLike(Users.getInstance().currentUser.getUsername());
-                binding.counterLike.setText(Integer.toString(video.getLike()));
-                binding.counterDislike.setText(Integer.toString(video.getDislike()));
+                videosViewModel.doAction(video.getUser().get_id(), video.get_id(), UserManager.getInstance().getCurrentUser().get_id(), "like");
+                if(UserManager.getInstance().getCurrentUser().getLikedVideos().contains(video.get_id())){
+                    UserManager.getInstance().getCurrentUser().getLikedVideos().remove(video.get_id());
+                    binding.counterDislike.setText(Integer.toString(video.getDislike()));
+                    video.setLike(video.getLike()-1);
+                    Objects.requireNonNull(videosViewModel.getCurrentVideo().getValue()).setLike(video.getLike());
+                    binding.counterLike.setText(Integer.toString(video.getLike()));
+                } else {
+                    if (UserManager.getInstance().getCurrentUser().getDislikedVideos().contains(video.get_id())) {
+                        UserManager.getInstance().getCurrentUser().getDislikedVideos().remove(video.get_id());
+                        video.setDislike(video.getDislike()-1);
+                        Objects.requireNonNull(videosViewModel.getCurrentVideo().getValue()).setDislike(video.getDislike());
+                        binding.counterDislike.setText(Integer.toString(video.getDislike()));
+                    }
+                    UserManager.getInstance().getCurrentUser().getLikedVideos().add(video.get_id());
+                    video.setLike(video.getLike()+1);
+                    Objects.requireNonNull(videosViewModel.getCurrentVideo().getValue()).setLike(video.getLike());
+                    binding.counterLike.setText(Integer.toString(video.getLike()));
+                }
             } else {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
@@ -178,8 +196,26 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
         binding.dislike.setOnClickListener(v -> {
             if (UserManager.getInstance().getCurrentUser() != null) {
                 //Videos.getInstance().currentVideo.addDislike(Users.getInstance().currentUser.getUsername());
-                binding.counterLike.setText(Integer.toString(video.getLike()));
-                binding.counterDislike.setText(Integer.toString(video.getDislike()));
+                videosViewModel.doAction(video.getUser().get_id(), video.get_id(), UserManager.getInstance().getCurrentUser().get_id(), "dislike");
+                if(UserManager.getInstance().getCurrentUser().getDislikedVideos().contains(video.get_id())){
+                    UserManager.getInstance().getCurrentUser().getDislikedVideos().remove(video.get_id());
+                    binding.counterLike.setText(Integer.toString(video.getLike()));
+                    video.setDislike(video.getDislike()-1);
+                    Objects.requireNonNull(videosViewModel.getCurrentVideo().getValue()).setDislike(video.getDislike());
+                    binding.counterDislike.setText(Integer.toString(video.getDislike()));
+                } else {
+                    if (UserManager.getInstance().getCurrentUser().getLikedVideos().contains(video.get_id())) {
+                        UserManager.getInstance().getCurrentUser().getLikedVideos().remove(video.get_id());
+                        video.setLike(video.getLike()-1);
+                        Objects.requireNonNull(videosViewModel.getCurrentVideo().getValue()).setLike(video.getLike());
+                        binding.counterLike.setText(Integer.toString(video.getLike()));
+                    }
+                    UserManager.getInstance().getCurrentUser().getDislikedVideos().add(video.get_id());
+                    video.setDislike(video.getDislike()+1);
+                    Objects.requireNonNull(videosViewModel.getCurrentVideo().getValue()).setDislike(video.getDislike());
+                    binding.counterDislike.setText(Integer.toString(video.getDislike()));
+                }
+
             } else {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
 

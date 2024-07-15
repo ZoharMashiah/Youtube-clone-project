@@ -79,4 +79,8 @@ public class VideosViewModel extends ViewModel {
     public void setCurrentVideo(VideoN video) {
         currentVideo.setValue(video);
     }
+
+    public void doAction(String uid, String vid, String userId, String action) {
+        repository.doAction(uid, vid, userId, action);
+    }
 }
