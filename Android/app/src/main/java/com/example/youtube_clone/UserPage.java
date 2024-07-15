@@ -92,7 +92,7 @@ public class UserPage extends AppCompatActivity {
 
     private void updateUIWithUserData() {
         binding.usernameProfile.setText(user.getUsername());
-//        binding.userPageAvatar.setImageBitmap(user.getProfilePicture());
+//        binding.userPageAvatar.setImageBitmap(user.getProfilePicture()); // TODO
         loadUserVideos();
     }
 

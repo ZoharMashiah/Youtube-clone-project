@@ -6,8 +6,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.youtube_clone.api.loginAPI.LoginResponse;
 import com.example.youtube_clone.api.loginAPI.TokenAPI;
+import com.example.youtube_clone.api.loginAPI.TokenResponse;
 import com.example.youtube_clone.databinding.ActivityLoginBinding;
 
 public class LoginActivity extends AppCompatActivity {
@@ -44,7 +44,7 @@ public class LoginActivity extends AppCompatActivity {
     private void handleLogin(String username, String password) {
         tokenAPI.loginUser(username, password, new TokenAPI.LoginCallback() {
             @Override
-            public void onSuccess(LoginResponse result) {
+            public void onSuccess(TokenResponse result) {
                 User current = result.getUser();
                 String token = result.getToken();
 

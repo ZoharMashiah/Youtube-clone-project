@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Youtube-Clone</string>
+    <string name="app_name">Stream-Box</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="login">Login</string>
     <string name="username">Username</string>

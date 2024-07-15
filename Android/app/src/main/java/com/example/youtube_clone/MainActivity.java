@@ -164,7 +164,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
                 }
             });
         }
-
     }
 
     private ArrayList<Video> loadVideosFromJson(ArrayList<LocalVideo> vids) {

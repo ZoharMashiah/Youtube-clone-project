@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.example.youtube_clone.UserDao.UserDao;
+import com.example.youtube_clone.api.loginAPI.TokenAPI;
+import com.example.youtube_clone.api.loginAPI.TokenResponse;
 import com.example.youtube_clone.db.AppDB;
 
 public class UserManager {
@@ -12,9 +14,10 @@ public class UserManager {
     private String token;
     private UserDao userDao;
     private Context context;
+    private final TokenAPI tokenAPI = new TokenAPI();
 
-    private static final String USER_PREFS = "UserPrefs";
-    private static final String TOKEN = "Token";
+    private static final String USER_PREFS = "data";
+    private static final String JWT_TOKEN = "token";
 
     private UserManager() {
     }
@@ -36,9 +39,24 @@ public class UserManager {
         userDao = db.userDao();
 
         SharedPreferences prefs = this.context.getSharedPreferences(USER_PREFS, Context.MODE_PRIVATE);
-        token = prefs.getString(TOKEN, null);
-        // get local storage jwt and check it against the server.
-        // if verified, a user is returned and insert it here
+        token = prefs.getString(JWT_TOKEN, null);
+
+        if (token != null) {
+
+            tokenAPI.verify(token, new TokenAPI.LoginCallback() {
+                @Override
+                public void onSuccess(TokenResponse result) {
+                    currentUser = result.getUser();
+                    token = result.getToken();
+                }
+
+                @Override
+                public void onError(String message) {
+                    currentUser = null;
+                    token = null;
+                }
+            });
+        }
     }
 
     public void login(User user, String token) {
@@ -50,7 +68,7 @@ public class UserManager {
         }
 
         SharedPreferences.Editor editor = context.getSharedPreferences(USER_PREFS, Context.MODE_PRIVATE).edit();
-        editor.putString(TOKEN, token);
+        editor.putString(JWT_TOKEN, token);
         editor.apply();
     }
 
