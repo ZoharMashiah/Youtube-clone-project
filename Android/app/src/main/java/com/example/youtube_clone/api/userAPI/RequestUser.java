@@ -1,7 +1,7 @@
 package com.example.youtube_clone.api.userAPI;
 
 
-import com.example.youtube_clone.UserN;
+import com.example.youtube_clone.User;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -13,15 +13,15 @@ import retrofit2.http.Path;
 
 public interface RequestUser {
     @GET("api/users/{id}")
-    Call<UserN> getUser(@Path("id") String id); // user page
+    Call<User> getUser(@Path("id") String id); // user page
 
     @PATCH("api/users/{id}")
-    Call<UserN> patchUser();  // update user
+    Call<User> patchUser();  // update user
 
     @DELETE("api/users/{id}")
-    Call<Void> deleteUser();  // delete user
+    Call<Void> deleteUser(@Path("id") String id);  // delete user
 
     @POST("api/users/signup")
-    Call<UserN> postUser(@Body UserN user);  // create user
+    Call<User> postUser(@Body User user);  // create user
 }
 

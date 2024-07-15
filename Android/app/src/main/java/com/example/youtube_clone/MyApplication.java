@@ -11,6 +11,7 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
+        UserManager.getInstance().init(instance.getApplicationContext());
     }
 
     public static MyApplication getInstance() {

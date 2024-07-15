@@ -114,17 +114,17 @@ public class SignupActivity extends AppCompatActivity {
                         }
                     }
                 }
-                UserN newUser = new UserN(username, password, firstName, middleName, lastName, birthDate, photo, darkMode);
+                User newUser = new User(username, password, firstName, middleName, lastName, birthDate, photo, darkMode);
                 handleSignUp(newUser);
             }
         });
     }
 
-    private void handleSignUp(UserN newUser) {
+    private void handleSignUp(User newUser) {
         userAPI.signUp(newUser, new UserAPI.UserCallback() {
             @Override
-            public void onSuccess(UserN user) {
-                // navigate to MainActivity
+            public void onSuccess(User user, String message) {
+                Toast.makeText(SignupActivity.this, message, Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish();

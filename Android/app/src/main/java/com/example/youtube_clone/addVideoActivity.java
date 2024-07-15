@@ -19,9 +19,6 @@ import androidx.appcompat.app.AppCompatDelegate;
 
 import com.example.youtube_clone.databinding.ActivityAddVideoBinding;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-
 public class addVideoActivity extends AppCompatActivity implements
         AdapterView.OnItemSelectedListener {
 
@@ -116,10 +113,14 @@ public class addVideoActivity extends AppCompatActivity implements
 
         binding.button6.setOnClickListener(v -> {
             if (!binding.editTextText.getText().toString().isEmpty() && !binding.editTextText2.getText().toString().isEmpty() && this.selectedImageUri != null && this.selectedVideoUri != null) {
-                Video newVideo = new Video(Videos.getInstance().getNextId(), binding.editTextText.getText().toString(), binding.editTextText2.getText().toString(),
-                        Users.getInstance().currentUser.getUsername(), Users.getInstance().currentUser.getProfileImage(),
-                        binding.category.getSelectedItem().toString(), Calendar.getInstance().getTime().getTime(), this.selectedImageUri,
-                        0, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), this.selectedVideoUri);
+                User currentUser = UserManager.getInstance().getCurrentUser();
+                Video newVideo = null;
+
+//                Video newVideo = new Video(Videos.getInstance().getNextId(), binding.editTextText.getText().toString(), binding.editTextText2.getText().toString(),
+//                        currentUser.getUsername(), currentUser.getProfilePicture(),
+//                        binding.category.getSelectedItem().toString(), Calendar.getInstance().getTime().getTime(), this.selectedImageUri,
+//                        0, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), this.selectedVideoUri);
+
                 Videos.getInstance().videos.add(newVideo);
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);

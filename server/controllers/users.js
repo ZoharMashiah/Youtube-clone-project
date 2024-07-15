@@ -40,6 +40,7 @@ const createUser = async (req, res) => {
       console.log("photo is:", photo, "using default");
       photo = process.env.DEFAULT_PHOTO;
     }
+
     const user = await User.create({
       username,
       password,
@@ -102,6 +103,7 @@ const deleteUser = async (req, res) => {
   if (!user) {
     return res.status(400).json({ message: `User with id ${userId} not found` });
   }
+  console.log("Deleted user successfully");
   res.status(200).json(user);
 };
 

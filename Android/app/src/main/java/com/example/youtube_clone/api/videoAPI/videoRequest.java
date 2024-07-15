@@ -1,6 +1,5 @@
 package com.example.youtube_clone.api.videoAPI;
 
-import com.example.youtube_clone.Video;
 import com.example.youtube_clone.VideoN;
 
 import java.util.List;
@@ -16,22 +15,22 @@ import retrofit2.http.Path;
 public interface videoRequest {
 
     @POST("api/users/{uid}/videos")
-    Call<Void> addVideo(@Path("uid")String uid, @Body VideoN video);
+    Call<Void> addVideo(@Path("uid") String uid, @Body VideoN video);
 
     @GET("api/users/{uid}/videos")
-    Call<List<VideoN>> getUserVideos(@Path("uid")String uid);
+    Call<List<VideoN>> getUserVideos(@Path("uid") String uid);
 
     @GET("api/users/{uid}/videos/{vid}")
-    Call<VideoN> getVideo(@Path("uid")String uid, @Path("vid")String vid);
+    Call<VideoN> getVideo(@Path("uid") String uid, @Path("vid") String vid);
 
     @PATCH("api/users/{uid}/videos/{vid}")
-    Call<Void> editVideo(@Path("uid")String uid, @Path("vid")String vid, @Body VideoN video);
+    Call<Void> editVideo(@Path("uid") String uid, @Path("vid") String vid, @Body VideoN video);
 
     @DELETE("api/users/{uid}/videos/{vid}")
-    Call<Void> deleteVideo(@Path("uid")String uid, @Path("vid")String vid);
+    Call<Void> deleteVideo(@Path("uid") String uid, @Path("vid") String vid);
 
     @POST("api/users/{uid}/videos/{vid}/action")
-    Call<Void> likeOrDislikePush(@Path("uid")String uid, @Path("vid")String vid, @Body LikeOrDislike likeOrDislike);
+    Call<Void> likeOrDislikePush(@Path("uid") String uid, @Path("vid") String vid, @Body LikeOrDislike likeOrDislike);
 
     @GET("/api/videos")
     Call<List<VideoN>> getFeed();
