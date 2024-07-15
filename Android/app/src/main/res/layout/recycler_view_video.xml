@@ -58,6 +58,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Video title"
+                    android:textColor="@color/on_background"
                     android:textSize="17sp"
                     android:textStyle="bold" />
 
@@ -65,6 +66,7 @@
                     android:id="@+id/videoInfo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/on_background_light"
                     android:text="Video data"
                     android:textSize="15sp" />
 

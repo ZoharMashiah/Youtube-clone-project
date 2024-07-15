@@ -12,7 +12,7 @@
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/blueNavy"
+        android:background="@color/primary"
         android:padding="5dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
@@ -25,7 +25,6 @@
             android:layout_height="match_parent"
             android:layout_margin="5dp"
             android:layout_weight="1"
-            android:alpha="1"
             android:background="#FEF7FF" />
 
 
@@ -36,7 +35,7 @@
             android:layout_gravity="center"
             android:backgroundTint="@color/white"
             android:layout_marginStart="5dp"
-            android:textColor="@color/blueNavy"
+            android:textColor="@color/primary"
             android:text="@string/dark_mode_btn"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -84,7 +83,7 @@
             android:id="@+id/buttonAddVid"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:backgroundTint="@color/blueNavy"
+            android:backgroundTint="@color/primary"
             android:drawableLeft="@drawable/baseline_add_circle_24"
             android:text="@string/add_video_btn"
             android:textColor="@color/white"
@@ -96,12 +95,15 @@
             android:id="@+id/userButton"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_marginEnd="20dp"
-            android:background="@drawable/baseline_person_24"
+            android:src="@drawable/baseline_person_24"
+            android:layout_marginEnd="10dp"
+            android:background="@android:color/transparent"
+            android:backgroundTint="@color/primary"
+            android:scaleType="fitCenter"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/blueNavy" />
+            app:tint="@color/primary" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

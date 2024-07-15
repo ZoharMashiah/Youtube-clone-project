@@ -3,7 +3,6 @@ package com.example.youtube_clone;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Base64;
@@ -13,7 +12,6 @@ import android.widget.VideoView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,9 +33,7 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
     private commentsAdapter[] adapter;
 
     @SuppressLint("SetTextI18n")
-
-    private static final String PREFS_NAME = "prefs";
-    private static final String PREF_DARK_MODE = "dark_mode";
+    
     private final ArrayList<VideoN> videos = new ArrayList<>();
     private MediaPlayer mediaPlayer;
     private VideoView videoView;
@@ -57,29 +53,6 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
             binding.title.setText("Loading...");
         videoN.observe(this, videoN1 -> {
 
-            // Load the saved theme preference
-            SharedPreferences preferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-            boolean isDarkMode = preferences.getBoolean(PREF_DARK_MODE, false);
-            if (isDarkMode) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-            }
-
-//        binding.themeToggleButton.setOnClickListener(v -> {
-//            // Toggle dark mode
-//            boolean isDarkMode1 = (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES);
-//            if (isDarkMode1) {
-//                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-//            } else {
-//                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-//            }
-//
-//            // Save the theme preference
-//            SharedPreferences.Editor editor = preferences.edit();
-//            editor.putBoolean(PREF_DARK_MODE, !isDarkMode1);
-//            editor.apply();
-//        });
             videoView = binding.video;
 
             RecyclerView recyclerView = findViewById(R.id.commentsRecyclerView);

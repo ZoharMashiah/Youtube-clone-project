@@ -34,6 +34,7 @@ public class TokenAPI {
                 .build();
 
         this.requestToken = retrofit.create(RequestToken.class);
+
     }
 
     public void loginUser(String username, String password, LoginCallback callback) {

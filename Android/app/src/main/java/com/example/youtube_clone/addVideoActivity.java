@@ -15,7 +15,6 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 
 import com.example.youtube_clone.databinding.ActivityAddVideoBinding;
 
@@ -37,9 +36,6 @@ public class addVideoActivity extends AppCompatActivity implements
     private final String[] categories = {"Music", "Mixes", "JavaScript", "Gaming", "Bouldering",
             "Display devices", "AI", "Computer Hardware", "Table News", "Inventions", "News", "Comedy clubs", "Skills", "3D printing"};
 
-    private static final String PREFS_NAME = "prefs";
-    private static final String PREF_DARK_MODE = "dark_mode";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -47,31 +43,6 @@ public class addVideoActivity extends AppCompatActivity implements
         binding = ActivityAddVideoBinding.inflate(getLayoutInflater());
 
         setContentView(binding.getRoot());
-
-        // Load the saved theme preference
-        SharedPreferences preferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        boolean isDarkMode = preferences.getBoolean(PREF_DARK_MODE, false);
-        if (isDarkMode) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        }
-
-        binding.themeToggleButton.setOnClickListener(v -> {
-            // Toggle dark mode
-            boolean isDarkMode1 = (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES);
-            if (isDarkMode1) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-            } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            }
-
-            // Save the theme preference
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putBoolean(PREF_DARK_MODE, !isDarkMode1);
-            editor.apply();
-        });
-
 
         mTakePhoto = registerForActivityResult(
                 new ActivityResultContracts.GetContent(),
@@ -93,10 +64,6 @@ public class addVideoActivity extends AppCompatActivity implements
                 }
         );
 
-        binding.imageButtonBack.setOnClickListener(v -> {
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-        });
 
         binding.uploadImage.setOnClickListener(v -> mTakePhoto.launch("image/*"));
 

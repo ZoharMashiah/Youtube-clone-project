@@ -2,7 +2,6 @@ package com.example.youtube_clone;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -33,8 +32,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
 
     private final Button[] myButton = new Button[categories.length];
 
-    private static final String PREFS_NAME = "prefs";
-    private static final String PREF_DARK_MODE = "dark_mode";
     private ViewModel viewModel;
     VideosAdapter[] adapter;
 
@@ -42,19 +39,23 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
+
+        boolean isDarkMode = true;
+        if (!isDarkMode) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+
         setContentView(binding.getRoot());
 
         viewModel = new ViewModelProvider(this).get(ViewModel.class);
 
 
         // Load the saved theme preference
-        SharedPreferences preferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        boolean isDarkMode = preferences.getBoolean(PREF_DARK_MODE, false);
-        if (isDarkMode) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        }
+//        SharedPreferences preferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+//        boolean isDarkMode = preferences.getBoolean(PREF_DARK_MODE, false);
+
 
         binding.themeToggleButton.setOnClickListener(v -> {
             // Toggle dark mode
@@ -65,10 +66,10 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
             }
 
-            // Save the theme preference
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putBoolean(PREF_DARK_MODE, !isDarkMode1);
-            editor.apply();
+//            // Save the theme preference
+//            SharedPreferences.Editor editor = preferences.edit();
+//            editor.putBoolean(PREF_DARK_MODE, !isDarkMode1);
+//            editor.apply();
         });
 
         VideoApi videoApi = new VideoApi();
@@ -126,7 +127,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
         for (int index = 0; index < categories.length; index++) {
             myButton[index] = new Button(this); //initialize the button here
             myButton[index].setText(categories[index]);
-            myButton[index].setBackgroundColor(ContextCompat.getColor(this, R.color.login_blue));
+            myButton[index].setBackgroundColor(ContextCompat.getColor(this, R.color.primary));
+            myButton[index].setTextColor(ContextCompat.getColor(this, R.color.on_primary));
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT

@@ -84,7 +84,6 @@ public class UserAPI {
                 callback.onError("Network error: " + throwable.getMessage());
             }
         });
-
     }
 
     public void delete(User user, UserCallback callback) {
