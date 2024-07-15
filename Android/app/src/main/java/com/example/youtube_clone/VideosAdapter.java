@@ -14,6 +14,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Calendar;
 import java.util.List;
@@ -25,7 +26,10 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.MyViewHold
 
     public VideosAdapter(Context context, List<VideoN> videos, RecyclerViewInterface recyclerViewInterface) {
         this.context = context;
-        this.videos = videos;
+        if (videos == null)
+            this.videos = new ArrayList<>();
+        else
+            this.videos = videos;
         this.recyclerViewInterface = recyclerViewInterface;
     }
 
