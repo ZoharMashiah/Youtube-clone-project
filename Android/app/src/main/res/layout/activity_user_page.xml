@@ -98,6 +98,18 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
+            android:id="@+id/editUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/primary"
+            android:text="@string/edit_details"
+            android:textColor="@color/on_primary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/deleteAccount"
+            app:layout_constraintStart_toEndOf="@+id/logOut"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
             android:id="@+id/deleteAccount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

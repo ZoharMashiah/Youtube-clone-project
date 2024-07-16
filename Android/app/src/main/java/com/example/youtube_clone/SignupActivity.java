@@ -3,11 +3,8 @@ package com.example.youtube_clone;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Base64;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -17,9 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.youtube_clone.api.userAPI.UserAPI;
 import com.example.youtube_clone.databinding.ActivitySignupBinding;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -96,25 +91,13 @@ public class SignupActivity extends AppCompatActivity {
                         .show();
             } else {
                 if (selectedImageUri != null) {
-                    InputStream inputStream = null;
                     try {
-                        inputStream = getContentResolver().openInputStream(selectedImageUri);
-                        Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream);
-                        byte[] byteArray = byteArrayOutputStream.toByteArray();
-                        photo = Base64.encodeToString(byteArray, Base64.DEFAULT);
+                        photo = FormatConverters.imageUriToBase64(this, selectedImageUri);
                     } catch (IOException e) {
-                        e.printStackTrace();
-                        Toast.makeText(this, "Failed to upload image, but the user has been created.", Toast.LENGTH_SHORT).show();
-                    } finally {
-                        try {
-                            inputStream.close();
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
+                        throw new RuntimeException(e);
                     }
                 }
+
                 User newUser = new User(username, password, firstName, middleName, lastName, birthDate, photo, darkMode);
                 handleSignUp(newUser);
             }

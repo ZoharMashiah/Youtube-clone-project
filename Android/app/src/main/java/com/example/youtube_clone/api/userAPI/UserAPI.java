@@ -68,6 +68,29 @@ public class UserAPI {
         });
     }
 
+    public void updateUser(User user, UserCallback callback) {
+        Call<User> call = requestUser.patchUser(user);
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.isSuccessful()) {
+                    callback.onSuccess(null, "User was updated successfully");
+                } else {
+                    String message = "Updating user failed: " + response.code();
+                    callback.onError(message);
+                    Log.e("UserAPI", "onError: " + message);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable throwable) {
+                String message = "Network error: " + throwable.getMessage();
+                callback.onError(message);
+                Log.e("UserAPI", "onFailure: " + message);
+            }
+        });
+    }
+
     public void signUp(User user, UserCallback callback) {
         Call<User> call = requestUser.postUser(user);
         call.enqueue(new Callback<User>() {
@@ -119,26 +142,4 @@ public class UserAPI {
         });
     }
 
-    public void updateUser(User user, UserCallback callback) {
-        Call<User> call = requestUser.patchUser(user);
-        call.enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                if (response.isSuccessful()) {
-                    callback.onSuccess(null, "User was updated successfully");
-                } else {
-                    String message = "Updating user failed: " + response.code();
-                    callback.onError(message);
-                    Log.e("UserAPI", "onError: " + message);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<User> call, Throwable throwable) {
-                String message = "Network error: " + throwable.getMessage();
-                callback.onError(message);
-                Log.e("UserAPI", "onFailure: " + message);
-            }
-        });
-    }
 }
