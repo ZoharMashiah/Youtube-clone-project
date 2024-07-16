@@ -162,4 +162,12 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
         Intent intent = new Intent(this, videoShowActivity.class);
         startActivity(intent);
     }
+
+
+    @Override
+    public void onUserImageClick(VideoN video) {
+        Intent intent = new Intent(this, UserPage.class);
+        intent.putExtra("userId", video.getUser().get_id());
+        startActivity(intent);
+    }
 }

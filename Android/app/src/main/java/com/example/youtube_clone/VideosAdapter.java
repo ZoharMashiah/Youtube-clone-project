@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -59,8 +58,12 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.MyViewHold
         }
         holder.title.setText(videos.get(position).getTitle());
         holder.videoInfo.setText(info);
-        holder.parent.setOnClickListener(v -> {
+        
+        holder.videoImage.setOnClickListener(v -> {
             recyclerViewInterface.onItemClick(videos.get(position));
+        });
+        holder.userImage.setOnClickListener(v -> {
+            recyclerViewInterface.onUserImageClick(videos.get(position));
         });
     }
 
@@ -85,7 +88,6 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.MyViewHold
         ImageView userImage;
         TextView title;
         TextView videoInfo;
-        LinearLayout parent;
         public View itemView;
 
 
@@ -96,7 +98,11 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.MyViewHold
             userImage = itemView.findViewById(R.id.userImg);
             title = itemView.findViewById(R.id.videoTitle);
             videoInfo = itemView.findViewById(R.id.videoInfo);
-            parent = itemView.findViewById(R.id.parentLayout);
         }
+    }
+
+    public void updateVideos(List<VideoN> newVideos) {
+        this.videos = newVideos;
+        notifyDataSetChanged();
     }
 }
