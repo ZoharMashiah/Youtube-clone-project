@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.youtube_clone.reposetories.VideoRepository;
 
-import java.net.HttpCookie;
 import java.util.List;
 
 public class VideosViewModel extends ViewModel {
@@ -26,7 +25,7 @@ public class VideosViewModel extends ViewModel {
 
 
     public LiveData<List<VideoN>> getFeed() {
-        if(Boolean.TRUE.equals(isFiltered.getValue()))
+        if (Boolean.TRUE.equals(isFiltered.getValue()))
             return videosFiltered;
         return videos;
     }
@@ -53,7 +52,7 @@ public class VideosViewModel extends ViewModel {
 
     public LiveData<List<VideoN>> filterVideos(Boolean search, String text) {
         videosFiltered = repository.filterVideos(search, text);
-        if(!search && "All".equals(text))
+        if (!search && "All".equals(text))
             isFiltered.setValue(false);
         else
             isFiltered.setValue(true);

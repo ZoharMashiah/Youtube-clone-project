@@ -1,5 +1,7 @@
 package com.example.youtube_clone.api.loginAPI;
 
+import android.util.Log;
+
 import com.example.youtube_clone.MyApplication;
 import com.example.youtube_clone.R;
 import com.example.youtube_clone.authorization.AuthInterceptor;
@@ -13,7 +15,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class TokenAPI {
     public interface LoginCallback {
-        void onSuccess(LoginResponse result);
+        void onSuccess(TokenResponse result);
 
         void onError(String message);
     }
@@ -34,33 +36,67 @@ public class TokenAPI {
                 .build();
 
         this.requestToken = retrofit.create(RequestToken.class);
+
+    }
+
+    public void verify(String token, LoginCallback callback) {
+        Call<TokenResponse> call = requestToken.verifyLogin("Bearer " + token);
+        call.enqueue(new Callback<TokenResponse>() {
+            @Override
+            public void onResponse(Call<TokenResponse> call, Response<TokenResponse> response) {
+                if (response.isSuccessful()) {
+                    TokenResponse tokenResponse = response.body();
+                    if (tokenResponse != null) {
+                        callback.onSuccess(tokenResponse);
+                    } else {
+                        callback.onError("Empty response received");
+                    }
+                } else if (response.code() == 404) {
+                    callback.onError("Session expired");
+                } else {
+                    String message = "Verification failed: " + response.code() + " " + response.message();
+                    callback.onError(message);
+                    Log.e("TokenAPI", message);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<TokenResponse> call, Throwable throwable) {
+                callback.onError("Network error: " + throwable.getMessage());
+            }
+        });
     }
 
     public void loginUser(String username, String password, LoginCallback callback) {
-        LoginRequest loginRequest = new LoginRequest(username, password);
 
-        Call<LoginResponse> call = requestToken.login(loginRequest);
+        LoginRequest request = new LoginRequest(username, password);
+        Call<TokenResponse> call = requestToken.login(request);
 
-        call.enqueue(new Callback<LoginResponse>() {
+        call.enqueue(new Callback<TokenResponse>() {
             @Override
-            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+            public void onResponse(Call<TokenResponse> call, Response<TokenResponse> response) {
+
                 if (response.isSuccessful()) {
-                    LoginResponse loginResponse = response.body();
-                    if (loginResponse != null) {
-                        callback.onSuccess(loginResponse);
+                    TokenResponse tokenResponse = response.body();
+                    if (tokenResponse != null) {
+                        callback.onSuccess(tokenResponse);
                     } else {
                         callback.onError("Empty response received");
                     }
                 } else if (response.code() == 404) {
                     callback.onError("Wrong username or password");
                 } else {
-                    callback.onError("Error: " + response.code() + " " + response.message());
+                    String message = "Logging in failed: " + response.code() + " " + response.message();
+                    callback.onError(message);
+                    Log.e("TokenAPI", "onError: " + message);
                 }
             }
 
             @Override
-            public void onFailure(Call<LoginResponse> call, Throwable throwable) {
-                callback.onError("Network error: " + throwable.getMessage());
+            public void onFailure(Call<TokenResponse> call, Throwable throwable) {
+                String message = "Network error: " + throwable.getMessage();
+                callback.onError(message);
+                Log.e("TokenAPI", "onFailure: " + message);
             }
         });
     }

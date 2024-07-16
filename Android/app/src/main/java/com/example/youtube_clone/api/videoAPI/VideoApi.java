@@ -7,9 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.youtube_clone.MyApplication;
 import com.example.youtube_clone.R;
 import com.example.youtube_clone.Room.Video.VideoDao;
-import com.example.youtube_clone.Video;
 import com.example.youtube_clone.VideoN;
-import com.example.youtube_clone.api.loginAPI.RequestToken;
 import com.example.youtube_clone.authorization.AuthInterceptor;
 
 import java.util.List;
@@ -57,13 +55,13 @@ public class VideoApi {
 
             @Override
             public void onFailure(Call<List<VideoN>> call, Throwable throwable) {
-                Log.println(Log.ASSERT,"ff", "fgg");
+                Log.println(Log.ASSERT, "VideoAPI", "failure");
             }
         });
         return videoList;
     }
 
-    public MutableLiveData<VideoN> getVideo(String uid, String vid){
+    public MutableLiveData<VideoN> getVideo(String uid, String vid) {
         Call<VideoN> call = videoRequest.getVideo(uid, vid);
 
         call.enqueue(new Callback<VideoN>() {

@@ -2,12 +2,13 @@ package com.example.youtube_clone;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.youtube_clone.api.loginAPI.LoginResponse;
 import com.example.youtube_clone.api.loginAPI.TokenAPI;
+import com.example.youtube_clone.api.loginAPI.TokenResponse;
 import com.example.youtube_clone.databinding.ActivityLoginBinding;
 
 public class LoginActivity extends AppCompatActivity {
@@ -24,7 +25,7 @@ public class LoginActivity extends AppCompatActivity {
 
         setContentView(binding.getRoot());
 
-        binding.submitBtn.setOnClickListener(v -> {
+        binding.loginBtn.setOnClickListener(v -> {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         });
@@ -34,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        binding.submitBtn.setOnClickListener(v -> {
+        binding.loginBtn.setOnClickListener(v -> {
             String username = binding.editTextText.getText().toString();
             String password = binding.editTextTextPassword.getText().toString();
             handleLogin(username, password);
@@ -42,21 +43,27 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void handleLogin(String username, String password) {
+        binding.loginBtn.setEnabled(false);
+        binding.loginBtn.setText(R.string.Logging_in);
+
         tokenAPI.loginUser(username, password, new TokenAPI.LoginCallback() {
             @Override
-            public void onSuccess(LoginResponse result) {
-                User current = result.getUser();
-                String token = result.getToken();
+            public void onSuccess(TokenResponse result) {
+                runOnUiThread(() -> {
+                    Log.d("LoginActivity", "Handle Login succeeded");
 
-                // set the current user
-                UserManager userManager = UserManager.getInstance();
-                userManager.login(current, token);
-                String message = "Hello " + current.getUsername() + "!";
-                Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
+                    User current = result.getUser();
+                    String token = result.getToken();
 
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
+                    // set the current user
+                    UserManager userManager = UserManager.getInstance();
+                    userManager.login(current, token);
+                    String message = "Hello " + current.getUsername() + "!";
+                    Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                });
             }
 
             @Override
