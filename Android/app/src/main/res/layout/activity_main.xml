@@ -25,7 +25,7 @@
             android:layout_height="match_parent"
             android:layout_margin="5dp"
             android:layout_weight="1"
-            android:background="#FEF7FF" />
+            android:background="@color/on_primary" />
 
 
         <Button
@@ -33,7 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:backgroundTint="@color/white"
+            android:backgroundTint="@color/on_primary"
             android:layout_marginStart="5dp"
             android:textColor="@color/primary"
             android:text="@string/dark_mode_btn"

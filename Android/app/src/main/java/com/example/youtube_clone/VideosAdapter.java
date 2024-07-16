@@ -61,7 +61,6 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.MyViewHold
     }
 
     public byte[] decodeBase64(String base64String) {
-        // Remove the prefix if it exists (e.g., "data:image/png;base64,")
         if (base64String.contains(",")) {
             base64String = base64String.split(",")[1];
         }

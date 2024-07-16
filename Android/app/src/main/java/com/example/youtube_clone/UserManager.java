@@ -11,10 +11,10 @@ import com.example.youtube_clone.db.AppDB;
 
 public class UserManager {
     private volatile static UserManager instance;
-    private User currentUser;
-    private String token;
-    private UserDao userDao;
-    private Context context;
+    private User currentUser = null;
+    private String token = null;
+    private UserDao userDao = null;
+    private Context context = null;
     private final TokenAPI tokenAPI = new TokenAPI();
 
     private static final String USER_PREFS = "data";
@@ -35,6 +35,7 @@ public class UserManager {
     }
 
     public void init(Context context) {
+
         this.context = context.getApplicationContext();
         AppDB db = AppDB.getInstance(this.context);
         userDao = db.userDao();
@@ -42,34 +43,30 @@ public class UserManager {
         SharedPreferences prefs = this.context.getSharedPreferences(USER_PREFS, Context.MODE_PRIVATE);
         token = prefs.getString(JWT_TOKEN, null);
 
+        Log.d("UserManager", "on start, token is: " + token);
+
         if (token != null) {
             tokenAPI.verify(token, new TokenAPI.LoginCallback() {
                 @Override
                 public void onSuccess(TokenResponse result) {
                     currentUser = result.getUser();
-                    token = result.getToken();
-                    updateTokenLocally(token);
-
-                    Log.d("UserManager", "verified correctly");
+                    Log.d("UserManager", "verified correctly, connected as " + currentUser.getUsername());
                 }
 
                 @Override
                 public void onError(String message) {
-                    currentUser = null;
                     token = null;
-                    Log.d("UserManager", "Session expired");
+                    Log.d("UserManager", "Session has expired");
                 }
             });
         }
-
-        Log.d("UserManager", "Token is null");
-
     }
 
     public void login(User user, String token) {
         this.currentUser = user;
         this.token = token;
         updateTokenLocally(token);
+        Log.d("UserManager", "Logged in as " + user.getUsername());
     }
 
     public void logout() {

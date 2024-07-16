@@ -38,15 +38,14 @@ public class UserPage extends AppCompatActivity {
         if (userId != null && !userId.isEmpty()) {
             getUser(userId);    // async fetch user
         } else {
-            Toast.makeText(this, "User ID not provided", Toast.LENGTH_SHORT).show();
+            Log.d("UserPage", "User ID is not provided");
             navigateToMainActivity();
         }
-
-
     }
 
     private void setUpButtons() {
         binding.userPageButtons.setVisibility(View.VISIBLE);
+
         binding.logOut.setOnClickListener(v -> {
                     UserManager.getInstance().logout();
                     navigateToMainActivity();
@@ -56,15 +55,7 @@ public class UserPage extends AppCompatActivity {
         binding.deleteAccount.setOnClickListener(v -> new AlertDialog.Builder(UserPage.this)
                 .setTitle("Delete Account")
                 .setMessage("Are you sure?")
-                .setPositiveButton("Yes", (dialog, which) -> {
-
-                    handleDelete(UserManager.getInstance().getCurrentUser());
-                    UserManager.getInstance().logout();
-
-                    Toast.makeText(UserPage.this, "Deleting Account", Toast.LENGTH_SHORT).show();
-                    navigateToMainActivity();
-
-                })
+                .setPositiveButton("Yes", (dialog, which) -> handleDelete(UserManager.getInstance().getCurrentUser()))
                 .setNegativeButton("No", null)
                 .show());
     }
@@ -77,7 +68,6 @@ public class UserPage extends AppCompatActivity {
                 Log.i("UserPage", "Fetched user successfully");
                 if (user != null) {
                     setUpButtons();
-
                 }
                 updateUIWithUserData();
             }
@@ -125,11 +115,9 @@ public class UserPage extends AppCompatActivity {
         userAPI.delete(user, new UserAPI.UserCallback() {
             @Override
             public void onSuccess(User user, String message) {
-                Toast.makeText(UserPage.this, message, Toast.LENGTH_SHORT).show();
+                Toast.makeText(UserPage.this, "Your account has been deleted", Toast.LENGTH_SHORT).show();
                 UserManager.getInstance().logout();
-                Intent intent = new Intent(UserPage.this, MainActivity.class);
-                startActivity(intent);
-                finish();
+                navigateToMainActivity();
             }
 
             @Override
