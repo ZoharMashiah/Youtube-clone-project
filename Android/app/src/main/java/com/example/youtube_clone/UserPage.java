@@ -185,6 +185,7 @@ public class UserPage extends AppCompatActivity {
                     }
 
                     handleEdit(currentUser);
+                    updateUIWithUserData();
                 })
                 .setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
 
@@ -196,7 +197,7 @@ public class UserPage extends AppCompatActivity {
         userAPI.updateUser(user, new UserAPI.UserCallback() {
             @Override
             public void onSuccess(User user, String message) {
-                Log.i("UserPage", "Changes to the user have been saved");
+                Log.i("UserPage", "Changes to the user have been saved"); //TODO call update
             }
 
             @Override

@@ -16,7 +16,7 @@ public interface RequestUser {
     Call<User> getUser(@Path("id") String id); // user page
 
     @PATCH("api/users/{id}")
-    Call<User> patchUser(@Body User user);  // update user
+    Call<User> patchUser(@Path("id") String id, @Body User user);  // update user
 
     @DELETE("api/users/{id}")
     Call<Void> deleteUser(@Path("id") String id);  // delete user

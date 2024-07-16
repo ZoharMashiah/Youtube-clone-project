@@ -69,14 +69,14 @@ public class UserAPI {
     }
 
     public void updateUser(User user, UserCallback callback) {
-        Call<User> call = requestUser.patchUser(user);
+        Call<User> call = requestUser.patchUser(user.get_id(), user);
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.isSuccessful()) {
                     callback.onSuccess(null, "User was updated successfully");
                 } else {
-                    String message = "Updating user failed: " + response.code();
+                    String message = "Updating user failed: " + response.code() + response.message();
                     callback.onError(message);
                     Log.e("UserAPI", "onError: " + message);
                 }
