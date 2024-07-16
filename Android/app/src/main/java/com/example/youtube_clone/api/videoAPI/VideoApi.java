@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.youtube_clone.MyApplication;
 import com.example.youtube_clone.R;
+import com.example.youtube_clone.Room.Video.VideoDao;
 import com.example.youtube_clone.VideoN;
 import com.example.youtube_clone.authorization.AuthInterceptor;
 
@@ -35,7 +36,6 @@ public class VideoApi {
                 .baseUrl(MyApplication.getAppContext().getString(R.string.BaseUrl))
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
-                .client(client)
                 .build();
 
         this.videoRequest = retrofit.create(videoRequest.class);
