@@ -35,6 +35,6 @@ public interface videoRequest {
     @GET("/api/videos")
     Call<List<VideoN>> getFeed();
 
-    @POST("/api/videos/filter")
+    @POST("api/videos/filter")
     Call<List<VideoN>> filterList(@Body Filter filter);
 }

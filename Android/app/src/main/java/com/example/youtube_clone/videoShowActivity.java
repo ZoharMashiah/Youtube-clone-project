@@ -237,6 +237,41 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
         }
     }
 
+    private void showAlertDialog(String title, String description, VideoN videoN) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+
+        EditText titleEditText = new EditText(this);
+        titleEditText.setText(title);
+        titleEditText.setHint("Enter title");
+        layout.addView(titleEditText);
+
+        EditText descriptionEditText = new EditText(this);
+        descriptionEditText.setText(description);
+        descriptionEditText.setHint("Enter description");
+        layout.addView(descriptionEditText);
+
+        builder.setView(layout);
+
+        builder.setPositiveButton("Save", (dialogInterface, i) -> {
+            videoN.setTitle(titleEditText.getText().toString());
+            videoN.setDescription(descriptionEditText.getText().toString());
+            videosViewModel.editVideo(videoN.getUser()._id, videoN.get_id(), videoN);
+            binding.title.setText(titleEditText.getText().toString());
+            binding.description.setText(descriptionEditText.getText().toString());
+            videosViewModel.reload();
+        });
+
+        builder.setNegativeButton("Cancel", (dialogInterface, i) -> {
+            dialogInterface.dismiss();
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();

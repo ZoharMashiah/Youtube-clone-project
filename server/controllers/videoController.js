@@ -169,7 +169,7 @@ async function filterVideos(req, res) {
         }
       ).lean();
     }
-
+    console.log(filtered)
     res.status(200).json(filtered);
   } catch (error) {
     console.error("Error filtering videos");
