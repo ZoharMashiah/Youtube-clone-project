@@ -101,6 +101,7 @@
                 android:textColor="@color/on_primary"
                 android:backgroundTint="@color/primary"
                 android:text="Add photo display" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -115,8 +116,8 @@
                 android:layout_weight="1"
                 android:text="Add video"
                 android:textColor="@color/on_primary"
-
                 android:backgroundTint="@color/primary" />
+
         </LinearLayout>
 
         <Button
@@ -125,7 +126,6 @@
             android:layout_height="wrap_content"
             android:text="Upload"
             android:textColor="@color/on_primary"
-
             android:backgroundTint="@color/primary" />
 
     </LinearLayout>

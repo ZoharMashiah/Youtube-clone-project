@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
             );
             params.setMargins(10, 10, 10, 10);
             myButton[index].setLayoutParams(params);
-            myButton[index].setTextColor(ContextCompat.getColor(this, R.color.white));
+            myButton[index].setTextColor(ContextCompat.getColor(this, R.color.on_primary));
 
             int finalIndex = index;
             myButton[index].setOnClickListener(v -> {

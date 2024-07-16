@@ -36,8 +36,10 @@
 
         <ImageButton
             android:id="@+id/userImg"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_margin="5dp"
+            android:background="@android:color/transparent"
             android:contentDescription="User image button"
             android:scaleType="centerCrop" />
 

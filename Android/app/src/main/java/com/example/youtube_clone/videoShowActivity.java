@@ -1,7 +1,6 @@
 package com.example.youtube_clone;
 
 import android.annotation.SuppressLint;
-import android.content.DialogInterface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Base64;
@@ -60,10 +59,9 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
 
                     RecyclerView recyclerView = findViewById(R.id.commentsRecyclerView);
 
-                    //adapter = new commentsAdapter[]{new commentsAdapter(this, Videos.getInstance().currentVideo.getComments(), this)};
-
-//        recyclerView.setAdapter(adapter[0]);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//                    adapter = new commentsAdapter[]{new commentsAdapter(this, Videos.getInstance().currentVideo.getComments(), this)};
+//                    recyclerView.setAdapter(adapter[0]);
+//                    recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
 
                     int views = videoN1.getViews();
@@ -77,7 +75,6 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
                     binding.description.setText(videoN1.getDescription());
                     binding.counterLike.setText(Integer.toString(videoN1.getLike()));
                     binding.counterDislike.setText(Integer.toString(videoN1.getDislike()));
-//        binding.video.setVideo(ByteArrayInputStream(decodeBase64(Videos.getInstance().currentVideo.getVideo())));
                     try {
                         byte[] decodedBytes = Base64Utils.decodeBase64(videoN1.video);
                         File videoFile = FileUtils.saveVideoToFile(this, decodedBytes);
@@ -92,64 +89,39 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
 
                     binding.like.setOnClickListener(v -> {
                         if (UserManager.getInstance().getCurrentUser() != null) {
-                            //Videos.getInstance().currentVideo.addLike(Users.getInstance().currentUser.getUsername());
                             binding.counterLike.setText(Integer.toString(video.getLike()));
                             binding.counterDislike.setText(Integer.toString(video.getDislike()));
                         } else {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                            AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                                    .setMessage("You need to have a user to add a like!")
+                                    .setTitle("Alert !")
+                                    .setCancelable(false)
+                                    .setPositiveButton("Cancel", (dialog, which) -> {
+                                        dialog.cancel();
+                                    });
 
-                            // Set the message show for the Alert time
-                            builder.setMessage("You need to have a user to add a like!");
-
-                            // Set Alert Title
-                            builder.setTitle("Alert !");
-
-                            // Set Cancelable false for when the user clicks on the outside the Dialog Box then it will remain show
-                            builder.setCancelable(false);
-
-                            // Set the positive button with yes name Lambda OnClickListener method is use of DialogInterface interface.
-                            builder.setPositiveButton("Cancel", (DialogInterface.OnClickListener) (dialog, which) -> {
-                                // When the user click yes button then app will close
-                                dialog.cancel();
-                            });
-
-                            // Create the Alert dialog
                             AlertDialog alertDialog = builder.create();
-                            // Show the Alert Dialog box
                             alertDialog.show();
                         }
                     });
 
                     binding.dislike.setOnClickListener(v -> {
                         if (UserManager.getInstance().getCurrentUser() != null) {
-                            //Videos.getInstance().currentVideo.addDislike(Users.getInstance().currentUser.getUsername());
                             binding.counterLike.setText(Integer.toString(video.getLike()));
                             binding.counterDislike.setText(Integer.toString(video.getDislike()));
                         } else {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                            AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                                    .setMessage("You need to have a user to add a dislike!")
+                                    .setTitle("Alert !")
+                                    .setCancelable(false)
+                                    .setPositiveButton("Cancel", (dialog, which) -> {
+                                        dialog.cancel();
+                                    });
 
-                            // Set the message show for the Alert time
-                            builder.setMessage("You need to have a user to add a dislike!");
-
-                            // Set Alert Title
-                            builder.setTitle("Alert !");
-
-                            // Set Cancelable false for when the user clicks on the outside the Dialog Box then it will remain show
-                            builder.setCancelable(false);
-
-                            // Set the positive button with yes name Lambda OnClickListener method is use of DialogInterface interface.
-                            builder.setPositiveButton("Cancel", (DialogInterface.OnClickListener) (dialog, which) -> {
-                                // When the user click yes button then app will close
-                                dialog.cancel();
-                            });
-
-                            // Create the Alert dialog
                             AlertDialog alertDialog = builder.create();
-                            // Show the Alert Dialog box
                             alertDialog.show();
                         }
                     });
-
 
                     if (videosViewModel.getVideos().getValue() != null) {
                         for (VideoN vid : videosViewModel.getVideos().getValue()) {
@@ -168,7 +140,6 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
 
     @Override
     public void deleteElement(int position) {
-        //Videos.getInstance().deleteComment(Videos.getInstance().currentVideo.getComments().get(position).getId());
         adapter[0].notifyItemRemoved(position);
     }
 
@@ -178,7 +149,6 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
     }
 
     public byte[] decodeBase64(String base64String) {
-        // Remove the prefix if it exists (e.g., "data:video/mp4;base64,")
         if (base64String.contains(",")) {
             base64String = base64String.split(",")[1];
         }

@@ -51,8 +51,6 @@ public class LoginActivity extends AppCompatActivity {
             public void onSuccess(TokenResponse result) {
                 runOnUiThread(() -> {
                     Log.d("LoginActivity", "Handle Login succeeded");
-                    binding.loginBtn.setText(R.string.login);
-                    binding.loginBtn.setEnabled(true);
 
                     User current = result.getUser();
                     String token = result.getToken();
