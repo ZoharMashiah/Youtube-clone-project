@@ -24,7 +24,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class VideoApi {
     MutableLiveData<List<VideoN>> videoList;
-    MutableLiveData<List<VideoN>> userVideoList = new MutableLiveData<>();
+    MutableLiveData<List<VideoN>> userVideoList;
     MutableLiveData<List<VideoN>> videoListFiltered;
     Retrofit retrofit;
     videoRequest videoRequest;
@@ -51,6 +51,8 @@ public class VideoApi {
         }
         video = new MutableLiveData<>();
         videoListFiltered = new MutableLiveData<>();
+        userVideoList = new MutableLiveData<>();
+
     }
 
     public MutableLiveData<List<VideoN>> getFeed() {

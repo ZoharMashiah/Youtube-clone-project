@@ -4,10 +4,12 @@ import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 
 import com.example.youtube_clone.api.userAPI.UserAPI;
 import com.example.youtube_clone.api.videoAPI.VideoApi;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserPageViewModel extends ViewModel {
@@ -39,7 +41,11 @@ public class UserPageViewModel extends ViewModel {
     }
 
     private void loadUserVideos(String userId) {
-        videoApi.getUserVideos(userId).observeForever(userVideosLiveData::setValue);
+        Log.d("UserPageViewModel", "Loading videos for user: " + userId);
+        videoApi.getUserVideos(userId).observeForever(videoList -> {
+            Log.d("UserPageViewModel", "Received video list: " + (videoList != null ? videoList.size() : "null"));
+            userVideosLiveData.setValue(videoList != null ? videoList : new ArrayList<>());
+        });
     }
 
     public void updateUser(User updatedUser) {
