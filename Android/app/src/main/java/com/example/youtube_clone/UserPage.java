@@ -116,13 +116,11 @@ public class UserPage extends AppCompatActivity implements RecyclerViewInterface
 
         // Set current user details
         dialogBinding.editTextFirstName.setText(currentUser.getFirstName());
-        dialogBinding.editTextMiddleName.setText(currentUser.getMiddleName());
         dialogBinding.editTextLastName.setText(currentUser.getLastName());
 
         builder.setTitle("Edit User Details")
                 .setPositiveButton("Save", (dialog, which) -> {
                     currentUser.setFirstName(dialogBinding.editTextFirstName.getText().toString());
-                    currentUser.setMiddleName(dialogBinding.editTextMiddleName.getText().toString());
                     currentUser.setLastName(dialogBinding.editTextLastName.getText().toString());
                     handleEdit(currentUser);
                 })

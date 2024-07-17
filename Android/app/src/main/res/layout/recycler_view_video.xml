@@ -33,13 +33,13 @@
         app:layout_constraintTop_toTopOf="parent">
 
 
-        <ImageButton
+        <ImageView
             android:id="@+id/userImg"
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:layout_margin="5dp"
             android:background="@android:color/transparent"
-            android:contentDescription="User image button"
+            android:contentDescription="User image"
             android:scaleType="centerCrop" />
 
         <LinearLayout

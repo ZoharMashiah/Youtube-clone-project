@@ -15,16 +15,10 @@
             android:hint="First Name" />
 
         <EditText
-            android:id="@+id/editTextMiddleName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Middle Name" />
-
-        <EditText
             android:id="@+id/editTextLastName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Last Name" />
-        
+
     </LinearLayout>
 </ScrollView>
