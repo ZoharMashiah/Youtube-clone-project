@@ -5,7 +5,7 @@ import android.util.Log;
 import com.example.youtube_clone.MyApplication;
 import com.example.youtube_clone.R;
 import com.example.youtube_clone.User;
-import com.example.youtube_clone.authorization.AuthInterceptor;
+import com.example.youtube_clone.api.loginAPI.AuthInterceptor;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
