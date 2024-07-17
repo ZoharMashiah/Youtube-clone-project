@@ -7,12 +7,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="16dp">
-        
-        <EditText
-            android:id="@+id/editTextUsername"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Username" />
 
         <EditText
             android:id="@+id/editTextFirstName"
@@ -21,45 +15,10 @@
             android:hint="First Name" />
 
         <EditText
-            android:id="@+id/editTextMiddleName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Middle Name" />
-
-        <EditText
             android:id="@+id/editTextLastName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Last Name" />
-
-        <EditText
-            android:id="@+id/editTextPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Password"
-            android:inputType="textPassword" />
-
-        <EditText
-            android:id="@+id/editTextDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Birth Date"
-            android:focusable="false" />
-
-        <ImageView
-            android:id="@+id/editImageView"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="16dp"
-            android:src="@drawable/ic_person" />
-
-        <Button
-            android:id="@+id/buttonChangeImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Change Image" />
 
     </LinearLayout>
 </ScrollView>
