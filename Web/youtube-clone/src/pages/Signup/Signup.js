@@ -20,7 +20,7 @@ export default function Signup({}) {
 
   const handleSignup = async (newUser) => {
     try {
-      await authAxios.post("/api/users/signup", newUser);
+      await authAxios.post("/api/users", newUser);
       alert("Success!");
 
       return true;

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Youtube-Clone</string>
+    <string name="app_name">Stream-Box</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="login">Login</string>
     <string name="username">Username</string>
@@ -17,4 +17,6 @@
     <string name="add_video_btn">Add Video</string>
     <string name="delete_account_btn">Delete Account</string>
     <string name="log_out_btn">Log Out</string>
+    <string name="Logging_in">Logging in…</string>
+    <string name="edit_details">Edit details</string>
 </resources>

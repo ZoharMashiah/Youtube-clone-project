@@ -27,7 +27,7 @@ const createUser = async (req, res) => {
       return res.status(409).json({ error: "Username already exists" });
     }
 
-    console.log("req: ", req.body);
+    console.log("created user: ", req.body.username);
 
     const newSettings = settings || {};
 

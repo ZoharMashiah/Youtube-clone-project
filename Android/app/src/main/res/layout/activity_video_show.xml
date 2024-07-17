@@ -4,48 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!--    <LinearLayout-->
-    <!--        android:id="@+id/header"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="50dp"-->
-    <!--        android:background="@color/blueNavy"-->
-
-    <!--        android:orientation="horizontal"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toTopOf="parent">-->
-
-    <!--        <ImageView-->
-    <!--            android:id="@+id/imageView2"-->
-    <!--            android:layout_width="0dp"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:layout_weight="1"-->
-    <!--            android:background="@color/blueNavy"-->
-    <!--            app:srcCompat="@drawable/streambox_imgbg_net" />-->
-
-    <!--        <ImageButton-->
-    <!--            android:id="@+id/imageButtonHomeOriginal"-->
-    <!--            android:layout_width="0dp"-->
-    <!--            android:layout_height="match_parent"-->
-    <!--            android:layout_weight="1"-->
-    <!--            android:backgroundTint="@color/blueNavy"-->
-    <!--            app:srcCompat="@drawable/baseline_home_24" />-->
-
-    <!--        <Button-->
-    <!--            android:id="@+id/themeToggleButton"-->
-    <!--            android:layout_width="0dp"-->
-    <!--            android:layout_height="match_parent"-->
-    <!--            android:layout_gravity="center"-->
-
-    <!--            android:layout_weight="1"-->
-    <!--            android:backgroundTint="@color/white"-->
-    <!--            android:text="Dark mode"-->
-    <!--            android:textColor="@color/blueNavy"-->
-    <!--            app:layout_constraintEnd_toEndOf="parent"-->
-    <!--            app:layout_constraintTop_toTopOf="parent" />-->
-
-    <!--    </LinearLayout>-->
-
     <FrameLayout
         android:id="@+id/videoFrame"
         android:layout_width="0dp"
@@ -79,57 +37,91 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="10dp"
-                    android:textSize="20sp"
-                    android:text="Title" />
-
-                <TextView
-                    android:id="@+id/views"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Views"
-                    android:textSize="16dp" />
-
-                <TextView
-                    android:id="@+id/date"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Publish date"
-                    android:textSize="16dp" />
-
-                <TextView
-                    android:id="@+id/description"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Description" />
+                android:orientation="horizontal">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="10dp"
+                        android:textSize="20sp"
+                        android:textColor="@color/on_background"
+                        android:text="Title" />
+
+                    <TextView
+                        android:id="@+id/videoCreator"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:textColor="@color/on_background"
+                        android:text="Creator" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/views"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/on_background_light"
+                            android:layout_marginEnd="20dp"
+                            android:text="Views"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/on_background_light"
+                            android:text="Publish date"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/on_background"
+                        android:text="Description" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
                     <Button
                         android:id="@+id/editBtn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:backgroundTint="@color/blueNavy"
+                        android:backgroundTint="@color/primary_dark"
+                        android:textColor="@color/on_primary"
                         android:text="edit" />
 
                     <Button
                         android:id="@+id/deleteBtn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:backgroundTint="@color/blueNavy"
+                        android:backgroundTint="@color/primary_dark"
+                        android:textColor="@color/on_primary"
                         android:text="delete" />
+
                 </LinearLayout>
             </LinearLayout>
 
@@ -144,7 +136,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:layout_weight="1"
-                    android:backgroundTint="@color/blueNavy"
+                    android:backgroundTint="@color/primary"
+                    android:textColor="@color/on_primary"
                     android:text="Like" />
 
                 <TextView
@@ -153,6 +146,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
+                    android:textColor="@color/on_background"
                     android:inputType="text"
                     android:text="counterLike" />
 
@@ -162,7 +156,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:layout_weight="1"
-                    android:backgroundTint="@color/blueNavy"
+                    android:backgroundTint="@color/primary"
+                    android:textColor="@color/on_primary"
                     android:text="Dislike" />
 
                 <TextView
@@ -171,6 +166,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
+                    android:textColor="@color/on_background"
+
                     android:inputType="text"
                     android:text="counterDis" />
             </LinearLayout>
@@ -192,7 +189,8 @@
                     android:layout_height="40dp"
                     android:layout_margin="5dp"
                     android:layout_gravity="center"
-                    android:backgroundTint="@color/blueNavy"
+                    android:backgroundTint="@color/primary"
+                    android:textColor="@color/on_primary"
                     android:text="Submit"
                     android:textSize="10dp" />
             </LinearLayout>
