@@ -117,7 +117,6 @@ async function deleteVideo(req, res) {
 
   try {
     await Video.deleteVideo(videoId, userId);
-    console.log("Deleted video successfully");
     res.status(200).json({ message: "Video deleted successfully" });
   } catch (error) {
     console.error("Error deleting video:", videoId, error);

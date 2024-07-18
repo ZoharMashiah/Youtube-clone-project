@@ -44,7 +44,7 @@ videoSchema.statics.deleteVideo = async function (videoId, userId) {
   session.startTransaction();
 
   try {
-    const video = await this.findById({ _id: videoId }).session(session);
+    const video = await this.findById({ _id: videoId })
     if (!video) {
       throw new Error("Video not found");
     }
@@ -64,13 +64,14 @@ videoSchema.statics.deleteVideo = async function (videoId, userId) {
           history: video._id,
         },
       }
-    ).session(session);
+    )
 
     // remove video from owner's videos array
-    await User.updateOne({ _id: userId }, { $pull: { videos: video._id } }).session(session);
+    await User.updateOne({ _id: userId }, { $pull: { videos: video._id } })
 
     // delete the video
-    await video.deleteOne({ session });
+    // await video.deleteOne({ session });
+    await Video.findByIdAndDelete({_id: videoId})
 
     await session.commitTransaction();
     return true;
