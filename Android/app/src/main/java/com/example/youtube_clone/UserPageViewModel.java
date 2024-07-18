@@ -17,6 +17,7 @@ public class UserPageViewModel extends ViewModel {
     private final MutableLiveData<List<VideoN>> userVideosLiveData = new MutableLiveData<>();
     private final MutableLiveData<String> messageLiveData = new MutableLiveData<>();
     private final MutableLiveData<Boolean> userDeletedLiveData = new MutableLiveData<>();
+    private List<VideoN> currCachedVideos = null;
     private final UserAPI userAPI = new UserAPI();
     private final VideoApi videoApi = new VideoApi(null, null);
 
@@ -24,11 +25,29 @@ public class UserPageViewModel extends ViewModel {
     }
 
     public void loadUser(String userId) {
+        User currentUser = UserManager.getInstance().getCurrentUser();
+
+        if (userId.equals(currentUser.get_id())) {
+            userLiveData.setValue(currentUser);
+
+            if (currCachedVideos != null) {
+                userVideosLiveData.setValue(currCachedVideos);
+            } else {
+                loadUserVideos(currentUser.get_id(), true);
+            }
+
+        } else {
+            fetchUserAndVideos(userId);
+        }
+    }
+
+
+    public void fetchUserAndVideos(String userId) {
         userAPI.getUser(userId, new UserAPI.UserCallback() {
             @Override
             public void onSuccess(User fetchedUser, String message) {
                 userLiveData.setValue(fetchedUser);
-                loadUserVideos(fetchedUser.get_id());
+                loadUserVideos(fetchedUser.get_id(), false);
                 Log.i("UserViewModel", "User loaded successfully");
             }
 
@@ -40,12 +59,27 @@ public class UserPageViewModel extends ViewModel {
         });
     }
 
-    private void loadUserVideos(String userId) {
-        Log.d("UserPageViewModel", "Loading videos for user: " + userId);
-        videoApi.getUserVideos(userId).observeForever(videoList -> {
-            Log.d("UserPageViewModel", "Received video list: " + (videoList != null ? videoList.size() : "null"));
-            userVideosLiveData.setValue(videoList != null ? videoList : new ArrayList<>());
+    private void loadUserVideos(String userId, boolean isCurrentUser) {
+        Log.d("UserViewModel", "Loading videos for user: " + userId);
+        videoApi.getUserVideos(userId, new VideoApi.VideoCallback() {
+            @Override
+            public void onSuccess(List<VideoN> videoList) {
+                if (isCurrentUser) {
+                    currCachedVideos = new ArrayList<>(videoList);
+                }
+                userVideosLiveData.setValue(videoList);
+                Log.d("UserViewModel", "Received video list: " + videoList.size());
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                userVideosLiveData.setValue(new ArrayList<>());
+                messageLiveData.setValue(errorMessage);
+                Log.e("UserViewModel", "Error loading videos: " + errorMessage);
+            }
         });
+
+
     }
 
     public void updateUser(User updatedUser) {
@@ -96,5 +130,16 @@ public class UserPageViewModel extends ViewModel {
 
     public LiveData<Boolean> getUserDeletedLiveData() {
         return userDeletedLiveData;
+    }
+
+    public void addVideoToUserList(VideoN newVideo) {
+        if (newVideo != null) {
+            List<VideoN> currentList = userVideosLiveData.getValue();
+            if (currentList == null) {
+                currentList = new ArrayList<>();
+            }
+            currentList.add(newVideo);
+            userVideosLiveData.setValue(currentList);
+        }
     }
 }
