@@ -109,7 +109,6 @@ public class VideoApi {
             public void onResponse(Call<List<VideoN>> call, Response<List<VideoN>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     Log.i("VideoAPI", "Creator video list fetched successfully");
-                    Log.i("VideoAPI", "Body: " + response.body());
                     List<VideoN> videoList = response.body();
                     callback.onSuccess(videoList);
                 } else {
