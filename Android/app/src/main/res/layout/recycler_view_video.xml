@@ -1,7 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
 
-    android:id="@+id/parentLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="20dp"
@@ -34,13 +33,13 @@
         app:layout_constraintTop_toTopOf="parent">
 
 
-        <ImageButton
+        <ImageView
             android:id="@+id/userImg"
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:layout_margin="5dp"
             android:background="@android:color/transparent"
-            android:contentDescription="User image button"
+            android:contentDescription="User image"
             android:scaleType="centerCrop" />
 
         <LinearLayout

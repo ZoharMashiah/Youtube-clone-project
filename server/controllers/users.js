@@ -76,6 +76,8 @@ const updateUser = async (req, res) => {
   if (!user) {
     return res.status(400).json({ message: `User with id ${userId} not found` });
   }
+
+  console.log("edited user");
   res.status(200).json(user);
 };
 

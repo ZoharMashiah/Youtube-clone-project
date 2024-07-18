@@ -19,7 +19,7 @@ export default function UserPage() {
 
   return (
     <div>
-      <div>
+      <div className={styles.UserInfo}>
         <UserInfo userId={userId} />
       </div>
       <hr />

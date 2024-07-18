@@ -159,7 +159,4 @@ public class User {
         this.darkMode = darkMode;
     }
 
-    public void toggleDarkMode(boolean darkMode) {
-        this.darkMode = !this.darkMode;
-    }
 }

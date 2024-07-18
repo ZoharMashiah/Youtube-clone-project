@@ -1,3 +1,7 @@
+.UserInfo {
+  margin: auto;
+  width: fit-content;
+}
 .videoGrid {
   margin: 30px;
   display: flex;

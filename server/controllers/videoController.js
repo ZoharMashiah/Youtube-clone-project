@@ -5,13 +5,13 @@ const Util = require("../util/util.js");
 
 async function getFeed(req, res) {
   try {
-    console.log("Fetching...");
+    console.log("Fetching feed...");
     const numberOfVideos = 10;
     const mostViewed = await VideoService.getTopVideos(numberOfVideos);
     const unchosenVideos = await VideoService.getUnchosenVideos(numberOfVideos, mostViewed);
     const videoList = Util.randomizeArray([...mostViewed, ...unchosenVideos]);
 
-    console.log("Fetching video list ended successfully");
+    console.log("Fetching videos ended successfully");
     res.status(200).json(videoList);
   } catch (error) {
     console.error("Error fetching video list: ", error);
@@ -24,8 +24,9 @@ async function getFeed(req, res) {
 async function getUserVideoList(req, res) {
   const userId = req.params.id;
   try {
+    console.log("Fetching user video list...");
     const userVideoList = await VideoService.getUserVideoList(userId);
-    console.log("Fetched creator video list successfully");
+    console.log("Fetching user video list successfully");
     res.status(200).json(userVideoList);
   } catch (error) {
     console.error("Error fetching creator video list:", userId, error);
@@ -169,7 +170,7 @@ async function filterVideos(req, res) {
         }
       ).lean();
     }
-    console.log(filtered)
+    console.log(filtered);
     res.status(200).json(filtered);
   } catch (error) {
     console.error("Error filtering videos");

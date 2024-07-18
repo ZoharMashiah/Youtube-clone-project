@@ -1,4 +1,4 @@
-package com.example.youtube_clone.authorization;
+package com.example.youtube_clone.api.loginAPI;
 
 import com.example.youtube_clone.UserManager;
 

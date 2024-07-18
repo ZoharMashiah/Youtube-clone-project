@@ -2,7 +2,6 @@ package com.example.youtube_clone;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -17,6 +16,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.youtube_clone.api.videoAPI.VideoApi;
 import com.example.youtube_clone.databinding.ActivityAddVideoBinding;
 
 import java.io.IOException;
@@ -26,7 +26,7 @@ import java.util.Calendar;
 public class addVideoActivity extends AppCompatActivity implements
         AdapterView.OnItemSelectedListener {
 
-    private SharedPreferences sharedPreferences;
+    private VideoApi videoApi = new VideoApi(null, null);
 
     private ActivityAddVideoBinding binding;
 
@@ -94,6 +94,7 @@ public class addVideoActivity extends AppCompatActivity implements
                 VideoN videoN = new VideoN(null, user.get_id(), new SmallUser(user.get_id(), user.getUsername(), user.getProfilePicture()),
                         binding.editTextText.getText().toString(), binding.editTextText2.getText().toString(), binding.category.getSelectedItem().toString(), Calendar.getInstance().getTime(), 0, 0, 0, new ArrayList<>(),
                         selectedImage, selectedVideo);
+                videoApi.addVideoToUserList(videoN);  // add to the user page using live view
                 ViewModelsSingelton.getInstance().getVideosViewModel().add(UserManager.getInstance().getCurrentUser().get_id(), videoN);
                 ViewModelsSingelton.getInstance().getVideosViewModel().reload();
                 Intent intent = new Intent(this, MainActivity.class);

@@ -41,7 +41,8 @@ dependencies {
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
-    
+    implementation(libs.room.common)
+    implementation(libs.lifecycle.viewmodel.android)
     annotationProcessor("androidx.room:room-compiler:2.6.1")
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
     implementation("com.squareup.retrofit2:converter-gson:2.11.0")
@@ -51,7 +52,6 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel:2.6.2")
     implementation("androidx.lifecycle:lifecycle-livedata:2.6.2")
     implementation("androidx.lifecycle:lifecycle-runtime:2.6.2")
-    implementation("com.google.android.material:material:1.9.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-savedstate:2.6.2")
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)

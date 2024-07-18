@@ -1,9 +1,9 @@
 package com.example.youtube_clone;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.util.Base64;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
@@ -185,18 +185,6 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
         adapter[0].notifyItemRemoved(position);
     }
 
-    @Override
-    public void onItemClick(VideoN video) {
-        videosViewModel.setCurrentVideo(video);
-    }
-
-    public byte[] decodeBase64(String base64String) {
-        if (base64String.contains(",")) {
-            base64String = base64String.split(",")[1];
-        }
-        return Base64.decode(base64String, Base64.DEFAULT);
-    }
-
     private void playVideo(File videoFile) {
         if (videoFile.exists()) {
             videoView.setVideoPath(videoFile.getAbsolutePath());
@@ -252,5 +240,18 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
         if (mediaPlayer != null) {
             mediaPlayer.release();
         }
+
+    }
+
+    @Override
+    public void onItemClick(VideoN video) {
+        videosViewModel.setCurrentVideo(video);
+    }
+
+    @Override
+    public void onUserImageClick(VideoN video) {
+        Intent intent = new Intent(this, UserPage.class);
+        intent.putExtra("userId", video.getUser().get_id());
+        startActivity(intent);
     }
 }

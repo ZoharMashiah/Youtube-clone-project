@@ -9,7 +9,7 @@ export default function Logo() {
 
   const handleClick = () => {
     stopFilter();
-    setSelectedCategory("All")
+    setSelectedCategory("All");
     navigate("/");
   };
 
