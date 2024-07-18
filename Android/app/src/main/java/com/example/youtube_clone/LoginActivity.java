@@ -30,6 +30,9 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        binding.loginBtn.setEnabled(true);
+        binding.loginBtn.setText(R.string.login);
+
         binding.textMoveToSignup.setOnClickListener(v -> {
             Intent intent = new Intent(this, SignupActivity.class);
             startActivity(intent);
