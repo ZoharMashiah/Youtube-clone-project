@@ -14,17 +14,23 @@ import java.util.List;
 public interface VideoDao {
 
     @Query("SELECT * FROM videon")
-    List<VideoN> index();
+    List<VideoN> getFeed();
 
     @Query("SELECT * FROM videon WHERE _id = :id")
-    VideoN get(String id);
+    VideoN getVideo(String id);
 
     @Insert
-    void insert(VideoN... videos);
+    void add(VideoN... videos);
 
-    @Update
-    void update(VideoN... videos);
+    @Query("UPDATE videon SET description = :description, title= :title WHERE _id =:id")
+    void editVideo(String description, String title, String id);
 
-    @Delete
-    void delete(VideoN... videos);
+    @Query("DELETE FROM videon WHERE _id =:videoId")
+    void deleteVideo(String videoId);
+
+    @Query("DELETE FROM videon")
+    void clear();
+
+    @Insert
+    void insertList(List<VideoN> body);
 }

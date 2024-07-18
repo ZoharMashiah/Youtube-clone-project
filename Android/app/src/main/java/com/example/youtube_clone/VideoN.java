@@ -1,6 +1,7 @@
 package com.example.youtube_clone;
 
 import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -11,12 +12,16 @@ import java.util.List;
 @Entity
 public class VideoN {
     @PrimaryKey @NonNull
+    @ColumnInfo(name = "_id")
     String _id;
 
     @SerializedName("user")
     SmallUser user;
+    
     String user_id;
+    @ColumnInfo(name = "title")
     String title;
+    @ColumnInfo(name = "description")
     String description;
     String category;
     Date publication_date;

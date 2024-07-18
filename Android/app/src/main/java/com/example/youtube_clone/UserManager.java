@@ -39,7 +39,6 @@ public class UserManager {
         context = MyApplication.getAppContext();
         SharedPreferences prefs = this.context.getSharedPreferences(USER_PREFS, Context.MODE_PRIVATE);
         token = prefs.getString(JWT_TOKEN, null);
-        viewModel = MyApplication.getInstance().getUserPageViewModel();
 
         Log.d("UserManager", "on start, token is: " + token);
 
