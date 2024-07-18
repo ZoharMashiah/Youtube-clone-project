@@ -40,17 +40,23 @@ const videoSchema = new mongoose.Schema({
 });
 
 videoSchema.statics.deleteVideo = async function (videoId, userId) {
+  console.log("Start to delete", videoId)
   const session = await mongoose.startSession();
   session.startTransaction();
+  console.log("Start the transaction\n\n")
 
   try {
-    const video = await this.findById({ _id: videoId }).session(session);
+    console.log("Start search video\n\n")
+    const video = await this.findById({ _id: videoId })
+    console.log("finished search video\n\n")
     if (!video) {
+      console.log("Video not found\n\n")
       throw new Error("Video not found");
     }
 
     // delete all comments
     await Comment.deleteMany({ videoId: videoId });
+    console.log("finished delete video\n\n")
 
     // remove video from liked, disliked, history lists
     await User.updateMany(
@@ -64,13 +70,14 @@ videoSchema.statics.deleteVideo = async function (videoId, userId) {
           history: video._id,
         },
       }
-    ).session(session);
+    )
 
     // remove video from owner's videos array
-    await User.updateOne({ _id: userId }, { $pull: { videos: video._id } }).session(session);
+    await User.updateOne({ _id: userId }, { $pull: { videos: video._id } })
 
     // delete the video
-    await video.deleteOne({ session });
+    // await video.deleteOne({ session });
+    await Video.findByIdAndDelete({_id: videoId})
 
     await session.commitTransaction();
     return true;
