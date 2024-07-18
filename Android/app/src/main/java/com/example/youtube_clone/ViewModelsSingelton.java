@@ -1,7 +1,7 @@
 package com.example.youtube_clone;
 
 public class ViewModelsSingelton {
-    private static ViewModelsSingelton singelton = null;
+    private static ViewModelsSingelton singleton = null;
     private VideosViewModel videosViewModel;
 
     private ViewModelsSingelton() {
@@ -9,10 +9,10 @@ public class ViewModelsSingelton {
     }
 
     public static ViewModelsSingelton getInstance() {
-        if(singelton == null) {
-            singelton = new ViewModelsSingelton();
+        if (singleton == null) {
+            singleton = new ViewModelsSingelton();
         }
-        return singelton;
+        return singleton;
     }
 
     public VideosViewModel getVideosViewModel() {
