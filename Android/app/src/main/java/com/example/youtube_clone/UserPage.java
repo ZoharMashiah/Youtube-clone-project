@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.youtube_clone.databinding.ActivityUserPageBinding;
@@ -30,7 +29,7 @@ public class UserPage extends AppCompatActivity implements RecyclerViewInterface
         binding = ActivityUserPageBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        viewModel = new ViewModelProvider(this).get(UserPageViewModel.class);
+        viewModel = ((MyApplication) getApplication()).getUserPageViewModel();
         videosAdapter = new VideosAdapter(this, new ArrayList<>(), this);
         binding.userPageVideos.setAdapter(videosAdapter);
         binding.userPageVideos.setLayoutManager(new LinearLayoutManager(this));
@@ -86,9 +85,17 @@ public class UserPage extends AppCompatActivity implements RecyclerViewInterface
         } else {
             videosAdapter.updateVideos(videoList);
             Log.i("UserPage", "Videos loaded successfully: " + videoList.size());
-            String numOfVideos = videoList.size() + " videos";
-            binding.numVideos.setText(numOfVideos);
+            String s;
+
+            if (videoList.size() == 1) {
+                s = "1 Video";
+            } else {
+                s = videoList.size() + " Videos";
+            }
+
+            binding.numVideos.setText(s);
             binding.numVideos.setVisibility(View.VISIBLE);
+            binding.userPageVideos.setVisibility(View.VISIBLE);
         }
     }
 

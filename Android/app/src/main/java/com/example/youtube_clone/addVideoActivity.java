@@ -16,7 +16,6 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.youtube_clone.api.videoAPI.VideoApi;
 import com.example.youtube_clone.databinding.ActivityAddVideoBinding;
 
 import java.io.IOException;
@@ -26,7 +25,7 @@ import java.util.Calendar;
 public class addVideoActivity extends AppCompatActivity implements
         AdapterView.OnItemSelectedListener {
 
-    private VideoApi videoApi = new VideoApi(null, null);
+    private UserPageViewModel userPageViewModel;
 
     private ActivityAddVideoBinding binding;
 
@@ -45,11 +44,11 @@ public class addVideoActivity extends AppCompatActivity implements
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         binding = ActivityAddVideoBinding.inflate(getLayoutInflater());
-
         setContentView(binding.getRoot());
+
+        userPageViewModel = new UserPageViewModel();
 
         mTakePhoto = registerForActivityResult(
                 new ActivityResultContracts.GetContent(),
@@ -94,7 +93,7 @@ public class addVideoActivity extends AppCompatActivity implements
                 VideoN videoN = new VideoN(null, user.get_id(), new SmallUser(user.get_id(), user.getUsername(), user.getProfilePicture()),
                         binding.editTextText.getText().toString(), binding.editTextText2.getText().toString(), binding.category.getSelectedItem().toString(), Calendar.getInstance().getTime(), 0, 0, 0, new ArrayList<>(),
                         selectedImage, selectedVideo);
-                videoApi.addVideoToUserList(videoN);  // add to the user page using live view
+                userPageViewModel.addVideoToUserList(videoN);  // add to the user page using live view
                 ViewModelsSingelton.getInstance().getVideosViewModel().add(UserManager.getInstance().getCurrentUser().get_id(), videoN);
                 ViewModelsSingelton.getInstance().getVideosViewModel().reload();
                 Intent intent = new Intent(this, MainActivity.class);
