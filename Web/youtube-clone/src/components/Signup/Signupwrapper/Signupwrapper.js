@@ -14,7 +14,7 @@ export default function Signupwrapper({ handleSignup }) {
   const [photo, setPhoto] = useState(null);
   const [success, setSuccess] = useState(false);
   const [moveLogin, setMoveLogin] = useState(false);
-  const {readFileAsDataURL} = useContext(AppContext)
+  const { readFileAsDataURL } = useContext(AppContext);
 
   const handleSubmit = async () => {
     // Password validation
@@ -58,7 +58,7 @@ export default function Signupwrapper({ handleSignup }) {
     <div className="signup-page">
       <div className="signup-container">
         <h2 className="signup-title">Register</h2>
-        <form>
+        <form className="signupForm">
           <div className="input-group">
             <i className="bi bi-person-circle"></i>
             <input

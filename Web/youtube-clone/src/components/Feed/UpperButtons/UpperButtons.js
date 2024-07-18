@@ -9,9 +9,6 @@ const UploadVideo = ({ setTrigger }) => (
     <button className={styles.button} onClick={() => setTrigger(true)}>
       <i className="bi bi-camera-reels" id={styles.icon} />
     </button>
-    {/* <button className={styles.button}>
-      <i className="bi bi-bell" id={styles.icon} />
-    </button> */}
   </>
 );
 
@@ -24,6 +21,9 @@ const UserButtons = ({ currentUser, setCurrentUser, darkMode, toggleDarkMode }) 
   const logout = useCallback(() => {
     setCurrentUser(null);
     localStorage.removeItem("token");
+    if (darkMode) {
+      toggleDarkMode();
+    }
 
     navigate("/");
   }, [setCurrentUser, darkMode, toggleDarkMode, navigate]);

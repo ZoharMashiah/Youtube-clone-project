@@ -5,7 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { AppContext } from "../../../AppContext";
 
 export default function Categories({}) {
-  const { selectedCategory, setSelectedCategory, filterVideos, stopFillter } = useContext(AppContext);
+  const { selectedCategory, setSelectedCategory, filterVideos, stopFilter } = useContext(AppContext);
 
   const [categories] = useState([
     "All",
@@ -27,10 +27,10 @@ export default function Categories({}) {
 
   const onClickHandle = async (category) => {
     setSelectedCategory(category);
-    if (category != "All") {
+    if (category !== "All") {
       await filterVideos(false, category);
     } else {
-      stopFillter();
+      stopFilter();
     }
   };
   return (

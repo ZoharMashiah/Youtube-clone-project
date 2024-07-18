@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import styles from "./AddVideoPopup.module.css";
 import Dropdown from "react-bootstrap/Dropdown";
 import { AppContext } from "../../AppContext";
-import axios from "axios";
+import authAxios from "../../util/authAxios";
 
 export default function AddVideoPopup({ onClose }) {
   const { currentUser, videoList, setVideoList } = useContext(AppContext);
@@ -43,7 +43,7 @@ export default function AddVideoPopup({ onClose }) {
       const address = `/api/users/${currentUser._id}/videos`;
       console.log("Sending request to:", address);
 
-      const res = await axios.post(address, newVideo);
+      const res = await authAxios.post(address, newVideo);
 
       setVideoList([...videoList, res.data]);
 

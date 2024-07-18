@@ -2,7 +2,6 @@ package com.example.youtube_clone;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -11,28 +10,22 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.youtube_clone.databinding.ActivityAddVideoBinding;
 
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
 
 public class addVideoActivity extends AppCompatActivity implements
-        AdapterView.OnItemSelectedListener{
+        AdapterView.OnItemSelectedListener {
 
-    private SharedPreferences sharedPreferences;
+    private UserPageViewModel userPageViewModel;
 
     private ActivityAddVideoBinding binding;
 
@@ -41,58 +34,28 @@ public class addVideoActivity extends AppCompatActivity implements
     ActivityResultLauncher<String> mTakeVideo;
 
     Uri selectedImageUri = null;
+    String selectedImage;
 
     Uri selectedVideoUri = null;
+    String selectedVideo;
 
     private final String[] categories = {"Music", "Mixes", "JavaScript", "Gaming", "Bouldering",
             "Display devices", "AI", "Computer Hardware", "Table News", "Inventions", "News", "Comedy clubs", "Skills", "3D printing"};
 
-    private static final String PREFS_NAME = "prefs";
-    private static final String PREF_DARK_MODE = "dark_mode";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         binding = ActivityAddVideoBinding.inflate(getLayoutInflater());
-
         setContentView(binding.getRoot());
 
-        // Load the saved theme preference
-        SharedPreferences preferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        boolean isDarkMode = preferences.getBoolean(PREF_DARK_MODE, false);
-        if (isDarkMode) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        }
+        userPageViewModel = new UserPageViewModel();
 
-        binding.themeToggleButton.setOnClickListener(v -> {
-            // Toggle dark mode
-            boolean isDarkMode1 = (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES);
-            if (isDarkMode1) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-            } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            }
-
-            // Save the theme preference
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putBoolean(PREF_DARK_MODE, !isDarkMode1);
-            editor.apply();
-        });
-
-
-        mTakePhoto =registerForActivityResult(
+        mTakePhoto = registerForActivityResult(
                 new ActivityResultContracts.GetContent(),
-                new ActivityResultCallback<Uri>() {
-                    @Override
-                    public void onActivityResult(Uri o) {
-                        selectedImageUri = o;
-                    }
-                }
+                o -> selectedImageUri = o
         );
 
-        mTakeVideo =registerForActivityResult(
+        mTakeVideo = registerForActivityResult(
                 new ActivityResultContracts.GetContent(),
                 new ActivityResultCallback<Uri>() {
                     @Override
@@ -102,12 +65,8 @@ public class addVideoActivity extends AppCompatActivity implements
                 }
         );
 
-        binding.imageButtonBack.setOnClickListener(v -> {
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-        });
 
-        binding.imageUploadImage.setOnClickListener(v -> mTakePhoto.launch("image/*"));
+        binding.uploadImage.setOnClickListener(v -> mTakePhoto.launch("image/*"));
 
         binding.imageUploadVideo.setOnClickListener(v -> mTakeVideo.launch("video/*"));
 
@@ -115,18 +74,28 @@ public class addVideoActivity extends AppCompatActivity implements
         spin.setOnItemSelectedListener(this);
 
         //Creating the ArrayAdapter instance having the country list
-        ArrayAdapter aa = new ArrayAdapter(this,android.R.layout.simple_spinner_item,categories);
+        ArrayAdapter<String> aa = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //Setting the ArrayAdapter data on the Spinner
         spin.setAdapter(aa);
 
         binding.button6.setOnClickListener(v -> {
-            if (!binding.editTextText.getText().toString().isEmpty() && !binding.editTextText2.getText().toString().isEmpty() && this.selectedImageUri!=null&& this.selectedVideoUri!=null) {
-                Video newVideo = new Video(Videos.getInstance().getNextId(), binding.editTextText.getText().toString(), binding.editTextText2.getText().toString(),
-                        Users.getInstance().currentUser.getUsername(), Users.getInstance().currentUser.getProfileImage(),
-                        binding.category.getSelectedItem().toString(), Calendar.getInstance().getTime().getTime(), this.selectedImageUri,
-                        0, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), this.selectedVideoUri);
-                Videos.getInstance().videos.add(newVideo);
+            if (!binding.editTextText.getText().toString().isEmpty() && !binding.editTextText2.getText().toString().isEmpty() && this.selectedImageUri != null && this.selectedVideoUri != null) {
+                try {
+                    selectedImage = FormatConverters.imageUriToBase64(this, selectedImageUri);
+                    selectedVideo = FormatConverters.videoUriToBase64(this, selectedVideoUri);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Toast.makeText(this, "Failed to upload image, but the user has been created.", Toast.LENGTH_SHORT).show();
+                }
+
+                User user = UserManager.getInstance().getCurrentUser();
+                VideoN videoN = new VideoN(null, user.get_id(), new SmallUser(user.get_id(), user.getUsername(), user.getProfilePicture()),
+                        binding.editTextText.getText().toString(), binding.editTextText2.getText().toString(), binding.category.getSelectedItem().toString(), Calendar.getInstance().getTime(), 0, 0, 0, new ArrayList<>(),
+                        selectedImage, selectedVideo);
+                userPageViewModel.addVideoToUserList(videoN);  // add to the user page using live view
+                ViewModelsSingelton.getInstance(getApplicationContext()).getVideosViewModel().add(UserManager.getInstance().getCurrentUser().get_id(), videoN);
+                ViewModelsSingelton.getInstance(getApplicationContext()).getVideosViewModel().reload();
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
             } else {

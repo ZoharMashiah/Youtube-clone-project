@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
-import axios from "axios";
+import authAxios from "./util/authAxios";
 
 const AppContext = React.createContext(null);
 
@@ -10,32 +10,36 @@ export const AppContextProvider = ({ children }) => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [isFiltered, setIsFiltered] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
-  const token = localStorage.getItem("token");
 
   useEffect(() => {
     const getCurrentUser = async () => {
+      const token = localStorage.getItem("token");
       if (token) {
         try {
-          const response = await fetch(`/api/tokens/${token}`);
-          const data = await response.json();
-          if (data.user) {
-            setCurrentUser(data.user);
-            if (data.user.settings.darkMode) {
+          const response = await authAxios.get(`/api/tokens`);
+          const user = response.data.user;
+          if (user) {
+            setCurrentUser(user);
+            if (user.settings.darkMode) {
               toggleDarkMode();
             }
           }
         } catch (error) {
-          console.error("Error fetching user data:", error);
+          console.error("Token verification failed:", error);
+          localStorage.removeItem("token");
+          setCurrentUser(null);
         }
+      } else {
+        setCurrentUser(null);
       }
     };
     getCurrentUser();
-  }, [token, setCurrentUser]);
+  }, []);
 
   useEffect(() => {
     const fetchVideos = async () => {
       try {
-        const res = await axios.get("/api/videos", { timeout: 0 });
+        const res = await authAxios.get("/api/videos", { timeout: 0 });
         setVideoList(res.data);
       } catch (error) {
         console.error("Error fetching videos:", error);
@@ -49,17 +53,14 @@ export const AppContextProvider = ({ children }) => {
     const newDarkMode = !darkMode;
     setDarkMode(newDarkMode);
     document.body.classList.toggle("dark-mode", newDarkMode);
-
     if (currentUser) {
-      fetch(`/api/users/${currentUser._id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ settings: { darkMode: newDarkMode } }),
-      }).catch((error) => console.error("Error updating user settings:", error));
+      authAxios
+        .patch(`/api/users/${currentUser._id}`, {
+          settings: { darkMode: newDarkMode },
+        })
+        .catch((error) => console.error("Error updating user settings:", error));
       currentUser.settings.darkMode = newDarkMode;
     }
-
-    console.log("darkMode: ", newDarkMode, "user setting: ", currentUser?.settings.darkMode);
   };
 
   const readFileAsDataURL = useCallback((file) => {
@@ -73,7 +74,7 @@ export const AppContextProvider = ({ children }) => {
 
   const filterVideos = useCallback(async (search, text) => {
     try {
-      const res = await axios.post("/api/videos/filter", { search, text });
+      const res = await authAxios.post("/api/videos/filter", { search, text });
       setFilteredVideoList(res.data);
       setIsFiltered(true);
     } catch (error) {

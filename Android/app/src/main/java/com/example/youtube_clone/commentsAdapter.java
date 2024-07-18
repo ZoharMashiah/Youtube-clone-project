@@ -2,30 +2,36 @@ package com.example.youtube_clone;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.os.Handler;
-import android.os.Looper;
-import android.text.Layout;
+import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.view.LayoutInflater;
-import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.youtube_clone.api.commentAPI.commentAPI;
+
 import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
 
 public class commentsAdapter extends RecyclerView.Adapter<commentsAdapter.MyViewHolder>{
 
     Context context;
-    ArrayList<Comment> commentsArray;
+    List<CommentData> commentsArray;
     commentRecycler commentRecycler;
-    public commentsAdapter(Context context,  ArrayList<Comment> commentsArray, commentRecycler commentRecycler){
+    public commentsAdapter(Context context,  List<CommentData> commentsArray, commentRecycler commentRecycler){
         this.context = context;
-        this.commentsArray = commentsArray;
+        if(commentsArray == null){
+            this.commentsArray = new ArrayList<>();
+        }else
+            this.commentsArray = commentsArray;
         this.commentRecycler = commentRecycler;
     }
 
@@ -33,23 +39,27 @@ public class commentsAdapter extends RecyclerView.Adapter<commentsAdapter.MyView
     @Override
     public commentsAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.recycler_view_comments, parent,false);
+        View view = inflater.inflate(R.layout.comment, parent,false);
 
         return new commentsAdapter.MyViewHolder(view, commentRecycler);
     }
 
     @Override
     public void onBindViewHolder(@NonNull commentsAdapter.MyViewHolder holder, int position) {
-        Comment comment = commentsArray.get(position);
-        holder.tvAuthor.setText(commentsArray.get(position).getUser());
+        CommentData comment = commentsArray.get(position);
+        holder.tvAuthor.setText(commentsArray.get(position).getUser().getUsername());
         holder.tvComment.setText(commentsArray.get(position).getTitle());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            byte[] bytes = decodeBase64(commentsArray.get(position).getUser().getPhoto());
+            holder.userImage.setImageBitmap(BitmapFactory.decodeByteArray(bytes, 0, bytes.length));
+        }
 
-        if (Users.getInstance().currentUser != null && comment.getUser().equals(Users.getInstance().currentUser.getUsername())) {
+        if (UserManager.getInstance().getCurrentUser() != null && comment.getUser().get_id().equals(UserManager.getInstance().getCurrentUser().get_id())) {
             holder.editButton.setVisibility(View.VISIBLE);
             holder.deleteButton.setVisibility(View.VISIBLE);
 
             holder.editButton.setOnClickListener(v -> showEditCommentDialog(comment, position));
-            //holder.deleteButton.setOnClickListener(v -> showDeleteCommentDialog(comment, position));
+//            holder.deleteButton.setOnClickListener(v -> commentsArray.remove(position));
         } else {
             holder.editButton.setVisibility(View.GONE);
             holder.deleteButton.setVisibility(View.GONE);
@@ -61,7 +71,7 @@ public class commentsAdapter extends RecyclerView.Adapter<commentsAdapter.MyView
         return commentsArray.size();
     }
 
-    private void showEditCommentDialog(Comment comment, int position) {
+    private void showEditCommentDialog(CommentData comment, int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Edit Comment");
 
@@ -77,12 +87,32 @@ public class commentsAdapter extends RecyclerView.Adapter<commentsAdapter.MyView
                 comment.setTitle(newCommentText);
                 notifyItemChanged(position);
                 // Update the comment in the data source
-                Videos.getInstance().updateComment(comment.getId(), newCommentText);
+                CommentViewModel commentViewModel = new CommentViewModel();
+                VideoN video = null;
+                if(ViewModelsSingelton.getInstance(context.getApplicationContext()).getVideosViewModel().getCurrentVideo() != null){
+                    video = ViewModelsSingelton.getInstance(context.getApplicationContext()).getVideosViewModel().getCurrentVideo().getValue();
+                }
+                if(video != null) {
+                    commentViewModel.updateComment(video.getUser().get_id(),
+                            video.get_id(),
+                            comment.get_id(),
+                            comment);
+                }
             }
         });
         builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
 
         builder.show();
+    }
+
+    public byte[] decodeBase64(String base64String) {
+        if (base64String.contains(",")) {
+            base64String = base64String.split(",")[1];
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            return Base64.getDecoder().decode(base64String);
+        }
+        return null;
     }
 
 //    private void showDeleteCommentDialog(Comment comment, int position) {
@@ -110,6 +140,7 @@ public class commentsAdapter extends RecyclerView.Adapter<commentsAdapter.MyView
         TextView tvComment;
         Button editButton;
         Button deleteButton;
+        ImageView userImage;
 
 
         public MyViewHolder(@NonNull View itemView, commentRecycler commentRecycler) {
@@ -119,6 +150,7 @@ public class commentsAdapter extends RecyclerView.Adapter<commentsAdapter.MyView
             tvComment = itemView.findViewById(R.id.commentContent);
             editButton = itemView.findViewById(R.id.editButton);
             deleteButton = itemView.findViewById(R.id.deleteButton);
+            userImage = itemView.findViewById(R.id.user_avatar);
 
             deleteButton.setOnClickListener(v -> {
                 if (commentRecycler != null) {

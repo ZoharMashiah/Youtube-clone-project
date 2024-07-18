@@ -1,60 +1,48 @@
-import React, { useState, useEffect, useContext } from "react";
-import "./Signup.css";
-import axios from "axios";
+import React, { useEffect, useContext } from "react";
+import authAxios from "../../util/authAxios";
 import Signupwrapper from "../../components/Signup/Signupwrapper/Signupwrapper";
 import { AppContext } from "../../AppContext";
 import { useNavigate } from "react-router-dom";
+import "./Signup.css";
 
 import DarkModeButton from "../../components/DarkModeButton/DarkModeButton";
 
 export default function Signup({}) {
-  const [users, setUsers] = useState([]);
   const { currentUser } = useContext(AppContext);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (currentUser) {
-      console.log("Logged in as: ", currentUser);
+      console.log("Logged in as: ", currentUser.username);
       navigate("/");
     }
-
-    const fetchUsers = async () => {
-      try {
-        const response = await axios.get("/api/users");
-        setUsers(response.data);
-      } catch (error) {
-        console.error("Error fetching users:", error);
-      }
-    };
-    fetchUsers();
   }, [currentUser, navigate]);
-
-  const { darkMode } = useContext(AppContext);
 
   const handleSignup = async (newUser) => {
     try {
-      let res = await fetch("/api/users/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newUser),
-      });
-      if (res.ok) {
-        return true;
-      } else {
-        return false;
-      }
+      await authAxios.post("/api/users", newUser);
+      alert("Success!");
+
+      return true;
     } catch (error) {
-      console.error("Signup error:", error);
-      alert("Signup failed", error);
+      const errorMessage =
+        error.response?.status === 409
+          ? "Username already exists. Please choose a different username."
+          : "Signup failed. Please try again.";
+
+      alert(errorMessage);
+      return false;
     }
   };
 
   return (
-    <div className={`Signup-page ${darkMode ? "dark-mode" : ""}`}>
-      <DarkModeButton style={"dark-mode-toggle"} />
-      <Signupwrapper handleSignup={handleSignup} />
+    <div className="signupContainer">
+      <div className="darkModeBtnSignup">
+        <DarkModeButton />
+      </div>
+      <div className="signupWrapper">
+        <Signupwrapper handleSignup={handleSignup} />
+      </div>
     </div>
   );
 }

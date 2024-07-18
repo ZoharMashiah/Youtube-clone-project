@@ -5,6 +5,7 @@ const path = require("path");
 const fileUpload = require("express-fileupload");
 const mongoose = require("mongoose");
 
+const authMiddleware = require("./middleware/authMiddleware");
 const feedRouter = require("./routes/feedRoutes");
 const userRouter = require("./routes/userRoutes");
 const tokenRouter = require("./routes/tokenRoutes");
@@ -20,14 +21,10 @@ mongoose
     app.use(bodyParser.json({ limit: "50mb" }));
     app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
     app.use(fileUpload());
+    app.use(authMiddleware);
     app.use("/", feedRouter);
     app.use("/api/users", userRouter);
     app.use("/api/tokens", tokenRouter);
-
-    // app.use((req, res, next) => {
-    //   console.log(`${req.method} ${req.url}`);
-    //   next();
-    // });
 
     app.get("*", (req, res) => {
       res.sendFile(path.resolve("../Web/youtube-clone", "build", "index.html"));

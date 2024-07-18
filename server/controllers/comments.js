@@ -22,6 +22,7 @@ const postCommentInsideComment = async (req, res) => {
   try {
     res.status(200).json(await createCommentInsideComment(commentId, req.body.user, req.body.title, pid));
   } catch (error) {
+    console.log(error.message)
     res.status(400).json({ error: error.message });
   }
 };
@@ -64,6 +65,7 @@ const deleteComments = async (req, res) => {
 
 const updateOneComment = async (req, res) => {
   const { commentId } = req.params;
+
   try {
     res.status(200).json(await updateComment(commentId, req.body.title));
   } catch (error) {

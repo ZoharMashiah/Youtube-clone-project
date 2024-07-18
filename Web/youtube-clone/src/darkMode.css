@@ -1,14 +1,12 @@
 body.dark-mode {
-  background-color: #34495e;
+  background: linear-gradient(135deg, #3c5666, #558594);
   color: #ecf0f1;
+  transition: background-color 0.1s, box-shadow 0.3s;
 }
 
-body.dark-mode .Feed {
-  background-color: #34495e;
-  color: #ecf0f1;
-}
-
-body.dark-mode .input-group i {
+body.dark-mode .input-group i,
+body.dark-mode #user,
+body.dark-mode #views {
   color: #bdc3c7;
 }
 
@@ -35,9 +33,4 @@ body.dark-mode .submit-button:hover {
 
 body.dark-mode .return-login {
   color: #1abc9c;
-}
-
-body.dark-mode #user,
-body.dark-mode #views {
-  color: #bdc3c7;
 }
