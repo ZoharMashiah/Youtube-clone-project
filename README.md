@@ -26,3 +26,45 @@ This part will be locked under "part2-branch", and everything that comes after t
 1. First, we added the server logic, and the DB support using mongoose.
 2. Then, we made a overhaul for the entire front end, to prepare it for server connection.
 3. After that, we worked on connecting between the client and the server.
+
+### Part 3
+Android Server Connection and Data Handling
+In this part, we connected the Android app to the MongoDB server from Part 2.
+
+Process
+
+API Requests:
+Defined endpoints for video, comments, user authentication, and interactions.
+Ensured secure and efficient data transfer.
+
+Web Services:
+Implemented services to handle network operations and provide a clean interface for the app.
+Included error handling and response parsing.
+
+Repository Integration:
+Managed data operations, abstracted data sources, and provided a unified data source.
+Simplified architecture and maintained separation of concerns.
+
+ViewModel Setup:
+Managed UI-related data in a lifecycle-conscious way.
+Interacted with the repository for data fetching and storage.
+
+Room Database and DAO:
+Implemented Room for offline support and performance.
+Created DAOs for efficient and type-safe database operations.
+
+Running the Program
+Minimum SDK version: 24.
+Ensure the server is running and accessible.
+Configure the app with the correct API base URL.
+
+1. Open mongoDb Compass
+![Screenshot 2024-07-18 at 11 47 14](https://github.com/user-attachments/assets/219b7fb0-85d5-4cf0-a079-412962e15cf6)
+2. Click connect
+3. Run the server and then come back to the mongoDb Compass
+4. Now you will see api database in the collections comments, users, videos
+5. For each collection enter to it
+![Screenshot 2024-07-18 at 11 50 30](https://github.com/user-attachments/assets/6c849d0a-42a8-47c0-8869-20d87b5996cf)
+6. And click Add Data -> Import JSON or CSV file
+7. Select the data from the project folder -> data and choose the collection name
+8. Then you will see in the web and android that the data updated
