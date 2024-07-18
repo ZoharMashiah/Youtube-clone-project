@@ -29,6 +29,8 @@ public class LoginActivity extends AppCompatActivity {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         });
+        binding.loginBtn.setEnabled(true);
+        binding.loginBtn.setText(R.string.login);
 
         binding.loginBtn.setEnabled(true);
         binding.loginBtn.setText(R.string.login);
@@ -77,7 +79,6 @@ public class LoginActivity extends AppCompatActivity {
                         .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
                         .show();
             }
-
         });
     }
 
