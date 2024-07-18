@@ -14,7 +14,8 @@ public class UserManager {
     private volatile static UserManager instance;
     private String token = null;
     private Context context = MyApplication.getAppContext();
-    private MutableLiveData<User> currentUserLiveData = new MutableLiveData<>();
+    private final MutableLiveData<User> currentUserLiveData = new MutableLiveData<>();
+    private UserPageViewModel viewModel;
     private final TokenAPI tokenAPI = new TokenAPI();
 
     private static final String USER_PREFS = "data";
@@ -47,6 +48,7 @@ public class UserManager {
                 public void onSuccess(TokenResponse result) {
                     setCurrentUser(result.getUser());
                     Log.d("UserManager", "verified correctly, connected as " + getCurrentUser().getUsername());
+                    viewModel.loadUser(getCurrentUser().get_id());
                 }
 
                 @Override

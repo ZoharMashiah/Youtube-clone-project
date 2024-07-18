@@ -48,8 +48,6 @@ public class UserPage extends AppCompatActivity implements RecyclerViewInterface
         if (currentUser != null && currentUser.get_id().equals(userId)) {
             setUpButtons();
         }
-
-        viewModel.loadUser(userId);
     }
 
     private void setUpButtons() {

@@ -39,7 +39,6 @@ public class UserPageViewModel extends ViewModel {
         } else {
             fetchUserAndVideos(userId);
         }
-        int x = 3;
     }
 
 
