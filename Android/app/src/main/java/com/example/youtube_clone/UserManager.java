@@ -39,6 +39,7 @@ public class UserManager {
         context = MyApplication.getAppContext();
         SharedPreferences prefs = this.context.getSharedPreferences(USER_PREFS, Context.MODE_PRIVATE);
         token = prefs.getString(JWT_TOKEN, null);
+        viewModel = MyApplication.getInstance().getUserPageViewModel();
 
         Log.d("UserManager", "on start, token is: " + token);
 
@@ -46,8 +47,11 @@ public class UserManager {
             tokenAPI.verify(token, new TokenAPI.LoginCallback() {
                 @Override
                 public void onSuccess(TokenResponse result) {
-                    setCurrentUser(result.getUser());
-                    Log.d("UserManager", "verified correctly, connected as " + getCurrentUser().getUsername());
+                    if (result.getUser() != null) {
+                        setCurrentUser(result.getUser());
+                        Log.d("UserManager", "verified correctly, connected as " + getCurrentUser().getUsername());
+                        viewModel.loadUser(getCurrentUser().get_id());
+                    }
                 }
 
                 @Override
