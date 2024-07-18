@@ -95,8 +95,8 @@ public class addVideoActivity extends AppCompatActivity implements
                         binding.editTextText.getText().toString(), binding.editTextText2.getText().toString(), binding.category.getSelectedItem().toString(), Calendar.getInstance().getTime(), 0, 0, 0, new ArrayList<>(),
                         selectedImage, selectedVideo);
                 videoApi.addVideoToUserList(videoN);  // add to the user page using live view
-                ViewModelsSingelton.getInstance().getVideosViewModel().add(UserManager.getInstance().getCurrentUser().get_id(), videoN);
-                ViewModelsSingelton.getInstance().getVideosViewModel().reload();
+                ViewModelsSingelton.getInstance(getApplicationContext()).getVideosViewModel().add(UserManager.getInstance().getCurrentUser().get_id(), videoN);
+                ViewModelsSingelton.getInstance(getApplicationContext()).getVideosViewModel().reload();
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
             } else {

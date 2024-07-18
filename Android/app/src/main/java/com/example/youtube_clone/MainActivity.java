@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
             recreate(); // has to recreate the app because its a system-wide change
         });
 
-        videosViewModel = ViewModelsSingelton.getInstance().getVideosViewModel();
+        videosViewModel = ViewModelsSingelton.getInstance(getApplicationContext()).getVideosViewModel();
 
         videosViewModel.getIsFiltered().observe(this, v -> {
             adapter = new VideosAdapter[]{new VideosAdapter(this, videosViewModel.getFeed().getValue(), this)};

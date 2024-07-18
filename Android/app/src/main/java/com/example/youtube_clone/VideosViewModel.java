@@ -1,5 +1,7 @@
 package com.example.youtube_clone;
 
+import android.content.Context;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -15,8 +17,8 @@ public class VideosViewModel extends ViewModel {
     private MutableLiveData<Boolean> isFiltered;
     private MutableLiveData<VideoN> currentVideo;
 
-    public VideosViewModel() {
-        repository = new VideoRepository();
+    public VideosViewModel(Context context) {
+        repository = new VideoRepository(context);
         repository.reload();
         videos = repository.getFeed();
         videosFiltered = repository.getVideoListFilteredData();

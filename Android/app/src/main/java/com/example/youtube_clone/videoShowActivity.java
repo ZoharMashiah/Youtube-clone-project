@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.service.voice.VoiceInteractionSession;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -11,9 +12,13 @@ import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.Toast;
 import android.widget.VideoView;
+import android.window.OnBackInvokedDispatcher;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.activity.OnBackPressedDispatcher;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.os.BuildCompat;
 import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -40,6 +45,7 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
     private VideoView videoView;
 
     private VideosViewModel videosViewModel;
+    private VoiceInteractionSession onBackPressedDispatcher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +55,15 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
 
         setContentView(binding.getRoot());
 
-        videosViewModel = ViewModelsSingelton.getInstance().getVideosViewModel();
+        videosViewModel = ViewModelsSingelton.getInstance(getApplicationContext()).getVideosViewModel();
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                videosViewModel.reload();
+                finish();
+            }
+        });
 
         videosViewModel.getCurrentVideo().observe(this, video -> {
             if (video != null) {
@@ -72,7 +86,6 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
                         binding.deleteBtn.setOnClickListener(v -> {
                             videosViewModel.delete(videoN1.getUser().get_id(),videoN1.get_id());
                             videosViewModel.reload();
-                            videosViewModel.setCurrentVideo(null);
                             finish();
                         });
                     }
