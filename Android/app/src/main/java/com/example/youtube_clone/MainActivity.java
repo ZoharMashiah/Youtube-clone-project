@@ -9,7 +9,6 @@ import android.widget.SearchView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.youtube_clone.databinding.ActivityMainBinding;
@@ -25,7 +24,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
 
     private final Button[] myButton = new Button[categories.length];
 
-    private ViewModel viewModel;
     VideosAdapter[] adapter;
     private VideosViewModel videosViewModel;
 
@@ -33,13 +31,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
-
-        // apply dark mode prefs, has to be before setContent
-        DarkModeUtils.applyDarkMode(DarkModeUtils.isDarkMode());
-
+        DarkModeUtils.applyDarkMode(DarkModeUtils.isDarkMode()); // apply dark mode prefs, has to be before setContent
         setContentView(binding.getRoot());
-
-        viewModel = new ViewModelProvider(this).get(ViewModel.class);
 
         binding.themeToggleButton.setOnClickListener(v -> {
             DarkModeUtils.toggleDarkMode();
@@ -61,7 +54,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
                 binding.mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
             }
         });
-
 
         binding.buttonAddVid.setOnClickListener(v -> {
             if (UserManager.getInstance().getCurrentUser() != null) {

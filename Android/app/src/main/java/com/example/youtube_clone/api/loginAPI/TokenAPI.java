@@ -4,7 +4,6 @@ import android.util.Log;
 
 import com.example.youtube_clone.MyApplication;
 import com.example.youtube_clone.R;
-import com.example.youtube_clone.authorization.AuthInterceptor;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Call;

@@ -22,7 +22,6 @@ import java.util.Locale;
 
 public class SignupActivity extends AppCompatActivity {
 
-    // One Button
     ActivityResultLauncher<String> mTakePhoto;
     Uri selectedImageUri = null;
     String selectedDate;

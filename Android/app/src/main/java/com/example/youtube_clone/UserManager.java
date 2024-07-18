@@ -4,17 +4,17 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import com.example.youtube_clone.UserDao.UserDao;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
 import com.example.youtube_clone.api.loginAPI.TokenAPI;
 import com.example.youtube_clone.api.loginAPI.TokenResponse;
-import com.example.youtube_clone.db.AppDB;
 
 public class UserManager {
     private volatile static UserManager instance;
-    private User currentUser = null;
     private String token = null;
-    private UserDao userDao = null;
-    private Context context = null;
+    private Context context = MyApplication.getAppContext();
+    private MutableLiveData<User> currentUserLiveData = new MutableLiveData<>();
     private final TokenAPI tokenAPI = new TokenAPI();
 
     private static final String USER_PREFS = "data";
@@ -34,12 +34,8 @@ public class UserManager {
         return instance;
     }
 
-    public void init(Context context) {
-
-        this.context = context.getApplicationContext();
-        AppDB db = AppDB.getInstance(this.context);
-        userDao = db.userDao();
-
+    public void init() {
+        context = MyApplication.getAppContext();
         SharedPreferences prefs = this.context.getSharedPreferences(USER_PREFS, Context.MODE_PRIVATE);
         token = prefs.getString(JWT_TOKEN, null);
 
@@ -49,8 +45,8 @@ public class UserManager {
             tokenAPI.verify(token, new TokenAPI.LoginCallback() {
                 @Override
                 public void onSuccess(TokenResponse result) {
-                    currentUser = result.getUser();
-                    Log.d("UserManager", "verified correctly, connected as " + currentUser.getUsername());
+                    setCurrentUser(result.getUser());
+                    Log.d("UserManager", "verified correctly, connected as " + getCurrentUser().getUsername());
                 }
 
                 @Override
@@ -63,20 +59,28 @@ public class UserManager {
     }
 
     public void login(User user, String token) {
-        this.currentUser = user;
+        setCurrentUser(user);
         this.token = token;
         updateTokenLocally(token);
         Log.d("UserManager", "Logged in as " + user.getUsername());
     }
 
     public void logout() {
-        currentUser = null;
+        setCurrentUser(null);
         token = null;
         updateTokenLocally(token);
     }
 
+    public LiveData<User> getCurrentUserLiveData() {
+        return currentUserLiveData;
+    }
+
+    public void setCurrentUser(User user) {
+        currentUserLiveData.setValue(user);
+    }
+
     public User getCurrentUser() {
-        return currentUser;
+        return currentUserLiveData.getValue();
     }
 
     public String getAuthToken() {
@@ -84,7 +88,7 @@ public class UserManager {
     }
 
     public boolean isLoggedIn() {
-        return currentUser != null && token != null;
+        return getCurrentUser() != null && token != null;
     }
 
     public void updateTokenLocally(String token) {
