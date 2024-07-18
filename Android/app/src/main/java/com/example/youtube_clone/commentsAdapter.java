@@ -17,8 +17,6 @@ import com.example.youtube_clone.api.commentAPI.commentAPI;
 import java.util.ArrayList;
 import java.util.List;
 
-import retrofit2.http.Body;
-
 public class commentsAdapter extends RecyclerView.Adapter<commentsAdapter.MyViewHolder>{
 
     Context context;
@@ -53,7 +51,7 @@ public class commentsAdapter extends RecyclerView.Adapter<commentsAdapter.MyView
             holder.deleteButton.setVisibility(View.VISIBLE);
 
             holder.editButton.setOnClickListener(v -> showEditCommentDialog(comment, position));
-            //holder.deleteButton.setOnClickListener(v -> showDeleteCommentDialog(comment, position));
+//            holder.deleteButton.setOnClickListener(v -> commentsArray.remove(position));
         } else {
             holder.editButton.setVisibility(View.GONE);
             holder.deleteButton.setVisibility(View.GONE);
@@ -81,11 +79,17 @@ public class commentsAdapter extends RecyclerView.Adapter<commentsAdapter.MyView
                 comment.setTitle(newCommentText);
                 notifyItemChanged(position);
                 // Update the comment in the data source
-                commentAPI comments = new commentAPI();
-                comments.updateComment(Videos.getInstance().currentVideo.getUser().get_id(),
-                        Videos.getInstance().currentVideo.get_id(),
-                        comment.get_id(),
-                        comment);
+                commentAPI comments = new commentAPI(commentsListData);
+                VideoN video = null;
+                if(ViewModelsSingelton.getInstance().getVideosViewModel().getCurrentVideo() != null){
+                    video = ViewModelsSingelton.getInstance().getVideosViewModel().getCurrentVideo().getValue();
+                }
+                if(video != null) {
+                    comments.updateComment(video.getUser().get_id(),
+                            video.get_id(),
+                            comment.get_id(),
+                            comment);
+                }
             }
         });
         builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());

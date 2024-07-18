@@ -1,10 +1,10 @@
 package com.example.youtube_clone;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -19,7 +19,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.youtube_clone.api.commentAPI.commentAPI;
-import com.example.youtube_clone.api.videoAPI.VideoApi;
 import com.example.youtube_clone.databinding.ActivityVideoShowBinding;
 import com.example.youtube_clone.utils.Base64Utils;
 import com.example.youtube_clone.utils.FileUtils;
@@ -28,6 +27,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
+import java.util.Objects;
 
 public class videoShowActivity extends AppCompatActivity implements commentRecycler, RecyclerViewInterface {
 
@@ -66,6 +67,17 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
                     videoView = binding.video;
 
                     RecyclerView recyclerView = findViewById(R.id.commentsRecyclerView);
+
+                    commentApi = new commentAPI(commentsListData);
+                    commentApi.getLocalComments().observe(this,v->{
+                        adapter = new commentsAdapter[]{new commentsAdapter(this, v , this)};
+                        listComments = v;
+                        recyclerView.setAdapter(adapter[0]);
+                        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+                    });
+
+                    commentApi.getAllComments(videosViewModel.getCurrentVideo().getValue().getUser().get_id(), videosViewModel.getCurrentVideo().getValue().get_id());
+
 
                     if(UserManager.getInstance().getCurrentUser() == null || !Objects.requireNonNull(videosViewModel.getCurrentVideo().getValue()).getUser().get_id().equals(UserManager.getInstance().getCurrentUser().get_id())){
                         binding.editBtn.setVisibility(View.INVISIBLE);
@@ -145,45 +157,47 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
                             alertDialog.show();
                         }
                     });
+                    
 
-//        binding.submitComment.setOnClickListener(v -> {
-//            if (Users.getInstance().currentUser != null) {
-//                Comment newComment = new Comment(Videos.getInstance().currentVideo.getNextId(),
-//                        binding.addComment.getText().toString(),
-//                        Users.getInstance().currentUser.getUsername(), Calendar.getInstance().getTime().getTime(),
-//                        Users.getInstance().currentUser.getProfileImage());
-//
-//                //Videos.getInstance().currentVideo.addComment(newComment);
-//
-//                //adapter[0] = new commentsAdapter(this, Videos.getInstance().currentVideo.getComments(), this);
-//                recyclerView.setAdapter(adapter[0]);
-//                recyclerView.setLayoutManager(new LinearLayoutManager(this));
-//            } else {
-//                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//
-//                // Set the message show for the Alert time
-//                builder.setMessage("You need to have a user to add a comment!");
-//
-//                // Set Alert Title
-//                builder.setTitle("Alert !");
-//
-//                // Set Cancelable false for when the user clicks on the outside the Dialog Box then it will remain show
-//                builder.setCancelable(false);
-//
-//                // Set the positive button with yes name Lambda OnClickListener method is use of DialogInterface interface.
-//                builder.setPositiveButton("Cancel", (DialogInterface.OnClickListener) (dialog, which) -> {
-//                    // When the user click yes button then app will close
-//                    dialog.cancel();
-//                });
-//
-//                // Create the Alert dialog
-//                AlertDialog alertDialog = builder.create();
-//                // Show the Alert Dialog box
-//                alertDialog.show();
-//            }
-//        });
+                    binding.submitComment.setOnClickListener(v -> {
+                        if (UserManager.getInstance().getCurrentUser() != null) {
+                            CommentData newComment = new CommentData("",
+                                    videosViewModel.getCurrentVideo().getValue().get_id(),
+                                    new ArrayList<>(),
+                                    new SmallUser(UserManager.getInstance().getCurrentUser().get_id(),UserManager.getInstance().getCurrentUser().getUsername(),
+                                            UserManager.getInstance().getCurrentUser().getProfilePicture()),
+                                    binding.addComment.getText().toString(),
+                                    Calendar.getInstance().getTime().getTime());
+                            commentApi.postComment(videosViewModel.getCurrentVideo().getValue().getUser().get_id(),
+                                    videosViewModel.getCurrentVideo().getValue().get_id(),
+                                    newComment);
+                            binding.addComment.setText("");
 
-            if(videosViewModel.getVideos().getValue() != null) {
+                            recyclerView.setAdapter(adapter[0]);
+                            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+                        } else {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                            // Set the message show for the Alert time
+                            builder.setMessage("You need to have a user to add a comment!");
+                            // Set Alert Title
+                            builder.setTitle("Alert !");
+                            // Set Cancelable false for when the user clicks on the outside the Dialog Box then it will remain show
+                            builder.setCancelable(false);
+                            // Set the positive button with yes name Lambda OnClickListener method is use of DialogInterface interface.
+                            builder.setPositiveButton("Cancel", (DialogInterface.OnClickListener) (dialog, which) -> {
+                                // When the user click yes button then app will close
+                                dialog.cancel();
+                            });
+                            // Create the Alert dialog
+                            AlertDialog alertDialog = builder.create();
+                            // Show the Alert Dialog box
+                            alertDialog.show();
+                        }
+                    });
+
+
+
+                            if(videosViewModel.getVideos().getValue() != null) {
                 for (VideoN vid : videosViewModel.getVideos().getValue()) {
                     if (!vid.get_id().equals(videoN1.get_id())) {
                         videos.add(vid);
@@ -197,8 +211,14 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
 
     @Override
     public void deleteElement(int position) {
-        //Videos.getInstance().deleteComment(Videos.getInstance().currentVideo.getComments().get(position).getId());
-        adapter[0].notifyItemRemoved(position);
+        commentApi.deleteComment(videosViewModel.getCurrentVideo().getValue().getUser().get_id(),
+                videosViewModel.getCurrentVideo().getValue().get_id(),
+                listComments.get(position).get_id());
+        listComments.remove(position);
+        adapter = new commentsAdapter[]{new commentsAdapter(this, listComments , this)};
+        binding.commentsRecyclerView.setAdapter(adapter[0]);
+        binding.commentsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+//        adapter[0].notifyItemRemoved(position);
     }
 
     private void playVideo(File videoFile) {

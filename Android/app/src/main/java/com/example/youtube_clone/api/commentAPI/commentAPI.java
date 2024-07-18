@@ -2,11 +2,12 @@ package com.example.youtube_clone.api.commentAPI;
 
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.youtube_clone.Comment;
 import com.example.youtube_clone.CommentData;
 import com.example.youtube_clone.MyApplication;
 import com.example.youtube_clone.R;
-import com.example.youtube_clone.authorization.AuthInterceptor;
+import com.example.youtube_clone.api.loginAPI.AuthInterceptor;
+import com.example.youtube_clone.reposetories.CommentsRepository;
+//import com.example.youtube_clone.authorization.AuthInterceptor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,7 @@ public class commentAPI {
     commentRequest commentRequest;
     MutableLiveData<CommentData> comment;
 
-    public commentAPI() {
+    public commentAPI(MutableLiveData<List<CommentData>> commentsListData) {
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(new AuthInterceptor())
                 .build();
@@ -37,7 +38,11 @@ public class commentAPI {
                 .build();
 
         this.commentRequest = retrofit.create(commentRequest.class);
+        if(commentsListData != null){
+            commentList = commentsListData;
+        }else{
         commentList = new MutableLiveData<>();
+        }
         comment = new MutableLiveData<>();
     }
 

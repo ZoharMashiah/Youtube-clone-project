@@ -48,7 +48,7 @@ public class UserManager {
                 public void onSuccess(TokenResponse result) {
                     setCurrentUser(result.getUser());
                     Log.d("UserManager", "verified correctly, connected as " + getCurrentUser().getUsername());
-                    viewModel.loadUser(getCurrentUser().get_id());
+
                 }
 
                 @Override
