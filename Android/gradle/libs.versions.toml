@@ -13,6 +13,7 @@ lifecycleRuntimeKtx = "2.6.1"
 activityCompose = "1.9.0"
 composeBom = "2023.08.00"
 roomCommon = "2.6.1"
+lifecycleViewmodelAndroid = "2.8.3"
 
 [libraries]
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
@@ -34,6 +35,7 @@ ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 material3 = { group = "androidx.compose.material3", name = "material3" }
 room-common = { group = "androidx.room", name = "room-common", version.ref = "roomCommon" }
+lifecycle-viewmodel-android = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-android", version.ref = "lifecycleViewmodelAndroid" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

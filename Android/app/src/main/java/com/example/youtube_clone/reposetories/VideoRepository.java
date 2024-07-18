@@ -22,7 +22,6 @@ public class VideoRepository {
     private VideoApi api;
 
     public VideoRepository() {
-        //AppDB db = Room.databaseBuilder(ApplicationPro.getApplicationContext(), AppDB.class,"database-name" ).build();
         videoListData = new VideoListData();
         api = new VideoApi(videoListData, dao);
         videoListFilteredData =  api.getVideoListFiltered();

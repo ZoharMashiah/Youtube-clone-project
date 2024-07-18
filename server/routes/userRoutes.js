@@ -5,7 +5,7 @@ const videoRouter = require("./videoRoutes");
 const userRouter = express.Router({ mergeParams: true });
 
 userRouter.get("/:id", getUser);
-userRouter.post("/signup", createUser);
+userRouter.post("/", createUser);
 userRouter.patch("/:id", updateUser);
 userRouter.delete("/:id", deleteUser);
 

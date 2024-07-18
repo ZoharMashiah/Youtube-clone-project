@@ -1,9 +1,11 @@
 package com.example.youtube_clone.api.userAPI;
 
+import android.util.Log;
+
 import com.example.youtube_clone.MyApplication;
 import com.example.youtube_clone.R;
 import com.example.youtube_clone.User;
-import com.example.youtube_clone.authorization.AuthInterceptor;
+import com.example.youtube_clone.api.loginAPI.AuthInterceptor;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -49,13 +51,42 @@ public class UserAPI {
                 if (response.isSuccessful() && response.body() != null) {
                     callback.onSuccess(response.body(), "Fetched user");
                 } else {
+                    String message = "Unsuccessful response: " + response.code();
+                    callback.onError(message);
+                    Log.e("UserAPI", "onError: " + message);
+
                     callback.onError("Unsuccessful response");
                 }
             }
 
             @Override
             public void onFailure(Call<User> call, Throwable throwable) {
-                callback.onError("Error fetching user: " + throwable.getMessage());
+                String message = "Network error: " + throwable.getMessage();
+                callback.onError(message);
+                Log.e("UserAPI", "onFailure: " + message);
+            }
+        });
+    }
+
+    public void updateUser(User user, UserCallback callback) {
+        Call<User> call = requestUser.patchUser(user.get_id(), user);
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.isSuccessful()) {
+                    callback.onSuccess(null, "User was updated successfully");
+                } else {
+                    String message = "Updating user failed: " + response.code() + response.message();
+                    callback.onError(message);
+                    Log.e("UserAPI", "onError: " + message);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable throwable) {
+                String message = "Network error: " + throwable.getMessage();
+                callback.onError(message);
+                Log.e("UserAPI", "onFailure: " + message);
             }
         });
     }
@@ -81,10 +112,11 @@ public class UserAPI {
 
             @Override
             public void onFailure(Call<User> call, Throwable throwable) {
-                callback.onError("Network error: " + throwable.getMessage());
+                String message = "Network error: " + throwable.getMessage();
+                callback.onError(message);
+                Log.e("UserAPI", "onFailure: " + message);
             }
         });
-
     }
 
     public void delete(User user, UserCallback callback) {
@@ -95,14 +127,19 @@ public class UserAPI {
                 if (response.isSuccessful()) {
                     callback.onSuccess(null, "User was deleted successfully");
                 } else {
-                    callback.onError("Deletion failed: " + response.code());
+                    String message = "Deletion failed: " + response.code();
+                    callback.onError(message);
+                    Log.e("UserAPI", "onError: " + message);
                 }
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable throwable) {
-                callback.onError("Network error: " + throwable.getMessage());
+                String message = "Network error: " + throwable.getMessage();
+                callback.onError(message);
+                Log.e("UserAPI", "onFailure: " + message);
             }
         });
     }
+
 }

@@ -1,14 +1,14 @@
 import React, { useEffect, useContext } from "react";
-import "./Signup.css";
 import authAxios from "../../util/authAxios";
 import Signupwrapper from "../../components/Signup/Signupwrapper/Signupwrapper";
 import { AppContext } from "../../AppContext";
 import { useNavigate } from "react-router-dom";
+import "./Signup.css";
 
 import DarkModeButton from "../../components/DarkModeButton/DarkModeButton";
 
 export default function Signup({}) {
-  const { currentUser, darkMode } = useContext(AppContext);
+  const { currentUser } = useContext(AppContext);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -20,7 +20,7 @@ export default function Signup({}) {
 
   const handleSignup = async (newUser) => {
     try {
-      await authAxios.post("/api/users/signup", newUser);
+      await authAxios.post("/api/users", newUser);
       alert("Success!");
 
       return true;
@@ -36,9 +36,13 @@ export default function Signup({}) {
   };
 
   return (
-    <div className={`Signup-page ${darkMode ? "dark-mode" : ""}`}>
-      <DarkModeButton style={"dark-mode-toggle"} />
-      <Signupwrapper handleSignup={handleSignup} />
+    <div className="signupContainer">
+      <div className="darkModeBtnSignup">
+        <DarkModeButton />
+      </div>
+      <div className="signupWrapper">
+        <Signupwrapper handleSignup={handleSignup} />
+      </div>
     </div>
   );
 }

@@ -1,17 +1,9 @@
 package com.example.youtube_clone;
 
-import android.content.ContentResolver;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.util.Base64OutputStream;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -23,21 +15,18 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 
+import com.example.youtube_clone.api.videoAPI.VideoApi;
 import com.example.youtube_clone.databinding.ActivityAddVideoBinding;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
-import android.util.Base64;
 
 public class addVideoActivity extends AppCompatActivity implements
         AdapterView.OnItemSelectedListener {
 
-    private SharedPreferences sharedPreferences;
+    private VideoApi videoApi = new VideoApi(null, null);
 
     private ActivityAddVideoBinding binding;
 
@@ -54,9 +43,6 @@ public class addVideoActivity extends AppCompatActivity implements
     private final String[] categories = {"Music", "Mixes", "JavaScript", "Gaming", "Bouldering",
             "Display devices", "AI", "Computer Hardware", "Table News", "Inventions", "News", "Comedy clubs", "Skills", "3D printing"};
 
-    private static final String PREFS_NAME = "prefs";
-    private static final String PREF_DARK_MODE = "dark_mode";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -65,39 +51,9 @@ public class addVideoActivity extends AppCompatActivity implements
 
         setContentView(binding.getRoot());
 
-        // Load the saved theme preference
-        SharedPreferences preferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        boolean isDarkMode = preferences.getBoolean(PREF_DARK_MODE, false);
-        if (isDarkMode) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        }
-
-        binding.themeToggleButton.setOnClickListener(v -> {
-            // Toggle dark mode
-            boolean isDarkMode1 = (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES);
-            if (isDarkMode1) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-            } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            }
-
-            // Save the theme preference
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putBoolean(PREF_DARK_MODE, !isDarkMode1);
-            editor.apply();
-        });
-
-
         mTakePhoto = registerForActivityResult(
                 new ActivityResultContracts.GetContent(),
-                new ActivityResultCallback<Uri>() {
-                    @Override
-                    public void onActivityResult(Uri o) {
-                        selectedImageUri = o;
-                    }
-                }
+                o -> selectedImageUri = o
         );
 
         mTakeVideo = registerForActivityResult(
@@ -110,10 +66,6 @@ public class addVideoActivity extends AppCompatActivity implements
                 }
         );
 
-        binding.imageButtonBack.setOnClickListener(v -> {
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-        });
 
         binding.uploadImage.setOnClickListener(v -> mTakePhoto.launch("image/*"));
 
@@ -130,23 +82,19 @@ public class addVideoActivity extends AppCompatActivity implements
 
         binding.button6.setOnClickListener(v -> {
             if (!binding.editTextText.getText().toString().isEmpty() && !binding.editTextText2.getText().toString().isEmpty() && this.selectedImageUri != null && this.selectedVideoUri != null) {
-                InputStream inputStream = null;
                 try {
-                    selectedImage = encodeImageUriToBase64(this, selectedImageUri);
-                    selectedVideo = encodeVideoUriToBase64(this,selectedVideoUri);
+                    selectedImage = FormatConverters.imageUriToBase64(this, selectedImageUri);
+                    selectedVideo = FormatConverters.videoUriToBase64(this, selectedVideoUri);
                 } catch (IOException e) {
                     e.printStackTrace();
                     Toast.makeText(this, "Failed to upload image, but the user has been created.", Toast.LENGTH_SHORT).show();
-                } finally {
-//                    try {
-////                        inputStream.close();
-//                    } catch (IOException e) {
-//                        throw new RuntimeException(e);
-//                    }
                 }
-                VideoN videoN = new VideoN(null,UserManager.getInstance().getCurrentUser().get_id(), new SmallUser(UserManager.getInstance().getCurrentUser().get_id(), UserManager.getInstance().getCurrentUser().getUsername(), UserManager.getInstance().getCurrentUser().getProfilePicture()),
-                        binding.editTextText.getText().toString(),binding.editTextText2.getText().toString(),binding.category.getSelectedItem().toString(),Calendar.getInstance().getTime(), 0,0,0,new ArrayList<>(),
+
+                User user = UserManager.getInstance().getCurrentUser();
+                VideoN videoN = new VideoN(null, user.get_id(), new SmallUser(user.get_id(), user.getUsername(), user.getProfilePicture()),
+                        binding.editTextText.getText().toString(), binding.editTextText2.getText().toString(), binding.category.getSelectedItem().toString(), Calendar.getInstance().getTime(), 0, 0, 0, new ArrayList<>(),
                         selectedImage, selectedVideo);
+                videoApi.addVideoToUserList(videoN);  // add to the user page using live view
                 ViewModelsSingelton.getInstance().getVideosViewModel().add(UserManager.getInstance().getCurrentUser().get_id(), videoN);
                 ViewModelsSingelton.getInstance().getVideosViewModel().reload();
                 Intent intent = new Intent(this, MainActivity.class);
@@ -185,47 +133,5 @@ public class addVideoActivity extends AppCompatActivity implements
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
-    }
-
-    // Convert URI to Bitmap for images
-    public Bitmap uriToBitmap(Context context, Uri uri) throws IOException {
-        return MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
-    }
-
-    // Convert Bitmap to Base64 for images
-    public String bitmapToBase64(Bitmap bitmap) {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-        byte[] byteArray = byteArrayOutputStream.toByteArray();
-        return Base64.encodeToString(byteArray, Base64.NO_WRAP);
-    }
-
-    // Convert Image URI to Base64
-    public String encodeImageUriToBase64(Context context, Uri imageUri) throws IOException {
-        Bitmap bitmap = uriToBitmap(context, imageUri);
-        return "data:image/jpeg;base64," + bitmapToBase64(bitmap);
-    }
-
-    // Convert URI to Byte Array for videos
-    public byte[] uriToByteArray(Context context, Uri uri) throws IOException {
-        InputStream inputStream = context.getContentResolver().openInputStream(uri);
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        byte[] buffer = new byte[1024];
-        int len;
-        while ((len = inputStream.read(buffer)) != -1) {
-            byteArrayOutputStream.write(buffer, 0, len);
-        }
-        return byteArrayOutputStream.toByteArray();
-    }
-
-    // Convert Byte Array to Base64 for videos
-    public String byteArrayToBase64(byte[] byteArray) {
-        return Base64.encodeToString(byteArray, Base64.NO_WRAP);
-    }
-
-    // Convert Video URI to Base64
-    public String encodeVideoUriToBase64(Context context, Uri videoUri) throws IOException {
-        byte[] videoBytes = uriToByteArray(context, videoUri);
-        return "data:video/mp4;base64," + byteArrayToBase64(videoBytes);
     }
 }

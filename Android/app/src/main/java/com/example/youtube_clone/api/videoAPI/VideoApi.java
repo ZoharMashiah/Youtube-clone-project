@@ -7,12 +7,12 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.youtube_clone.MyApplication;
 import com.example.youtube_clone.R;
 import com.example.youtube_clone.Room.Video.VideoDao;
-import com.example.youtube_clone.Video;
 import com.example.youtube_clone.VideoN;
-import com.example.youtube_clone.api.loginAPI.RequestToken;
-import com.example.youtube_clone.authorization.AuthInterceptor;
+import com.example.youtube_clone.api.loginAPI.AuthInterceptor;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
@@ -22,8 +22,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class VideoApi {
-
     MutableLiveData<List<VideoN>> videoList;
+    MutableLiveData<List<VideoN>> userVideoList;
     MutableLiveData<List<VideoN>> videoListFiltered;
     Retrofit retrofit;
     videoRequest videoRequest;
@@ -32,6 +32,10 @@ public class VideoApi {
     public VideoApi(MutableLiveData<List<VideoN>> videoListData, VideoDao dao) {
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(new AuthInterceptor())
+                .connectTimeout(6, TimeUnit.MINUTES) // TODO increases timeout until db works
+                .readTimeout(6, TimeUnit.MINUTES)
+                .writeTimeout(6, TimeUnit.MINUTES)
+                .callTimeout(6, TimeUnit.MINUTES)
                 .build();
 
         this.retrofit = new Retrofit.Builder()
@@ -41,9 +45,13 @@ public class VideoApi {
                 .build();
 
         this.videoRequest = retrofit.create(videoRequest.class);
-        this.videoList = videoListData;
+        if (videoListData != null) {
+            this.videoList = videoListData;
+        }
         video = new MutableLiveData<>();
         videoListFiltered = new MutableLiveData<>();
+        userVideoList = new MutableLiveData<>();
+
     }
 
     public MutableLiveData<List<VideoN>> getFeed() {
@@ -53,17 +61,20 @@ public class VideoApi {
             @Override
             public void onResponse(Call<List<VideoN>> call, Response<List<VideoN>> response) {
                 videoList.postValue(response.body());
+                Log.i("VideoAPI", "fetched videos");
             }
 
             @Override
             public void onFailure(Call<List<VideoN>> call, Throwable throwable) {
-                Log.println(Log.ASSERT,"ff", "fgg");
+                String message = "Network error: " + throwable.getMessage();
+                Log.println(Log.ASSERT, "VideoAPI", "failure: " + message);
             }
         });
+
         return videoList;
     }
 
-    public MutableLiveData<VideoN> getVideo(String uid, String vid){
+    public MutableLiveData<VideoN> getVideo(String uid, String vid) {
         Call<VideoN> call = videoRequest.getVideo(uid, vid);
 
         call.enqueue(new Callback<VideoN>() {
@@ -80,9 +91,8 @@ public class VideoApi {
         return video;
     }
 
-    public MutableLiveData<List<VideoN>> getUserVideos(String uid) {
-        Log.d("DEBUG", "Starting getUserVideos method");
-        MutableLiveData<List<VideoN>> videosLiveData = new MutableLiveData<>();
+    public LiveData<List<VideoN>> getUserVideos(String uid) {
+        Log.i("VideoAPI", "fetching creator video list");
 
         Log.d("DEBUG", "About to make network call");
         Call<List<VideoN>> call = videoRequest.getUserVideos(uid);
@@ -92,22 +102,24 @@ public class VideoApi {
             @Override
             public void onResponse(Call<List<VideoN>> call, Response<List<VideoN>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    Log.d("API_RESPONSE", "Successful: " + response.body());
-                    videosLiveData.setValue(response.body());
+                    Log.i("VideoAPI", "Creator video list fetched successfully");
+                    List<VideoN> videoList = response.body();
+                    userVideoList.setValue(videoList);
                 } else {
-                    Log.e("API_RESPONSE", "Unsuccessful: " + response.code() + " " + response.message());
-                    videosLiveData.setValue(null); // or an empty list
+                    Log.e("VideoAPI", "Unsuccessful: " + response.code() + " " + response.message());
+                    userVideoList.setValue(null); // or new ArrayList<>() for an empty list
                 }
             }
 
+            @Override
             public void onFailure(Call<List<VideoN>> call, Throwable throwable) {
-                Log.e("API_FAILURE", "Error: " + throwable.getMessage());
+                Log.e("VideoAPI", "Error: " + throwable.getMessage());
                 throwable.printStackTrace();
-                videosLiveData.setValue(null); // or an empty list
+                userVideoList.setValue(null); // or new ArrayList<>() for an empty list
             }
         });
 
-        return videosLiveData;
+        return userVideoList;
     }
 
     public MutableLiveData<List<VideoN>> getVideos() {
@@ -198,5 +210,14 @@ public class VideoApi {
 
             }
         });
+    }
+
+    public void addVideoToUserList(VideoN newVideo) {
+        List<VideoN> currentList = userVideoList.getValue();
+        if (currentList == null) {
+            currentList = new ArrayList<>();
+        }
+        currentList.add(newVideo);
+        userVideoList.setValue(currentList);
     }
 }

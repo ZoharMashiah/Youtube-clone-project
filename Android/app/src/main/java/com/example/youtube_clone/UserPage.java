@@ -3,144 +3,161 @@ package com.example.youtube_clone;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.example.youtube_clone.api.userAPI.UserAPI;
-import com.example.youtube_clone.api.videoAPI.VideoApi;
 import com.example.youtube_clone.databinding.ActivityUserPageBinding;
+import com.example.youtube_clone.databinding.EditUserPopupBinding;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class UserPage extends AppCompatActivity {
+public class UserPage extends AppCompatActivity implements RecyclerViewInterface {
     private ActivityUserPageBinding binding;
-    private UserAPI userAPI;
-    private VideoApi videoApi;
-    private MutableLiveData<List<VideoN>> mutableVideoList;
-    private User user;
+    private final LiveData<List<VideoN>> userVideosLiveData = null;
+    private final VideosViewModel videosViewModel = ViewModelsSingelton.getInstance().getVideosViewModel();
+    private UserPageViewModel viewModel;
+    private VideosAdapter videosAdapter;
 
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         binding = ActivityUserPageBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        userAPI = new UserAPI();
-        videoApi = new VideoApi(mutableVideoList,null);
+
+        init();
 
         String userId = getIntent().getStringExtra("userId");
-
-        if (userId != null && !userId.isEmpty()) {
-            getUser(userId);    // async fetch user
-        } else {
-            Toast.makeText(this, "User ID not provided", Toast.LENGTH_SHORT).show();
+        User currentUser = UserManager.getInstance().getCurrentUser();
+        if (userId == null || userId.isEmpty()) {
+            Log.e("UserPage", "User ID is not provided");
             navigateToMainActivity();
         }
 
-        setUpButtons();
+        if (currentUser != null && currentUser.get_id().equals(userId)) {
+            setUpButtons();
+        }
+
+        viewModel.loadUser(userId);
+    }
+
+    private void init() {
+        viewModel = new ViewModelProvider(this).get(UserPageViewModel.class);
+        videosAdapter = new VideosAdapter(this, new ArrayList<>(), this);
+        binding.userPageVideos.setAdapter(videosAdapter);
+        binding.userPageVideos.setLayoutManager(new LinearLayoutManager(this));
+        viewModel.getUserLiveData().observe(this, this::updateUserUi);
+        viewModel.getUserVideosLiveData().observe(this, this::updateVideoList);
+        viewModel.getMessageLiveData().observe(this, this::showToast);
+        viewModel.getUserDeletedLiveData().observe(this, this::handleUserDeletion);
     }
 
     private void setUpButtons() {
+        binding.userPageButtons.setVisibility(View.VISIBLE);
+
         binding.logOut.setOnClickListener(v -> {
                     UserManager.getInstance().logout();
                     navigateToMainActivity();
                 }
         );
 
+        binding.editUser.setOnClickListener(v -> showEditUserDialog());
+
         binding.deleteAccount.setOnClickListener(v -> new AlertDialog.Builder(UserPage.this)
                 .setTitle("Delete Account")
                 .setMessage("Are you sure?")
-                .setPositiveButton("Yes", (dialog, which) -> {
-
-                    handleDelete(UserManager.getInstance().getCurrentUser());
-                    UserManager.getInstance().logout();
-
-                    Toast.makeText(UserPage.this, "Deleting Account", Toast.LENGTH_SHORT).show();
-                    navigateToMainActivity();
-
-                })
+                .setPositiveButton("Yes", (dialog, which) -> handleDelete(UserManager.getInstance().getCurrentUser()))
                 .setNegativeButton("No", null)
                 .show());
     }
 
-    private void getUser(String id) {
-        userAPI.getUser(id, new UserAPI.UserCallback() {
-            @Override
-            public void onSuccess(User fetchedUser, String message) {
-                user = fetchedUser;
-                Log.i("UserPage", "Fetched user successfully");
-                updateUIWithUserData();
-            }
-
-            @Override
-            public void onError(String errorMessage) {
-                new AlertDialog.Builder(UserPage.this)
-                        .setTitle("Error Fetching user")
-                        .setMessage(errorMessage)
-                        .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
-                        .show();
-
-                Toast.makeText(UserPage.this, errorMessage, Toast.LENGTH_SHORT).show();
-                navigateToMainActivity();
-            }
-        });
+    private void updateUserUi(User user) {
+        if (user != null) {
+            binding.usernameProfile.setText(user.getUsername());
+            Bitmap img = FormatConverters.base64ToBitmap(user.getProfilePicture());
+            binding.userPageAvatar.setImageBitmap(img);
+        }
     }
 
-    private void updateUIWithUserData() {
-        binding.usernameProfile.setText(user.getUsername());
-//        binding.userPageAvatar.setImageBitmap(user.getProfilePicture());
-        loadUserVideos();
-    }
-
-    private void loadUserVideos() {
-        mutableVideoList = videoApi.getUserVideos(user.get_id());
-
-        List<VideoN> videoList = mutableVideoList.getValue();
-
-        if (videoList == null) {
-            Toast.makeText(UserPage.this, "Error loading videos", Toast.LENGTH_SHORT).show();
-            Log.e("UserPage", "Error loading videos");
-            navigateToMainActivity();
-            return;
+    private void updateVideoList(List<VideoN> videoList) {
+        if (videoList == null || videoList.isEmpty()) {
+            Log.i("UserPage", "No videos found for user");
+        } else {
+            videosAdapter.updateVideos(videoList);
+            Log.i("UserPage", "Videos loaded successfully: " + videoList.size());
         }
 
-        binding.numVideos.setText(String.valueOf(videoList.size()));
+        binding.numVideos.setText(String.valueOf(userVideosLiveData.getValue() != null ? userVideosLiveData.getValue().size() : 0));
+    }
 
-        VideosAdapter videosAdapter = new VideosAdapter(this, videoList, (RecyclerViewInterface) this);
-        binding.userPageVideos.setAdapter(videosAdapter);
-        binding.userPageVideos.setLayoutManager(new LinearLayoutManager(this));
+    private void showToast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    private void showEditUserDialog() {
+        User currentUser = UserManager.getInstance().getCurrentUserLiveData().getValue();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        EditUserPopupBinding dialogBinding = EditUserPopupBinding.inflate(getLayoutInflater());
+        builder.setView(dialogBinding.getRoot());
+
+        dialogBinding.editTextFirstName.setText(currentUser.getFirstName());
+        dialogBinding.editTextLastName.setText(currentUser.getLastName());
+
+        builder.setTitle("Edit User Details")
+                .setPositiveButton("Save", (dialog, which) -> {
+                    currentUser.setFirstName(dialogBinding.editTextFirstName.getText().toString());
+                    currentUser.setLastName(dialogBinding.editTextLastName.getText().toString());
+                    handleEdit(currentUser);
+                })
+                .setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void handleEdit(User updatedUser) {
+        viewModel.updateUser(updatedUser);
+        Toast.makeText(UserPage.this, "Saved changes", Toast.LENGTH_SHORT).show();
+
     }
 
     private void handleDelete(User user) {
-        userAPI.delete(user, new UserAPI.UserCallback() {
-            @Override
-            public void onSuccess(User user, String message) {
-                Toast.makeText(UserPage.this, message, Toast.LENGTH_SHORT).show();
-                UserManager.getInstance().logout();
-                Intent intent = new Intent(UserPage.this, MainActivity.class);
-                startActivity(intent);
-                finish();
-            }
-
-            @Override
-            public void onError(String message) {
-                new AlertDialog.Builder(UserPage.this)
-                        .setTitle("Error Deleting User up")
-                        .setMessage(message)
-                        .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
-                        .show();
-            }
-        });
+        viewModel.deleteUser(user);
+        Toast.makeText(UserPage.this, "Your account has been deleted", Toast.LENGTH_SHORT).show();
+        navigateToMainActivity();
     }
+
 
     private void navigateToMainActivity() {
         Intent intent = new Intent(UserPage.this, MainActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public void onItemClick(VideoN video) {
+        videosViewModel.setCurrentVideo(video);
+        Intent intent = new Intent(this, videoShowActivity.class);
+        startActivity(intent);
+    }
+
+    private void handleUserDeletion(Boolean isDeleted) {
+        if (isDeleted) {
+            UserManager.getInstance().logout();
+            navigateToMainActivity();
+        }
+    }
+
+    @Override
+    public void onUserImageClick(VideoN video) {
+        // skip because no need to navigate to the same user
     }
 
 }
