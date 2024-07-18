@@ -12,17 +12,22 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
+import com.example.youtube_clone.api.commentAPI.commentAPI;
 
-public class commentsAdapter extends RecyclerView.Adapter<commentsAdapter.MyViewHolder> {
+import java.util.ArrayList;
+import java.util.List;
+
+public class commentsAdapter extends RecyclerView.Adapter<commentsAdapter.MyViewHolder>{
 
     Context context;
-    ArrayList<Comment> commentsArray;
+    List<CommentData> commentsArray;
     commentRecycler commentRecycler;
-
-    public commentsAdapter(Context context, ArrayList<Comment> commentsArray, commentRecycler commentRecycler) {
+    public commentsAdapter(Context context,  List<CommentData> commentsArray, commentRecycler commentRecycler){
         this.context = context;
-        this.commentsArray = commentsArray;
+        if(commentsArray == null){
+            this.commentsArray = new ArrayList<>();
+        }else
+            this.commentsArray = commentsArray;
         this.commentRecycler = commentRecycler;
     }
 
@@ -30,23 +35,23 @@ public class commentsAdapter extends RecyclerView.Adapter<commentsAdapter.MyView
     @Override
     public commentsAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.recycler_view_comments, parent, false);
+        View view = inflater.inflate(R.layout.comment, parent,false);
 
         return new commentsAdapter.MyViewHolder(view, commentRecycler);
     }
 
     @Override
     public void onBindViewHolder(@NonNull commentsAdapter.MyViewHolder holder, int position) {
-        Comment comment = commentsArray.get(position);
-        holder.tvAuthor.setText(commentsArray.get(position).getUser());
+        CommentData comment = commentsArray.get(position);
+        holder.tvAuthor.setText(commentsArray.get(position).getUser().getUsername());
         holder.tvComment.setText(commentsArray.get(position).getTitle());
 
-        if (UserManager.getInstance().getCurrentUser() != null && comment.getUser().equals(UserManager.getInstance().getCurrentUser().getUsername())) {
+        if (UserManager.getInstance().getCurrentUser() != null && comment.getUser().get_id().equals(UserManager.getInstance().getCurrentUser().get_id())) {
             holder.editButton.setVisibility(View.VISIBLE);
             holder.deleteButton.setVisibility(View.VISIBLE);
 
             holder.editButton.setOnClickListener(v -> showEditCommentDialog(comment, position));
-            //holder.deleteButton.setOnClickListener(v -> showDeleteCommentDialog(comment, position));
+//            holder.deleteButton.setOnClickListener(v -> commentsArray.remove(position));
         } else {
             holder.editButton.setVisibility(View.GONE);
             holder.deleteButton.setVisibility(View.GONE);
@@ -58,7 +63,7 @@ public class commentsAdapter extends RecyclerView.Adapter<commentsAdapter.MyView
         return commentsArray.size();
     }
 
-    private void showEditCommentDialog(Comment comment, int position) {
+    private void showEditCommentDialog(CommentData comment, int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Edit Comment");
 
@@ -68,16 +73,26 @@ public class commentsAdapter extends RecyclerView.Adapter<commentsAdapter.MyView
         builder.setView(input);
 
         // Set up the buttons
-//        builder.setPositiveButton("Save", (dialog, which) -> {
-//            String newCommentText = input.getText().toString().trim();
-//            if (!newCommentText.isEmpty() && !newCommentText.equals(comment.getTitle())) {
-//                comment.setTitle(newCommentText);
-//                notifyItemChanged(position);
-//                // Update the comment in the data source
-//                Videos.getInstance().updateComment(comment.getId(), newCommentText);
-//            }
-//        });
-//        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+        builder.setPositiveButton("Save", (dialog, which) -> {
+            String newCommentText = input.getText().toString().trim();
+            if (!newCommentText.isEmpty() && !newCommentText.equals(comment.getTitle())) {
+                comment.setTitle(newCommentText);
+                notifyItemChanged(position);
+                // Update the comment in the data source
+                CommentViewModel commentViewModel = new CommentViewModel();
+                VideoN video = null;
+                if(ViewModelsSingelton.getInstance(context.getApplicationContext()).getVideosViewModel().getCurrentVideo() != null){
+                    video = ViewModelsSingelton.getInstance(context.getApplicationContext()).getVideosViewModel().getCurrentVideo().getValue();
+                }
+                if(video != null) {
+                    commentViewModel.updateComment(video.getUser().get_id(),
+                            video.get_id(),
+                            comment.get_id(),
+                            comment);
+                }
+            }
+        });
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
 
         builder.show();
     }
@@ -101,7 +116,7 @@ public class commentsAdapter extends RecyclerView.Adapter<commentsAdapter.MyView
 //        builder.show();
 //    }
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder {
+    public static class MyViewHolder extends RecyclerView.ViewHolder{
 
         TextView tvAuthor;
         TextView tvComment;
@@ -121,7 +136,7 @@ public class commentsAdapter extends RecyclerView.Adapter<commentsAdapter.MyView
                 if (commentRecycler != null) {
                     int pos = getAdapterPosition();
 
-                    if (pos != RecyclerView.NO_POSITION) {
+                    if(pos != RecyclerView.NO_POSITION){
                         commentRecycler.deleteElement(pos);
                     }
                 }
