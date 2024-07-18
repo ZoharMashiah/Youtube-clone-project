@@ -28,10 +28,10 @@ public class UserPageViewModel extends ViewModel {
         User currentUser = UserManager.getInstance().getCurrentUser();
 
         if (userId.equals(currentUser.get_id())) {
-            userLiveData.setValue(currentUser);
+            userLiveData.postValue(currentUser);
 
             if (currCachedVideos != null) {
-                userVideosLiveData.setValue(currCachedVideos);
+                userVideosLiveData.postValue(currCachedVideos);
             } else {
                 loadUserVideos(currentUser.get_id(), true);
             }
@@ -46,14 +46,14 @@ public class UserPageViewModel extends ViewModel {
         userAPI.getUser(userId, new UserAPI.UserCallback() {
             @Override
             public void onSuccess(User fetchedUser, String message) {
-                userLiveData.setValue(fetchedUser);
+                userLiveData.postValue(fetchedUser);
                 loadUserVideos(fetchedUser.get_id(), false);
                 Log.i("UserViewModel", "User loaded successfully");
             }
 
             @Override
             public void onError(String errorMessage) {
-                messageLiveData.setValue(errorMessage);
+                messageLiveData.postValue(errorMessage);
                 Log.e("VideoAPI", "error fetching user videos: " + errorMessage);
             }
         });
@@ -67,14 +67,14 @@ public class UserPageViewModel extends ViewModel {
                 if (isCurrentUser) {
                     currCachedVideos = new ArrayList<>(videoList);
                 }
-                userVideosLiveData.setValue(videoList);
+                userVideosLiveData.postValue(videoList);
                 Log.d("UserViewModel", "Received video list: " + videoList.size());
             }
 
             @Override
             public void onError(String errorMessage) {
-                userVideosLiveData.setValue(new ArrayList<>());
-                messageLiveData.setValue(errorMessage);
+                userVideosLiveData.postValue(new ArrayList<>());
+                messageLiveData.postValue(errorMessage);
                 Log.e("UserViewModel", "Error loading videos: " + errorMessage);
             }
         });
@@ -87,14 +87,14 @@ public class UserPageViewModel extends ViewModel {
             @Override
             public void onSuccess(User user, String message) {
                 Log.i("UserPage", "Changes to the user have been saved");
-                userLiveData.setValue(user);
+                userLiveData.postValue(user);
                 UserManager.getInstance().setCurrentUser(user);
             }
 
             @Override
             public void onError(String message) {
                 Log.d("UseViewModel", message);
-                messageLiveData.setValue("Error updating user");
+                messageLiveData.postValue("Error updating user");
             }
         });
     }
@@ -103,14 +103,14 @@ public class UserPageViewModel extends ViewModel {
         userAPI.delete(user, new UserAPI.UserCallback() {
             @Override
             public void onSuccess(User user, String message) {
-                messageLiveData.setValue("Deleted user successfully");
+                messageLiveData.postValue("Deleted user successfully");
                 UserManager.getInstance().logout();
             }
 
             @Override
             public void onError(String message) {
                 Log.d("UseViewModel", message);
-                messageLiveData.setValue("Error deleting user");
+                messageLiveData.postValue("Error deleting user");
             }
         });
     }

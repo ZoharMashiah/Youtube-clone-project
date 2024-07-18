@@ -21,6 +21,7 @@ import java.util.List;
 public class UserPage extends AppCompatActivity implements RecyclerViewInterface {
     private ActivityUserPageBinding binding;
     private final VideosViewModel videosViewModel = ViewModelsSingelton.getInstance().getVideosViewModel();
+    private final UserPageViewModel userPageViewModel = MyApplication.getInstance().getUserPageViewModel();
     private UserPageViewModel viewModel;
     private VideosAdapter videosAdapter;
 
@@ -29,7 +30,7 @@ public class UserPage extends AppCompatActivity implements RecyclerViewInterface
         binding = ActivityUserPageBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        viewModel = ((MyApplication) getApplication()).getUserPageViewModel();
+        viewModel = MyApplication.getInstance().getUserPageViewModel();
         videosAdapter = new VideosAdapter(this, new ArrayList<>(), this);
         binding.userPageVideos.setAdapter(videosAdapter);
         binding.userPageVideos.setLayoutManager(new LinearLayoutManager(this));
@@ -39,20 +40,21 @@ public class UserPage extends AppCompatActivity implements RecyclerViewInterface
         viewModel.getUserDeletedLiveData().observe(this, this::handleUserDeletion);
 
         String userId = getIntent().getStringExtra("userId");
-        User currentUser = UserManager.getInstance().getCurrentUser();
         if (userId == null || userId.isEmpty()) {
             Log.e("UserPage", "User ID is not provided");
             navigateToMainActivity();
         }
 
+        User currentUser = UserManager.getInstance().getCurrentUser();
         if (currentUser != null && currentUser.get_id().equals(userId)) {
             setUpButtons();
         }
+
+        userPageViewModel.loadUser(userId);
     }
 
     private void setUpButtons() {
         binding.userPageButtons.setVisibility(View.VISIBLE);
-
         binding.logOut.setOnClickListener(v -> {
                     UserManager.getInstance().logout();
                     navigateToMainActivity();
@@ -71,9 +73,9 @@ public class UserPage extends AppCompatActivity implements RecyclerViewInterface
 
     private void updateUserUi(User user) {
         if (user != null) {
-            binding.usernameProfile.setText(user.getUsername());
             Bitmap img = FormatConverters.base64ToBitmap(user.getProfilePicture());
             binding.userPageAvatar.setImageBitmap(img);
+            binding.usernameProfile.setText(user.getUsername());
         }
     }
 
@@ -95,10 +97,6 @@ public class UserPage extends AppCompatActivity implements RecyclerViewInterface
             binding.numVideos.setVisibility(View.VISIBLE);
             binding.userPageVideos.setVisibility(View.VISIBLE);
         }
-    }
-
-    private void showToast(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
     private void showEditUserDialog() {
@@ -154,6 +152,11 @@ public class UserPage extends AppCompatActivity implements RecyclerViewInterface
             navigateToMainActivity();
         }
     }
+
+    private void showToast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
 
     @Override
     public void onUserImageClick(VideoN video) {
