@@ -47,6 +47,7 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
     private VideosViewModel videosViewModel;
     private VoiceInteractionSession onBackPressedDispatcher;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
