@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
-        DarkModeUtils.applyDarkMode(DarkModeUtils.isDarkMode()); // apply dark mode prefs, has to be before setContent
+        DarkModeUtils.applyDarkMode(DarkModeUtils.isDarkMode()); // dark mode prefs has to be before setContent
         setContentView(binding.getRoot());
 
         binding.themeToggleButton.setOnClickListener(v -> {
@@ -86,8 +86,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
             binding.mRecyclerView.setAdapter(adapter[0]);
             binding.mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         });
-        if (videosViewModel.getFeed().getValue() != null) {
 
+        if (videosViewModel.getFeed().getValue() != null) {
             adapter = new VideosAdapter[]{new VideosAdapter(this, videosViewModel.getFeed().getValue(), this)};
             binding.mRecyclerView.setAdapter(adapter[0]);
             binding.mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
