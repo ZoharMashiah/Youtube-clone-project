@@ -2,11 +2,14 @@ package com.example.youtube_clone;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.youtube_clone.api.commentAPI.commentAPI;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 public class commentsAdapter extends RecyclerView.Adapter<commentsAdapter.MyViewHolder>{
@@ -45,6 +49,10 @@ public class commentsAdapter extends RecyclerView.Adapter<commentsAdapter.MyView
         CommentData comment = commentsArray.get(position);
         holder.tvAuthor.setText(commentsArray.get(position).getUser().getUsername());
         holder.tvComment.setText(commentsArray.get(position).getTitle());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            byte[] bytes = decodeBase64(commentsArray.get(position).getUser().getPhoto());
+            holder.userImage.setImageBitmap(BitmapFactory.decodeByteArray(bytes, 0, bytes.length));
+        }
 
         if (UserManager.getInstance().getCurrentUser() != null && comment.getUser().get_id().equals(UserManager.getInstance().getCurrentUser().get_id())) {
             holder.editButton.setVisibility(View.VISIBLE);
@@ -97,6 +105,16 @@ public class commentsAdapter extends RecyclerView.Adapter<commentsAdapter.MyView
         builder.show();
     }
 
+    public byte[] decodeBase64(String base64String) {
+        if (base64String.contains(",")) {
+            base64String = base64String.split(",")[1];
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            return Base64.getDecoder().decode(base64String);
+        }
+        return null;
+    }
+
 //    private void showDeleteCommentDialog(Comment comment, int position) {
 //        AlertDialog.Builder builder = new AlertDialog.Builder(context);
 //        builder.setTitle("Delete Comment");
@@ -122,6 +140,7 @@ public class commentsAdapter extends RecyclerView.Adapter<commentsAdapter.MyView
         TextView tvComment;
         Button editButton;
         Button deleteButton;
+        ImageView userImage;
 
 
         public MyViewHolder(@NonNull View itemView, commentRecycler commentRecycler) {
@@ -131,6 +150,7 @@ public class commentsAdapter extends RecyclerView.Adapter<commentsAdapter.MyView
             tvComment = itemView.findViewById(R.id.commentContent);
             editButton = itemView.findViewById(R.id.editButton);
             deleteButton = itemView.findViewById(R.id.deleteButton);
+            userImage = itemView.findViewById(R.id.user_avatar);
 
             deleteButton.setOnClickListener(v -> {
                 if (commentRecycler != null) {
