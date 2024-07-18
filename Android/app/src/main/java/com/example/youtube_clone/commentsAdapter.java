@@ -79,13 +79,13 @@ public class commentsAdapter extends RecyclerView.Adapter<commentsAdapter.MyView
                 comment.setTitle(newCommentText);
                 notifyItemChanged(position);
                 // Update the comment in the data source
-                commentAPI comments = new commentAPI(commentsListData);
+                CommentViewModel commentViewModel = new CommentViewModel();
                 VideoN video = null;
                 if(ViewModelsSingelton.getInstance().getVideosViewModel().getCurrentVideo() != null){
                     video = ViewModelsSingelton.getInstance().getVideosViewModel().getCurrentVideo().getValue();
                 }
                 if(video != null) {
-                    comments.updateComment(video.getUser().get_id(),
+                    commentViewModel.updateComment(video.getUser().get_id(),
                             video.get_id(),
                             comment.get_id(),
                             comment);

@@ -37,7 +37,7 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
 
     private List<CommentData> listComments;
 
-    private commentAPI commentApi;
+    private CommentViewModel commentViewModel;
 
     @SuppressLint("SetTextI18n")
 
@@ -68,15 +68,15 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
 
                     RecyclerView recyclerView = findViewById(R.id.commentsRecyclerView);
 
-                    commentApi = new commentAPI(commentsListData);
-                    commentApi.getLocalComments().observe(this,v->{
+                    commentViewModel = new CommentViewModel();
+                    commentViewModel.getLocalComments().observe(this,v->{
                         adapter = new commentsAdapter[]{new commentsAdapter(this, v , this)};
                         listComments = v;
                         recyclerView.setAdapter(adapter[0]);
                         recyclerView.setLayoutManager(new LinearLayoutManager(this));
                     });
 
-                    commentApi.getAllComments(videosViewModel.getCurrentVideo().getValue().getUser().get_id(), videosViewModel.getCurrentVideo().getValue().get_id());
+                    commentViewModel.getAllComments(videosViewModel.getCurrentVideo().getValue().getUser().get_id(), videosViewModel.getCurrentVideo().getValue().get_id());
 
 
                     if(UserManager.getInstance().getCurrentUser() == null || !Objects.requireNonNull(videosViewModel.getCurrentVideo().getValue()).getUser().get_id().equals(UserManager.getInstance().getCurrentUser().get_id())){
@@ -168,7 +168,7 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
                                             UserManager.getInstance().getCurrentUser().getProfilePicture()),
                                     binding.addComment.getText().toString(),
                                     Calendar.getInstance().getTime().getTime());
-                            commentApi.postComment(videosViewModel.getCurrentVideo().getValue().getUser().get_id(),
+                            commentViewModel.postComment(videosViewModel.getCurrentVideo().getValue().getUser().get_id(),
                                     videosViewModel.getCurrentVideo().getValue().get_id(),
                                     newComment);
                             binding.addComment.setText("");
@@ -211,7 +211,7 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
 
     @Override
     public void deleteElement(int position) {
-        commentApi.deleteComment(videosViewModel.getCurrentVideo().getValue().getUser().get_id(),
+        commentViewModel.deleteComment(videosViewModel.getCurrentVideo().getValue().getUser().get_id(),
                 videosViewModel.getCurrentVideo().getValue().get_id(),
                 listComments.get(position).get_id());
         listComments.remove(position);
