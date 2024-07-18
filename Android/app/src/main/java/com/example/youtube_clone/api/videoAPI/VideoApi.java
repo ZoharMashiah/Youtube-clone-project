@@ -101,11 +101,12 @@ public class VideoApi {
             public void onResponse(Call<List<VideoN>> call, Response<List<VideoN>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     Log.i("VideoAPI", "Creator video list fetched successfully");
+                    Log.i("VideoAPI", "Body: " + response.body());
                     List<VideoN> videoList = response.body();
-                    userVideoList.setValue(videoList);
+                    userVideoList.postValue(videoList);
                 } else {
                     Log.e("VideoAPI", "Unsuccessful: " + response.code() + " " + response.message());
-                    userVideoList.setValue(null); // or new ArrayList<>() for an empty list
+                    userVideoList.postValue(null); // or new ArrayList<>() for an empty list
                 }
             }
 

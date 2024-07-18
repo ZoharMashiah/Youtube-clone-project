@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -22,7 +21,6 @@ import java.util.List;
 
 public class UserPage extends AppCompatActivity implements RecyclerViewInterface {
     private ActivityUserPageBinding binding;
-    private final LiveData<List<VideoN>> userVideosLiveData = null;
     private final VideosViewModel videosViewModel = ViewModelsSingelton.getInstance().getVideosViewModel();
     private UserPageViewModel viewModel;
     private VideosAdapter videosAdapter;
@@ -32,7 +30,14 @@ public class UserPage extends AppCompatActivity implements RecyclerViewInterface
         binding = ActivityUserPageBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        init();
+        viewModel = new ViewModelProvider(this).get(UserPageViewModel.class);
+        videosAdapter = new VideosAdapter(this, new ArrayList<>(), this);
+        binding.userPageVideos.setAdapter(videosAdapter);
+        binding.userPageVideos.setLayoutManager(new LinearLayoutManager(this));
+        viewModel.getUserLiveData().observe(this, this::updateUserUi);
+        viewModel.getUserVideosLiveData().observe(this, this::updateVideoList);
+        viewModel.getMessageLiveData().observe(this, this::showToast);
+        viewModel.getUserDeletedLiveData().observe(this, this::handleUserDeletion);
 
         String userId = getIntent().getStringExtra("userId");
         User currentUser = UserManager.getInstance().getCurrentUser();
@@ -46,17 +51,6 @@ public class UserPage extends AppCompatActivity implements RecyclerViewInterface
         }
 
         viewModel.loadUser(userId);
-    }
-
-    private void init() {
-        viewModel = new ViewModelProvider(this).get(UserPageViewModel.class);
-        videosAdapter = new VideosAdapter(this, new ArrayList<>(), this);
-        binding.userPageVideos.setAdapter(videosAdapter);
-        binding.userPageVideos.setLayoutManager(new LinearLayoutManager(this));
-        viewModel.getUserLiveData().observe(this, this::updateUserUi);
-        viewModel.getUserVideosLiveData().observe(this, this::updateVideoList);
-        viewModel.getMessageLiveData().observe(this, this::showToast);
-        viewModel.getUserDeletedLiveData().observe(this, this::handleUserDeletion);
     }
 
     private void setUpButtons() {
@@ -92,9 +86,10 @@ public class UserPage extends AppCompatActivity implements RecyclerViewInterface
         } else {
             videosAdapter.updateVideos(videoList);
             Log.i("UserPage", "Videos loaded successfully: " + videoList.size());
+            String numOfVideos = videoList.size() + " videos";
+            binding.numVideos.setText(numOfVideos);
+            binding.numVideos.setVisibility(View.VISIBLE);
         }
-
-        binding.numVideos.setText(String.valueOf(userVideosLiveData.getValue() != null ? userVideosLiveData.getValue().size() : 0));
     }
 
     private void showToast(String message) {
