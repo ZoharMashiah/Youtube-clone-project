@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
@@ -24,6 +26,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Objects;
 
 public class videoShowActivity extends AppCompatActivity implements commentRecycler, RecyclerViewInterface {
 
@@ -58,6 +61,21 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
                     videoView = binding.video;
 
                     RecyclerView recyclerView = findViewById(R.id.commentsRecyclerView);
+
+                    if(UserManager.getInstance().getCurrentUser() == null || !Objects.requireNonNull(videosViewModel.getCurrentVideo().getValue()).getUser().get_id().equals(UserManager.getInstance().getCurrentUser().get_id())){
+                        binding.editBtn.setVisibility(View.INVISIBLE);
+                        binding.deleteBtn.setVisibility(View.INVISIBLE);
+                    } else {
+                        binding.editBtn.setOnClickListener(v -> {
+                            showAlertDialog(videoN1.getTitle(), videoN1.getDescription(), videosViewModel.getCurrentVideo().getValue());
+                        });
+                        binding.deleteBtn.setOnClickListener(v -> {
+                            videosViewModel.delete(videoN1.getUser().get_id(),videoN1.get_id());
+                            videosViewModel.reload();
+                            videosViewModel.setCurrentVideo(null);
+                            finish();
+                        });
+                    }
 
 //                    adapter = new commentsAdapter[]{new commentsAdapter(this, Videos.getInstance().currentVideo.getComments(), this)};
 //                    recyclerView.setAdapter(adapter[0]);
