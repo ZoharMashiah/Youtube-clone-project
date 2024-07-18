@@ -81,8 +81,8 @@ public class commentsAdapter extends RecyclerView.Adapter<commentsAdapter.MyView
                 // Update the comment in the data source
                 CommentViewModel commentViewModel = new CommentViewModel();
                 VideoN video = null;
-                if(ViewModelsSingelton.getInstance().getVideosViewModel().getCurrentVideo() != null){
-                    video = ViewModelsSingelton.getInstance().getVideosViewModel().getCurrentVideo().getValue();
+                if(ViewModelsSingelton.getInstance(context.getApplicationContext()).getVideosViewModel().getCurrentVideo() != null){
+                    video = ViewModelsSingelton.getInstance(context.getApplicationContext()).getVideosViewModel().getCurrentVideo().getValue();
                 }
                 if(video != null) {
                     commentViewModel.updateComment(video.getUser().get_id(),
