@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
 
     VideosAdapter[] adapter;
     private VideosViewModel videosViewModel;
+    private UserPageViewModel userPageViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +34,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         DarkModeUtils.applyDarkMode(DarkModeUtils.isDarkMode()); // dark mode prefs has to be before setContent
         setContentView(binding.getRoot());
+
+        userPageViewModel = MyApplication.getInstance().getUserPageViewModel();
 
         binding.themeToggleButton.setOnClickListener(v -> {
             DarkModeUtils.toggleDarkMode();

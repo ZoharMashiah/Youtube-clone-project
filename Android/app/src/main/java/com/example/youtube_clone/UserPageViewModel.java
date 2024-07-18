@@ -27,15 +27,16 @@ public class UserPageViewModel extends ViewModel {
     public void loadUser(String userId) {
         User currentUser = UserManager.getInstance().getCurrentUser();
 
-        if (userId.equals(currentUser.get_id())) {
-            userLiveData.postValue(currentUser);
+        if (currentUser != null) {
+            if (userId.equals(currentUser.get_id())) {
+                userLiveData.postValue(currentUser);
 
-            if (currCachedVideos != null) {
-                userVideosLiveData.postValue(currCachedVideos);
-            } else {
-                loadUserVideos(currentUser.get_id(), true);
+                if (currCachedVideos != null) {
+                    userVideosLiveData.postValue(currCachedVideos);
+                } else {
+                    loadUserVideos(currentUser.get_id(), true);
+                }
             }
-
         } else {
             fetchUserAndVideos(userId);
         }

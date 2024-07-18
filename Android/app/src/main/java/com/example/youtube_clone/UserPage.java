@@ -40,14 +40,12 @@ public class UserPage extends AppCompatActivity implements RecyclerViewInterface
         viewModel.getUserDeletedLiveData().observe(this, this::handleUserDeletion);
 
         String userId = getIntent().getStringExtra("userId");
-        if (userId == null || userId.isEmpty()) {
-            Log.e("UserPage", "User ID is not provided");
-            navigateToMainActivity();
-        }
 
         User currentUser = UserManager.getInstance().getCurrentUser();
-        if (currentUser != null && currentUser.get_id().equals(userId)) {
-            setUpButtons();
+        if (currentUser != null) {
+            if (currentUser.get_id().equals(userId)) {
+                setUpButtons();
+            }
         }
 
         userPageViewModel.loadUser(userId);
