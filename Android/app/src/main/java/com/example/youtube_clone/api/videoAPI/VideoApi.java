@@ -192,4 +192,21 @@ public class VideoApi {
             }
         });
     }
+
+    public void doAction(String uid, String vid, String userId, String action) {
+        LikeOrDislike likeOrDislike = new LikeOrDislike(userId, action);
+        Call<Void> call = videoRequest.likeOrDislikePush(uid, vid, likeOrDislike);
+
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable throwable) {
+
+            }
+        });
+    }
 }
