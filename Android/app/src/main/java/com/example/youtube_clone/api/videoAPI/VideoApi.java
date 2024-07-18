@@ -32,6 +32,7 @@ public class VideoApi {
     Retrofit retrofit;
     videoRequest videoRequest;
     MutableLiveData<VideoN> video;
+    private VideoDao dao;
 
     public VideoApi(MutableLiveData<List<VideoN>> videoListData, VideoDao dao) {
         OkHttpClient client = new OkHttpClient.Builder()
@@ -41,6 +42,8 @@ public class VideoApi {
                 .writeTimeout(6, TimeUnit.MINUTES)
                 .callTimeout(6, TimeUnit.MINUTES)
                 .build();
+
+        this.dao = dao;
 
         this.retrofit = new Retrofit.Builder()
                 .baseUrl(MyApplication.getAppContext().getString(R.string.BaseUrl))
@@ -62,7 +65,11 @@ public class VideoApi {
         call.enqueue(new Callback<List<VideoN>>() {
             @Override
             public void onResponse(Call<List<VideoN>> call, Response<List<VideoN>> response) {
-                videoList.postValue(response.body());
+                new Thread(() -> {
+                    dao.clear();
+                    dao.insertList(response.body());
+                    videoList.postValue(dao.getFeed());
+                }).start();
                 Log.i("VideoAPI", "fetched videos");
             }
 
@@ -168,7 +175,10 @@ public class VideoApi {
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
-
+                new Thread(() -> {
+                    dao.editVideo(newVid.getDescription(), newVid.getTitle(), newVid.get_id());
+                    videoList.postValue(dao.getFeed());
+                }).start();
             }
 
             @Override
@@ -178,17 +188,25 @@ public class VideoApi {
         });
     }
 
-    public void deleteVideo(String uid, String Vid) {
-        Call<Void> call = videoRequest.deleteVideo(uid, Vid);
+    public void deleteVideo(String uid, String vid) {
+        Call<Void> call = videoRequest.deleteVideo(uid, vid);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
-
+                if (response.isSuccessful()) {
+                    new Thread(() -> {
+                        dao.deleteVideo(vid);
+                        videoList.postValue(dao.getFeed());
+                    }).start();
+                    Log.i("VideoAPI", "Video deleted successfully");
+                } else {
+                    Log.e("VideoAPI", "Failed to delete video: " + response.code());
+                }
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable throwable) {
-
+                Log.e("VideoAPI", "Error deleting video: " + throwable.getMessage());
             }
         });
     }

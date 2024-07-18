@@ -1,10 +1,15 @@
 package com.example.youtube_clone.reposetories;
 
 import android.app.Application;
+import android.content.Context;
+import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.room.Room;
+import androidx.room.RoomDatabase;
+import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.example.youtube_clone.AppDB;
 import com.example.youtube_clone.Room.Video.VideoDao;
@@ -21,8 +26,21 @@ public class VideoRepository {
     private MutableLiveData<List<VideoN>> videoListFilteredData;
     private VideoApi api;
 
-    public VideoRepository() {
+    RoomDatabase.Callback myCallback = new RoomDatabase.Callback() {
+        @Override
+        public void onCreate(@NonNull SupportSQLiteDatabase db) {
+            super.onCreate(db);
+        }
+
+        @Override
+        public void onOpen(@NonNull SupportSQLiteDatabase db) {
+            super.onOpen(db);
+        }
+    };
+
+    public VideoRepository(Context context) {
         videoListData = new VideoListData();
+        dao = Room.databaseBuilder(context, AppDB.class, "AppDB").build().videoDao();
         api = new VideoApi(videoListData, dao);
         videoListFilteredData =  api.getVideoListFiltered();
     }
@@ -46,7 +64,7 @@ public class VideoRepository {
             super.onActive();
 
             new Thread(() -> {
-
+                videoListData.postValue(dao.getFeed());
             }).start();
         }
     }

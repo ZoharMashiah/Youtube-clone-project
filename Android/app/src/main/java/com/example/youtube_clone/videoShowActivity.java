@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.service.voice.VoiceInteractionSession;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -11,9 +12,13 @@ import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.Toast;
 import android.widget.VideoView;
+import android.window.OnBackInvokedDispatcher;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.activity.OnBackPressedDispatcher;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.os.BuildCompat;
 import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -40,7 +45,9 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
     private VideoView videoView;
 
     private VideosViewModel videosViewModel;
+    private VoiceInteractionSession onBackPressedDispatcher;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +56,15 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
 
         setContentView(binding.getRoot());
 
-        videosViewModel = ViewModelsSingelton.getInstance().getVideosViewModel();
+        videosViewModel = ViewModelsSingelton.getInstance(getApplicationContext()).getVideosViewModel();
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                videosViewModel.reload();
+                finish();
+            }
+        });
 
         videosViewModel.getCurrentVideo().observe(this, video -> {
             if (video != null) {
@@ -72,7 +87,6 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
                         binding.deleteBtn.setOnClickListener(v -> {
                             videosViewModel.delete(videoN1.getUser().get_id(),videoN1.get_id());
                             videosViewModel.reload();
-                            videosViewModel.setCurrentVideo(null);
                             finish();
                         });
                     }
@@ -107,8 +121,25 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
 
                     binding.like.setOnClickListener(v -> {
                         if (UserManager.getInstance().getCurrentUser() != null) {
-                            binding.counterLike.setText(Integer.toString(video.getLike()));
-                            binding.counterDislike.setText(Integer.toString(video.getDislike()));
+                            videosViewModel.doAction(video.getUser().get_id(), video.get_id(), UserManager.getInstance().getCurrentUser().get_id(), "like");
+                            if(UserManager.getInstance().getCurrentUser().getLikedVideos().contains(video.get_id())){
+                                UserManager.getInstance().getCurrentUser().getLikedVideos().remove(video.get_id());
+                                binding.counterDislike.setText(Integer.toString(video.getDislike()));
+                                video.setLike(video.getLike()-1);
+                                Objects.requireNonNull(videosViewModel.getCurrentVideo().getValue()).setLike(video.getLike());
+                                binding.counterLike.setText(Integer.toString(video.getLike()));
+                            } else {
+                                if (UserManager.getInstance().getCurrentUser().getDislikedVideos().contains(video.get_id())) {
+                                    UserManager.getInstance().getCurrentUser().getDislikedVideos().remove(video.get_id());
+                                    video.setDislike(video.getDislike()-1);
+                                    Objects.requireNonNull(videosViewModel.getCurrentVideo().getValue()).setDislike(video.getDislike());
+                                    binding.counterDislike.setText(Integer.toString(video.getDislike()));
+                                }
+                                UserManager.getInstance().getCurrentUser().getLikedVideos().add(video.get_id());
+                                video.setLike(video.getLike()+1);
+                                Objects.requireNonNull(videosViewModel.getCurrentVideo().getValue()).setLike(video.getLike());
+                                binding.counterLike.setText(Integer.toString(video.getLike()));
+                            }
                         } else {
                             AlertDialog.Builder builder = new AlertDialog.Builder(this)
                                     .setMessage("You need to have a user to add a like!")
@@ -125,8 +156,25 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
 
                     binding.dislike.setOnClickListener(v -> {
                         if (UserManager.getInstance().getCurrentUser() != null) {
-                            binding.counterLike.setText(Integer.toString(video.getLike()));
-                            binding.counterDislike.setText(Integer.toString(video.getDislike()));
+                            videosViewModel.doAction(video.getUser().get_id(), video.get_id(), UserManager.getInstance().getCurrentUser().get_id(), "dislike");
+                            if(UserManager.getInstance().getCurrentUser().getDislikedVideos().contains(video.get_id())){
+                                UserManager.getInstance().getCurrentUser().getDislikedVideos().remove(video.get_id());
+                                binding.counterLike.setText(Integer.toString(video.getLike()));
+                                video.setDislike(video.getDislike()-1);
+                                Objects.requireNonNull(videosViewModel.getCurrentVideo().getValue()).setDislike(video.getDislike());
+                                binding.counterDislike.setText(Integer.toString(video.getDislike()));
+                            } else {
+                                if (UserManager.getInstance().getCurrentUser().getLikedVideos().contains(video.get_id())) {
+                                    UserManager.getInstance().getCurrentUser().getLikedVideos().remove(video.get_id());
+                                    video.setLike(video.getLike()-1);
+                                    Objects.requireNonNull(videosViewModel.getCurrentVideo().getValue()).setLike(video.getLike());
+                                    binding.counterLike.setText(Integer.toString(video.getLike()));
+                                }
+                                UserManager.getInstance().getCurrentUser().getDislikedVideos().add(video.get_id());
+                                video.setDislike(video.getDislike()+1);
+                                Objects.requireNonNull(videosViewModel.getCurrentVideo().getValue()).setDislike(video.getDislike());
+                                binding.counterDislike.setText(Integer.toString(video.getDislike()));
+                            }
                         } else {
                             AlertDialog.Builder builder = new AlertDialog.Builder(this)
                                     .setMessage("You need to have a user to add a dislike!")

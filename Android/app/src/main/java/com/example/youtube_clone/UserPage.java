@@ -20,7 +20,7 @@ import java.util.List;
 
 public class UserPage extends AppCompatActivity implements RecyclerViewInterface {
     private ActivityUserPageBinding binding;
-    private final VideosViewModel videosViewModel = ViewModelsSingelton.getInstance().getVideosViewModel();
+    private final VideosViewModel videosViewModel = ViewModelsSingelton.getInstance(this).getVideosViewModel();
     private UserPageViewModel viewModel;
     private VideosAdapter videosAdapter;
 
