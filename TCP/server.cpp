@@ -6,12 +6,19 @@
 #include <unistd.h>
 #include <string.h>
 #include <thread>
+#include <algorithm>
+#include "set.cpp"
+#include "UniqueVectorManager.cpp"
 
 using namespace std;
 
 thread threads[100];
 
 void handleThread(void *);
+
+UniqueVectorManager<string> uniqueVectors;
+vector<string> split(const string &, char);
+string helperFunction(const string &);
 
 /* message type that will be sent by the client through TCP connection */
 struct msg
@@ -85,23 +92,130 @@ void handleThread(void *param)
     unique_ptr<req> sock(static_cast<req *>(param)); // Use unique_ptr for automatic memory management
     char buffer[4096];
     int expected_data_len = sizeof(buffer);
-    int read_bytes = recv(sock->des, buffer, expected_data_len, 0);
-    if (read_bytes == 0)
+    while (1)
     {
-        cout << "Connection closed by client" << endl;
-    }
-    else if (read_bytes < 0)
-    {
-        perror("Error reading from client");
-    }
-    else
-    {
-        cout << buffer;
-        int sent_bytes = send(sock->des, buffer, read_bytes, 0);
-        if (sent_bytes < 0)
+        memset(buffer, 0, sizeof(buffer));
+        int read_bytes = recv(sock->des, buffer, expected_data_len, 0);
+        if (read_bytes == 0)
         {
-            perror("error sending to client");
+            break;
+        }
+        else if (read_bytes < 0)
+        {
+            perror("Error reading from client");
+        }
+        else
+        {
+            string output = helperFunction(buffer);
+            cout << "output: " << output << endl;
+            int sent_bytes = send(sock->des, (void *)&output, sizeof(output), 0);
+            if (sent_bytes < 0)
+            {
+                perror("error sending to client");
+            }
         }
     }
     close(sock->des);
+}
+
+string helperFunction(const string &input)
+{
+    vector<string> tokens;
+    tokens = split(input, '|');
+
+    if (tokens.at(0) == "0")
+    {
+        vector<vector<string>> histories;
+        // process the history list
+        for (int i = 1; i < tokens.size(); i++)
+        {
+            histories.push_back(split(tokens.at(i), ','));
+        }
+
+        // create the unique vectors for each video
+        for (int i = 0; i < histories.size(); i++)
+        {
+            for (int j = 0; j < histories.at(i).size(); j++)
+            {
+                if (uniqueVectors.getVectorByName(histories.at(i).at(j)) == nullptr)
+                {
+                    uniqueVectors.addVector(UniqueVector<string>(histories.at(i).at(j)));
+                }
+            }
+        }
+
+        // create the union of the unique vectors with the history list
+        for (int i = 0; i < uniqueVectors.getSize(); i++)
+        {
+            for (int j = 0; j < histories.size(); j++)
+            {
+                if (std::find(histories.at(j).begin(), histories.at(j).end(), uniqueVectors.at(i)->getName()) != histories.at(j).end())
+                {
+                    for (auto x : histories.at(j))
+                    {
+                        if (x.compare(uniqueVectors.at(i)->getName()) != 0)
+                        {
+                            uniqueVectors.at(i)->add(x);
+                        }
+                    }
+                }
+            }
+        }
+        return "OK";
+    }
+    else if (tokens.at(0) == "1")
+    {
+        tokens = split(tokens.at(1), ',');
+        // add the curent watched video to the histroy list
+        for (int i = 1; i < tokens.size(); i++)
+        {
+            auto vector = uniqueVectors.getVectorByName(tokens.at(i));
+            if (vector == nullptr)
+            {
+                uniqueVectors.addVector(UniqueVector<string>(tokens.at(i)));
+                vector = uniqueVectors.getVectorByName(tokens.at(i));
+            }
+            vector->add(tokens.at(0));
+        }
+        // add the histroy list to the curent watched video
+        for (int i = 1; i < tokens.size(); i++)
+        {
+            auto vector = uniqueVectors.getVectorByName(tokens.at(0));
+            if (vector == nullptr)
+            {
+                uniqueVectors.addVector(UniqueVector<string>(tokens.at(0)));
+                vector = uniqueVectors.getVectorByName(tokens.at(0));
+            }
+            vector->add(tokens.at(i));
+        }
+
+        // create the union of the suggested videos
+        UniqueVector<string> suggestedVideos("suggestedVideos");
+        for (int i = 0; i < tokens.size(); i++)
+        {
+            auto vector = uniqueVectors.getVectorByName(tokens.at(i));
+            if (vector == nullptr)
+            {
+                continue;
+            }
+            suggestedVideos.unionWith(*vector);
+        }
+        return suggestedVideos.toString();
+    }
+    else
+    {
+        return "Invalid input";
+    }
+}
+
+vector<string> split(const string &s, char delimiter)
+{
+    vector<string> tokens;
+    string token;
+    istringstream tokenStream(s);
+    while (getline(tokenStream, token, delimiter))
+    {
+        tokens.push_back(token);
+    }
+    return tokens;
 }
