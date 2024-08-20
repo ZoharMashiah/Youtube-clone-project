@@ -166,6 +166,11 @@ string helperFunction(const string &input)
     else if (tokens.at(0) == "1")
     {
         tokens = split(tokens.at(1), ',');
+        UniqueVector<string> history("history");
+        for (int i = 0; i < tokens.size(); i++)
+        {
+            history.add(tokens.at(i));
+        }
         // add the curent watched video to the histroy list
         for (int i = 1; i < tokens.size(); i++)
         {
@@ -200,6 +205,7 @@ string helperFunction(const string &input)
             }
             suggestedVideos.unionWith(*vector);
         }
+        suggestedVideos.subtract(history);
         return suggestedVideos.toString();
     }
     else

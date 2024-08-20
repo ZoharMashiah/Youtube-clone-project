@@ -58,6 +58,19 @@ public:
         return oss.str();
     }
 
+    // Subtract elements of another UniqueVector from this one
+    void subtract(const UniqueVector<T> &other)
+    {
+        for (const T &element : other.data)
+        {
+            auto it = std::find(data.begin(), data.end(), element);
+            if (it != data.end())
+            {
+                data.erase(it);
+            }
+        }
+    }
+
     // Get the name of the vector
     std::string getName() const
     {
