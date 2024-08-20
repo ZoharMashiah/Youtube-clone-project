@@ -38,8 +38,18 @@ async function getUserVideoList(req, res) {
 
 async function getVideo(req, res) {
   const videoId = req.params.pid;
+  const authUser = req.user;
   try {
     const video = await Video.findByIdAndUpdate(videoId, { $inc: { views: 1 } }, { new: true, runValidators: true });
+    console.log(authUser);
+    if (authUser != null | undefined) {
+      const user = await User.findById({ _id: authUser._id })
+      var history = user.history
+      if(!user.history.includes(videoId)){
+        history = [...user.history, videoId]
+        await User.findByIdAndUpdate({ _id: authUser._id }, {history: history})
+      }
+    }
     if (!video) {
       console.error("Video was not found", videoId, error);
       throw error;
