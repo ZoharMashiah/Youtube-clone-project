@@ -96,6 +96,7 @@ void handleThread(void *param)
     {
         memset(buffer, 0, sizeof(buffer));
         int read_bytes = recv(sock->des, buffer, expected_data_len, 0);
+        cout << "buffer: " << buffer << endl;
         if (read_bytes == 0)
         {
             break;
@@ -107,8 +108,9 @@ void handleThread(void *param)
         else
         {
             string output = helperFunction(buffer);
-            cout << "output: " << output << endl;
-            int sent_bytes = send(sock->des, (void *)&output, sizeof(output), 0);
+            cout << "output: " << output.c_str() << endl;
+            cout << "output size: " << output.size() << endl;
+            int sent_bytes = send(sock->des, (void *)output.c_str(), output.size(), 0);
             if (sent_bytes < 0)
             {
                 perror("error sending to client");

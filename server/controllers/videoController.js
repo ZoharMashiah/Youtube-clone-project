@@ -2,6 +2,7 @@ const Video = require("../models/Video");
 const User = require("../models/User.js");
 const VideoService = require("../services/VideoService.js");
 const Util = require("../util/util.js");
+const {sendStringToServer} = require('../tcpClient.js');
 
 async function getFeed(req, res) {
   try {
@@ -45,9 +46,16 @@ async function getVideo(req, res) {
     if (authUser != null | undefined) {
       const user = await User.findById({ _id: authUser._id })
       var history = user.history
-      if(!user.history.includes(videoId)){
+      let recived = '';
+      if (!user.history.includes(videoId)) {
+        let message = "1|" + videoId
+        for (let i = 0; i < history.length; i++) {
+          message += "," + history[i]
+        }
+        recived = sendStringToServer(message)
         history = [...user.history, videoId]
-        await User.findByIdAndUpdate({ _id: authUser._id }, {history: history})
+        await User.findByIdAndUpdate({ _id: authUser._id }, { history: history })
+        let suggested = recived.split(" ")
       }
     }
     if (!video) {
