@@ -9,7 +9,6 @@ async function sendStringToServer(message) {
 
         client.connect(serverPort, serverHost, () => {
             console.log('Connected to server');
-            console.log('Sending:', message);
             client.write(message);
         });
 

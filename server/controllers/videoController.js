@@ -60,8 +60,6 @@ async function getVideo(req, res) {
         suggested = recived.split(" ")
     }
     let suggestedVideos = await VideoService.getSuggestedVideos(suggested, 10, [videoId]);
-    let ids = suggestedVideos.map((v) => v._id);
-    console.log("Fetching video ended successfully :",ids);
     if (!video) {
       console.error("Video was not found", videoId, error);
       throw error;
