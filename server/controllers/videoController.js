@@ -67,7 +67,7 @@ async function getVideo(req, res) {
 
     console.log("Fetched video successfully");
     // pass the video and suggested videos to the client
-    res.status(200).json(video);
+    res.status(200).json({video, suggestedVideos});
   } catch (error) {
     console.error("Error fetching video:", videoId, error);
     res.status(500).json({
