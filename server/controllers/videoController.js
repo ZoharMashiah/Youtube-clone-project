@@ -42,7 +42,6 @@ async function getVideo(req, res) {
   const authUser = req.user;
   try {
     const video = await Video.findByIdAndUpdate(videoId, { $inc: { views: 1 } }, { new: true, runValidators: true });
-    console.log("Fetching video...");
     let suggested = [];
     if (authUser != null | undefined) {
       const user = await User.findById({ _id: authUser._id })
@@ -53,7 +52,6 @@ async function getVideo(req, res) {
         message += "," + history[i]
       }
       recived = await sendStringToServer(message)
-      console.log("recived: ", recived)
       if (!history.includes(videoId)) {
         history = [...user.history, videoId]
       }
@@ -62,8 +60,6 @@ async function getVideo(req, res) {
         suggested = recived.split(" ")
     }
     let suggestedVideos = await VideoService.getSuggestedVideos(suggested, 10, [videoId]);
-    let ids = suggestedVideos.map((video) => video._id);
-    console.log("ids: ",ids);
     if (!video) {
       console.error("Video was not found", videoId, error);
       throw error;

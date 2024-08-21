@@ -37,7 +37,7 @@ struct req
 
 int main()
 {
-    const int server_port = 5555;
+    const int server_port = 5556;
     int sock = socket(AF_INET, SOCK_STREAM, 0);
     if (sock < 0)
     {

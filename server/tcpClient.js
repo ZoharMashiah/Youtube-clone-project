@@ -2,7 +2,7 @@ const net = require('net');
 
 async function sendStringToServer(message) {
     const serverHost = '127.0.0.1';
-    const serverPort = 5555;
+    const serverPort = 5556;
 
     return new Promise((resolve, reject) => {
         const client = new net.Socket();
