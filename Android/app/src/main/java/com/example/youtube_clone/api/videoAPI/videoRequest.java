@@ -21,7 +21,7 @@ public interface videoRequest {
     Call<List<VideoN>> getUserVideos(@Path("uid") String uid);
 
     @GET("api/users/{uid}/videos/{vid}")
-    Call<VideoN> getVideo(@Path("uid") String uid, @Path("vid") String vid);
+    Call<VideoWithSuggested> getVideo(@Path("uid") String uid, @Path("vid") String vid);
 
     @PATCH("api/users/{uid}/videos/{vid}")
     Call<Void> editVideo(@Path("uid") String uid, @Path("vid") String vid, @Body VideoN video);

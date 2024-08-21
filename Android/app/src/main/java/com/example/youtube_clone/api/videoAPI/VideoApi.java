@@ -84,16 +84,17 @@ public class VideoApi {
     }
 
     public MutableLiveData<VideoN> getVideo(String uid, String vid) {
-        Call<VideoN> call = videoRequest.getVideo(uid, vid);
+        Call<VideoWithSuggested> call = videoRequest.getVideo(uid, vid);
 
-        call.enqueue(new Callback<VideoN>() {
+
+        call.enqueue(new Callback<VideoWithSuggested>() {
             @Override
-            public void onResponse(Call<VideoN> call, Response<VideoN> response) {
-                video.postValue(response.body());
+            public void onResponse(Call<VideoWithSuggested> call, Response<VideoWithSuggested> response) {
+                video.postValue(response.body().getVideo());
             }
 
             @Override
-            public void onFailure(Call<VideoN> call, Throwable throwable) {
+            public void onFailure(Call<VideoWithSuggested> call, Throwable throwable) {
 
             }
         });
