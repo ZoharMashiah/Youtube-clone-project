@@ -42,28 +42,33 @@ async function getVideo(req, res) {
   const authUser = req.user;
   try {
     const video = await Video.findByIdAndUpdate(videoId, { $inc: { views: 1 } }, { new: true, runValidators: true });
-    console.log(authUser);
+    let suggested = [];
     if (authUser != null | undefined) {
       const user = await User.findById({ _id: authUser._id })
       var history = user.history
       let recived = '';
-      if (!user.history.includes(videoId)) {
-        let message = "1|" + videoId
-        for (let i = 0; i < history.length; i++) {
-          message += "," + history[i]
-        }
-        recived = sendStringToServer(message)
-        history = [...user.history, videoId]
-        await User.findByIdAndUpdate({ _id: authUser._id }, { history: history })
-        let suggested = recived.split(" ")
+      let message = "1|" + videoId
+      for (let i = 0; i < history.length; i++) {
+        message += "," + history[i]
       }
+      recived = await sendStringToServer(message)
+      if (!history.includes(videoId)) {
+        history = [...user.history, videoId]
+      }
+      await User.findByIdAndUpdate({ _id: authUser._id }, { history: history })
+      if (recived != undefined)
+        suggested = recived.split(" ")
     }
+    let suggestedVideos = await VideoService.getSuggestedVideos(suggested, 10, [videoId]);
+    let ids = suggestedVideos.map((v) => v._id);
+    console.log("Fetching video ended successfully :",ids);
     if (!video) {
       console.error("Video was not found", videoId, error);
       throw error;
     }
 
     console.log("Fetched video successfully");
+    // pass the video and suggested videos to the client
     res.status(200).json(video);
   } catch (error) {
     console.error("Error fetching video:", videoId, error);
