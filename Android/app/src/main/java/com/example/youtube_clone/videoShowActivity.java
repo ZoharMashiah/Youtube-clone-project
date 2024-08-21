@@ -246,17 +246,15 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
                     });
 
 
+                    LiveData<List<VideoN>> suggestedVideos = videosViewModel.getSuggestedVideos();
+                    suggestedVideos.observe(this, videosSuggested -> {
+                        videos.addAll(videosSuggested);
+                        final VideosAdapter[] adapterVid = {new VideosAdapter(this, videos, this)};
+                        binding.videos.setAdapter(adapterVid[0]);
+                        binding.videos.setLayoutManager(new LinearLayoutManager(this));
+                    });
 
-                            if(videosViewModel.getVideos().getValue() != null) {
-                for (VideoN vid : videosViewModel.getVideos().getValue()) {
-                    if (!vid.get_id().equals(videoN1.get_id())) {
-                        videos.add(vid);
-                    }
-                }
-        final VideosAdapter[] adapterVid = {new VideosAdapter(this, videos, this)};
-        binding.videos.setAdapter(adapterVid[0]);
-        binding.videos.setLayoutManager(new LinearLayoutManager(this));
-        }
+
         });}});}
 
     @Override

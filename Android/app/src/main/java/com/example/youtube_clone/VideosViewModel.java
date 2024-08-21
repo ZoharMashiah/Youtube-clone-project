@@ -86,4 +86,8 @@ public class VideosViewModel extends ViewModel {
     public void doAction(String uid, String vid, String userId, String action) {
         repository.doAction(uid, vid, userId, action);
     }
+
+    public LiveData<List<VideoN>> getSuggestedVideos() {
+        return repository.getSuggestedVideos();
+    }
 }

@@ -23,6 +23,10 @@ public class VideoWithSuggested {
         return video;
     }
 
+    public void setVideo(VideoN video) {
+        this.video = video;
+    }
+
     public List<VideoN> getSuggestedVideos() {
         return suggestedVideos;
     }

@@ -25,7 +25,10 @@ public class VideoRepository {
     private VideoDao dao;
     private VideoListData videoListData;
     private MutableLiveData<List<VideoN>> videoListFilteredData;
+
     private VideoApi api;
+
+    private MutableLiveData<List<VideoN>> suggestedVideos;
 
     RoomDatabase.Callback myCallback = new RoomDatabase.Callback() {
         @Override
@@ -44,6 +47,7 @@ public class VideoRepository {
         dao = Room.databaseBuilder(context, AppDB.class, "AppDB").build().videoDao();
         api = new VideoApi(videoListData, dao);
         videoListFilteredData =  api.getVideoListFiltered();
+        suggestedVideos = api.getSuggestedVideos();
     }
 
     public void add(String uid, VideoN videoN) {
@@ -121,5 +125,9 @@ public class VideoRepository {
 
     public void doAction(String uid, String vid, String userId, String action) {
         api.doAction(uid, vid, userId, action);
+    }
+
+    public LiveData<List<VideoN>> getSuggestedVideos() {
+        return suggestedVideos;
     }
 }
