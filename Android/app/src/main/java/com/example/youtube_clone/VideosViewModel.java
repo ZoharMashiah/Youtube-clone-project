@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.youtube_clone.api.videoAPI.VideoWithSuggested;
 import com.example.youtube_clone.reposetories.VideoRepository;
 
 import java.util.List;
@@ -84,5 +85,9 @@ public class VideosViewModel extends ViewModel {
 
     public void doAction(String uid, String vid, String userId, String action) {
         repository.doAction(uid, vid, userId, action);
+    }
+
+    public LiveData<List<VideoN>> getSuggestedVideos() {
+        return repository.getSuggestedVideos();
     }
 }

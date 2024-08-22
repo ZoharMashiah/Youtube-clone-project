@@ -32,6 +32,7 @@ public class VideoApi {
     Retrofit retrofit;
     videoRequest videoRequest;
     MutableLiveData<VideoN> video;
+    MutableLiveData<List<VideoN>> suggestedVideos;
     private VideoDao dao;
 
     public VideoApi(MutableLiveData<List<VideoN>> videoListData, VideoDao dao) {
@@ -57,6 +58,7 @@ public class VideoApi {
         }
         video = new MutableLiveData<>();
         videoListFiltered = new MutableLiveData<>();
+        suggestedVideos = new MutableLiveData<>();
     }
 
     public MutableLiveData<List<VideoN>> getFeed() {
@@ -84,16 +86,19 @@ public class VideoApi {
     }
 
     public MutableLiveData<VideoN> getVideo(String uid, String vid) {
-        Call<VideoN> call = videoRequest.getVideo(uid, vid);
+        Call<VideoWithSuggested> call = videoRequest.getVideo(uid, vid);
 
-        call.enqueue(new Callback<VideoN>() {
+
+        call.enqueue(new Callback<VideoWithSuggested>() {
             @Override
-            public void onResponse(Call<VideoN> call, Response<VideoN> response) {
-                video.postValue(response.body());
+            public void onResponse(Call<VideoWithSuggested> call, Response<VideoWithSuggested> response) {
+                assert response.body() != null;
+                video.setValue(response.body().video);
+                suggestedVideos.setValue(response.body().suggestedVideos);
             }
 
             @Override
-            public void onFailure(Call<VideoN> call, Throwable throwable) {
+            public void onFailure(Call<VideoWithSuggested> call, Throwable throwable) {
 
             }
         });
@@ -225,5 +230,9 @@ public class VideoApi {
 
             }
         });
+    }
+
+    public MutableLiveData<List<VideoN>> getSuggestedVideos() {
+        return suggestedVideos;
     }
 }

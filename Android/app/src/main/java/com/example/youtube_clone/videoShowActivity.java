@@ -21,10 +21,12 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.os.BuildCompat;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.youtube_clone.api.commentAPI.commentAPI;
+import com.example.youtube_clone.api.videoAPI.VideoWithSuggested;
 import com.example.youtube_clone.databinding.ActivityVideoShowBinding;
 import com.example.youtube_clone.utils.Base64Utils;
 import com.example.youtube_clone.utils.FileUtils;
@@ -74,11 +76,11 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
 
         videosViewModel.getCurrentVideo().observe(this, video -> {
             if (video != null) {
-                LiveData<VideoN> videoNew = videosViewModel.getVideo(video.getUser()._id, video.get_id());
+                LiveData<VideoN> videoNew = videosViewModel.getVideo(video.getUser().get_id(), video.get_id());
+//                LiveData<VideoWithSuggested> videoWithSuggestedLiveData = videosViewModel.getVideo(video.getUser()._id, video.get_id());
                 if (videoNew.getValue() == null)
                     binding.title.setText("Loading...");
                 videoNew.observe(this, videoN1 -> {
-
                     videoView = binding.video;
 
                     RecyclerView recyclerView = findViewById(R.id.commentsRecyclerView);
@@ -244,17 +246,15 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
                     });
 
 
+                    LiveData<List<VideoN>> suggestedVideos = videosViewModel.getSuggestedVideos();
+                    suggestedVideos.observe(this, videosSuggested -> {
+                        videos.addAll(videosSuggested);
+                        final VideosAdapter[] adapterVid = {new VideosAdapter(this, videos, this)};
+                        binding.videos.setAdapter(adapterVid[0]);
+                        binding.videos.setLayoutManager(new LinearLayoutManager(this));
+                    });
 
-                            if(videosViewModel.getVideos().getValue() != null) {
-                for (VideoN vid : videosViewModel.getVideos().getValue()) {
-                    if (!vid.get_id().equals(videoN1.get_id())) {
-                        videos.add(vid);
-                    }
-                }
-        final VideosAdapter[] adapterVid = {new VideosAdapter(this, videos, this)};
-        binding.videos.setAdapter(adapterVid[0]);
-        binding.videos.setLayoutManager(new LinearLayoutManager(this));
-        }
+
         });}});}
 
     @Override

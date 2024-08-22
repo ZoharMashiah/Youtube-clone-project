@@ -15,6 +15,7 @@ import com.example.youtube_clone.AppDB;
 import com.example.youtube_clone.Room.Video.VideoDao;
 import com.example.youtube_clone.VideoN;
 import com.example.youtube_clone.api.videoAPI.VideoApi;
+import com.example.youtube_clone.api.videoAPI.VideoWithSuggested;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -24,7 +25,10 @@ public class VideoRepository {
     private VideoDao dao;
     private VideoListData videoListData;
     private MutableLiveData<List<VideoN>> videoListFilteredData;
+
     private VideoApi api;
+
+    private MutableLiveData<List<VideoN>> suggestedVideos;
 
     RoomDatabase.Callback myCallback = new RoomDatabase.Callback() {
         @Override
@@ -43,6 +47,7 @@ public class VideoRepository {
         dao = Room.databaseBuilder(context, AppDB.class, "AppDB").build().videoDao();
         api = new VideoApi(videoListData, dao);
         videoListFilteredData =  api.getVideoListFiltered();
+        suggestedVideos = api.getSuggestedVideos();
     }
 
     public void add(String uid, VideoN videoN) {
@@ -120,5 +125,9 @@ public class VideoRepository {
 
     public void doAction(String uid, String vid, String userId, String action) {
         api.doAction(uid, vid, userId, action);
+    }
+
+    public LiveData<List<VideoN>> getSuggestedVideos() {
+        return suggestedVideos;
     }
 }

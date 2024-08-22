@@ -2,6 +2,7 @@ const Video = require("../models/Video");
 const User = require("../models/User.js");
 const VideoService = require("../services/VideoService.js");
 const Util = require("../util/util.js");
+const {sendStringToServer} = require('../tcpClient.js');
 
 async function getFeed(req, res) {
   try {
@@ -38,15 +39,35 @@ async function getUserVideoList(req, res) {
 
 async function getVideo(req, res) {
   const videoId = req.params.pid;
+  const authUser = req.user;
   try {
     const video = await Video.findByIdAndUpdate(videoId, { $inc: { views: 1 } }, { new: true, runValidators: true });
+    let suggested = [];
+    if (authUser != null | undefined) {
+      const user = await User.findById({ _id: authUser._id })
+      var history = user.history
+      let recived = '';
+      let message = "1|" + videoId
+      for (let i = 0; i < history.length; i++) {
+        message += "," + history[i]
+      }
+      recived = await sendStringToServer(message)
+      if (!history.includes(videoId)) {
+        history = [...user.history, videoId]
+      }
+      await User.findByIdAndUpdate({ _id: authUser._id }, { history: history })
+      if (recived != undefined)
+        suggested = recived.split(" ")
+    }
+    let suggestedVideos = await VideoService.getSuggestedVideos(suggested, 10, [videoId]);
     if (!video) {
       console.error("Video was not found", videoId, error);
       throw error;
     }
 
     console.log("Fetched video successfully");
-    res.status(200).json(video);
+    // pass the video and suggested videos to the client
+    res.status(200).json({video, suggestedVideos});
   } catch (error) {
     console.error("Error fetching video:", videoId, error);
     res.status(500).json({
