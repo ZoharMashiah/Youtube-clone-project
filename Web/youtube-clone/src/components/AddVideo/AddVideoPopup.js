@@ -174,7 +174,7 @@ export default function AddVideoPopup({ onClose }) {
               Cancel
             </button>
             <button type="submit" class="btn btn-primary" className={styles.addBtn}>
-              Add
+              Upload
             </button>
           </div>
         </form>

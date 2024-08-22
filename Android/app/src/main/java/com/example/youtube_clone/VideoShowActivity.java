@@ -6,27 +6,20 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.service.voice.VoiceInteractionSession;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.Toast;
 import android.widget.VideoView;
-import android.window.OnBackInvokedDispatcher;
 
 import androidx.activity.OnBackPressedCallback;
-import androidx.activity.OnBackPressedDispatcher;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.os.BuildCompat;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.youtube_clone.api.commentAPI.commentAPI;
-import com.example.youtube_clone.api.videoAPI.VideoWithSuggested;
 import com.example.youtube_clone.databinding.ActivityVideoShowBinding;
 import com.example.youtube_clone.utils.Base64Utils;
 import com.example.youtube_clone.utils.FileUtils;
@@ -38,7 +31,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
 
-public class videoShowActivity extends AppCompatActivity implements commentRecycler, RecyclerViewInterface {
+public class VideoShowActivity extends AppCompatActivity implements commentRecycler, RecyclerViewInterface {
 
     private ActivityVideoShowBinding binding;
     private commentsAdapter[] adapter;
@@ -86,8 +79,8 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
                     RecyclerView recyclerView = findViewById(R.id.commentsRecyclerView);
 
                     commentViewModel = new CommentViewModel();
-                    commentViewModel.getLocalComments().observe(this,v->{
-                        adapter = new commentsAdapter[]{new commentsAdapter(this, v , this)};
+                    commentViewModel.getLocalComments().observe(this, v -> {
+                        adapter = new commentsAdapter[]{new commentsAdapter(this, v, this)};
                         listComments = v;
                         recyclerView.setAdapter(adapter[0]);
                         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -96,7 +89,7 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
                     commentViewModel.getAllComments(videosViewModel.getCurrentVideo().getValue().getUser().get_id(), videosViewModel.getCurrentVideo().getValue().get_id());
 
 
-                    if(UserManager.getInstance().getCurrentUser() == null || !Objects.requireNonNull(videosViewModel.getCurrentVideo().getValue()).getUser().get_id().equals(UserManager.getInstance().getCurrentUser().get_id())){
+                    if (UserManager.getInstance().getCurrentUser() == null || !Objects.requireNonNull(videosViewModel.getCurrentVideo().getValue()).getUser().get_id().equals(UserManager.getInstance().getCurrentUser().get_id())) {
                         binding.editBtn.setVisibility(View.INVISIBLE);
                         binding.deleteBtn.setVisibility(View.INVISIBLE);
                     } else {
@@ -104,16 +97,11 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
                             showAlertDialog(videoN1.getTitle(), videoN1.getDescription(), videosViewModel.getCurrentVideo().getValue());
                         });
                         binding.deleteBtn.setOnClickListener(v -> {
-                            videosViewModel.delete(videoN1.getUser().get_id(),videoN1.get_id());
+                            videosViewModel.delete(videoN1.getUser().get_id(), videoN1.get_id());
                             videosViewModel.reload();
                             finish();
                         });
                     }
-
-//                    adapter = new commentsAdapter[]{new commentsAdapter(this, Videos.getInstance().currentVideo.getComments(), this)};
-//                    recyclerView.setAdapter(adapter[0]);
-//                    recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
 
                     int views = videoN1.getViews();
                     long publication_date = videoN1.getPublication_date().getTime();
@@ -122,6 +110,7 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
                     String timeStr = time > 60 ? time > 1140 ? time > 43200 ? time > 525600 ? ((time / 525600) + " years ago") : ((time / 43200) + " months ago") : ((time / 1140) + " days ago") : ((time / 60) + " hours ago") : (time + " minutes ago");
 
                     binding.title.setText(videoN1.getTitle());
+                    binding.videoCreator.setText(videoN1.getUser().getUsername());
                     binding.views.setText(viewers + " views");
                     binding.description.setText(videoN1.getDescription());
                     binding.counterLike.setText(Integer.toString(videoN1.getLike()));
@@ -141,21 +130,21 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
                     binding.like.setOnClickListener(v -> {
                         if (UserManager.getInstance().getCurrentUser() != null) {
                             videosViewModel.doAction(video.getUser().get_id(), video.get_id(), UserManager.getInstance().getCurrentUser().get_id(), "like");
-                            if(UserManager.getInstance().getCurrentUser().getLikedVideos().contains(video.get_id())){
+                            if (UserManager.getInstance().getCurrentUser().getLikedVideos().contains(video.get_id())) {
                                 UserManager.getInstance().getCurrentUser().getLikedVideos().remove(video.get_id());
                                 binding.counterDislike.setText(Integer.toString(video.getDislike()));
-                                video.setLike(video.getLike()-1);
+                                video.setLike(video.getLike() - 1);
                                 Objects.requireNonNull(videosViewModel.getCurrentVideo().getValue()).setLike(video.getLike());
                                 binding.counterLike.setText(Integer.toString(video.getLike()));
                             } else {
                                 if (UserManager.getInstance().getCurrentUser().getDislikedVideos().contains(video.get_id())) {
                                     UserManager.getInstance().getCurrentUser().getDislikedVideos().remove(video.get_id());
-                                    video.setDislike(video.getDislike()-1);
+                                    video.setDislike(video.getDislike() - 1);
                                     Objects.requireNonNull(videosViewModel.getCurrentVideo().getValue()).setDislike(video.getDislike());
                                     binding.counterDislike.setText(Integer.toString(video.getDislike()));
                                 }
                                 UserManager.getInstance().getCurrentUser().getLikedVideos().add(video.get_id());
-                                video.setLike(video.getLike()+1);
+                                video.setLike(video.getLike() + 1);
                                 Objects.requireNonNull(videosViewModel.getCurrentVideo().getValue()).setLike(video.getLike());
                                 binding.counterLike.setText(Integer.toString(video.getLike()));
                             }
@@ -176,21 +165,21 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
                     binding.dislike.setOnClickListener(v -> {
                         if (UserManager.getInstance().getCurrentUser() != null) {
                             videosViewModel.doAction(video.getUser().get_id(), video.get_id(), UserManager.getInstance().getCurrentUser().get_id(), "dislike");
-                            if(UserManager.getInstance().getCurrentUser().getDislikedVideos().contains(video.get_id())){
+                            if (UserManager.getInstance().getCurrentUser().getDislikedVideos().contains(video.get_id())) {
                                 UserManager.getInstance().getCurrentUser().getDislikedVideos().remove(video.get_id());
                                 binding.counterLike.setText(Integer.toString(video.getLike()));
-                                video.setDislike(video.getDislike()-1);
+                                video.setDislike(video.getDislike() - 1);
                                 Objects.requireNonNull(videosViewModel.getCurrentVideo().getValue()).setDislike(video.getDislike());
                                 binding.counterDislike.setText(Integer.toString(video.getDislike()));
                             } else {
                                 if (UserManager.getInstance().getCurrentUser().getLikedVideos().contains(video.get_id())) {
                                     UserManager.getInstance().getCurrentUser().getLikedVideos().remove(video.get_id());
-                                    video.setLike(video.getLike()-1);
+                                    video.setLike(video.getLike() - 1);
                                     Objects.requireNonNull(videosViewModel.getCurrentVideo().getValue()).setLike(video.getLike());
                                     binding.counterLike.setText(Integer.toString(video.getLike()));
                                 }
                                 UserManager.getInstance().getCurrentUser().getDislikedVideos().add(video.get_id());
-                                video.setDislike(video.getDislike()+1);
+                                video.setDislike(video.getDislike() + 1);
                                 Objects.requireNonNull(videosViewModel.getCurrentVideo().getValue()).setDislike(video.getDislike());
                                 binding.counterDislike.setText(Integer.toString(video.getDislike()));
                             }
@@ -214,7 +203,7 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
                             CommentData newComment = new CommentData("",
                                     videosViewModel.getCurrentVideo().getValue().get_id(),
                                     new ArrayList<>(),
-                                    new SmallUser(UserManager.getInstance().getCurrentUser().get_id(),UserManager.getInstance().getCurrentUser().getUsername(),
+                                    new SmallUser(UserManager.getInstance().getCurrentUser().get_id(), UserManager.getInstance().getCurrentUser().getUsername(),
                                             UserManager.getInstance().getCurrentUser().getProfilePicture()),
                                     binding.addComment.getText().toString(),
                                     Calendar.getInstance().getTime().getTime());
@@ -255,7 +244,10 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
                     });
 
 
-        });}});}
+                });
+            }
+        });
+    }
 
     @Override
     public void deleteElement(int position) {
@@ -263,7 +255,7 @@ public class videoShowActivity extends AppCompatActivity implements commentRecyc
                 videosViewModel.getCurrentVideo().getValue().get_id(),
                 listComments.get(position).get_id());
         listComments.remove(position);
-        adapter = new commentsAdapter[]{new commentsAdapter(this, listComments , this)};
+        adapter = new commentsAdapter[]{new commentsAdapter(this, listComments, this)};
         binding.commentsRecyclerView.setAdapter(adapter[0]);
         binding.commentsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 //        adapter[0].notifyItemRemoved(position);

@@ -107,6 +107,9 @@ void handleThread(void *param)
         else
         {
             string output = helperFunction(buffer);
+            if (output == "") {
+                output = "no_suggestion";
+            }
             int sent_bytes = send(sock->des, (void *)output.c_str(), output.size(), 0);
             if (sent_bytes < 0)
             {

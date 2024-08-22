@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -std=c++11 -Wall -Wextra -pthread
+CXXFLAGS = -std=c++11 -pthread
 TARGET = tcpServer
 SRCS = tcpServer.cpp
 

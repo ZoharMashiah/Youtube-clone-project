@@ -5,7 +5,7 @@
 
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 0",
-    "prestart": "cd ../ && cd ../Web/youtube-clone && npm run build && cd ../../server",
+    "prestart": "cd ../Web/youtube-clone && npm run build && cd ../../server",
     "start": "node server.js"
   },
 
