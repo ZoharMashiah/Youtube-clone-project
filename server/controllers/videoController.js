@@ -56,7 +56,7 @@ async function getVideo(req, res) {
         history = [...user.history, videoId]
       }
       await User.findByIdAndUpdate({ _id: authUser._id }, { history: history })
-      if (recived != undefined)
+      if (recived != undefined && recived != "no_suggestion")
         suggested = recived.split(" ")
     }
     let suggestedVideos = await VideoService.getSuggestedVideos(suggested, 10, [videoId]);

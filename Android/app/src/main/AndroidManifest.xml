@@ -30,7 +30,7 @@
             android:name=".addVideoActivity"
             android:exported="false" />
         <activity
-            android:name=".videoShowActivity"
+            android:name=".VideoShowActivity"
             android:exported="false" />
         <activity
             android:name=".Video"

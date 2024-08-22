@@ -15,7 +15,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="120dp"
-            android:background="@color/primary"
+            android:background="@color/primary_dark"
             android:orientation="horizontal">
 
             <ImageView
@@ -38,7 +38,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:textColor="@color/primary"
+                android:textColor="@color/title"
                 android:text="Upload a video"
                 android:textSize="25dp"
                 android:textStyle="bold" />
@@ -99,8 +99,8 @@
                 android:layout_height="60dp"
                 android:layout_weight="1"
                 android:textColor="@color/on_primary"
-                android:backgroundTint="@color/primary"
-                android:text="Add photo display" />
+                android:backgroundTint="@color/primary_dark"
+                android:text="Add Thumbnail" />
 
         </LinearLayout>
 
@@ -116,7 +116,7 @@
                 android:layout_weight="1"
                 android:text="Add video"
                 android:textColor="@color/on_primary"
-                android:backgroundTint="@color/primary" />
+                android:backgroundTint="@color/primary_dark" />
 
         </LinearLayout>
 
@@ -126,7 +126,7 @@
             android:layout_height="wrap_content"
             android:text="Upload"
             android:textColor="@color/on_primary"
-            android:backgroundTint="@color/primary" />
+            android:backgroundTint="@color/primary_dark" />
 
     </LinearLayout>
 
