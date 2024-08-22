@@ -14,6 +14,7 @@ export default function VideoDisplay() {
   const [currentVideo, setCurrentVideo] = useState(null);
   const { videoList, setVideoList } = useContext(AppContext);
   const [loading, setLoading] = useState(true);
+  const [suggestedVideos, setSuggestedVideos] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -34,7 +35,8 @@ export default function VideoDisplay() {
       console.log("Fetching video for creator:", userId, "video:", videoId);
       const address = `/api/users/${userId}/videos/${videoId}`;
       const response = await authAxios.get(address);
-      setCurrentVideo(response.data);
+      setCurrentVideo(response.data.video);
+      setSuggestedVideos(response.data.suggestedVideos);
       setVideoList((prevVideoList) =>
         prevVideoList.map((video) =>
           video._id === response.data._id ? { ...video, views: response.data.views } : video
@@ -100,8 +102,7 @@ export default function VideoDisplay() {
         </div>
       )}
       <div className={styles.sideList}>
-        {videoList
-          .filter((video) => video._id !== currentVideo._id)
+        {suggestedVideos
           .map((video) => (
             <HorizontalVideoCard key={video._id} video={video} />
           ))}

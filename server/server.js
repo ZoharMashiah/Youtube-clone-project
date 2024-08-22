@@ -15,7 +15,7 @@ require("dotenv").config({ path: `./config/.env.local` });
 const app = express();
 mongoose
   .connect(process.env.MONGO_LINK)
-  .then(() => {
+  .then(async () => {
     app.use(cors());
     app.use(express.static(path.join(__dirname, "../Web/youtube-clone/build")));
     app.use(bodyParser.json({ limit: "50mb" }));
@@ -25,6 +25,26 @@ mongoose
     app.use("/", feedRouter);
     app.use("/api/users", userRouter);
     app.use("/api/tokens", tokenRouter);
+
+    const User = require("./models/User.js");
+    const {sendStringToServer} = require('./tcpClient.js');
+    let users = await User.find({})
+
+    let message = "0"
+    for (let i = 0; i < users.length; i++) {
+      let user = users[i]
+      if (user.history.length == 0) {
+        continue
+      }
+      message += "|"
+      for (let j = 0; j < user.history.length; j++) {
+        message += user.history[j]
+        if (j != user.history.length - 1) {
+          message += ","
+        }
+      }
+    }
+    sendStringToServer(message)
 
     app.get("*", (req, res) => {
       res.sendFile(path.resolve("../Web/youtube-clone", "build", "index.html"));

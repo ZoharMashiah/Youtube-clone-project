@@ -30,6 +30,56 @@ class VideoService {
     }
   }
 
+  static async getSuggestedVideos(videoIds, numberOfVideos, excludeVideoIds = []) {
+    const latency = await VideoService.measureDatabaseLatency();
+    console.log(`Database latency: ${latency}ms`);
+    const startQuery = Date.now();
+    try {
+      // Fetch videos by IDs, sorted by views.
+      let videos = await Video.find(
+        {
+          _id: { $in: videoIds.filter(id => !excludeVideoIds.includes(id)) }
+        },
+        {
+          comments: 0,
+          video: 0,
+        }
+      )
+      .sort({ views: -1 })
+      .limit(numberOfVideos)
+      .lean();
+  
+      // If the fetched videos are less than required, fetch additional random videos.
+      if (videos.length < numberOfVideos) {
+        const additionalVideos = await Video.aggregate([
+          {
+            $match: {
+              _id: { $nin: [...videoIds, ...excludeVideoIds, ...videos.map(v => v._id)] }
+            }
+          },
+          { $sample: { size: numberOfVideos - videos.length } }, // Randomly sample remaining videos.
+          {
+            $project: {
+              comments: 0,
+              video: 0,
+            }
+          },
+        ]);
+  
+        videos = videos.concat(additionalVideos);
+      }
+  
+      const endQuery = Date.now();
+      console.log(`Query execution time: ${endQuery - startQuery}ms`);
+      console.log(`Total operation time: ${endQuery - startQuery + latency}ms`);
+      return videos;
+    } catch (error) {
+      console.log("Error fetching suggested videos");
+      throw error;
+    }
+  }
+  
+
   static async getUnchosenVideos(numberOfVideos, chosenVideos) {
     try {
       if (!Array.isArray(chosenVideos)) {

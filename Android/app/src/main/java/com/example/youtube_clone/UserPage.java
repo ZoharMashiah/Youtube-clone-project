@@ -140,7 +140,7 @@ public class UserPage extends AppCompatActivity implements RecyclerViewInterface
     @Override
     public void onItemClick(VideoN video) {
         videosViewModel.setCurrentVideo(video);
-        Intent intent = new Intent(this, videoShowActivity.class);
+        Intent intent = new Intent(this, VideoShowActivity.class);
         startActivity(intent);
     }
 

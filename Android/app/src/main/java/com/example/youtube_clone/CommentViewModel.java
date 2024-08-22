@@ -1,11 +1,9 @@
 package com.example.youtube_clone;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.youtube_clone.reposetories.CommentsRepository;
-import com.example.youtube_clone.reposetories.VideoRepository;
+import com.example.youtube_clone.repositories.CommentsRepository;
 
 import java.util.List;
 
