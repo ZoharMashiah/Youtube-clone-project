@@ -6,7 +6,6 @@ import com.example.youtube_clone.CommentData;
 import com.example.youtube_clone.MyApplication;
 import com.example.youtube_clone.R;
 import com.example.youtube_clone.api.loginAPI.AuthInterceptor;
-import com.example.youtube_clone.reposetories.CommentsRepository;
 //import com.example.youtube_clone.authorization.AuthInterceptor;
 
 import java.util.ArrayList;

@@ -68,3 +68,15 @@ Configure the app with the correct API base URL.
 6. And click Add Data -> Import JSON or CSV file
 7. Select the data from the project folder -> data and choose the collection name
 8. Then you will see in the web and android that the data updated
+
+### Part 4
+
+In this part, we created a video suggestion mechanism that is handled by a seperate TCP server. The suggestions are based on the user's watching history, where users would be recommended videos that were prevously watched by users with similar interests.  
+We also created a wiki for the repository, containing a full demonstration of the app.
+
+#### How to build and run
+
+1. Navigate to "server/tcp-server/", and run the "make" command to compile the TCP server. Do note that the server must be run on POSIX compliant systems.
+2. Run "./tcpServer" to start the server.
+3. From a different terminal, navigate to "server/" and run "npm start". This will build and run the ReactJS and NodeJS apps.
+4. Visit the [website](http://localhost:3000/), or run the android app using an emulator.
