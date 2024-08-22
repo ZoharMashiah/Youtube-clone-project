@@ -6,7 +6,7 @@
 
 1. [What is Streambox](#what-is-streambox)
 2. [Build & Run](#how-to-build-and-run)
-3. [Home Page](#home-feed)
+3. [Home Page](#home-page)
 4. [Account Creation and Signing In](#account-creation-and-signing-in)
     * [Web Version](#account-creation-and-signing-in-web)
     * [Android App Version](#account-creation-and-signing-in-android)
@@ -84,7 +84,7 @@ After signing into your account, the profile button will navigate to your profil
 
 Users remain signed in for a set period before being automatically logged out for security purposes.
 
-<img src="images/login_android.png" width="30%" height="auto"  height="auto" alt="login page">
+<img src="images/login_android.png" width="20%" height="auto"  height="auto" alt="login page">
 
 #### **Account Creation**
 
@@ -94,7 +94,7 @@ Creating a new Streambox account can be done as follows:
 2. Complete the registration form with required information.
 3. Click "Create Account" to finalize registration.
 
-<img src="images/account_creation_android.png" width="30%" height="auto" alt="account creation page">
+<img src="images/account_creation_android.png" width="20%" height="auto" alt="account creation page">
 
 
 ## Video Management
@@ -134,13 +134,13 @@ To upload a video on the web platform:
 3. Fill in the details, such as the title, description, and a thumbnail picture.
 4. Click "Add" to make your video live.
 
-<img src="images/upload_android.png" width="30%" height="auto"  alt="Android video upload interface">
+<img src="images/upload_android.png" width="20%" height="auto"  alt="Android video upload interface">
 
 #### **Accessing Video Options**
 To access edit or delete options for any of your videos:
 1. Tap the video to enter the viewing page.
 2. Inside the video page, you will see buttons for editing and deletion below the video.
 
-<img src="images/video_options_android.png" width="30%" height="auto"  alt="Android video option button">
+<img src="images/video_options_android.png" width="20%" height="auto"  alt="Android video option button">
 
 **Note**: Deleted videos cannot be recovered, so please be certain before clicking the deletion button.
