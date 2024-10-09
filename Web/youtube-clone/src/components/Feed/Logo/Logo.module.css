@@ -1,0 +1,8 @@
+.imageButton {
+  background: none;
+  border: none;
+  object-fit: contain;
+  height: auto;
+  margin: 0px 30px;
+  padding: 0;
+}

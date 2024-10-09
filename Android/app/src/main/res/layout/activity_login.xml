@@ -7,27 +7,16 @@
     android:layout_height="match_parent"
     tools:context=".LoginActivity">
 
-    <Button
-        android:id="@+id/themeToggleButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Dark Mode"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:backgroundTint="@color/blueNavy"
-        android:textColor="@color/white"/>
-
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="128dp"
         android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints,UseCompoundDrawables">
+        app:layout_constraintVertical_bias="0.175">
 
         <ImageView
             android:id="@+id/imageView"
@@ -40,13 +29,11 @@
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:shadowColor="#6D6D6D"
-            android:shadowDx="1.2"
-            android:shadowDy="1.2"
+            android:layout_marginBottom="20dp"
             android:text="@string/login"
             android:textAlignment="center"
             android:textAllCaps="false"
-            android:textColor="#185da6"
+            android:textColor="@color/title"
             android:textSize="34sp"
             android:textStyle="bold" />
 
@@ -59,9 +46,10 @@
                 android:id="@+id/imageView2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_weight="1"
-                app:srcCompat="@drawable/ic_person"
-                android:layout_gravity="center"/>
+                app:tint="@color/system_icon"
+                app:srcCompat="@drawable/ic_person" />
 
             <EditText
                 android:id="@+id/editTextText"
@@ -70,6 +58,7 @@
                 android:layout_gravity="center"
                 android:layout_margin="5dp"
                 android:autofillHints=""
+
                 android:ems="10"
                 android:hint="@string/username"
                 android:inputType="text" />
@@ -84,9 +73,10 @@
                 android:id="@+id/imageView3"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_weight="1"
-                app:srcCompat="@android:drawable/ic_lock_lock"
-                android:layout_gravity="center"/>
+                app:tint="@color/system_icon"
+                app:srcCompat="@android:drawable/ic_lock_lock" />
 
             <EditText
                 android:id="@+id/editTextTextPassword"
@@ -101,18 +91,20 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/submitBtn"
+            android:id="@+id/loginBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="5dp"
-            android:backgroundTint="@color/login_blue"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="10dp"
+            android:backgroundTint="@color/primary"
+            android:textColor="@color/on_primary"
             android:text="@string/login"
             android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal">
 
             <TextView
@@ -132,8 +124,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/click_here"
-                android:textColor="@color/login_blue"
-                android:textStyle="bold"/>
+                android:textColor="@color/primary"
+                android:textStyle="bold" />
         </LinearLayout>
 
     </LinearLayout>

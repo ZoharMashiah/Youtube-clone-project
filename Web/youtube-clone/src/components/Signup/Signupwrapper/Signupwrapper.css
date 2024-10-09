@@ -3,10 +3,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
-  background-attachment: fixed;
-  animation: backgroundGradient 10s ease infinite;
+}
+
+.signupForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .signup-container {
@@ -57,6 +59,8 @@
 
 .submit-button {
   background-color: #0a63c2;
+  display: flex;
+  justify-content: center;
   color: white;
   padding: 10px;
   border: none;
@@ -64,7 +68,6 @@
   cursor: pointer;
   transition: background-color 0.3s, box-shadow 0.3s;
   width: 90%;
-  margin-right: 100px;
   font-size: 1em;
   margin-top: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -76,12 +79,12 @@
 }
 
 .return-login {
-  display: block;
-  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  margin: 20px;
   text-align: center;
   color: #007bff;
   text-decoration: none;
-  margin-right: 50px;
 }
 
 .return-login:hover {

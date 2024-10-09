@@ -1,24 +1,25 @@
-.ButtonField{
-    display: flex;
-    flex-direction: row;
-    width: 80%;
-    height: 50px;
-    align-items: center;
-    border-radius: 20px;
-    margin: 10px;
-    padding-top: 18px;
-    font-weight: bold;
-    text-shadow: 0.3px 0.3px #747474;
-}
-.ButtonField:hover{
-    background-color:  rgba(242,242,242,255);
-    cursor: pointer;
-}
-.svgContainer{
-    margin: 40px;
-    margin-top: 22px;
-}
-#icon{
-    font-size: x-large;
+.ButtonField {
+  display: flex;
+  flex-direction: row;
+  height: 2em;
+  width: 100%;
+  align-items: center;
+  justify-content: left;
+  border-radius: 15px;
+  font-weight: bold;
+  text-shadow: 0.3px 0.3px #747474;
+  margin: 5px;
 }
 
+.ButtonField:hover {
+  background-color: rgba(242, 242, 242, 255);
+  color: black;
+  cursor: pointer;
+}
+.svgContainer {
+  margin: 0px 10px;
+  padding: 0px;
+}
+#icon {
+  font-size: x-large;
+}

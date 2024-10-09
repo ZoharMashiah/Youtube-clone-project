@@ -8,32 +8,21 @@
     tools:context=".SignupActivity">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="64dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.005"
         tools:ignore="MissingConstraints,UseCompoundDrawables">
-
-        <Button
-            android:id="@+id/themeToggleButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Dark mode"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:backgroundTint="@color/blueNavy"
-            android:textColor="@color/white"
-            android:layout_gravity="right"/>
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="197dp"
-            android:layout_height="97dp"
+            android:layout_width="wrap_content"
+            android:layout_height="117dp"
             android:layout_gravity="center"
             app:srcCompat="@drawable/_716994828673_imgbg_net_removebg" />
 
@@ -41,13 +30,10 @@
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:shadowColor="#6D6D6D"
-            android:shadowDx="1.2"
-            android:shadowDy="1.2"
             android:text="@string/signup"
             android:textAlignment="center"
-            android:textAllCaps="false"
-            android:textColor="#185da6"
+            android:textColor="@color/title"
+            android:layout_marginBottom="10dp"
             android:textSize="34sp"
             android:textStyle="bold" />
 
@@ -62,6 +48,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
+                app:tint="@color/system_icon"
+
                 app:srcCompat="@drawable/ic_person" />
 
             <EditText
@@ -87,6 +75,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
+                app:tint="@color/system_icon"
+
                 app:srcCompat="@drawable/ic_person" />
 
             <EditText
@@ -112,6 +102,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
+                app:tint="@color/system_icon"
+
                 app:srcCompat="@drawable/ic_person" />
 
             <EditText
@@ -137,6 +129,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
+                app:tint="@color/system_icon"
+
                 app:srcCompat="@drawable/ic_person" />
 
             <EditText
@@ -158,10 +152,11 @@
 
             <ImageView
                 android:id="@+id/imageView3"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
+                app:tint="@color/system_icon"
                 app:srcCompat="@android:drawable/ic_lock_lock" />
 
             <EditText
@@ -169,7 +164,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_margin="5dp"
+                android:layout_marginHorizontal="5dp"
                 android:autofillHints=""
                 android:ems="10"
                 android:hint="@string/password"
@@ -187,6 +182,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
+                app:tint="@color/system_icon"
                 app:srcCompat="@android:drawable/ic_menu_today" />
 
             <Button
@@ -194,39 +190,37 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_margin="5dp"
                 android:layout_weight="1"
+                android:layout_marginHorizontal="5dp"
                 android:backgroundTint="@android:color/transparent"
                 android:ems="10"
-                android:textColor="@color/black"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:textColor="@color/on_background_light"
+                android:textSize="18sp" />
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+        <FrameLayout
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_margin="10dp">
 
             <ImageView
-                android:id="@+id/imageUploadImage"
-                android:layout_width="0dp"
+                android:id="@+id/uploadImage"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
+                android:layout_gravity="center_horizontal"
                 app:srcCompat="@drawable/ic_upload_image" />
 
-        </LinearLayout>
+        </FrameLayout>
 
         <Button
-            android:id="@+id/submitBtn"
+            android:id="@+id/loginBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="5dp"
-            android:backgroundTint="@color/login_blue"
+            android:backgroundTint="@color/primary"
             android:text="@string/signup"
+            android:textColor="@color/on_primary"
             android:textStyle="bold" />
 
     </LinearLayout>

@@ -1,7 +1,16 @@
-.App {
-  text-align: center;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+#user {
+  font-size: 13px;
+  font-weight: 500;
+  color: rgb(110, 110, 110);
+  cursor: pointer;
 }
 
+#views {
+  font-size: 12px;
+  font-weight: bold;
+  color: rgb(110, 110, 110);
+}
+
+#profileImage {
+  cursor: pointer;
+}

@@ -1,79 +1,76 @@
-.buttonsWrapper{
-    width: 94%;
-    height: 10%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+.buttonsWrapper {
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-self: center;
+  align-items: center;
 }
 
-.profileImage{
-    margin: 10px;
-    border-radius: 30px;
-    height: 6vh;
-    width: 6vh;
-    border-width: 0px;
-    cursor: pointer;
+.profileImage {
+  margin: 10px;
+  border-radius: 30px;
+  height: 6vh;
+  width: 6vh;
+  border-width: 0px;
+  cursor: pointer;
+}
+/* 
+.likedDislikedWrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-radius: 20px;
+  box-shadow: 1px 1px rgba(50, 50, 50, 0.802);
+} */
+
+.likedBtn,
+.dislikedBtn {
+  border: none;
+  background-color: rgb(225, 225, 225);
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 15px;
 }
 
-.likedDislikedWrapper{
-    margin: 20px;
-    margin-left: 50%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    border-radius: 20px;
-    box-shadow: 1px 1px rgba(50, 50, 50, 0.802);
+.likedBtn {
+  border-radius: 20px 0 0 20px;
+  border-right: 0.5px solid gray;
 }
 
-.likedBtn{
-    border-top-left-radius: 20px;
-    border-bottom-left-radius: 20px;
-    height: 4vh;
-    width: 4vw;
-    border: solid;
-    border-width: 0px;
-    border-right-width: 0.5px;
-    border-right-color: gray;
-    background-color: rgb(225, 225, 225);
-    justify-content: center;
-    display: flex;
-    flex-direction: row;
+.dislikedBtn {
+  border-radius: 0 20px 20px 0;
+  justify-content: left;
 }
 
-.dislikedBtn{
-    border-top-right-radius: 20px;
-    border-bottom-right-radius: 20px;
-    height: 4vh;
-    width: 4vw;
-    border-width: 0px;
-    background-color: rgb(225, 225, 225);
-    justify-content: left;
-    display: flex;
-    flex-direction: row;
+.num {
+  font-size: 14px;
+  margin: 0px 5px;
 }
 
-.userName{
-    font-size: large;
-    font-weight: bold;
-    margin-top: 1%;
+.userName {
+  font-size: large;
+  font-weight: bold;
+  margin-top: 1%;
 }
 
-.shareButton{
-    border-radius: 20px;
-    width: 40px;
-    height: 40px;
-    border: solid;
-    border-width: 0px;
-    background-color: rgb(225, 225, 225);
-    box-shadow: 1px 1px rgba(50, 50, 50, 0.802);
+.shareButton {
+  border-radius: 20px;
+  width: 40px;
+  height: 40px;
+  border: solid;
+  border-width: 0px;
+  background-color: rgb(225, 225, 225);
+  box-shadow: 1px 1px rgba(50, 50, 50, 0.802);
 }
 
-.trashIcon{
-    color: rgb(255, 255, 255);
-    font-size: large;
-    font-weight: bold;
-}
-
-.num{
-    font-size: 14px;
+.trashIcon {
+  color: rgb(255, 255, 255);
+  font-size: large;
+  font-weight: bold;
 }

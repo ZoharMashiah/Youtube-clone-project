@@ -1,50 +1,23 @@
-.wrapper{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    position: absolute;
-    top: -4vh;
-    width: 100vw;
-}
-
-.upperButtonsWrraper{
-    position: absolute;
-    right: 3vw;
-}
-
-.searchWrraper{
-    margin-left: 20vw;
-}
-
 .wrapper {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    position: absolute;
-    top: -40px;
-    width: 100%;
-  }
-  
-  .upperButtonsWrraper {
-    position: absolute;
-    right: 3%;
-  }
-  
-  .searchWrraper {
-    margin-left: 20%;
-  }
-  
-  .darkModeButton {
-    margin-left: 10px;
-    padding: 5px 10px;
-    cursor: pointer;
-    background-color: #2c3e50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-  }
-  
-  body.dark-mode .darkModeButton {
-    background-color: #ecf0f1;
-    color: #2c3e50;
-  }
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2vh;
+}
+
+.darkModeButton {
+  margin-left: 10px;
+  padding: 5px 10px;
+  cursor: pointer;
+  background-color: #2c3e50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+body.dark-mode .darkModeButton {
+  background-color: #ecf0f1;
+  color: #2c3e50;
+}

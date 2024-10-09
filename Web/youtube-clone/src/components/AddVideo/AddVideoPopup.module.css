@@ -1,0 +1,71 @@
+.AddVideoWrapper {
+  position: absolute;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+  text-align: center;
+  background-color: rgba(183, 183, 183, 0.747);
+  width: 100vw;
+  height: 100vh;
+}
+
+.AddVideoCard {
+  width: 50vw;
+  height: 50vh;
+  background-color: white;
+  padding: 5px;
+  margin-left: 25vw;
+  border-radius: 5vw;
+  box-shadow: 2px 2px 2px 2px rgb(46, 46, 46);
+}
+
+.cancelBtn {
+  background-color: rgb(186, 66, 66);
+  border: solid;
+  border-width: 0px;
+  color: white;
+  width: 7vw;
+  height: 4vh;
+  border-radius: 1vw;
+  font-weight: bold;
+  margin: 1vw;
+}
+
+.addBtn {
+  background-color: #0d6efd;
+  border: solid;
+  border-width: 0px;
+  color: white;
+  width: 7vw;
+  height: 4vh;
+  border-radius: 1vw;
+  font-weight: bold;
+  margin: 1vw;
+}
+
+.h2 {
+  font-weight: bold;
+  text-decoration: underline;
+  letter-spacing: 0.5vw;
+}
+
+.cardWrapper {
+  margin: 2vw;
+}
+
+.dropdown {
+  margin: 1vw;
+}
+
+.title {
+  margin-bottom: 1vw;
+}
+
+.videoUpload {
+  margin-bottom: 1vw;
+}
+
+.selectCategory {
+  max-height: 20vh;
+  overflow-y: scroll;
+}

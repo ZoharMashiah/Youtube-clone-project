@@ -1,38 +1,36 @@
 body.dark-mode {
-    background-color: #34495e;
-    color: #ecf0f1;
-  }
-  
-  body.dark-mode .Feed {
-    background-color: #34495e;
-    color: #ecf0f1;
-  }
-  
-  body.dark-mode .input-group i {
-    color: #bdc3c7;
-  }
-  
-  body.dark-mode .input-field {
-    background-color: #34495e;
-    color: #ecf0f1;
-    border-color: #2c3e50;
-  }
-  
-  body.dark-mode .input-field:focus {
-    border-color: #1abc9c;
-    box-shadow: 0 0 8px rgba(26, 188, 156, 0.2);
-  }
-  
-  body.dark-mode .submit-button {
-    background-color: #1abc9c;
-    color: #2c3e50;
-  }
-  
-  body.dark-mode .submit-button:hover {
-    background-color: #16a085;
-    box-shadow: 0 6px 12px rgba(26, 188, 156, 0.2);
-  }
-  
-  body.dark-mode .return-login {
-    color: #1abc9c;
-  }
+  background: linear-gradient(135deg, #3c5666, #558594);
+  color: #ecf0f1;
+  transition: background-color 0.1s, box-shadow 0.3s;
+}
+
+body.dark-mode .input-group i,
+body.dark-mode #user,
+body.dark-mode #views {
+  color: #bdc3c7;
+}
+
+body.dark-mode .input-field {
+  background-color: #34495e;
+  color: #ecf0f1;
+  border-color: #2c3e50;
+}
+
+body.dark-mode .input-field:focus {
+  border-color: #1abc9c;
+  box-shadow: 0 0 8px rgba(26, 188, 156, 0.2);
+}
+
+body.dark-mode .submit-button {
+  background-color: #1abc9c;
+  color: #2c3e50;
+}
+
+body.dark-mode .submit-button:hover {
+  background-color: #16a085;
+  box-shadow: 0 6px 12px rgba(26, 188, 156, 0.2);
+}
+
+body.dark-mode .return-login {
+  color: #1abc9c;
+}

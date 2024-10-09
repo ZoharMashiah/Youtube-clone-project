@@ -4,8 +4,6 @@ import android.net.Uri;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 public class Video implements Serializable {
     private int id;
@@ -26,6 +24,7 @@ public class Video implements Serializable {
     private ArrayList<Comment> comments;
 
     private Uri video;
+
     public Video(int id, String title, String description, String user, Uri user_image, String category, long publication_date,
                  Uri icon, int views, ArrayList<String> like, ArrayList<String> dislike, ArrayList<Comment> comments, Uri video) {
         this.id = id;
@@ -56,7 +55,7 @@ public class Video implements Serializable {
         return category;
     }
 
-    public long     getPublication_date() {
+    public long getPublication_date() {
         return publication_date;
     }
 
@@ -83,7 +82,6 @@ public class Video implements Serializable {
     public Uri getVideo() {
         return video;
     }
-
 
 
     public int getId() {
@@ -152,21 +150,21 @@ public class Video implements Serializable {
 
     public int getNextId() {
         int id = 0;
-        for (Comment c: this.comments) {
-            if (id < c.getId()){
+        for (Comment c : this.comments) {
+            if (id < c.getId()) {
                 id = c.getId();
             }
         }
         return id + 1;
     }
 
-    public void addComment(Comment comment){
+    public void addComment(Comment comment) {
         this.comments.add(comment);
     }
 
-    public void addLike (String username){
-        if(!like.contains(username)){
-            if(!dislike.contains(username)){
+    public void addLike(String username) {
+        if (!like.contains(username)) {
+            if (!dislike.contains(username)) {
                 like.add(username);
             } else {
                 dislike.remove(username);
@@ -175,9 +173,9 @@ public class Video implements Serializable {
         }
     }
 
-    public void addDislike (String username){
-        if(!dislike.contains(username)){
-            if(!like.contains(username)){
+    public void addDislike(String username) {
+        if (!dislike.contains(username)) {
+            if (!like.contains(username)) {
                 dislike.add(username);
             } else {
                 like.remove(username);

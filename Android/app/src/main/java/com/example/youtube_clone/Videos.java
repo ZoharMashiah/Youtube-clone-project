@@ -8,7 +8,7 @@ public class Videos {
     private static Videos single_instance = null;
     public ArrayList<Video> videos;
     public ArrayList<Video> filterdVideos;
-    public Video currentVideo;
+    public VideoN currentVideo;
 
     private Videos() {
         this.videos = new ArrayList<>();
@@ -63,23 +63,23 @@ public class Videos {
         }
     }
 
-    public void updateComment(int commentId, String newCommentText) {
-        for (Comment comment : currentVideo.getComments()) {
-            if (comment.getId() == commentId) {
-                comment.setTitle(newCommentText);
-                break;
-            }
-        }
-    }
-
-    public void deleteComment(int commentId) {
-        Iterator<Comment> iterator = currentVideo.getComments().iterator();
-        while (iterator.hasNext()) {
-            Comment comment = iterator.next();
-            if (comment.getId() == commentId) {
-                iterator.remove();
-                break;
-            }
-        }
-    }
+//    public void updateComment(int commentId, String newCommentText) {
+//        for (Comment comment : currentVideo.getComments()) {
+//            if (comment.getId() == commentId) {
+//                comment.setTitle(newCommentText);
+//                break;
+//            }
+//        }
+//    }
+//
+//    public void deleteComment(int commentId) {
+//        Iterator<Comment> iterator = currentVideo.getComments().iterator();
+//        while (iterator.hasNext()) {
+//            Comment comment = iterator.next();
+//            if (comment.getId() == commentId) {
+//                iterator.remove();
+//                break;
+//            }
+//        }
+//    }
 }
